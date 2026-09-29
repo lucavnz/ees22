@@ -1,0 +1,32 @@
+ 20 mVpp -- p1 = 1.406 mV -- p2 < 0.030 mV
+ 40 mVpp -- p1 = 2.556 mV -- p2 < 0.031 mV
+ 60 mVpp -- p1 = 3.606 mV -- p2 = 0.056 mV -- p3@4MHz 0.147mV
+ 80 mVpp -- p1 = 4.578 mV -- p2 = 0.085 mV
+100 mVpp -- p1 = 5.522 mV -- p2 = 0.125 mV
+120 mVpp -- p1 = 5.635 mV -- p2 = 0.130 mV -- p3@4MHz 0.077mV
+140 mVpp -- p1 = 6.284 mV -- p2 = 0.167 mV -- p3@1.25MHz 0.070mV
+160 mVpp -- p1 = 7.465 mV -- p2 = 0.195	mV -- p3@1.25MHz 0.089mV
+180 mVpp -- p1 = 7.934 mV -- p2 = 0.240 mV -- p3@1.25MHz 0.126mV
+200 mVpp -- p1 = 8.408 mV -- p2 = 0.262 mV -- p3@1.25MHz 0.158mV
+300 mVpp -- p1 = 15.36 mV -- p2 = 0.649 mV -- p3@1.25MHz 0.126mV
+400 mVpp -- p1 = 18.87 mV -- p2 = 1.167 mV -- p3@1.25MHz 0.122mV
+500 mVpp -- p1 = 21.00 mV -- p2 = 1.686 mV -- p3@1.25MHz 0.136mV
+600 mVpp -- p1 = 21.53 mV -- p2 = 1.858 mV -- p3@1.25MHz 0.275mV
+700 mVpp -- p1 = 22.85 mV -- p2 = 2.088 mV -- p3@1.25MHz 0.369mV
+800 mVpp -- p1 = 25.86 mV -- p2 = 2.625 mV -- p3@1.25MHz 0.180mV
+
+
+
+------------------------------------------
+OLD:
+100 mVpp -- p1 = 3.351 mV -- p2 = 0.101 mV
+150 mVpp -- p1 = 4.888 mV -- p2 = 0.197 mV
+200 mVpp -- p1 = 5.603 mV -- p2 = 0.288 mV
+300 mVpp -- p1 = 9.249 mV -- p2 = 0.611 mV
+400 mVpp -- p1 = 11.04 mV -- p2 = 0.843 mV
+500 mVpp -- p1 = 13.17 mV -- p2 = 1.145 mV
+600 mVpp -- p1 = 13.97 mV -- p2 = 1.273 mV
+700 mVpp -- p1 = 14.37 mV -- p2 = 1.349 mV
+800 mVpp -- p1 = 14.77 mV -- p2 = 1.441 mV
+900 mVpp -- p1 = 15.31 mV -- p2 = 1.538 mV
+1    Vpp -- p1 = 16.17 mV -- p2 = 1.686 mV

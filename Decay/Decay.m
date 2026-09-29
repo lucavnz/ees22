@@ -1,0 +1,110 @@
+%% Script da usare per ricavare l'inviluppo esponenziale in diseccitazione
+
+% 1. Load data from oscilloscope CSV file (adjust skip rows if needed)
+data = readmatrix('scope_7.csv','NumHeaderLines',2); 
+
+% Assuming Column 1 is Time (seconds) and Column 2 is Voltage (Volts)
+tall = data(1:end, 1);
+xall = data(1:end, 2);
+
+figure(1);
+plot(tall, xall, 'b');
+grid on
+hold on
+t = tall(100:end-1000);
+x = xall(100:end-1000);
+% t = tall(200:4600);
+% x = xall(200:4600);
+
+figure(2);
+plot(t, x, 'b');
+hold on
+grid on
+
+
+% plot (x);
+% title('Voltage signal with noise')
+% xlabel('Samples')
+% ylabel('Amplitudes')
+
+[up, lo] = envelope(x, 100, "peak");
+
+% Plot results
+plot(t, up, 'r--', t, lo, 'r--');
+legend('Signal', 'Envelope');
+
+%% FIND MU WITH HILBERT
+% Compute the analytic signal using the Hilbert transform
+% analytic_signal = hilbert(x);
+% 
+% env_hilbert = abs(analytic_signal); % Ampiezza istantanea (inviluppo)
+% 
+% % 3. Selezione della zona lineare (per evitare rumore di fondo a fine segnale)
+% % Tagliamo i dati quando l'inviluppo scende sotto il 2% del valore massimo
+% soglia = 0.02 * max(env_hilbert);
+% idx = env_hilbert > soglia;
+% 
+% t_fit = t(idx);
+% env_fit = env_hilbert(idx);
+% 
+% % 4. Fit lineare sul logaritmo naturale dell'inviluppo
+% % ln(Inviluppo) = p(1)*t + p(2)
+% p = polyfit(t_fit, log(env_fit), 1);
+% alpha_stimato = -p(1); % Il coefficiente è l'inclinazione della retta invertita di segno
+% fprintf('Coefficiente di decadimento stimato (Hilbert): %.4f\n', alpha_stimato);
+% 
+% % 5. Ricostruzione dell'inviluppo stimato per verifica visiva
+% inviluppo_stimato = 0.95*exp(p(2)) * exp(-alpha_stimato * t);
+% 
+% % 6. Grafico
+% figure(2);
+% plot(t, x, 'Color', [0.7 0.7 0.7], 'DisplayName', 'Segnale Originale'); hold on;
+% %plot(t, env_hilbert, 'b-', 'LineWidth', 1.5, 'DisplayName', 'Inviluppo Hilbert');
+% plot(t, inviluppo_stimato, 'r--', 'LineWidth', 2, 'DisplayName', 'Fit Esponenziale');
+% grid on; xlabel('Tempo (s)'); ylabel('Ampiezza');
+% legend('show'); title('Estrazione Coefficiente con Metodo di Hilbert');
+
+%% FIND MU WITHOUT HILBERT
+% 2. Clean data to avoid log(0) or log of negative noise floor
+maxup = max(up);
+% valid_idx = (up > 0.34 * maxup) & (up < 0.8 * maxup); % Fit only where signal is above 5% of max
+% t_fit = t(valid_idx);
+% % up_fit = lowpass(up(valid_idx), 100000, 1/(t(2)-t(1)));
+% up_fit = up(valid_idx);
+
+t_fit = t(1:end);
+up_fit = up(1:end);
+% up_fit = lowpass(up(1:end-4500), 10, 1/(t(2)-t(1)));
+lo_fit = abs(lo(1:end));
+
+% 3. Fit a 1st-degree polynomial to the log of the envelope
+% log(up) = p(1)*t + p(2) -> p(1) is your negative decay coefficient (-alpha)
+p = polyfit(t_fit, log(up_fit), 1);
+p_lo = polyfit(t_fit, log(lo_fit), 1);
+
+% plin = polyfit(t_fit, up_fit, 1);
+% lin_decay = plin(1).*t_fit + plin(2);
+
+decay_coefficient = -p(1); 
+fprintf('Coefficiente di decadimento stimato (envelope up): %.4f\n', decay_coefficient);
+fprintf('Coefficiente di decadimento stimato (envelope lo): %.4f\n', -p_lo(1));
+
+
+% 4. Plot the fitted curve over the original envelope
+fitted_envelope = exp(p(2)) * exp(p(1) * t);
+fitted_lo_envelope = -exp(p_lo(2)) * exp(p_lo(1) * t);
+figure(3);
+% plot(t, x, 'b', t, up, 'r--', t, fitted_envelope, 'g', 'LineWidth', 1.5);
+% legend('Signal', 'Measured Envelope', 'Exponential Fit');
+plot(t, x, 'b', t, fitted_envelope, 'g', t, fitted_lo_envelope, 'r', 'LineWidth', 1.5);
+legend('Signal', 'Exponential Fit Up', 'Exponential Fit Lo');
+xlabel('Tempo [s]');
+ylabel('Tensione [V]');
+
+% lin_decayall = plin(1).*tall + plin(2);
+% q = cumtrapz(t, highpass(x, 400000, 1/(t(2)-t(1))));
+% 
+% figure(6);
+% plot(tall, lin_decayall, 'k--')
+% figure(7);
+% plot(t, q, 'r-')

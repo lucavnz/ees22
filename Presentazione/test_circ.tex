@@ -1,0 +1,73 @@
+\documentclass[aspectratio=169, 10pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath, amssymb}
+\usepackage{circuitikz}
+\usetheme{default}
+\usecolortheme{dove}
+\setbeamertemplate{navigation symbols}{}
+
+\begin{document}
+\begin{frame}{Funzione di trasferimento complessiva ($C_{\text{in}}$, $C_f$)}
+\centering
+\vspace{-0.2em}
+\begin{circuitikz}[scale=0.78, transform shape, line width=0.7pt]
+  % Ingresso Vin
+  \draw (-1.2, 0.5) node[left] {$v_{in}(t)$} to[short, o-] (-0.2, 0.5);
+  \draw (-0.2, 0.5) -- (-0.2, 1.6);
+  \draw (-0.2, 0.5) -- (-0.2, -0.6);
+  
+  % Ramo parassita diretto Cp (in alto)
+  \draw (-0.2, 1.6) to[C, l_={$C_p$}] (3.6, 1.6) -- (4.0, 1.6);
+
+  % Ramo compensazione con blocco [-1] e Cc (in basso)
+  \node[draw, rectangle, fill=white, inner sep=3.8pt, font=\scriptsize] (inv) at (1.0, -0.6) {$-1$};
+  \draw (-0.2, -0.6) -- (inv.west);
+  \draw (inv.east) -- (1.7, -0.6) to[C, l={$C_c$}] (3.6, -0.6) -- (4.0, -0.6);
+
+  % Connessione al nodo di sense
+  \draw (4.0, 1.6) -- (4.0, -0.6);
+  \draw (4.0, 0.5) to[short, -*] (5.0, 0.5) coordinate (sense);
+  
+  % Cin verso massa
+  \draw (5.0, 0.5) to[C, l={$C_{\text{in}}$}, *-] (5.0, -1.1) node[ground]{};
+
+  % TIA OPA656 (distanziato da Cin per massima chiarezza visiva)
+  \node[op amp] (opamp1) at (7.2, 0) {};
+  \node[font=\scriptsize, below=3pt] at (opamp1.south) {OPA656};
+  \draw (sense) -- (opamp1.-);
+  \draw (opamp1.+) -- ++(0, -0.4) node[ground]{};
+
+  % Retroazione TIA (Cf sopra Rf)
+  \draw (sense) -- (5.0, 2.3) -- (5.7, 2.3);
+  \draw (5.7, 3.0) to[C, l=$C_f$] (7.9, 3.0);
+  \draw (5.7, 1.8) to[R, l=$R_f$] (7.9, 1.8);
+  \draw (5.7, 3.0) -- (5.7, 1.8);
+  \draw (7.9, 3.0) -- (7.9, 1.8);
+  \draw (7.9, 2.3) -| (opamp1.out);
+
+  % Secondo stadio AD817 (invertente G = -10)
+  \node[op amp] (opamp2) at (11.5, -0.5) {};
+  \node[font=\scriptsize, below=3pt] at (opamp2.south) {AD817};
+  \draw (opamp1.out) -- (8.4, 0) to[R, l_={$R_1 = 100\,\Omega$}] (10.2, 0) -- (opamp2.-);
+  \draw (opamp2.+) -- ++(-0.2,0) node[ground]{};
+
+  % Retroazione AD817 (R2)
+  \draw (opamp2.-) to[short, *-] ++(0, 1.5) to[R, l={$R_2 = 1\,\text{k}\Omega$}] ++(2.0, 0) -| (opamp2.out);
+  
+  % Uscita finale
+  \draw (opamp2.out) to[short, -o] ++(0.8, 0) node[right] {$V_{\text{out}}$};
+\end{circuitikz}
+
+\vspace{0.8em}
+{\small
+Modellando l'operazionale OPA656 con $A(s) \approx \frac{\omega_t}{s} \implies V^- = -\frac{s}{\omega_t} V_{\text{out1}}$ \quad $\left(\text{e secondo stadio } V_{\text{out}} = -10\, V_{\text{out1}}\right)$
+}
+
+\vspace{0.4em}
+\[
+  \frac{V_{\text{out}}(s)}{V_{in}(s)} = \frac{10 \cdot s R_f (C_p - C_c)}{1 + s \left( R_f C_f + \frac{1}{\omega_t} \right) + s^2 \frac{R_f (C_{\text{in}} + C_p + C_c + C_f)}{\omega_t}}
+\]
+\end{frame}
+\end{document}
