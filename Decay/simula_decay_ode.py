@@ -40,11 +40,11 @@ plt.rcParams.update({
     'figure.titlesize': 12
 })
 
-# Parametri fisici del risuonatore MEMS (coerenti con le misure sperimentali)
+# Parametri fisici del risuonatore MEMS (tarati sulle misure sperimentali di Decay_controfase2.csv)
 F_RES = 417800.0          # Frequenza di risonanza naturale [Hz]
 W_RES = 2.0 * np.pi * F_RES # Pulsazione di risonanza [rad/s]
-Q_FACTOR = 2850.0         # Fattore di merito meccanico
-TAU = 2.0 * Q_FACTOR / W_RES # Costante di tempo naturale (~2.17 ms)
+TAU = 2.103e-3            # Costante di tempo misurata nel test di controfase a lungo termine (Decay_controfase2.csv)
+Q_FACTOR = 0.5 * W_RES * TAU # Fattore di merito effettivo (~2760)
 
 # Coefficienti dell'equazione differenziale d2x/dt2 + b*dx/dt + c*x = F(t)
 B_COEFF = W_RES / Q_FACTOR  # Coefficiente di smorzamento viscoso [rad/s]
@@ -65,13 +65,13 @@ def run_simulations():
     v0_vel = 0.0        # Velocità iniziale [m/s]
     state_0 = [x0_disp, v0_vel]
 
-    # Parametri forzante in controfase
-    # Vogliamo X_inf ~ 2 * X0 (come nelle misure sperimentali X0 ~ 14 mV, X_inf ~ 28 mV)
-    # X_inf = k_force / (B_COEFF * W_RES)
-    x_inf_target = 2.0 * x0_disp
+    # Parametri forzante in controfase calibrati su Decay_controfase2.csv:
+    # X0 = 14.21 mV, X_inf = 28.31 mV -> rapporto X_inf / X0 ~ 1.992
+    ratio_inf_0 = 28.31 / 14.21
+    x_inf_target = ratio_inf_0 * x0_disp
     k_force = x_inf_target * B_COEFF * W_RES
     x_inf_theor = k_force / (B_COEFF * W_RES)
-    # Tempo teorico di cancellazione ottimale
+    # Tempo teorico di cancellazione ottimale: t* = tau * ln(1 + X0 / X_inf) = 0.85 ms
     t_star_opt = TAU * np.log(1.0 + x0_disp / x_inf_theor)
 
     # 1. Caso A: Decadimento libero (nessuna forzante)
@@ -125,7 +125,7 @@ def plot_simulation_results(sim):
     ax1.plot(t_ms, sim['sol_b'].y[0] * scale, color='#1971c2', alpha=0.7, linewidth=0.7, label='Controfase continua (non interrotta)')
     ax1.plot(t_ms, sim['sol_c'].y[0] * scale, color='#2b8a3e', linewidth=1.1, label='Controfase ottimale con gating (active quenching)')
     ax1.axvline(sim['t_star_opt'] * 1e3, color='#d62728', linestyle=':', linewidth=1.3,
-                label=f'Spegnimento forzante: $t^* = {sim["t_star_opt"]*1e3:.2f}$ ms')
+                label=rf'Spegnimento forzante: $t^* = {sim["t_star_opt"]*1e3:.2f}$ ms')
     ax1.set_ylabel('Spostamento normalizzato $x(t) / X_0$')
     ax1.set_title('Risposta dinamica simulata del risuonatore MEMS (risoluzione ODE)')
     ax1.grid(True)
@@ -133,11 +133,11 @@ def plot_simulation_results(sim):
 
     # Subplot 2: Inviluppi a confronto
     ax2.plot(t_ms, sim['env_a'] * scale, color='#495057', linestyle='--', linewidth=1.8,
-             label=f'Inviluppo naturale: $\\tau = {TAU*1e3:.2f}$ ms')
+             label=rf'Inviluppo naturale: $\tau = {TAU*1e3:.2f}$ ms')
     ax2.plot(t_ms, sim['env_b'] * scale, color='#1971c2', linewidth=1.8,
-             label='Inviluppo controfase continua (minimo a $t^*$ e ricrescita)')
+             label=r'Inviluppo controfase continua (minimo a $t^*$ e ricrescita)')
     ax2.plot(t_ms, sim['env_c'] * scale, color='#2b8a3e', linewidth=2.0,
-             label='Inviluppo controfase con gating (arresto immediato a zero)')
+             label=r'Inviluppo controfase con gating (arresto immediato a zero)')
     ax2.axvline(sim['t_star_opt'] * 1e3, color='#d62728', linestyle=':', linewidth=1.3)
     ax2.axhline(0.01, color='#e03131', linestyle=':', linewidth=1.0, label='Soglia residua 1%')
 

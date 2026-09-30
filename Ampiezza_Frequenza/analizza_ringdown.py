@@ -552,7 +552,6 @@ def main():
     # ---------------------------------------------------------
     fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
     ax.plot(freqs / 1e3, f_hilbert_vals, 'o', color='#1971c2', markersize=6.5, label='Metodo Hilbert fase istantanea')
-    ax.plot(freqs / 1e3, f_sinefit_vals, '^', color='#2b8a3e', markersize=6.0, alpha=0.85, label='Metodo fit sinusoidale (MLE)')
     ax.plot(freqs / 1e3, f_fft_vals, 's', color='#e8590c', markersize=5.5, alpha=0.85, label='Metodo FFT con zero padding 64x')
     
     # Linea della media sperimentale (senza incertezza esplicita e senza banda di confidenza)

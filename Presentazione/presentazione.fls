@@ -403,69 +403,25 @@ INPUT ./presentazione.nav
 INPUT ./presentazione.nav
 INPUT presentazione.nav
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss8.tfm
-INPUT ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png
-INPUT ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png
-INPUT ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png
-INPUT ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png
-INPUT ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss12.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss12.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss8.tfm
-INPUT /usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
-INPUT ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png
-INPUT ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png
-INPUT ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png
-INPUT ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png
-INPUT ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png
-INPUT ../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png
-INPUT ../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png
-INPUT ../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png
-INPUT ../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png
-INPUT ../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png
-INPUT ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png
-INPUT ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png
-INPUT ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png
-INPUT ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png
-INPUT ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png
-INPUT ../Risposta in frequenza/grafici/bode_completo.png
-INPUT ../Risposta in frequenza/grafici/bode_completo.png
-INPUT ../Risposta in frequenza/grafici/bode_completo.png
-INPUT ../Risposta in frequenza/grafici/bode_completo.png
-INPUT ../Risposta in frequenza/grafici/bode_completo.png
-INPUT ../Risposta in frequenza/grafici/bode_compensato.png
-INPUT ../Risposta in frequenza/grafici/bode_compensato.png
-INPUT ../Risposta in frequenza/grafici/bode_compensato.png
-INPUT ../Risposta in frequenza/grafici/bode_compensato.png
-INPUT ../Risposta in frequenza/grafici/bode_compensato.png
-INPUT ../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png
-INPUT ../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png
-INPUT ../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png
-INPUT ../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png
-INPUT ../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png
-INPUT ../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png
-INPUT ../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png
-INPUT ../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png
-INPUT ../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png
-INPUT ../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss9.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/ot1lmss.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/ot1lmss.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/ot1lmss.fd
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss12.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss8.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss8.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi12.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi8.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi6.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi10.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi7.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi5.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/omslmsy.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/omslmsy.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/omslmsy.fd
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy8.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy6.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy7.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy5.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/omxlmex.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/omxlmex.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/lm/omxlmex.fd
@@ -477,51 +433,73 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam1
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
-INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
-INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
-INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
-INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss8.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss8.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso12.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso8.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso8.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss8.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi5.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy5.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso8.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss8.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi7.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy7.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msb.cfg
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss8.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso8.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss9.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss9.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi9.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy9.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso9.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso8.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss12.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss12.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss8.tfm
+INPUT /usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss9.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss8.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi9.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi6.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy9.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy6.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss8.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso9.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso8.tfm
+INPUT ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png
+INPUT ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png
+INPUT ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png
+INPUT ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png
+INPUT ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png
+INPUT ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png
+INPUT ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png
+INPUT ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png
+INPUT ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png
+INPUT ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png
+INPUT ../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png
+INPUT ../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png
+INPUT ../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png
+INPUT ../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png
+INPUT ../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png
+INPUT ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png
+INPUT ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png
+INPUT ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png
+INPUT ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png
+INPUT ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png
+INPUT ../Risposta in frequenza/grafici/bode_completo.png
+INPUT ../Risposta in frequenza/grafici/bode_completo.png
+INPUT ../Risposta in frequenza/grafici/bode_completo.png
+INPUT ../Risposta in frequenza/grafici/bode_completo.png
+INPUT ../Risposta in frequenza/grafici/bode_completo.png
+INPUT ../Risposta in frequenza/grafici/bode_compensato.png
+INPUT ../Risposta in frequenza/grafici/bode_compensato.png
+INPUT ../Risposta in frequenza/grafici/bode_compensato.png
+INPUT ../Risposta in frequenza/grafici/bode_compensato.png
+INPUT ../Risposta in frequenza/grafici/bode_compensato.png
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmssbx10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmssbx10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmssbx10.tfm
@@ -537,7 +515,69 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmssbx10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmssbo10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmssbo10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmssbo10.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmss8.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss8.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi8.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy8.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso8.tfm
+INPUT ../Compensazione Hardware/grafici/bode_set2.png
+INPUT ../Compensazione Hardware/grafici/bode_set2.png
+INPUT ../Compensazione Hardware/grafici/bode_set2.png
+INPUT ../Compensazione Hardware/grafici/bode_set2.png
+INPUT ../Compensazione Hardware/grafici/bode_set2.png
+INPUT ../Compensazione Hardware/grafici/bode_off.png
+INPUT ../Compensazione Hardware/grafici/bode_off.png
+INPUT ../Compensazione Hardware/grafici/bode_off.png
+INPUT ../Compensazione Hardware/grafici/bode_off.png
+INPUT ../Compensazione Hardware/grafici/bode_off.png
+INPUT ../Duffing/duffing_ampiezza_compressione.png
+INPUT ../Duffing/duffing_ampiezza_compressione.png
+INPUT ../Duffing/duffing_ampiezza_compressione.png
+INPUT ../Duffing/duffing_ampiezza_compressione.png
+INPUT ../Duffing/duffing_ampiezza_compressione.png
+INPUT ../Duffing/duffing_backbone_e_chirp.png
+INPUT ../Duffing/duffing_backbone_e_chirp.png
+INPUT ../Duffing/duffing_backbone_e_chirp.png
+INPUT ../Duffing/duffing_backbone_e_chirp.png
+INPUT ../Duffing/duffing_backbone_e_chirp.png
+INPUT ../Distorsione/distorsione_armoniche_vs_vac.png
+INPUT ../Distorsione/distorsione_armoniche_vs_vac.png
+INPUT ../Distorsione/distorsione_armoniche_vs_vac.png
+INPUT ../Distorsione/distorsione_armoniche_vs_vac.png
+INPUT ../Distorsione/distorsione_armoniche_vs_vac.png
+INPUT ../Distorsione/distorsione_hd2_rapporto.png
+INPUT ../Distorsione/distorsione_hd2_rapporto.png
+INPUT ../Distorsione/distorsione_hd2_rapporto.png
+INPUT ../Distorsione/distorsione_hd2_rapporto.png
+INPUT ../Distorsione/distorsione_hd2_rapporto.png
+INPUT ../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png
+INPUT ../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png
+INPUT ../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png
+INPUT ../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png
+INPUT ../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png
+INPUT ../Decay/grafici/controfase_dinamica_completa.png
+INPUT ../Decay/grafici/controfase_dinamica_completa.png
+INPUT ../Decay/grafici/controfase_dinamica_completa.png
+INPUT ../Decay/grafici/controfase_dinamica_completa.png
+INPUT ../Decay/grafici/controfase_dinamica_completa.png
+INPUT ../Decay/grafici/inviluppo_e_modello_teorico.png
+INPUT ../Decay/grafici/inviluppo_e_modello_teorico.png
+INPUT ../Decay/grafici/inviluppo_e_modello_teorico.png
+INPUT ../Decay/grafici/inviluppo_e_modello_teorico.png
+INPUT ../Decay/grafici/inviluppo_e_modello_teorico.png
+INPUT ../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png
+INPUT ../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png
+INPUT ../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png
+INPUT ../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png
+INPUT ../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmss12.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmmi12.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/lmsy10.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/lm/ec-lmsso12.tfm
 INPUT ../Oscillazione parassita/Grafici/sovrapposizione_simulazione_reale.png
 INPUT ../Oscillazione parassita/Grafici/sovrapposizione_simulazione_reale.png
 INPUT ../Oscillazione parassita/Grafici/sovrapposizione_simulazione_reale.png
@@ -577,3 +617,4 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy6.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy7.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy8.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy9.pfb
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb

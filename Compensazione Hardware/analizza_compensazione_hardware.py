@@ -159,9 +159,14 @@ def model_mag(f_arr, C_re, C_im, A_mot, f0, Q, phi_m):
     T = (C_re + 1j * C_im) + mot
     return np.abs(T)
 
+def model_phase(f_arr, f0, Q, phi_mid, span_deg):
+    x = 2.0 * Q * (f_arr - f0) / f0
+    return phi_mid - (span_deg / np.pi) * np.arctan(x)
+
 def fit_resonator(dataset):
     f_hz = dataset['f_hz']
     g_lin = dataset['gain_lin']
+    p_clean = dataset['phase_clean']
     f0_guess = f_hz[np.argmax(g_lin)]
     A_guess = np.ptp(g_lin)
     base_lin = np.min(g_lin)
@@ -173,14 +178,23 @@ def fit_resonator(dataset):
     
     delta_C_fF = (C_feed / (2.0 * np.pi * f0_fit * G_tot)) * 1e15
     
+    # Fit teorico della fase con transizione arctan
+    p0_phase = [f0_fit, Q_fit, -30.0, 180.0]
+    try:
+        popt_phase, _ = curve_fit(model_phase, f_hz, p_clean, p0=p0_phase, maxfev=10000)
+    except Exception:
+        popt_phase = p0_phase
+    
     # Griglia densa per linea continua
     f_dense = np.linspace(f_hz[0], f_hz[-1], 1000)
     x_dense = 2.0 * Q_fit * (f_dense - f0_fit) / f0_fit
     T_dense = (C_re + 1j * C_im) + (A_mot * np.exp(1j * phi_m)) / (1.0 + 1j * x_dense)
     g_dense_db = 20.0 * np.log10(np.abs(T_dense))
+    p_dense_deg = model_phase(f_dense, *popt_phase)
     
     return {
         'popt': popt,
+        'popt_phase': popt_phase,
         'f0_fit': f0_fit,
         'Q_fit': Q_fit,
         'A_mot': A_mot,
@@ -190,6 +204,7 @@ def fit_resonator(dataset):
         'f_dense': f_dense,
         'f_dense_khz': f_dense / 1e3,
         'g_dense_db': g_dense_db,
+        'p_dense_deg': p_dense_deg,
         'T_dense': T_dense
     }
 
@@ -210,8 +225,7 @@ print("=" * 70)
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8.8, 7.0), sharex=True, dpi=300)
 
 ax1.plot(data_1['f_khz'], data_1['gain_db'], 'o', color=COLOR_MOD, alpha=0.45, markersize=3.2, label='Punti sperimentali')
-ax1.plot(fit_res_1['f_dense_khz'], fit_res_1['g_dense_db'], color=COLOR_FIT, linewidth=2.0,
-         label=rf'Fit RLC ($f_0 = {fit_res_1["f0_fit"]/1e3:.3f}$ kHz, $Q = {fit_res_1["Q_fit"]:.0f}$)')
+ax1.plot(fit_res_1['f_dense_khz'], fit_res_1['g_dense_db'], color=COLOR_FIT, linewidth=2.0, label='Fit')
 ax1.set_ylabel('Guadagno [dB]')
 ax1.set_title('Risposta in frequenza con compensazione hardware - Set 1', pad=9)
 ax1.grid(True)
@@ -220,6 +234,7 @@ ax1.ticklabel_format(useOffset=False, style='plain')
 ax1.set_xlim(data_1['f_khz'][0], data_1['f_khz'][-1])
 
 ax2.plot(data_1['f_khz'], data_1['phase_clean'], 'o', color=COLOR_FASE, alpha=0.45, markersize=3.2, label='Punti sperimentali')
+ax2.plot(fit_res_1['f_dense_khz'], fit_res_1['p_dense_deg'], color='#d9480f', linewidth=2.0, label='Fit')
 ax2.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
 ax2.set_ylabel('Fase [°]')
 ax2.grid(True)
@@ -239,16 +254,16 @@ print(f"[OK] Grafico salvato: {p_set1}")
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8.8, 7.0), sharex=True, dpi=300)
 
 ax1.plot(data_2['f_khz'], data_2['gain_db'], 'o', color=COLOR_MOD, alpha=0.45, markersize=3.2, label='Punti sperimentali')
-ax1.plot(fit_res_2['f_dense_khz'], fit_res_2['g_dense_db'], color=COLOR_FIT, linewidth=2.0,
-         label=rf'Fit RLC ($f_0 = {fit_res_2["f0_fit"]/1e3:.3f}$ kHz, $Q = {fit_res_2["Q_fit"]:.0f}$)')
+ax1.plot(fit_res_2['f_dense_khz'], fit_res_2['g_dense_db'], color=COLOR_FIT, linewidth=2.0, label='Fit')
 ax1.set_ylabel('Guadagno [dB]')
-ax1.set_title('Risposta in frequenza con compensazione hardware ottimizzata - Set 2', pad=9)
+ax1.set_title('Risposta in frequenza con compensazione hardware', pad=9)
 ax1.grid(True)
 ax1.legend(loc='lower right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
 ax1.ticklabel_format(useOffset=False, style='plain')
 ax1.set_xlim(data_2['f_khz'][0], data_2['f_khz'][-1])
 
 ax2.plot(data_2['f_khz'], data_2['phase_clean'], 'o', color=COLOR_FASE, alpha=0.45, markersize=3.2, label='Punti sperimentali')
+ax2.plot(fit_res_2['f_dense_khz'], fit_res_2['p_dense_deg'], color='#d9480f', linewidth=2.0, label='Fit')
 ax2.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
 ax2.set_ylabel('Fase [°]')
 ax2.grid(True)
@@ -265,45 +280,32 @@ print(f"[OK] Grafico salvato: {p_set2}")
 # -----------------------------------------------------------------------------
 # GRAFICO 3: Bode completo a 2 pannelli - Off (Vdc = 0 V, pura cancellazione capacitiva)
 # -----------------------------------------------------------------------------
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8.8, 7.2), sharex=True, dpi=300)
+from scipy.interpolate import UnivariateSpline
 
-min_off_idx = np.argmin(data_off['gain_db'])
-f_notch = data_off['f_khz'][min_off_idx]
-g_notch = data_off['gain_db'][min_off_idx]
+spl_off = UnivariateSpline(data_off['f_khz'], data_off['gain_db'], s=25.0)
+f_off_dense = np.linspace(data_off['f_khz'][0], data_off['f_khz'][-1], 600)
+g_off_fit = spl_off(f_off_dense)
 
-# Modulo
-ax1.plot(data_off['f_khz'], data_off['gain_db'], 'o-', color='#495057', alpha=0.75, markersize=2.5,
-         linewidth=1.2, label=r'Misura a $V_{dc} = 0$ V (MEMS spento)')
-ax1.axvline(f_notch, color='#e03131', linestyle=':', alpha=0.8,
-            label=rf'Centro notch: {f_notch:.2f} kHz ({g_notch:.1f} dB)')
-ax1.axvspan(417.5, 419.6, color='#ced4da', alpha=0.35, label='Regione notch a basso SNR (Vout < 11 mV)')
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8.8, 7.0), sharex=True, dpi=300)
+
+# Modulo: punti sperimentali e fit, senza linee di collegamento né testi superflui
+ax1.plot(data_off['f_khz'], data_off['gain_db'], 'o', color='#1971c2', alpha=0.45, markersize=3.0, label='Punti sperimentali')
+ax1.plot(f_off_dense, g_off_fit, '-', color='#1864ab', linewidth=2.0, label='Fit')
 ax1.set_ylabel('Guadagno [dB]')
 ax1.set_title(r'Funzione di trasferimento del circuito di compensazione hardware ($V_{dc} = 0$ V)', pad=9)
 ax1.grid(True)
 ax1.legend(loc='lower left', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
 ax1.ticklabel_format(useOffset=False, style='plain')
+ax1.set_xlim(data_off['f_khz'][0], data_off['f_khz'][-1])
 
-# Fase
-notch_region = (data_off['f_khz'] >= 417.4) & (data_off['f_khz'] <= 420.0)
-bad_glitch = notch_region & ((data_off['phase_corr'] < -40.0) | (data_off['phase_corr'] > 220.0))
-
-ax2.plot(data_off['f_khz'][~notch_region], data_off['phase_corr'][~notch_region], 'o',
-         color=COLOR_FASE, alpha=0.65, markersize=2.8, label='Fase misurata (stabile)')
-ax2.plot(data_off['f_khz'][notch_region & ~bad_glitch], data_off['phase_corr'][notch_region & ~bad_glitch], 'o',
-         color='#fd7e14', alpha=0.55, markersize=2.5, label='Transizione nel notch (fluttuazioni di fase)')
-ax2.axvspan(417.5, 419.6, color='#ced4da', alpha=0.35, label='Incertezza trigger zero-crossing (Vout < 11 mV)')
-ax2.axvline(f_notch, color='#e03131', linestyle=':', alpha=0.8)
-
-# Guide asintoti di fase
-ax2.axhline(-10.0, color='#868e96', linestyle='--', alpha=0.7, label=r'Asintoto pre-notch: $\approx -10^\circ$')
-ax2.axhline(165.0, color='#868e96', linestyle='--', alpha=0.7, label=r'Asintoto post-notch: $\approx +165^\circ$ ($\Delta\phi \approx 175^\circ$)')
-
+# Fase: tutti i punti dello stesso colore, senza asintoti, senza bande, solo "Punti sperimentali"
+ax2.plot(data_off['f_khz'], data_off['phase_corr'], 'o', color=COLOR_FASE, alpha=0.45, markersize=3.0, label='Punti sperimentali')
 ax2.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
 ax2.set_ylabel('Fase [°]')
-ax2.set_ylim(-35, 215)
 ax2.grid(True)
 ax2.legend(loc='center right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
 ax2.ticklabel_format(useOffset=False, style='plain')
+ax2.set_xlim(data_off['f_khz'][0], data_off['f_khz'][-1])
 
 plt.tight_layout()
 p_off = os.path.join(OUT_DIR, 'bode_off.png')
@@ -317,8 +319,7 @@ print(f"[OK] Grafico salvato: {p_off}")
 # Set 1 - Solo modulo
 fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
 ax.plot(data_1['f_khz'], data_1['gain_db'], 'o', color=COLOR_MOD, alpha=0.45, markersize=3.2, label='Punti sperimentali')
-ax.plot(fit_res_1['f_dense_khz'], fit_res_1['g_dense_db'], color=COLOR_FIT, linewidth=2.0,
-        label=rf'Fit RLC ($f_0 = {fit_res_1["f0_fit"]/1e3:.3f}$ kHz, $Q = {fit_res_1["Q_fit"]:.0f}$)')
+ax.plot(fit_res_1['f_dense_khz'], fit_res_1['g_dense_db'], color=COLOR_FIT, linewidth=2.0, label='Fit')
 ax.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
 ax.set_ylabel('Guadagno [dB]')
 ax.set_title('Modulo della risposta in frequenza - Set 1', pad=9)
@@ -333,6 +334,7 @@ plt.close()
 # Set 1 - Solo fase
 fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
 ax.plot(data_1['f_khz'], data_1['phase_clean'], 'o', color=COLOR_FASE, alpha=0.45, markersize=3.2, label='Punti sperimentali')
+ax.plot(fit_res_1['f_dense_khz'], fit_res_1['p_dense_deg'], color='#d9480f', linewidth=2.0, label='Fit')
 ax.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
 ax.set_ylabel('Fase [°]')
 ax.set_title('Fase della risposta in frequenza - Set 1', pad=9)
@@ -347,11 +349,10 @@ plt.close()
 # Set 2 - Solo modulo
 fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
 ax.plot(data_2['f_khz'], data_2['gain_db'], 'o', color=COLOR_MOD, alpha=0.45, markersize=3.2, label='Punti sperimentali')
-ax.plot(fit_res_2['f_dense_khz'], fit_res_2['g_dense_db'], color=COLOR_FIT, linewidth=2.0,
-        label=rf'Fit RLC ($f_0 = {fit_res_2["f0_fit"]/1e3:.3f}$ kHz, $Q = {fit_res_2["Q_fit"]:.0f}$)')
+ax.plot(fit_res_2['f_dense_khz'], fit_res_2['g_dense_db'], color=COLOR_FIT, linewidth=2.0, label='Fit')
 ax.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
 ax.set_ylabel('Guadagno [dB]')
-ax.set_title('Modulo della risposta in frequenza - Set 2', pad=9)
+ax.set_title('Modulo della risposta in frequenza con compensazione hardware', pad=9)
 ax.grid(True)
 ax.legend(loc='lower right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
 ax.ticklabel_format(useOffset=False, style='plain')
@@ -363,9 +364,10 @@ plt.close()
 # Set 2 - Solo fase
 fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
 ax.plot(data_2['f_khz'], data_2['phase_clean'], 'o', color=COLOR_FASE, alpha=0.45, markersize=3.2, label='Punti sperimentali')
+ax.plot(fit_res_2['f_dense_khz'], fit_res_2['p_dense_deg'], color='#d9480f', linewidth=2.0, label='Fit')
 ax.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
 ax.set_ylabel('Fase [°]')
-ax.set_title('Fase della risposta in frequenza - Set 2', pad=9)
+ax.set_title('Fase della risposta in frequenza con compensazione hardware', pad=9)
 ax.grid(True)
 ax.legend(loc='lower left', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
 ax.ticklabel_format(useOffset=False, style='plain')
@@ -376,16 +378,15 @@ plt.close()
 
 # Off - Solo modulo
 fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
-ax.plot(data_off['f_khz'], data_off['gain_db'], 'o-', color='#495057', alpha=0.75, markersize=2.5,
-        linewidth=1.2, label=r'Misura a $V_{dc} = 0$ V (MEMS spento)')
-ax.axvline(f_notch, color='#e03131', linestyle=':', alpha=0.8,
-           label=rf'Centro notch: {f_notch:.2f} kHz ({g_notch:.1f} dB)')
+ax.plot(data_off['f_khz'], data_off['gain_db'], 'o', color='#1971c2', alpha=0.45, markersize=3.0, label='Punti sperimentali')
+ax.plot(f_off_dense, g_off_fit, '-', color='#1864ab', linewidth=2.0, label='Fit')
 ax.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
 ax.set_ylabel('Guadagno [dB]')
 ax.set_title(r'Modulo della cancellazione di feedthrough ($V_{dc} = 0$ V)', pad=9)
 ax.grid(True)
 ax.legend(loc='lower left', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
 ax.ticklabel_format(useOffset=False, style='plain')
+ax.set_xlim(data_off['f_khz'][0], data_off['f_khz'][-1])
 plt.tight_layout()
 plt.savefig(os.path.join(OUT_DIR, 'bode_off_modulo.png'))
 plt.close()

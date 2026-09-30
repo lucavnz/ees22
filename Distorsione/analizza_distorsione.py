@@ -225,16 +225,17 @@ def main():
     # -------------------------------------------------------------------------
     fig1, ax1 = plt.subplots(figsize=(8.5, 6.0), dpi=300)
 
-    # Curve e fit
-    ax1.plot(v_dense, k1 * v_dense, linestyle='--', color='#1f77b4', linewidth=1.5,
-             alpha=0.75, label=f'Fit lineare piccolo segnale ($k_1 = {k1:.3f}$)')
-    ax1.plot(vac_arr, p1_rig_arr, marker='o', markersize=6.0, linewidth=2.0,
-             color='#1f77b4', label=r'Primo modo / Fondamentale $f_1 \approx 417.8$ kHz')
+    # Linee di fit continue e marcate (linewidth=2.0)
+    ax1.plot(v_dense, k1 * v_dense, linestyle='-', color='#1f77b4', linewidth=2.0,
+             alpha=0.85, label='Fit lineare')
+    ax1.plot(v_dense, k2 * (v_dense**2), linestyle='-', color='#c0392b', linewidth=2.0,
+             alpha=0.85, label='Fit quadratico 2° modo')
 
-    ax1.plot(v_dense, k2 * (v_dense**2), linestyle='--', color='#c0392b', linewidth=1.5,
-             alpha=0.75, label=f'Fit quadratico ($k_2 = {k2*1e4:.2f} \\times 10^{{-4}}$)')
-    ax1.plot(vac_arr, p2_rig_arr, marker='s', markersize=5.5, linewidth=2.0,
-             color='#c0392b', label=r'Secondo modo / $2^{\mathrm{a}}$ Armonica $f_2 \approx 835.6$ kHz')
+    # Solo punti sperimentali (senza linea spezzata di congiunzione)
+    ax1.plot(vac_arr, p1_rig_arr, marker='o', markersize=6.5, linestyle='None',
+             color='#1f77b4', label=r'Dati $p_1$ (Primo modo / $f_1 \approx 417.8$ kHz)')
+    ax1.plot(vac_arr, p2_rig_arr, marker='s', markersize=6.0, linestyle='None',
+             color='#c0392b', label=r'Dati $p_2$ (Secondo modo / $f_2 \approx 835.6$ kHz)')
 
     ax1.set_title('Ampiezze armoniche MEMS vs tensione di eccitazione', pad=12)
     ax1.set_xlabel(r'Ampiezza eccitazione $V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
@@ -252,21 +253,22 @@ def main():
 
     # -------------------------------------------------------------------------
     # GRAFICO 2: distorsione_hd2_rapporto.png
-    # Rapporto di distorsione armonica HD2 = p2 / p1
+    # Rapporto di distorsione armonica p2 / p1 ("Distorsione secondo modo")
     # -------------------------------------------------------------------------
     fig2, ax2 = plt.subplots(figsize=(8.5, 6.0), dpi=300)
 
-    ax2.plot(v_dense, k_hd2 * v_dense, linestyle='--', color='#708090', linewidth=1.8,
-             label=rf'Modello teorico lineare $HD_2 = (k_2/k_1) V_{{\mathrm{{ac}}}}$ ({k_hd2:.4f} %/mV)')
-    ax2.plot(vac_arr, hd2_rig_arr, marker='o', markersize=6.5, linewidth=2.0,
-             color='#2ca02c', label=r'Dati sperimentali $HD_2 = p_2 / p_1$')
+    # Linea di fit lineare verde marcata (linewidth=2.0)
+    ax2.plot(v_dense, k_hd2 * v_dense, linestyle='-', color='#2ca02c', linewidth=2.0,
+             alpha=0.85, label='Fit lineare')
 
-    # Evidenziazione zona limite di rumore oscilloscopio
-    ax2.axvspan(0, 45, color='#e0e0e0', alpha=0.45, label='Regione limitata da noise floor scope')
+    # Solo punti sperimentali (senza linea spezzata)
+    ax2.plot(vac_arr, hd2_rig_arr, marker='o', markersize=6.5, linestyle='None',
+             color='#2ca02c', markeredgecolor='#1a631c', markeredgewidth=0.8,
+             label=r'Dati $p_2 / p_1$')
 
-    ax2.set_title(r'Distorsione armonica $HD_2$ vs ampiezza di eccitazione', pad=12)
+    ax2.set_title(r'Distorsione secondo modo ($p_2 / p_1$) vs ampiezza $V_{\mathrm{ac}}$', pad=12)
     ax2.set_xlabel(r'Ampiezza eccitazione $V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
-    ax2.set_ylabel(r'Distorsione $HD_2 = p_2 / p_1$ [%]')
+    ax2.set_ylabel(r'Distorsione secondo modo $p_2 / p_1$ [%]')
     ax2.set_xlim(0, 850)
     ax2.set_ylim(0, 15)
     ax2.grid(True, linestyle=':', alpha=0.55, color='#c0c0c0')
@@ -296,12 +298,12 @@ def main():
     ax3a.grid(True, linestyle=':', alpha=0.55, color='#c0c0c0')
     ax3a.legend(loc='upper left', frameon=True, facecolor='white', framealpha=0.9)
 
-    # Subplot B: Distorsione HD2 (%)
+    # Subplot B: Distorsione secondo modo p2 / p1 (%)
     ax3b.plot(vac_arr, hd2_rig_arr, marker='o', color='#2ca02c', linewidth=2.0, label='Analisi rigorosa')
     ax3b.plot(vac_arr, hd2_mat_arr, marker='x', linestyle='--', color='#d95f02', linewidth=1.7, label='MATLAB compagno (sottostimata)')
-    ax3b.set_title('Confronto rapporto distorsione $HD_2$ [%]', pad=10)
+    ax3b.set_title('Confronto distorsione 2° modo ($p_2 / p_1$)', pad=10)
     ax3b.set_xlabel(r'$V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
-    ax3b.set_ylabel(r'$HD_2 = p_2 / p_1$ [%]')
+    ax3b.set_ylabel(r'Distorsione secondo modo $p_2 / p_1$ [%]')
     ax3b.set_xlim(0, 850)
     ax3b.set_ylim(0, 15)
     ax3b.grid(True, linestyle=':', alpha=0.55, color='#c0c0c0')

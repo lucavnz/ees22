@@ -205,10 +205,10 @@ def main():
     fig1, ax1 = plt.subplots(figsize=(8.5, 6.0), dpi=300)
     
     v_fit_line = np.linspace(0, 2100, 100)
-    ax1.plot(v_fit_line, k_linear * v_fit_line, linestyle='--', color='#708090', 
-             linewidth=2.0, label='Fit lineare')
-    ax1.plot(vins, a0s, marker='o', markersize=6.5, linewidth=2.2, color='#1f77b4', 
-             label='Dati')
+    ax1.plot(v_fit_line, k_linear * v_fit_line, linestyle='-', color='#1f77b4', 
+             linewidth=2.0, label='Fit lineare', zorder=2)
+    ax1.plot(vins, a0s, marker='o', markersize=6.5, linestyle='', color='#1f77b4', 
+             label='Dati', zorder=3)
     
     ax1.set_title('Ampiezza ringdown vs tensione di eccitazione', pad=12)
     ax1.set_xlabel(r'Tensione di eccitazione $V_{\mathrm{in}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
@@ -227,7 +227,10 @@ def main():
     # -------------------------------------------------------------------------
     # GRAFICO 2: duffing_backbone_e_chirp.png
     # Tracciamento frequenza di risonanza f1 nel tempo per 4 tensioni
+    # (Punti sperimentali privi di contorno grigio + Fit analitico convergente a f0 comune)
     # -------------------------------------------------------------------------
+    from scipy.optimize import minimize
+    
     chirp_configs = [
         (53, 200, '#2ca02c', 'o'),  # Verde: cerchi
         (58, 500, '#f39c12', 's'),  # Ambra: quadrati
@@ -235,26 +238,115 @@ def main():
         (66, 2000, '#c0392b', 'D')  # Rosso: rombi
     ]
     
-    t_eval = np.arange(0.4e-3, 3.8e-3 + 1e-6, 0.05e-3)  # Da 0.4 ms a 3.8 ms a passi di 50 us
-    win_size = 0.6e-3  # Finestra di regressione OLS di 600 us (~150 cicli)
+    t_eval = np.arange(0.42e-3, 3.75e-3 + 1e-6, 0.06e-3)
+    win_size = 0.75e-3  # Finestra mobile di 750 us
+    t_dense = np.linspace(0.4e-3, 3.8e-3, 400)
+    
+    data_dict = {}
+    print("\nElaborazione frequenza istantanea intra-ringdown:")
+    for num, vin, color, marker in chirp_configs:
+        t_arr, ch1_arr, ch2_arr, _ = load_scope_file(num)
+        dt_val = t_arr[1] - t_arr[0]
+        fs_val = 1.0 / dt_val
+        g_idx_val = np.where((ch2_arr[:-1] > 1.2) & (ch2_arr[1:] <= 1.2))[0][0]
+        t_gate_val = t_arr[g_idx_val]
+        
+        i1 = g_idx_val + int(20e-6 / dt_val)
+        i2 = g_idx_val + int(5.5e-3 / dt_val)
+        t_cut = t_arr[i1:i2] - t_gate_val
+        ch1_cut = ch1_arr[i1:i2]
+        
+        b_bp, a_bp = butter(2, [390000.0 / (fs_val / 2), 445000.0 / (fs_val / 2)], btype='bandpass')
+        sig_filt = filtfilt(b_bp, a_bp, ch1_cut)
+        
+        analytic = hilbert(sig_filt)
+        phase = np.unwrap(np.angle(analytic))
+        env = np.abs(analytic)
+        
+        freqs = []
+        amps = []
+        for tc in t_eval:
+            m = (t_cut >= tc - win_size / 2) & (t_cut <= tc + win_size / 2)
+            p = np.polyfit(t_cut[m], phase[m], 1)
+            freqs.append(p[0] / (2.0 * np.pi))
+            amps.append(np.mean(env[m]))
+        freqs = np.array(freqs)
+        amps = np.array(amps)
+        
+        # Pesi WLS basati sull'ampiezza locale
+        sigma_vec = 1.0 / (amps / np.max(amps) + 0.05)
+        data_dict[vin] = {
+            'freqs': freqs,
+            'sigma': sigma_vec,
+            'color': color,
+            'marker': marker
+        }
+        print(f"  Scope {num:02d} (Vin = {vin:4d} mV): f(0.42 ms) = {freqs[0]:.1f} Hz -> f(3.5 ms) = {freqs[-5]:.1f} Hz")
+        
+    # Fit congiunto globale con frequenza asintotica f0 comune a tutte e 4 le curve
+    # Modello fisico: f(t; Vi) = f0 - Delta_f0_i * exp(-t / tau_f_i)
+    def joint_loss(p):
+        f0_c, df_500, tau_500, df_1000, tau_1000, df_2000, tau_2000 = p
+        # 200 mV è in regime lineare: f(t) = f0_c
+        chi_200 = np.sum(((data_dict[200]['freqs'] - f0_c) / data_dict[200]['sigma'])**2)
+        # 500 mV
+        f_500 = f0_c - df_500 * np.exp(-t_eval / tau_500)
+        chi_500 = np.sum(((data_dict[500]['freqs'] - f_500) / data_dict[500]['sigma'])**2)
+        # 1000 mV
+        f_1000 = f0_c - df_1000 * np.exp(-t_eval / tau_1000)
+        chi_1000 = np.sum(((data_dict[1000]['freqs'] - f_1000) / data_dict[1000]['sigma'])**2)
+        # 2000 mV
+        f_2000 = f0_c - df_2000 * np.exp(-t_eval / tau_2000)
+        chi_2000 = np.sum(((data_dict[2000]['freqs'] - f_2000) / data_dict[2000]['sigma'])**2)
+        return chi_200 + chi_500 + chi_1000 + chi_2000
+        
+    res_fit = minimize(
+        joint_loss,
+        [417786.0, 35.0, 1.0e-3, 95.0, 1.1e-3, 160.0, 1.05e-3],
+        bounds=[
+            (417775, 417795),
+            (10, 80), (0.5e-3, 2.0e-3),
+            (50, 150), (0.5e-3, 2.0e-3),
+            (100, 250), (0.5e-3, 2.0e-3)
+        ]
+    )
+    
+    f0_common, df_500_opt, tau_500_opt, df_1000_opt, tau_1000_opt, df_2000_opt, tau_2000_opt = res_fit.x
+    print(f"\nFrequenza asintotica lineare comune f0 = {f0_common:.2f} Hz")
+    print(f"  500 mV:  Delta f0 = {df_500_opt:.2f} Hz, tau_f = {tau_500_opt*1e3:.2f} ms")
+    print(f"  1000 mV: Delta f0 = {df_1000_opt:.2f} Hz, tau_f = {tau_1000_opt*1e3:.2f} ms")
+    print(f"  2000 mV: Delta f0 = {df_2000_opt:.2f} Hz, tau_f = {tau_2000_opt*1e3:.2f} ms")
     
     fig2, ax2 = plt.subplots(figsize=(8.5, 6.0), dpi=300)
     
-    print("\nElaborazione chirp di frequenza intra-ringdown:")
-    for num, vin, color, marker in chirp_configs:
-        f_trace = analyze_chirp(num, t_eval, win_size=win_size)
-        print(f"  Scope {num:02d} (Vin = {vin:4d} mV): f(0.4 ms) = {f_trace[0]:.1f} Hz -> f(3.5 ms) = {f_trace[-7]:.1f} Hz")
-        ax2.plot(t_eval * 1e3, f_trace, marker=marker, markersize=3.6, markeredgewidth=0.5,
-                 linewidth=1.2, color=color, label=f'$V_{{\\mathrm{{in}}}} = {vin}\\ \\mathrm{{mV}}$', 
-                 alpha=0.92)
-                 
+    fit_curves = {
+        200: np.full_like(t_dense, f0_common),
+        500: f0_common - df_500_opt * np.exp(-t_dense / tau_500_opt),
+        1000: f0_common - df_1000_opt * np.exp(-t_dense / tau_1000_opt),
+        2000: f0_common - df_2000_opt * np.exp(-t_dense / tau_2000_opt)
+    }
+    
+    for vin in [200, 500, 1000, 2000]:
+        d = data_dict[vin]
+        col = d['color']
+        m = d['marker']
+        f_exp = d['freqs']
+        f_th = fit_curves[vin]
+        
+        # Punti sperimentali senza contorno grigio
+        ax2.scatter(t_eval * 1e3, f_exp, marker=m, s=32, color=col,
+                    alpha=0.65, edgecolors='none', zorder=3)
+        # Linea di fit liscia continua
+        ax2.plot(t_dense * 1e3, f_th, color=col, linewidth=2.2, zorder=4,
+                 label=f"$V_{{\\mathrm{{in}}}} = {vin}\\ \\mathrm{{mV}}$")
+                     
     ax2.set_title(r'Frequenza di risonanza $f_1$ nel tempo', pad=12)
     ax2.set_xlabel('Tempo dal taglio del gate [ms]')
     ax2.set_ylabel(r'Frequenza di risonanza $f_1$ [Hz]')
     ax2.set_xlim(0.33, 3.82)
     ax2.set_ylim(417668, 417818)
     ax2.grid(True, linestyle=':', alpha=0.55, color='#c0c0c0')
-    ax2.legend(loc='lower right', frameon=True, facecolor='white', framealpha=0.9)
+    ax2.legend(loc='lower right', frameon=True, facecolor='white', framealpha=0.92, fontsize=10.5)
     
     plt.tight_layout()
     out_chirp_path = os.path.join(BASE_DIR, 'duffing_backbone_e_chirp.png')
