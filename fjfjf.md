@@ -1,114 +1,198 @@
-Listed directory Oscillazione%20parassita
-Viewed plot_sovrapposizione_reale_simulata.py:1-105
-Viewed oscillazione_parassita.md:1-105
-Viewed simula_modello_capacita.py:1-211
-Viewed Risposta%20AI.md:1-161
-Viewed presentazione.tex:240-320
-Viewed presentazione.tex:150-245
-Viewed presentazione.tex:60-149
-Viewed presentazione.tex:320-450
-Viewed presentazione.tex:450-506
-Listed directory Grafici
-Viewed sovrapposizione_simulazione_reale.png:1-800
-Viewed confronto_simulazione_capacita.png:1-800
-Viewed plot_transitorio_vdc0.py:1-164
-Viewed scope_172.csv:1-45
-Viewed scope_172.csv:4985-5025
-Viewed scope_172.csv:5200-5250
+Viewed analizza_ringdown.py:1-757
+Viewed analizza_duffing.py:1-371
 
-Ecco la spiegazione dettagliata, fisica e computazionale, divisa punto per punto in risposta a ciascuna delle tue domande.
+Sì, esattamente: in entrambi gli script lo scopo cruciale è **misurare la frequenza di oscillazione naturale del MEMS con precisione estrema** (al singolo Hertz o frazione di Hertz), analizzando cosa succede quando l'eccitazione viene spenta e il dispositivo continua a oscillare liberamente (fenomeno del *ring-down*).
+
+* In [analizza_ringdown.py](file:///Users/matteoluca/Downloads/es2m%20progetto/Ampiezza_Frequenza/analizza_ringdown.py) si verifica se la frequenza propria $f_0$ cambia o rimane costante al variare della frequenza con cui il MEMS era stato eccitato prima del gate.
+* In [analizza_duffing.py](file:///Users/matteoluca/Downloads/es2m%20progetto/Duffing/analizza_duffing.py) si misura come la frequenza istantanea $f_1(t)$ varia nel tempo durante il decadimento: quando oscilla con ampiezza grandissima la molla "cede" un po' (non-linearità di Duffing / *spring softening*) e la frequenza è più bassa, per poi risalire man mano che l'ampiezza diminuisce.
+
+Vediamo ora in modo chiaro, intuitivo e passo dopo passo cosa significano lo **Zero-Padding 64x** e il **metodo della fase istantanea** (con parte reale e immaginaria).
 
 ---
 
-### 1. È davvero la risposta ad un "gradino di derivata"?
-**Sì, esattamente! La tua intuizione è rigorosa e perfetta dal punto di vista fisico.**
+### 1. Cosa significa "Zero-Padding 64x"?
 
-Vediamo perché:
-1. **La tensione $v_{in}(t)$ non compie un gradino di tensione:**  
-   Un generatore reale non può imporre un salto discontinuo istantaneo di volt a gradino su dei rami capacitivi (richiederebbe una corrente infinita, cioè una delta di Dirac $\delta(t)$, ed energia infinita). Infatti sull'oscilloscopio la traccia verde/arancione di $v_{in}(t)$ è una funzione continua (classe $C^0$).
-2. **Cosa succede alla derivata temporale $\frac{dv_{in}}{dt}$:**
-   * **Prima dello stacco ($t < 0$):** la tensione oscilla sinusoidalmente:
-     $$v_{in}(t) = V_a \sin(\omega_0 t + \phi) \implies \frac{d v_{in}}{dt} = \omega_0 V_a \cos(\omega_0 t + \phi) \neq 0$$
-   * **Allo spegnimento del gate ($t = 0$):** il generatore interrompe bruscamente il burst e la tensione smette di variare, rimanendo costante:
-     $$\left. \frac{d v_{in}}{dt} \right|_{t > 0} = 0$$
-   * Si ha quindi una **discontinuità a gradino nella derivata prima della tensione**:
-     $$\Delta \left( \frac{d v_{in}}{dt} \right) = 0 - \left. \frac{d v_{in}}{dt} \right|_{0^-} = - \omega_0 V_a \cos(\phi)$$
-3. **Conversione in gradino di corrente:**  
-   La corrente nei condensatori è proporzionale alla derivata della tensione ($i = C \frac{dv}{dt}$). Al nodo invertente del TIA arriva la corrente netta dovuta al disadattamento residuo $\Delta C = C_p - C_c$:
-   $$i_{\text{net}}(t) = (C_p - C_c) \frac{d v_{in}(t)}{dt} = \Delta C \frac{d v_{in}(t)}{dt}$$
-   Il salto improvviso nella pendenza di $v_{in}$ si traduce all'istante $t = 0$ in un **gradino ideale di corrente $\Delta I$**:
-   $$\Delta I = 0 - i_{\text{net}}(0^-) = - (C_p - C_c) \left. \frac{d v_{in}}{dt} \right|_{0^-}$$
-   Poiché il TIA (amplificatore a transimpedenza) converte corrente in tensione con una dinamica del $2^\circ$ ordine, **il circuito vede a tutti gli effetti un gradino di corrente in ingresso**, a cui risponde con la classica sovraelongazione oscillante smorzata (ringing sottosmorzato).
-4. **Coerenza con le due misure sperimentali:**
-   * In [`scope_172.csv`](file:///Users/matteoluca/Downloads/es2m%20progetto/Oscillazione%20parassita/Misure/scope_172.csv), lo stacco avviene mentre $v_{in}$ scendeva ($\left.\frac{dv_{in}}{dt}\right|_{0^-} < 0$) $\implies \Delta I > 0$, generando il balzo iniziale **positivo di $+804\text{ mV}$**.
-   * In [`scope_173.csv`](file:///Users/matteoluca/Downloads/es2m%20progetto/Oscillazione%20parassita/Misure/scope_173.csv), lo stacco avviene mentre $v_{in}$ saliva ($\left.\frac{dv_{in}}{dt}\right|_{0^-} > 0$) $\implies \Delta I < 0$, generando il balzo iniziale **negativo di $-607\text{ mV}$**.
+#### Il problema: l'effetto "staccionata" della FFT (*Picket-Fence Effect*)
+Quando registri un segnale con l'oscilloscopio per una durata finita (ad esempio $T = 2.45\text{ ms}$), la trasformata di Fourier classica (FFT) scompone il segnale in "scatole" o frequenze discrete (*bin*), separate tra loro di un passo:
+$$\Delta f = \frac{1}{T} \approx \frac{1}{2.45 \times 10^{-3}\text{ s}} \approx 408\text{ Hz}$$
 
----
+Immagina di guardare un panorama dietro una **staccionata**: vedi solo attraverso le fessure verticali ogni 408 Hz (ad esempio a $417\,200\text{ Hz}$, $417\,608\text{ Hz}$, $418\,016\text{ Hz}$, ...).
+Se il picco reale della frequenza del MEMS si trova a **$417\,840\text{ Hz}$**, esso cade **in mezzo a due fessure**! La FFT standard assegnerà il picco al punto più vicino, commettendo un errore di decine o centinaia di Hertz.
 
-### 2. Nel grafico reale vs simulato non c'è sovrapposizione perfetta: va bene lo stesso? Con i valori scelti va bene?
-**Sì, va benissimo ed è esattamente ciò che ci si aspetta a queste frequenze in elettronica reale.**  
-Se in una presentazione o tesi universitaria le due curve fossero perfettamente identiche al capello, qualsiasi revisore penserebbe ad un modello "taroccato" o sovradimensionato numericamente (overfitting).
+```
+       Spettro continuo reale:              /\
+                                           /  \
+       Punti FFT standard (1x):      *    |    |    *
+                                     417.6     418.0 kHz
+                          (Il vero vertice cade nel vuoto!)
+```
 
-Ecco le motivazioni tecniche e scientifiche:
-
-#### A. Cosa deve dimostrare il modello (il suo obiettivo)
-Il modello teorico non serve a fare "reverse engineering" microscopico del tracciato al nanosecondo, ma a **dimostrare due fatti cardine:**
-1. **Origine fisica:** L'oscillazione a $\approx 600\text{ kHz}$ non è un modo meccanico del MEMS (che a $V_{DC} = 0\text{ V}$ ha accoppiamento nullo $i_{\text{RLC}} \equiv 0$), bensì il **ringing del TIA** causato dalla capacità parassita del nodo invertente ($C_{\text{in}} \approx 188\text{ pF}$) che riduce il margine di fase dell'OPA656.
-2. **Giustificazione del taglio temporale a $20\ \mu\text{s}$:** La costante di tempo di estinzione è $\tau_{\text{el}} \approx 1.0\ \mu\text{s}$, quindi dopo $4\tau \approx 2.5\ \mu\text{s}$ l'oscillazione parassita è completamente morta. Tagliare i primi $20\ \mu\text{s}$ nel ring-down del MEMS offre un **margine di sicurezza di $8\times$**, garantendo che la misura meccanica sia pura.
-
-#### B. La corrispondenza sui parametri chiave è eccellente
-* **Frequenza di oscillazione smorzata $f_d$:**
-  * Misura reale: $f_d = \frac{1}{T_{\text{osc}}} \approx \frac{1}{1.67\ \mu\text{s}} \approx \mathbf{600\text{ kHz}}$
-  * Modello teorico: $f_d = \frac{\omega_n \sqrt{1 - \zeta^2}}{2\pi} \approx \mathbf{602 - 614\text{ kHz}}$
-  * **Errore relativo $< 2\%$!** Per grandezze parassite nell'ordine dei picofarad e a centinaia di kHz, un accordo entro il 2% è eccezionale.
-* **Costante di smorzamento $\tau_{\text{el}}$:**
-  * Sia sperimentalmente che teoricamente vale $\tau_{\text{el}} \approx 1.0\ \mu\text{s}$, con fattore di smorzamento $\zeta \approx 0.25$.
-  * Entrambe le onde si estinguono esattamente nello stesso intervallo di tempo ($\sim 2.5\ \mu\text{s}$).
-
-#### C. Perché c'è una lieve discrepanza visiva (specie sul primo picco)
-1. **Capacità a parametri concentrati (lumped) vs distribuita:**  
-   Nel modello teorico $C_{\text{in}} = 188\text{ pF}$ è trattata come un singolo condensatore concentrato ideale collegato a massa. Nella realtà di laboratorio, quei $\approx 188\text{ pF}$ sono formati da $\approx 1.5\text{ m}$ di cavo coassiale BNC ($100\text{ pF/m}$) che è una linea di trasmissione con ritardo di propagazione finito ($v \approx 0.66c \implies \approx 7-8\text{ ns}$ di andata e ritorno) e perdite ad alta frequenza.
-2. **Dinamica di commutazione dello switch del generatore:**  
-   Lo spegnimento del segnale nell'oscilloscopio/generatore reale avviene tramite un circuito di gating (switch a FET). Lo spegnimento reale ha un tempo di caduta finito (fall-time) e una piccola iniezione parassita di carica (*charge injection*) sul fronte di commutazione, che anticipa leggermente il primo fronte di salita reale rispetto alla funzione analitica idealizzata.
-3. **I valori scelti sono fisicamente sensati e giustificati:**
-   * $R_f = 500\text{ k}\Omega$: valore nominale del resistore TIA.
-   * $C_{\text{in}} = 188\text{ pF}$: cavo coassiale BNC ($\sim 180\text{ pF}$) + capacità d'ingresso OPA656 (2.8 pF) + pad/piste PCB ($\sim 5\text{ pF}$).
-   * $C_f = 0.25\text{ pF}$: tipica capacità parassita del corpo di un resistore SMD 0805/1206 da $500\text{ k}\Omega$ (non un condensatore fisico saldato, ma la capacità parassita tra i suoi terminali).
-   * $\omega_t = 2\pi \times 230\text{ MHz}$: prodotto guadagno-banda da datasheet dell'OPA656.
+#### La soluzione: lo Zero-Padding (es. 64x)
+In [analizza_ringdown.py (righe 168-172)](file:///Users/matteoluca/Downloads/es2m%20progetto/Ampiezza_Frequenza/analizza_ringdown.py#L168-L172):
+```python
+N_fwin = len(sig_fwin)
+N_pad = N_fwin * 64
+fft_pad = np.fft.rfft(sig_fwin, n=N_pad)
+```
+* **Cosa si fa fisicamente?** Si prende il segnale registrato di $N$ campioni e si "incollano" in coda degli zeri fino a raggiungere $64 \times N$ campioni.
+* **Cosa produce?** Aggiungere zeri non crea informazione fasulla (il segnale è sempre quello), ma nella trasformata di Fourier equivale a **campionare lo spettro su una griglia 64 volte più densa**:
+  $$\Delta f_{\text{pad}} = \frac{408\text{ Hz}}{64} \approx 6.4\text{ Hz}$$
+* **Risultato:** La campana dello spettro non è più una linea spezzata con 2 o 3 punti grossolani, ma una curva liscia e continua. Cercare il punto di massimo (`np.argmax`) permette di individuare il vertice del picco con un'accuratezza di pochissimi Hertz.
 
 ---
 
-### 3. Come è stato simulato nel software? Cosa fa il codice?
+### 2. Il Metodo della Fase Istantanea: Perché "Reale" e "Immaginario"?
 
-Nel progetto sono stati usati due script complementari in [`Oscillazione parassita`](file:///Users/matteoluca/Downloads/es2m%20progetto/Oscillazione%20parassita):
+Questa è la tecnica più potente ed elegante usata negli script ([analizza_ringdown.py:153-165](file:///Users/matteoluca/Downloads/es2m%20progetto/Ampiezza_Frequenza/analizza_ringdown.py#L153-L165) e [analizza_duffing.py:163-172](file:///Users/matteoluca/Downloads/es2m%20progetto/Duffing/analizza_duffing.py#L163-L172)).
 
-#### Metodo A: Simulazione Lineare Dinamica ([`simula_modello_capacita.py`](file:///Users/matteoluca/Downloads/es2m%20progetto/Oscillazione%20parassita/simula_modello_capacita.py))
-1. **Definizione della Funzione di Trasferimento da KCL:**  
-   Scrivendo la legge di Kirchhoff delle correnti al nodo $V^-$ con OPA656 ($A(s) \approx \omega_t/s$) e secondo stadio invertente $G_2 = -10$:
-   $$H(s) = \frac{V_{\text{out}}(s)}{V_{in}(s)} = \frac{G_2 R_f (C_p - C_c) \cdot s}{1 + s \left( R_f C_f + \frac{1}{\omega_t} \right) + s^2 \frac{R_f(C_{\text{in}} + C_p + C_c + C_f)}{\omega_t}} = \frac{b_1 s}{a_2 s^2 + a_1 s + a_0}$$
-2. **Creazione dell'oggetto LTI:**  
-   In Python viene generato il sistema continuo con `scipy.signal.TransferFunction([b1, 0], [a2, a1, a0])`. Si noti il termine `[b1, 0]` al numeratore: è la presenza dello zero nell'origine $s$ (il derivatore naturale dei rami capacitivi).
-3. **Generazione del segnale $v_{in}(t)$:**  
-   Viene creato un asse temporale con passo temporale di mezzo nanosecondo (`dt = 0.5 ns` da $-10\,\mu\text{s}$ a $+20\,\mu\text{s}$).  
-   Il segnale $u(t)$ è definito tramite `np.where`:
-   * Prima di $t=0$: sinusoide $V_a \sin(\omega_0 t + \phi)$ a $417.83\text{ kHz}$.
-   * Da $t \ge 0$: costante congelata al valore di stacco $V_a \sin(\phi)$.
-4. **Risoluzione numerica ODE (`signal.lsim`):**  
-   Viene invocata `signal.lsim(sys, U=u_sim, T=t_sim)`. Questa funzione converte la funzione di trasferimento in coordinate di stato $\dot{x} = A x + B u$, $y = C x + D u$ e integra numericamente l'evoluzione temporale istante per istante, tenendo conto delle condizioni iniziali ereditate dalla sinusoide prima dello stacco.
+#### L'analogia: la Ruota Panoramica e la sua Ombra
+Immagina una ruota panoramica illuminata dal sole laterale, che proietta la sua **ombra su un muro**:
+* L'ombra sul muro va avanti e indietro su una linea orizzontale: questo è il **segnale reale** $s(t) = A \cos(\theta(t))$ che l'oscilloscopio misura (la tensione elettrica).
+* **Il problema dell'ombra (1D):** quando l'ombra si trova al centro (tensione = $0\text{ V}$), dove si trova la cabina? Sta andando a destra o a sinistra? E quanto velocemente sta girando la ruota in quell'istante? Solo guardando l'ombra in un punto è difficile dirlo con precisione, specie se c'è rumore.
+* **La soluzione (2D):** guardare la ruota panoramica **di fronte**, nel piano a due dimensioni!
 
-#### Metodo B: Modello Analitico Diretto ([`plot_sovrapposizione_reale_simulata.py`](file:///Users/matteoluca/Downloads/es2m%20progetto/Oscillazione%20parassita/plot_sovrapposizione_reale_simulata.py))
-Per produrre la figura pulita di confronto ([`sovrapposizione_simulazione_reale.png`](file:///Users/matteoluca/Downloads/es2m%20progetto/Oscillazione%20parassita/Grafici/sovrapposizione_simulazione_reale.png)) mostrata nella Slide 19:
-1. Si calcolano analiticamente i coefficienti del polinomio caratteristico:
-   $$a_2 = \frac{R_f (C_{\text{in}} + C_p + C_c + C_f)}{\omega_t}, \qquad a_1 = R_f C_f + \frac{1}{\omega_t}, \qquad a_0 = 1$$
-2. Da questi si estraggono i parametri canonici:
-   $$\omega_n = \sqrt{\frac{a_0}{a_2}}, \qquad \zeta = \frac{a_1}{2\sqrt{a_0 a_2}}, \qquad \omega_d = \omega_n \sqrt{1 - \zeta^2}, \qquad \tau_{\text{el}} = \frac{1}{\zeta \omega_n}$$
-3. L'uscita post-stacco ($t \ge 0$) viene calcolata valutando direttamente la formula chiusa della risposta impulsiva/gradino di un $2^\circ$ ordine sottosmorzato:
-   $$V_{\text{out}}(t) = V_{\text{offset}} + A_0 e^{-t/\tau_{\text{el}}} \sin(\omega_d t)$$
-   con l'ampiezza $A_0$ riscalata in modo che il picco teorico tocchi gli $+804\text{ mV}$ misurati sperimentalmente.
+```
+                Asse Immaginario (Y = Hilbert)
+                             ^
+                             |       Cabina (Vettore Reale + Immaginario)
+                             |      * 
+                             |     /|
+                             | A  / | 
+                             |   /  |  
+                             |  / θ | 
+                             +--------------> Asse Reale (X = Segnale Misurato)
+                                    |
+                                    Ombra proiettata (il voltaggio reale)
+```
+
+#### Cos'è la Trasformata di Hilbert?
+La funzione `hilbert(segnale)` costruisce il cosiddetto **segnale analitico complesso**:
+$$z(t) = X(t) + j \cdot Y(t)$$
+* **Parte Reale $X(t)$:** è il segnale autentico misurato (la posizione orizzontale dell'ombra).
+* **Parte Immaginaria $Y(t)$:** è esattamente lo stesso segnale **sfasato di 90° (un quarto di giro)**. In fisica corrisponde alla "velocità" con cui si muove l'oscillatore.
+* Mettendo insieme $X$ e $Y$, a ogni istante di tempo abbiamo una **freccia (vettore)** che ruota nel piano:
+  1. La **lunghezza della freccia** è l'ampiezza dell'oscillazione: $A(t) = \sqrt{X^2 + Y^2}$ (`np.abs(analytic)`).
+  2. L'**angolo della freccia** è la **fase istantanea**: $\theta(t) = \arctan(Y / X)$ (`np.angle(analytic)`).
 
 ---
 
-### In sintesi, come presentarlo in 3 frasi efficaci:
-> *"L'oscillazione transitoria è la risposta del TIA a un **gradino di derivata della tensione d'ingresso**, che attraverso le capacità d'ingresso non perfettamente bilanciate $\Delta C = C_p - C_c$ inietta un brusco **gradino di corrente** nel nodo invertente."*  
-> *"La sovrapposizione tra misura reale e modello teorico riproduce la frequenza di oscillazione a $\approx 600\text{ kHz}$ con un errore inferiore al $2\%$ e la stessa costante di smorzamento di $\approx 1.0\ \mu\text{s}$, confermando che i valori stimati dei parassiti ($C_{\text{in}} \approx 188\text{ pF}$, $C_f \approx 0.25\text{ pF}$) sono fisicamente corretti."*  
-> *"Il fatto che l'oscillazione si estingua entro $2.5\ \mu\text{s}$ garantisce che il taglio temporale di $20\ \mu\text{s}$ adottato nell'analisi del ringdown rimuove totalmente ogni disturbo elettronico senza intaccare la dinamica meccanica del risonatore."*
+### 3. Lo Srotolamento (`np.unwrap`) e la Funzione di Fit: Cosa Fanno?
+
+Quando la freccia gira, l'angolo calcolato matematicamente con l'arcotangente va da $-180^\circ$ a $+180^\circ$ (da $-\pi$ a $+\pi$). Appena fa un giro completo, "scatta" indietro a $-180^\circ$.
+
+1. **Lo srotolamento (`np.unwrap`):**
+   Rimuove i salti di $360^\circ$ e tiene il conto continuo di tutti i giri percorsi:
+   $$1^\circ\text{ giro } (360^\circ) \to 2^\circ\text{ giro } (720^\circ) \to \dots \to 1000^\circ\text{ giro } (360\,000^\circ)$$
+   Otteniamo così una curva della **fase cumulativa $\theta(t)$** che cresce continuamente nel tempo.
+
+2. **Cos'è la funzione di fit della fase?**
+   Fisicamente, la fase di una sinusoide che gira a frequenza $f$ è:
+   $$\theta(t) = 2\pi f \cdot t + \phi_0$$
+   Questa è l'equazione di una **linea retta**: $y = m \cdot x + q$.
+   * $x$ è il tempo $t$
+   * $y$ è la fase srotolata $\theta(t)$
+   * La **pendenza $m$** della retta è la velocità angolare $\omega = 2\pi f$ (quanti radianti al secondo compie la rotazione).
+
+3. **Il fit lineare (`np.polyfit(t, phase, 1)`):**
+   ```python
+   p_phase = np.polyfit(t_fwin, phase_inst, 1)
+   f_hilbert = p_phase[0] / (2.0 * np.pi)
+   ```
+   Trova la retta che meglio interpola i dati. Dividendo la sua pendenza per $2\pi$, otteniamo direttamente la **frequenza media di oscillazione**.
+
+#### Perché questo metodo è molto superiore a contare i picchi o gli zeri?
+* Se conti solo i passaggi per lo zero (*zero-crossing*), usi solo 2 campioni per ogni ciclo (e se c'è rumore puoi avere falsi passaggi per lo zero).
+* Il fit della fase istantanea di Hilbert usa **ogni singolo campione registrato dall'oscilloscopio** (spesso $20\,000$ o più punti). Tutti i micro-errori e il rumore bianco vengono mediati e cancellati dalla regressione lineare, garantendo una precisione di frazioni di Hertz.
+
+---
+
+### 4. E nel caso di Duffing (Frequenza che varia nel tempo)?
+
+In regime non-lineare (Duffing), la frequenza non è perfettamente costante: all'inizio la molla è "ammorbidita" dall'ampia oscillazione, quindi la ruota gira leggermente più lenta, poi man mano che l'ampiezza decade, la velocità di rotazione aumenta.
+
+Per vederlo:
+* In [analizza_duffing.py (righe 166-173)](file:///Users/matteoluca/Downloads/es2m%20progetto/Duffing/analizza_duffing.py#L166-L173), invece di fittare l'intero segnale con una sola retta, si prende una **finestrella mobile di $750\,\mu\text{s}$** e si calcola la pendenza della fase locale in quel piccolo intervallo:
+  $$f_1(t) = \frac{1}{2\pi} \frac{\Delta \theta}{\Delta t}$$
+* In questo modo si ottiene il grafico continuo di $f_1(t)$ che mostra la risalita della frequenza (da $\approx 417.65\text{ kHz}$ a $\approx 417.79\text{ kHz}$) durante il ring-down.
+Listed directory Risposta%20in%20frequenza
+Listed directory Compensazione%20Hardware
+Searched for "curve_fit"
+Searched for "curve_fit"
+Viewed analizza_risposta_in_frequenza.py:50-115
+Viewed analizza_compensazione_hardware.py:150-200
+Searched for "fit"
+
+L'algoritmo utilizzato per i fit in [Risposta in frequenza](file:///Users/matteoluca/Downloads/es2m%20progetto/Risposta%20in%20frequenza/analizza_risposta_in_frequenza.py) e in [Compensazione Hardware](file:///Users/matteoluca/Downloads/es2m%20progetto/Compensazione%20Hardware/analizza_compensazione_hardware.py) appartiene alla famiglia dei **Minimi Quadrati Non Lineari** (*Non-linear Least Squares*) ed è noto come **Algoritmo di Levenberg-Marquardt** (spesso abbreviato in **LM**).
+
+In Python è richiamato tramite la funzione `curve_fit` della libreria scientifica `scipy.optimize`.
+
+---
+
+### 1. Che cos'è un "fit" (in parole semplici)?
+Immagina di avere:
+1. **Punti sperimentali misurati**: i dati reali acquisiti dallo strumento (frequenze, ampiezze, fasi, tensioni dell'oscilloscopio), che contengono rumore e piccole imprecisioni.
+2. **Un modello teorico (una formula fisica)**: per esempio, la risposta in frequenza di un circuito RLC o una sinusoide $A \sin(2\pi f t + \phi)$. Questa formula ha delle "manopole" che non conosciamo a priori con precisione assoluta (frequenza di risonanza $f_0$, fattore di merito $Q$, capacità parassita $C_p$, ampiezza $A$, ecc.).
+
+**Fare il fit** significa far girare quelle manopole al computer finché la curva matematica non si sovrappone ai punti misurati nel miglior modo possibile.
+
+---
+
+### 2. Come decide il computer qual è la curva "migliore"? (I Minimi Quadrati)
+Per ogni punto sperimentale $(x_i, y_i)$, il computer calcola la distanza verticale tra il valore reale misurato e quello che la formula teorica prevederebbe:
+$$\text{errore}_i = y_{\text{misurato}, i} - y_{\text{modello}, i}$$
+
+L'algoritmo:
+1. Eleva ogni errore al **quadrato** ($\text{errore}_i^2$): questo fa sì che gli errori positivi e negativi non si annullino a vicenda e "punisce" molto di più i punti che si allontanano tanto dalla curva.
+2. Fa la **somma di tutti i quadrati degli errori** (detta funzione di costo o $\chi^2$).
+3. Cerca la combinazione di parametri che rende questa somma **la più piccola possibile** (*Minimi Quadrati*).
+
+---
+
+### 3. Come funziona l'algoritmo di Levenberg-Marquardt? (La metafora della nebbia)
+Immagina di trovarti su una montagna immersa in una fitta nebbia. L'altitudine a cui ti trovi rappresenta l'errore: il tuo obiettivo è scendere nella valle più profonda (errore minimo), ma non vedi la mappa completa.
+
+L'algoritmo di **Levenberg-Marquardt** è brillante perché combina insieme due strategie diverse:
+
+1. **La Discesa del Gradiente (*Gradient Descent*) – La strategia prudente**:
+   - Guardi sotto i tuoi piedi, vedi da che parte il terreno scende e fai un piccolo passo in quella direzione.
+   - *Pregio*: È molto affidabile e non ti fa cadere nei dirupi, anche se sei lontanissimo dalla soluzione.
+   - *Difetto*: Quando sei vicino al fondo valle diventa lentissima a trovare il punto esatto.
+
+2. **Il Metodo di Gauss-Newton – La strategia veloce**:
+   - Approssima il terreno attorno a te come una conca parabolica e cerca di "saltare" direttamente al presunto fondo con un calcolo matematico.
+   - *Pregio*: Quando sei già vicino alla valle, trova il punto di minimo in pochissimi passaggi con precisione chirurgica.
+   - *Difetto*: Se lo usi quando sei ancora in quota o lontano, l'approssimazione fallisce e rischi di fare un salto nel vuoto (il fit "esplode" o non converge).
+
+**La genialità di Levenberg-Marquardt**:
+L'algoritmo ha un "regolatore" interno (chiamato fattore di smorzamento $\lambda$). 
+- Se un passo riduce l'errore, l'algoritmo prende fiducia e passa al metodo veloce (Gauss-Newton).
+- Se un passo rischia di peggiorare le cose o aumentare l'errore, torna immediatamente cauto (Discesa del Gradiente), fa passi più piccoli e ritrova la traiettoria giusta.
+
+---
+
+### 4. A cosa serve il parametro iniziale `p0` (Initial Guess)?
+Poiché i nostri modelli fisici sono **non lineari** (ci sono frazioni con numeri complessi al denominatore, risonanze molto strette, seni e arcotangenti), il paesaggio montuoso presenta molte "buche secondarie" (minimi locali). 
+
+Se lasciassimo partire l'algoritmo da valori a caso (es. $f_0 = 0\text{ Hz}$), l'algoritmo potrebbe incastrarsi nella prima buca che trova e fallire. 
+
+Per questo negli script viene sempre fornita una stima iniziale ragionevole (`p0`):
+- Ad esempio, per stimare la risonanza diciamo all'algoritmo: *guarda il punto più alto nei dati sperimentali* (`f0_guess = f_hz[np.argmax(g_lin)]`).
+- In questo modo l'esploratore viene paracadutato già sul crinale della montagna giusta, a pochi passi dalla valle corretta.
+
+---
+
+### 5. Dove e come viene usato nei due moduli del progetto
+
+#### A. In [Risposta in frequenza](file:///Users/matteoluca/Downloads/es2m%20progetto/Risposta%20in%20frequenza/analizza_risposta_in_frequenza.py)
+1. **Fit completo dello sweep a $V_{dc} = 5.0\text{ V}$** (funzione `model_real_imag` a riga 63):
+   - Fitta contemporaneamente **la parte reale e la parte immaginaria** della funzione di trasferimento $T(f)$ del risonatore RLC sommata al feedthrough capacitivo $C_p$.
+   - Trova in un colpo solo 6 parametri fisici: la risonanza $f_0$ ($\approx 417.66\text{ kHz}$), il fattore di merito $Q$ ($\approx 2992$), l'ampiezza meccanica $A_{mot}$, la fase residua $\phi_m$ e le componenti della capacità parassita $C_p$ ($\approx 0.89\text{ pF}$).
+2. **Fit delle forme d'onda dell'oscilloscopio a $V_{dc} = 0\text{ V}$** (funzione `fit_sine_wave` a riga 94):
+   - Fitta una pura sinusoide $y(t) = A \sin(2\pi f t + \phi) + \text{offset}$ sulle tracce temporali dei file `Scope 69` e `Scope 70`.
+   - Serve a estrarre con accuratezza sub-campionamento l'ampiezza esatta $A_{in}, A_{out}$ e la frequenza $f$, calcolando il guadagno capacitivo puro senza risonanza meccanica attiva.
+
+#### B. In [Compensazione Hardware](file:///Users/matteoluca/Downloads/es2m%20progetto/Compensazione%20Hardware/analizza_compensazione_hardware.py)
+1. **Fit del modulo di ampiezza** (funzione `model_mag` a riga 156):
+   - Fitta il modulo lineare della funzione di trasferimento per quantificare la capacità parassita residua sbilanciata ($\Delta C$ in femtofarad) dopo la compensazione hardware con i trimmer nelle configurazioni `Off`, `1` e `2`.
+2. **Fit della fase** (funzione `model_phase` a riga 162):
+   - Fitta la curva di fase tramite una transizione ad arcotangente $\phi(f) = \phi_{mid} - \frac{\text{span}}{\pi}\arctan\left(2Q \frac{f-f_0}{f_0}\right)$, verificando la tipica rotazione di circa 180° attraverso il polo di risonanza.

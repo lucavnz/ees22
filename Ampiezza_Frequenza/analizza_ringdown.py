@@ -551,7 +551,7 @@ def main():
     # GRAFICO 7: Frequenza di Oscillazione durante il Ringdown vs Frequenza di Ingresso
     # ---------------------------------------------------------
     fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
-    ax.plot(freqs / 1e3, f_hilbert_vals, 'o', color='#1971c2', markersize=6.5, label='Metodo Hilbert fase istantanea')
+    ax.plot(freqs / 1e3, f_hilbert_vals, 'o', color='#1971c2', markersize=6.5, label='Hilbert + Fit della fase')
     ax.plot(freqs / 1e3, f_fft_vals, 's', color='#e8590c', markersize=5.5, alpha=0.85, label='Metodo FFT con zero padding 64x')
     
     # Linea della media sperimentale (senza incertezza esplicita e senza banda di confidenza)
