@@ -1,0 +1,694 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- PACCHETTI FONDAMENTALI ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% --- MATEMATICA E FISICA ---
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{siunitx}
+\usepackage{bm}
+
+% --- GRAFICA E CIRCUITI ---
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, patterns, decorations.pathmorphing, shapes.geometric}
+\usepackage{circuitikz}
+
+% --- COLORI PERSONALIZZATI PER DIAGRAMMI ---
+\definecolor{memsblue}{RGB}{41, 128, 185}
+\definecolor{drivegreen}{RGB}{39, 174, 96}
+\definecolor{senseorange}{RGB}{230, 126, 34}
+\definecolor{anchorcolor}{RGB}{127, 140, 141}
+\definecolor{groundgray}{RGB}{189, 195, 199}
+
+% --- RIFERIMENTI E IPERTESTO ---
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=memsblue,
+    citecolor=drivegreen,
+    urlcolor=senseorange
+}
+\usepackage{microtype}
+
+\title{\textbf{Caratterizzazione Sperimentale e Modellistica Elettromeccanica di un Risonatore MEMS Nonlineare ad Azionamento Capacitivo}}
+\author{\textbf{Relazione Tecnica di Progetto}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+La presente relazione illustra la modellizzazione elettromeccanica, l'analisi teorica e la caratterizzazione sperimentale di un micro-risonatore elettrostatico capacitivo (MEMS) fabbricato mediante il processo industriale \textit{ThELMA} di STMicroelectronics. Partendo dai principi fisici della meccanica del continuo e dalla riduzione d'ordine modale (ROM), viene derivato un modello equivalente a parametri concentrati (RLC serie con capacità parassita in parallelo) comprensibile ed utilizzabile per l'analisi circuitale. Particolare enfasi viene posta sulla chiara interpretazione fisica delle variabili di stato, sul fenomeno dello \textit{spring softening} elettrostatico e sul front-end elettronico di lettura basato su amplificatore a transimpedenza (TIA).
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% =============================================================================
+% SEZIONE 1: INTRODUZIONE FISICA E GEOMETRIA DEL DISPOSITIVO
+% =============================================================================
+\section{Architettura Fisica e Principio di Funzionamento del MEMS}
+
+\subsection{Geometria del Micro-Arco e Tecnologia Costruttiva}
+Il dispositivo sotto esame è un risonatore micro-elettromeccanico integrato realizzato in silicio policristallino drogato tramite il processo \textit{ThELMA} (\textit{Thick Epitaxial Layer for Microactuators and Accelerometers}) di STMicroelectronics. Dal punto di vista strutturale, l'elemento risonante è costituito da un **micro-arco bi-incastrato** (o trave con lieve curvatura iniziale), sospeso sopra il substrato di silicio e vincolato rigidamente agli estremi da due ancoraggi meccanici.
+
+Le caratteristiche geometriche salienti della struttura (desunte dalla caratterizzazione al microscopio elettronico SEM) sono:
+\begin{itemize}
+    \item \textbf{Lunghezza rettificata della campata:} $L \approx \SI{532}{\micro\meter}$;
+    \item \textbf{Larghezza della trave (nel piano del chip):} $w = \SI{5}{\micro\meter}$;
+    \item \textbf{Spessore strutturale (fuori dal piano, ortogonale al wafer):} $h = \SI{24}{\micro\meter}$;
+    \item \textbf{Gap capacitivo nominale a riposo:} $g_0 = \SI{1.8}{\micro\meter}$.
+\end{itemize}
+
+\subsection{Perché la trave vibra nel piano del chip (\textit{In-Plane})?}
+Per comprendere il moto del risonatore senza ambiguità, è fondamentale chiarire la direzione dell'oscillazione. Un malinteso comune è visualizzare la trave che oscilla verticalmente ``su e giù'' verso il substrato di silicio (moto \textit{out-of-plane}, perpendicolare al chip). In realtà, **il dispositivo vibra orizzontalmente nel piano del chip (\textit{in-plane})**, flettendosi a destra e a sinistra parallelamente alla superficie del silicio.
+
+Questo comportamento è imposto da un chiaro principio di minima energia elastica:
+\begin{enumerate}
+    \item La rigidezza a flessione di una trave rettangolare dipende dal momento d'inerzia di superficie. Per la flessione nel piano (lungo la larghezza $w = \SI{5}{\micro\meter}$):
+    \begin{equation}
+        I_{\text{in}} = \frac{h \, w^3}{12} = \frac{24 \cdot 5^3}{12} = \SI{250}{\micro\meter^4}
+    \end{equation}
+    \item Per l'eventuale flessione fuori piano verso il substrato (lungo lo spessore $h = \SI{24}{\micro\meter}$):
+    \begin{equation}
+        I_{\text{out}} = \frac{w \, h^3}{12} = \frac{5 \cdot 24^3}{12} = \SI{5760}{\micro\meter^4}
+    \end{equation}
+\end{enumerate}
+Il rapporto tra i momenti d'inerzia è:
+\begin{equation}
+    \frac{I_{\text{out}}}{I_{\text{in}}} = \left(\frac{h}{w}\right)^2 = \left(\frac{24}{5}\right)^2 \approx 23
+\end{equation}
+La trave si comporta esattamente come un **righello metallico disposto di taglio (in piedi)**: fletterlo verso l'alto o verso il basso è estremamente difficile a causa dell'elevatissima rigidezza, mentre farlo oscillare a destra e a sinistra richiede un'energia di gran lunga inferiore. Per questa ragione, il primo modo flessionale nel piano presenta una frequenza di risonanza pari a circa $f_{01} \approx \SI{417}{\kilo\hertz}$, mentre i modi fuori dal piano si collocano a frequenze significativamente differenti.
+
+\subsection{Configurazione degli Elettrodi e Polarizzazione Elettrica}
+Affacciati lateralmente alla campata dell'arco, ad una distanza d'aria a riposo $g_0 = \SI{1.8}{\micro\meter}$, sono ricavati diversi elettrodi fissi conduttori (Fig.~\ref{fig:mems_layout}).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.95, >=Stealth]
+    % Sfondo substrato
+    \fill[groundgray!20] (-6.2,-3.4) rectangle (6.2,3.4);
+    \node[anchor=south west, font=\scriptsize\bfseries, color=black!60] at (-6.0,-3.2) {Substrato di Silicio (Cavità sottostante)};
+
+    % Ancoraggi (Incastri meccanici al substrato)
+    \fill[pattern=north east lines, pattern color=black!40] (-5.6,-1.2) rectangle (-4.4,1.2);
+    \draw[thick, fill=anchorcolor!40] (-5.6,-1.2) rectangle (-4.4,1.2);
+    \node[font=\bfseries\small, align=center] at (-5.0,0) {Incastro\\SX};
+
+    \fill[pattern=north east lines, pattern color=black!40] (4.4,-1.2) rectangle (5.6,1.2);
+    \draw[thick, fill=anchorcolor!40] (4.4,-1.2) rectangle (5.6,1.2);
+    \node[font=\bfseries\small, align=center] at (5.0,0) {Incastro\\DX};
+
+    % Trave centrale del MEMS (curva ad arco a riposo)
+    \draw[ultra thick, memsblue, fill=memsblue!20] 
+        (-4.4,0.15) to[bend left=12] (4.4,0.15) -- 
+        (4.4,-0.15) to[bend right=12] (-4.4,-0.15) -- cycle;
+    \node[memsblue, font=\bfseries] at (0, 0.95) {Trave Risonante MEMS (Shuttle)};
+    \node[memsblue, font=\footnotesize] at (0, 0.6) {Polarizzata a tensione continua: $V_{\text{DC}}$};
+
+    % Elettrodo di DRIVE (Superiore)
+    \draw[thick, drivegreen!80!black, fill=drivegreen!25] (-3.2, 2.0) rectangle (3.2, 2.7);
+    \node[font=\bfseries, color=drivegreen!80!black] at (0, 2.35) {Elettrodo di DRIVE (Attuazione)};
+    \draw[->, thick, drivegreen!80!black] (0, 3.2) node[above, font=\small] {Segnale AC: $v_{\text{in}}(t) = V_{\text{AC}}\sin(\omega t)$} -- (0, 2.7);
+
+    % Elettrodo di SENSE (Inferiore)
+    \draw[thick, senseorange!80!black, fill=senseorange!25] (-3.2, -2.7) rectangle (3.2, -2.0);
+    \node[font=\bfseries, color=senseorange!80!black] at (0, -2.35) {Elettrodo di SENSE (Rilevamento)};
+    \draw[->, thick, senseorange!80!black] (0, -2.7) -- (0, -3.2) node[below, font=\small, align=center] {Al morsetto $V^-$ del TIA (massa virtuale $\approx 0\text{ V}$)\\Corrente generata: $i_s(t)$};
+
+    % Frecce di Gap g0
+    \draw[<->, thick, color=red!70!black] (-3.6, 0.25) -- (-3.6, 2.0) node[midway, left, font=\scriptsize] {$g_0 = \SI{1.8}{\micro\meter}$};
+    \draw[<->, thick, color=red!70!black] (-3.6, -0.25) -- (-3.6, -2.0) node[midway, left, font=\scriptsize] {$g_0 = \SI{1.8}{\micro\meter}$};
+
+    % Indicazione oscillazione x(t)
+    \draw[<->, very thick, magenta] (2.2, -0.65) -- (2.2, 0.65);
+    \node[right=3pt, font=\small\bfseries, magenta] at (2.2, 0) {Oscillazione $x(t)$ (nel piano)};
+    \draw[dashed, black!35] (-4.4,0) -- (4.4,0);
+
+\end{tikzpicture}
+\caption{Rappresentazione schematica bidimensionale del risonatore MEMS nel piano del chip ($xy$). La trave è incastrata alle estremità e vibra trasversalmente nel piano, avvicinandosi e allontanandosi dagli elettrodi laterali fissi di attuazione (\textit{Drive}) e rilevamento (\textit{Sense}).}
+\label{fig:mems_layout}
+\end{figure}
+
+Nella configurazione sperimentale adottata:
+\begin{enumerate}
+    \item \textbf{Shuttle (trave mobile):} è mantenuto al potenziale continuo di polarizzazione $V_{\text{DC}}$ (tipicamente tra $\SI{5}{\volt}$ e $\SI{15}{\volt}$). Tale tensione è indispensabile per la trasduzione elettromeccanica.
+    \item \textbf{Elettrodo di Drive (attuazione):} viene pilotato con il segnale sinusoidale d'ingresso $v_{\text{in}}(t) = V_{\text{AC}} \sin(\omega t)$ per indurre la forza elettrostatica dinamica.
+    \item \textbf{Elettrodo di Sense (rilevamento):} è connesso al terminale invertente di un amplificatore a transimpedenza (TIA). Poiché il nodo d'ingresso del TIA si trova a massa virtuale ($0\text{ V}$), tra la trave mobile e l'elettrodo di sense cade costantemente una differenza di potenziale media pari a $V_{\text{DC}}$. Il moto della trave modula la capacità di sense, estraendo la corrente di segnale $i_s(t)$.
+    \item \textbf{Elettrodi di Tuning ($V_T$):} nei lavori teorici di Frangi et al., tali elettrodi sono impiegati per accordare fini risonanze interne 1:2. Nel nostro banco di misura essi **non vengono utilizzati e sono posti a massa ($V_T = \SI{0}{\volt}$)**, non interferendo così sulla dinamica del primo modo.
+    \item \textbf{Elettrodi Dummy:} sono collegati allo stesso potenziale $V_{\text{DC}}$ della trave per preservare la simmetria elettrostatica.
+\end{enumerate}
+
+\subsection{Topologia Elettrostatica a 3 Terminali: La Trave come Armatura Comune}
+Per un ingegnere elettronico abituato ai condensatori a due reofori, è fondamentale chiarire la natura fisica dei terminali del dispositivo. Nel risonatore MEMS non siamo in presenza di un semplice componente a due armature, bensì di una **struttura elettrostatica a 3 terminali principali**, in cui **la trave di silicio mobile costituisce essa stessa la terza armatura**:
+\begin{itemize}
+    \item \textbf{Armatura 1 (Fissa, Drive):} elettrodo fisso sagomato nel silicio, collegato al generatore del segnale d'ingresso $v_{\text{in}}(t)$;
+    \item \textbf{Armatura 2 (Mobile e Condivisa, la Trave stessa):} la trave risonante, realizzata in silicio policristallino conduttore, è polarizzata costantemente alla tensione continua $V_{\text{DC}}$;
+    \item \textbf{Armatura 3 (Fissa, Sense):} elettrodo fisso affacciato alla trave, collegato al terminale d'ingresso a massa virtuale ($0\text{ V}$) del TIA.
+\end{itemize}
+
+Fisicamente si instaurano dunque **due condensatori distinti** che condividono la trave mobile centrale come armatura comune:
+\begin{enumerate}
+    \item \textbf{Condensatore di Attuazione ($C_{\text{drive}}$):}
+    Formato tra l'elettrodo di Drive e la trave mobile. La differenza di potenziale istantanea ai suoi capi è:
+    \begin{equation}
+        \Delta V_{\text{drive}}(t) = V_{\text{DC}} - v_{\text{in}}(t)
+    \end{equation}
+    La modulazione di questa tensione produce la forza elettrostatica attrattiva dinamica $F_e(t) \approx \eta \, v_{\text{in}}(t)$ che mette in oscillazione la trave (funzione di \textbf{attuatore tensione $\to$ forza}).
+    
+    \item \textbf{Condensatore di Rilevamento ($C_{\text{sense}}$):}
+    Formato tra la trave mobile e l'elettrodo di Sense. Poiché il nodo TIA è a massa virtuale, la tensione ai capi del gap è rigorosamente costante:
+    \begin{equation}
+        \Delta V_{\text{sense}} = V_{\text{DC}} - 0\text{ V} = V_{\text{DC}}
+    \end{equation}
+    Quando la trave vibra con velocità $\dot{x}(t)$, il gap varia nel tempo, modulando la capacità $C_{\text{sense}}(x)$. La carica elettrostatica immagazzinata $q_{\text{el}}(t) = C_{\text{sense}}(x) V_{\text{DC}}$ varia, inducendo una corrente motrice:
+    \begin{equation}
+        i_s(t) = \frac{d q_{\text{el}}}{dt} = V_{\text{DC}} \frac{d C_{\text{sense}}}{dt} = \eta \, \dot{x}(t)
+    \end{equation}
+    che fluisce direttamente verso il TIA (funzione di \textbf{sensore velocità $\to$ corrente}).
+\end{enumerate}
+
+\paragraph{Perché nello schema equivalente si disegna un dipolo a 2 terminali?}
+Dal punto di vista dell'analisi dinamica a piccolo segnale (regime AC), il potenziale costante $V_{\text{DC}}$ della trave rappresenta una **massa AC** ($dv_{\text{DC}}/dt = 0$). Di conseguenza, tra il nodo d'ingresso (Drive) e il nodo d'uscita (Sense), il MEMS viene efficacemente sintetizzato come un bipolo di trasmissione dinamica a due terminali, modellato dal ramo serie $R_m$-$L_m$-$C_m$ (il canale di conversione meccanica) in parallelo alla capacità di feedthrough $C_p$ (l'accoppiamento dielettrico parassita diretto tra le armature fisse).
+
+\subsection{Perché gli Elettrodi di Drive e Sense non si annullano a vicenda?}
+Osservando la geometria della cella MEMS (costituita da una struttura a doppio arco con elettrodi affacciati su entrambi i lati e nella cavità interna), sorge spontanea una domanda intuitiva: \textit{se la trave si muove nel piano, non si avvicina contemporaneamente a un elettrodo e si allontana dall'altro? Perché le azioni non sono uguali o non si compensano?}
+
+La risposta risiede nei ruoli funzionali completamente asimmetrici e separati appena descritti:
+\begin{enumerate}
+    \item L'elettrodo di Drive riceve la tensione alternata $v_{\text{in}}(t)$ e genera la forza meccanica forzante, ma non raccoglie la corrente di segnale di misura.
+    \item L'elettrodo di Sense si trova a potenziale costante ($0\text{ V}$ virtuale), quindi non applica alcuna spinta dinamica dipendente da $v_{\text{in}}(t)$, ma si limita a misurare la corrente generata dal moto.
+    \item Durante l'oscillazione sinusoidale $x(t)$, la trave si avvicina e allontana periodicamente dal Sense, originando una corrente alternata pulita $i_s(t)$ a frequenza $\omega$, senza alcuna cancellazione distruttiva con il Drive.
+\end{enumerate}
+
+% =============================================================================
+% SEZIONE 2: DALLA MECCANICA DEL CONTINUO ALLA VARIABILE x(t)
+% =============================================================================
+\section{Dal Continuo al Modello a Ordine Ridotto (ROM): Significato Fisico di \texorpdfstring{$x(t)$}{x(t)}}
+
+\subsection{Il Limite del Modello Continuo per l'Ingegnere Elettronico}
+Un corpo elastico reale come una trave di silicio possiede infiniti gradi di libertà. Lo spostamento di un generico punto materiale posizionato lungo la campata $y \in [0, L]$ all'istante di tempo $t$ è descritto da un campo continuo bidimensionale $u(y, t)$. La sua dinamica è governata da un'equazione differenziale alle derivate parziali (PDE):
+\begin{equation}
+    \rho A \frac{\partial^2 u(y, t)}{\partial t^2} + b \frac{\partial u(y, t)}{\partial t} + E I \frac{\partial^4 u(y, t)}{\partial y^4} = f_e(y, t)
+\end{equation}
+Trattare equazioni di questo tipo all'interno di un'analisi circuitale è impraticabile. Tuttavia, quando il sistema viene sollecitato da una tensione sinusoidale con frequenza prossima a quella di risonanza del primo modo flessionale ($\omega \approx \omega_0$), la forma geometrica assunta dalla trave nello spazio non cambia nel tempo: **varia unicamente l'ampiezza dell'oscillazione**.
+
+\subsection{Separazione delle Variabili e Forma Modale}
+Possiamo applicare il principio di riduzione d'ordine modale (ROM), esprimendo il campo di spostamento continuo tramite separazione delle variabili:
+\begin{equation}
+    \label{eq:separazione_variabili}
+    u(y, t) \approx \phi(y) \cdot x(t)
+\end{equation}
+I due fattori hanno un significato fisico nettamente distinto:
+\begin{itemize}
+    \item $\bm{\phi(y)}$ \textbf{è la Forma Modale (\textit{Mode Shape}):} descrive la forma geometrica fissa assunta dalla trave durante l'inflessione lungo la sua lunghezza $y$. Dipende \textbf{esclusivamente dallo spazio} ed è adimensionale. Agli incastri è identicamente nulla per via dei vincoli rigidi:
+    \begin{equation}
+        \phi(0) = 0, \qquad \phi(L) = 0
+    \end{equation}
+    Per convenzione di comodo ingegneristico, normalizziamo la forma modale imponendo che al centro della campata ($y = L/2$) essa valga esattamente $1$:
+    \begin{equation}
+        \phi\left(\frac{L}{2}\right) = 1
+    \end{equation}
+    \item $\bm{x(t)}$ \textbf{è la Coordinata Modale Generalizzata:} dipende \textbf{esclusivamente dal tempo $t$} e possiede le dimensioni fisiche di una lunghezza (si misura in \textbf{metri} o micrometri $[\si{\micro\meter}]$).
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Stealth]
+    % Assi
+    \draw[->, thick, black!60] (-0.5, 0) -- (9.0, 0) node[right, font=\small] {Posizione $y$ lungo la campata};
+    \draw[->, thick, black!60] (0, -0.3) -- (0, 2.5) node[above, font=\small] {Forma modale $\phi(y)$};
+
+    % Incastri a y=0 e y=L
+    \fill[pattern=north east lines, pattern color=black!40] (-0.3,-0.4) rectangle (0,0.4);
+    \draw[thick] (0,-0.4) -- (0,0.4);
+    \node[below=4pt, font=\small] at (0,0) {$y=0$};
+
+    \fill[pattern=north east lines, pattern color=black!40] (7.5,-0.4) rectangle (7.8,0.4);
+    \draw[thick] (7.5,-0.4) -- (7.5,0.4);
+    \node[below=4pt, font=\small] at (7.5,0) {$y=L$};
+
+    % Curva modale phi(y)
+    \draw[ultra thick, memsblue, domain=0:7.5, samples=100] 
+        plot (\x, {2.0 * 0.5 * (1 - cos(deg(2*pi*\x/7.5)))});
+    
+    % Punto centrale
+    \draw[dashed, black!50] (3.75, 0) -- (3.75, 2.0);
+    \filldraw[magenta] (3.75, 2.0) circle (2.5pt);
+    \node[below=4pt, font=\small] at (3.75,0) {$y=L/2$ (Centro)};
+    \draw[dashed, black!50] (0, 2.0) -- (3.75, 2.0);
+    \node[left=3pt, font=\small\bfseries, magenta] at (0, 2.0) {$\phi(L/2) = 1$};
+
+    % Annotazioni separate
+    \node[memsblue, font=\bfseries] at (1.8, 1.2) {$\phi(y)$ (Profilo spaziale fisso)};
+    
+    \node[align=left, font=\footnotesize, draw=black!30, fill=white, rounded corners, inner sep=5pt] at (6.2, 2.0) {
+        \textbf{Deflessione al tempo $t$:}\\
+        $u(y, t) = \phi(y) \cdot \mathbf{x(t)}$\\[3pt]
+        $\bullet\ \text{Agli incastri: } u(0, t) = u(L, t) = 0$\\
+        $\bullet\ \textbf{Al centro: } u(L/2, t) = \mathbf{x(t)}$
+    };
+\end{tikzpicture}
+\caption{Visualizzazione della forma modale fondamentale $\phi(y)$ lungo la trave bi-incastrata. Avendo normalizzato $\phi(L/2) = 1$, la grandezza scalare temporale $x(t)$ coincide esattamente con lo spostamento fisico istantaneo del centro della trave.}
+\label{fig:mode_shape}
+\end{figure}
+
+\subsection{Cosa permette di calcolare la conoscenza di \texorpdfstring{$x(t)$}{x(t)}?}
+Grazie alla relazione \eqref{eq:separazione_variabili}, la singola variabile scalare $x(t)$ racchiude l'intero stato cinematico e dinamico della struttura:
+\begin{enumerate}
+    \item \textbf{Spostamento di ogni punto:} $u(y, t) = \phi(y) \, x(t)$. (Es. al centro sbanda di $x(t)$, a un quarto sbanda di $\phi(L/4) x(t)$, agli incastri sbanda di $0$);
+    \item \textbf{Velocità di ogni punto:} $v(y, t) = \frac{\partial u}{\partial t} = \phi(y) \, \dot{x}(t)$;
+    \item \textbf{Accelerazione di ogni punto:} $a(y, t) = \frac{\partial^2 u}{\partial t^2} = \phi(y) \, \ddot{x}(t)$;
+    \item \textbf{Corrente elettrica motrice generata:} come dimostrato nella Sez.~\ref{sec:corrente_motrice}, la carica elettrostatica immagazzinata varia nel tempo a causa del moto, originando una corrente proporzionale alla derivata temporale di $x(t)$, cioè a $\dot{x}(t)$.
+\end{enumerate}
+
+% =============================================================================
+% SEZIONE 3: PROIEZIONE DINAMICA E MODELLO AD 1 GRADO DI LIBERTÀ
+% =============================================================================
+\section{Dinamica a un Grado di Libertà (1-DOF)}
+
+Moltiplicando l'equazione del continuo per la forma modale $\phi(y)$ ed integrando lungo l'intera campata (proiezione ortogonale di Galerkin), le derivate spaziali collassano in costanti concentrate integrali. L'equazione del moto si riduce ad una classica equazione differenziale ordinaria (ODE) ad un grado di libertà:
+\begin{equation}
+    \label{eq:meccanica_1dof}
+    m_{\text{eff}} \ddot{x}(t) + b_{\text{eff}} \dot{x}(t) + k_m x(t) = F_e(t)
+\end{equation}
+dove i parametri meccanici equivalenti valgono:
+\begin{itemize}
+    \item \textbf{Massa modale efficace:} $m_{\text{eff}} = \int_0^L \rho A \, \phi^2(y) \, dy \quad [\si{\kilo\gram}]$;
+    \item \textbf{Rigidezza elastica intrinseca del silicio:} $k_m = \int_0^L E I \left(\frac{d^2 \phi}{dy^2}\right)^2 dy \quad [\si{\newton/\meter}]$;
+    \item \textbf{Coefficiente di smorzamento meccanico:} $b_{\text{eff}} = \frac{\omega_0 m_{\text{eff}}}{Q} \quad [\si{\newton\second/\meter}]$;
+    \item \textbf{Frequenza propria naturale non polarizzata:} $\omega_0 = \sqrt{\frac{k_m}{m_{\text{eff}}}} = 2\pi f_0 \approx 2\pi \times \SI{417}{\kilo\hertz}$.
+\end{itemize}
+
+% =============================================================================
+% SEZIONE 4: FORZE ELETTROSTATICHE E SPRING SOFTENING
+% =============================================================================
+\section{Forze Elettrostatiche e Fenomeno dello \textit{Spring Softening}}
+
+\subsection{Origine della Forza Elettrostatica}
+Consideriamo la capacità di attuazione $C(x)$ formata tra l'elettrodo di drive e la trave mobile. L'energia elettrostatica immagazzinata nel condensatore è:
+\begin{equation}
+    U_e = \frac{1}{2} C(x) V^2(t)
+\end{equation}
+dove la differenza di potenziale applicata tra la trave (a potenziale $V_{\text{DC}}$) e l'elettrodo di drive (pilotato da $v_{\text{in}}(t)$) è:
+\begin{equation}
+    V(t) = V_{\text{DC}} - v_{\text{in}}(t)
+\end{equation}
+La forza elettrostatica netta agente sulla trave corrisponde alla derivata spaziale dell'energia:
+\begin{equation}
+    F_e(x, t) = \frac{\partial U_e}{\partial x} = \frac{1}{2} \frac{\partial C(x)}{\partial x} \left( V_{\text{DC}} - v_{\text{in}}(t) \right)^2
+\end{equation}
+Sviluppando il quadrato del binomio:
+\begin{equation}
+    \left( V_{\text{DC}} - v_{\text{in}}(t) \right)^2 = V_{\text{DC}}^2 - 2 V_{\text{DC}} v_{\text{in}}(t) + v_{\text{in}}^2(t)
+\end{equation}
+Poiché in regime di piccolo segnale $|v_{\text{in}}(t)| \ll V_{\text{DC}}$, il termine quadratico $v_{\text{in}}^2(t)$ può essere trascurato rispetto al termine lineare incrociato.
+
+\subsection{Sviluppo in Serie di Taylor della Capacità: Rigidezza Elettrostatica Negativa}
+Poiché le oscillazioni $x(t)$ sono piccole rispetto al gap a riposo ($x \ll g_0$), possiamo approssimare la derivata della capacità tramite sviluppo di Taylor attorno alla posizione di riposo $x = 0$:
+\begin{equation}
+    \frac{\partial C(x)}{\partial x} \approx \left. \frac{\partial C}{\partial x} \right|_{x=0} + \left. \frac{\partial^2 C}{\partial x^2} \right|_{x=0} x(t)
+\end{equation}
+Sostituendo nell'espressione della forza elettrostatica, otteniamo tre contributi distinti:
+\begin{equation}
+    F_e(x, t) \approx \underbrace{\frac{1}{2} \left. \frac{\partial C}{\partial x} \right|_0 V_{\text{DC}}^2}_{F_{\text{DC}} \text{ (deflessione statica)}} + \underbrace{\frac{1}{2} \left. \frac{\partial^2 C}{\partial x^2} \right|_0 V_{\text{DC}}^2 x(t)}_{k_e \, x(t) \text{ (spring softening)}} - \underbrace{V_{\text{DC}} \left. \frac{\partial C}{\partial x} \right|_0 v_{\text{in}}(t)}_{F_{\text{drive}}(t) \text{ (forza AC motrice)}}
+\end{equation}
+
+Analizziamo ciascun termine con l'ottica dell'elettronico:
+\begin{enumerate}
+    \item \textbf{Forza statica continua ($F_{\text{DC}}$):} determina unicamente un minuscolo spostamento statico costante di equilibrio della trave verso l'elettrodo, attorno a cui avviene la vibrazione.
+    \item \textbf{Rigidezza elettrostatica ($k_e$):} questo termine è proporzionale allo spostamento $x(t)$ ed è positivo. Spostando tale termine al primo membro dell'equazione del moto \eqref{eq:meccanica_1dof}:
+    \begin{equation}
+        k_m x(t) - k_e x(t) = \left( k_m - k_e \right) x(t)
+    \end{equation}
+    La forza elettrostatica attira la trave verso l'elettrodo con intensità crescente all'avvicinarsi della stessa. Agisce dunque come una **molla con costante elastica negativa**, sottraendosi alla rigidezza meccanica del silicio:
+    \begin{equation}
+        k_{\text{eff}}(V_{\text{DC}}) = k_m - k_e(V_{\text{DC}}) = k_m - \frac{1}{2} \left. \frac{\partial^2 C}{\partial x^2} \right|_0 V_{\text{DC}}^2
+    \end{equation}
+    Questo fenomeno fisico è noto come \textbf{Electrostatic Spring Softening}. Di conseguenza, la frequenza di risonanza diminuisce all'aumentare di $V_{\text{DC}}$ secondo la legge:
+    \begin{equation}
+        \omega_r^2(V_{\text{DC}}) = \frac{k_{\text{eff}}(V_{\text{DC}})}{m_{\text{eff}}} = \omega_0^2 - \frac{1}{2 m_{\text{eff}}} \left. \frac{\partial^2 C}{\partial x^2} \right|_0 V_{\text{DC}}^2
+    \end{equation}
+    Nel formalismo compatto del paper di Frangi et al., il coefficiente $\frac{1}{2 m_{\text{eff}}} \left. \frac{\partial^2 C}{\partial x^2} \right|_0$ è indicato come $\varepsilon_0 c_{1,DD}$, ottenendo l'equazione:
+    \begin{equation}
+        \omega_r(V_{\text{DC}}) \approx \sqrt{\omega_0^2 - \varepsilon_0 c_{1,DD} V_{\text{DC}}^2}
+    \end{equation}
+    \item \textbf{Forza di azionamento dinamico ($F_{\text{drive}}$):} è la forza che trasforma la tensione sinusoidale d'ingresso $v_{\text{in}}(t)$ in una spinta meccanica. Essa è governata dal **Fattore di Trasduzione Elettromeccanica $\eta$**:
+    \begin{equation}
+        \label{eq:eta_def}
+        \eta \triangleq V_{\text{DC}} \left. \frac{\partial C}{\partial x} \right|_{x=0} \quad [\si{\newton/\volt} \text{ oppure } \si{\coulomb/\meter}]
+    \end{equation}
+    da cui:
+    \begin{equation}
+        F_{\text{drive}}(t) = \eta \, v_{\text{in}}(t)
+    \end{equation}
+\end{enumerate}
+
+\subsection{Esiste uno \textit{Spring Softening} Dinamico dovuto a \texorpdfstring{$v_{\text{in}}(t)$}{vin(t)} (AC)?}
+Un'osservazione fisica cruciale riguarda il ruolo del segnale alternato $v_{\text{in}}(t) = V_{\text{AC}}\sin(\omega t)$ nella tensione al quadrato $V^2(t)$:
+\begin{equation}
+    V^2(t) = \left( V_{\text{DC}} - v_{\text{in}}(t) \right)^2 = V_{\text{DC}}^2 - 2 V_{\text{DC}} v_{\text{in}}(t) + v_{\text{in}}^2(t)
+\end{equation}
+Ci si può domandare se anche la componente AC moduli la rigidezza elastica della trave durante la stessa oscillazione (softening dinamico intra-periodo). Analizziamo i due termini dipendenti da $v_{\text{in}}$:
+\begin{enumerate}
+    \item \textbf{Termine quadratico puro $v_{\text{in}}^2(t) = V_{\text{AC}}^2 \sin^2(\omega t) = \frac{V_{\text{AC}}^2}{2}[1 - \cos(2\omega t)]$:}
+    Questo termine possiede sia una componente continua $\frac{1}{2} V_{\text{AC}}^2$ sia una componente armonica a frequenza doppia $2\omega$. Tuttavia, confrontando la sua ampiezza con il termine statico principale $V_{\text{DC}}^2$ nei nostri punti di lavoro sperimentali ($V_{\text{DC}} \ge \SI{5}{\volt}$ e $V_{\text{AC}} \approx \SI{100}{\milli\volt}$):
+    \begin{equation}
+        \frac{V_{\text{AC}}^2}{V_{\text{DC}}^2} \le \left( \frac{\SI{0.1}{\volt}}{\SI{5}{\volt}} \right)^2 = \frac{0.01}{25} = 4 \times 10^{-4} = 0.04\%
+    \end{equation}
+    Il contributo dello softening dovuto a $V_{\text{AC}}^2$ è inferiore a $4$ parti su $10\,000$ rispetto allo softening causato da $V_{\text{DC}}^2$. È dunque completamente trascurabile e non rilevabile strumentalmente.
+    
+    \item \textbf{Termine incrociato dinamico $-2 V_{\text{DC}} v_{\text{in}}(t) \cdot \left. \frac{\partial^2 C}{\partial x^2} \right|_0 x(t)$:}
+    Moltiplicando la tensione alternata per lo spostamento istantaneo $x(t) = X \cos(\omega t + \phi)$, si genera un termine proporzionale a:
+    \begin{equation}
+        v_{\text{in}}(t) \cdot x(t) = V_{\text{AC}} \sin(\omega t) \cdot X \cos(\omega t + \phi) = \frac{V_{\text{AC}} X}{2} \left[ \sin(2\omega t + \phi) - \sin\phi \right]
+    \end{equation}
+    Fisicamente, questo rappresenta una **modulazione parametrica della rigidezza** nel tempo (equazione di Mathieu-Hill). In regime di piccolo segnale lineare ($X \ll g_0$, dell'ordine di pochi nanometri), questo accoppiamento introduce unicamente componenti spettrali a frequenza $2\omega$ di ampiezza microscopica rispetto alla risposta forzata fondamentale a pulsazione $\omega$. Nel modello lineare del circuito RLC serie, tale termine di ordine superiore viene quindi legittimamente trascurato. Esso assume rilievo soltanto a livelli di eccitazione molto elevati (regime di Duffing o risonanza parametrica con eccitazione a $2\omega_0$).
+\end{enumerate}
+
+% =============================================================================
+% SEZIONE 5: CORRENTE DI SENSE E TRASFORMATORE ELETTROMECCANICO
+% =============================================================================
+\section{Generazione della Corrente Elettrica e Circuito Equivalente RLC}
+\label{sec:corrente_motrice}
+
+\subsection{La Corrente Motrice di Rilevamento (\texorpdfstring{$i_s$}{is})}
+Consideriamo ora l'elettrodo di rilevamento (\textit{Sense}), mantenuto a massa virtuale ($0\text{ V}$) dall'amplificatore TIA. La carica immagazzinata sull'elettrodo di sense è data da:
+\begin{equation}
+    q_{\text{el}}(t) = C_s(x) \cdot V_{\text{DC}}
+\end{equation}
+Quando la trave vibra con velocità $\dot{x}(t) = \frac{dx}{dt}$, la capacità $C_s(x)$ varia nel tempo. La corrente elettrica uscente dal terminale di sense corrisponde alla derivata temporale della carica:
+\begin{equation}
+    i_s(t) = \frac{d q_{\text{el}}}{dt} = \frac{d}{dt} \left[ C_s(x) V_{\text{DC}} \right] = V_{\text{DC}} \frac{d C_s}{dt} = V_{\text{DC}} \left( \left. \frac{\partial C_s}{\partial x} \right|_0 \frac{dx}{dt} \right)
+\end{equation}
+Riconoscendo il fattore di trasduzione $\eta$ definito in \eqref{eq:eta_def}:
+\begin{equation}
+    \label{eq:is_vs_xdot}
+    \bm{i_s(t) = \eta \, \dot{x}(t)}
+\end{equation}
+Questa relazione stabilisce una corrispondenza fondamentale:
+\begin{center}
+\textbf{La corrente elettrica $i_s(t)$ erogata dal MEMS è direttamente proporzionale alla VELOCITÀ MECCANICA $\dot{x}(t)$ della trave.}
+\end{center}
+
+\subsection{Il Modello a Due Porte con Trasformatori Elettromeccanici}
+Il legame bidirezionale tra i domini elettrico e meccanico può essere compreso rappresentando il MEMS come un **doppio trasformatore ideale di accoppiamento** (Fig.~\ref{fig:trasformatore}):
+\begin{enumerate}
+    \item \textbf{Porta 1 (Drive - Ingresso):} un trasformatore ideale con rapporto $1 : \eta$ converte la tensione dinamica $v_{\text{in}}(t)$ nella forza meccanica forzante:
+    \begin{equation}
+        F(t) = \eta \, v_{\text{in}}(t)
+    \end{equation}
+    \item \textbf{Ramo Centrale (Meccanica del Risonatore):} la forza $F(t)$ agisce sulla maglia meccanica serie composta da massa equivalente $m_{\text{eff}}$, smorzamento $b_{\text{eff}}$ e cedevolezza $1/k_{\text{eff}}$, ponendo la trave in oscillazione con velocità istantanea $\dot{x}(t)$. In questo ramo circola la variabile cinematica (velocità), governata dall'equazione dinamica di Newton:
+    \begin{equation}
+        F(t) = m_{\text{eff}} \frac{d\dot{x}}{dt} + b_{\text{eff}} \dot{x}(t) + k_{\text{eff}} \int \dot{x}(t) \, dt
+    \end{equation}
+    \item \textbf{Porta 2 (Sense - Uscita):} un secondo trasformatore ideale speculare con rapporto $\eta : 1$ converte la velocità meccanica $\dot{x}(t)$ nella corrente elettrica di uscita:
+    \begin{equation}
+        i_s(t) = \eta \, \dot{x}(t)
+    \end{equation}
+    che fluisce verso il nodo di massa virtuale dell'amplificatore TIA.
+    \item \textbf{Accoppiamento Parassita Diretto ($C_p$):} in parallelo all'intera struttura è presente la capacità di feedthrough $C_p$, che trasferisce una quota di corrente direttamente tra ingresso e uscita scavalcando la dinamica meccanica.
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=0.88, transform shape]
+    % --- INGRESSO DRIVE ---
+    \draw (0, 2) node[left] {$+$} to[open, v=$v_{\text{in}}(t)$] (0, 0) node[left] {$-$};
+    \draw (0, 2) to[short, o-*] (1.2, 2);
+    \draw (0, 0) to[short, o-*] (1.2, 0);
+
+    % Feedthrough Cp in alto
+    \draw (1.2, 2) -- (1.2, 3.4) to[C, l=$C_p$] (11.8, 3.4) -- (11.8, 2);
+
+    % Trasformatore 1: Drive (1 : eta)
+    \draw (1.2, 2) -- (2.0, 2) to[L, l_={}] (2.0, 0) -- (1.2, 0);
+    \draw (2.8, 2) to[L, l_={}] (2.8, 0);
+    \draw[thick] (2.3, 2.1) -- (2.3, -0.1);
+    \draw[thick] (2.5, 2.1) -- (2.5, -0.1);
+    \node[above, font=\footnotesize] at (2.4, 2.2) {$1 : \eta$};
+
+    % Anello Meccanico Centrale (Massa - Smorzatore - Molla)
+    \draw (2.8, 2) -- (4.2, 2)
+        to[L, l_=$m_{\text{eff}}$] (5.8, 2)
+        to[R, l_=$b_{\text{eff}}$] (7.4, 2)
+        to[C, l_=$1/k_{\text{eff}}$] (9.0, 2)
+        -- (10.2, 2);
+    \draw (2.8, 0) -- (10.2, 0);
+
+    % Frecce e labels meccaniche
+    \node[above=8pt, font=\scriptsize, color=memsblue] at (5.0, 2.0) {Massa ($m_{\text{eff}}$)};
+    \node[above=8pt, font=\scriptsize, color=drivegreen] at (6.6, 2.0) {Attrito ($b_{\text{eff}}$)};
+    \node[above=8pt, font=\scriptsize, color=senseorange] at (8.2, 2.0) {Cedevolezza ($1/k_{\text{eff}}$)};
+
+    \draw[->, thick, magenta] (3.6, 2.3) -- (3.6, 1.7) node[midway, right, font=\small] {$\dot{x}(t)$};
+    \node[above=2pt, font=\small] at (3.3, 2.0) {$F(t)$};
+
+    % Trasformatore 2: Sense (eta : 1)
+    \draw (10.2, 2) to[L, l_={}] (10.2, 0);
+    \draw (11.0, 2) to[L, l_={}] (11.0, 0);
+    \draw[thick] (10.5, 2.1) -- (10.5, -0.1);
+    \draw[thick] (10.7, 2.1) -- (10.7, -0.1);
+    \node[above, font=\footnotesize] at (10.6, 2.2) {$\eta : 1$};
+
+    % Uscita Elettrica verso TIA
+    \draw (11.0, 2) -- (11.8, 2) to[short, *-o, i=$i_s(t)$] (13.0, 2) node[right] {Al TIA ($0\text{ V}$)};
+    \draw (11.0, 0) -- (13.0, 0) node[ground]{};
+
+\end{circuitikz}
+\caption{Modello elettromeccanico a due porte del risonatore MEMS. Il trasformatore di Drive ($1:\eta$) converte la tensione $v_{\text{in}}$ in forza $F$; la maglia centrale descrive la dinamica meccanica percorsa dalla velocità $\dot{x}$; il trasformatore di Sense ($\eta:1$) converte la velocità in corrente motrice $i_s$. La capacità $C_p$ in parallelo modella l'accoppiamento dielettrico parassita diretto.}
+\label{fig:trasformatore}
+\end{figure}
+
+\subsection{Come si ricava e quanto vale il Fattore di Trasduzione \texorpdfstring{$\eta$}{eta}?}
+Il fattore di trasduzione elettromeccanica $\eta$ rappresenta il perno matematico e fisico dell'accoppiamento tra i due domini:
+\begin{itemize}
+    \item Nel senso elettrico $\to$ meccanico: specifica quanti Newton di forza genera ogni Volt di tensione forzante:
+    \begin{equation}
+        [\eta] = \si{\newton/\volt}
+    \end{equation}
+    \item Nel senso meccanico $\to$ elettrico: specifica quanti Ampere di corrente escono per ogni metro al secondo di velocità meccanica:
+    \begin{equation}
+        [\eta] = \frac{\si{\ampere}}{\si{\meter/\second}} = \si{\coulomb/\meter}
+    \end{equation}
+    Le due unità sono dimensionalmente identiche: $1\ \si{\newton/\volt} = 1\ \frac{\si{\joule/\meter}}{\si{\joule/\coulomb}} = 1\ \si{\coulomb/\meter}$.
+\end{itemize}
+
+\paragraph{1. Ricavazione analitica (Modello a facce piane):}
+Considerando una capacità a gap variabile $g(x) = g_0 - x$ con area affacciata $A$:
+\begin{equation}
+    C(x) = \frac{\varepsilon_0 A}{g_0 - x}
+\end{equation}
+Calcoliamo la derivata prima spaziale rispetto allo spostamento $x$ valutata nella condizione di riposo ($x=0$):
+\begin{equation}
+    \left. \frac{\partial C}{\partial x} \right|_{x=0} = \left. \frac{\varepsilon_0 A}{(g_0 - x)^2} \right|_{x=0} = \frac{\varepsilon_0 A}{g_0^2} = \frac{C_0}{g_0}
+\end{equation}
+dove $C_0 = \frac{\varepsilon_0 A}{g_0}$ è la capacità a riposo. Moltiplicando per la tensione di polarizzazione continua $V_{\text{DC}}$ dello shuttle:
+\begin{equation}
+    \bm{\eta = V_{\text{DC}} \left. \frac{\partial C}{\partial x} \right|_0 = V_{\text{DC}} \frac{C_0}{g_0}}
+\end{equation}
+Questa elegante formula mostra che per massimizzare $\eta$ (e quindi abbattere la resistenza motrice $R_m \propto 1/\eta^2$) è necessario aumentare la polarizzazione $V_{\text{DC}}$, aumentare l'area delle armature $A$ e ridurre il gap $g_0$.
+
+\paragraph{2. Corrispondenza con i coefficienti del paper di Frangi et al.:}
+Nel caso della struttura reale, la trave ha forma ad arco curvo integrata con gli elettrodi tramite simulazione FEM (COMSOL). L'integrale numerico modale fornisce:
+\begin{equation}
+    \left. \frac{\partial C}{\partial x} \right|_0 = \varepsilon_0 c_{0,DA}
+\end{equation}
+dove $c_{0,DA} \approx \SI{91.81}{\micro\newton\micro\meter/(\volt^2\pico\farad)}$ è il coefficiente calcolato numericamente nel paper (Tabella~2 di Frangi et al.). Di conseguenza:
+\begin{equation}
+    \eta = \varepsilon_0 c_{0,DA} V_{\text{DC}}
+\end{equation}
+Questo giustifica direttamente le formule impiegate nella presentazione:
+\begin{equation}
+    i_s(t) = \varepsilon_0 c_{0,DA} V_{\text{DC}} \dot{x}(t) \equiv \eta \dot{x}(t), \qquad L_m = \frac{m_{\text{eff}}}{\eta^2} = \frac{1}{2 (\varepsilon_0 c_{0,DA} V_{\text{DC}})^2}
+\end{equation}
+
+\paragraph{3. Estrazione sperimentale di $\eta$ in laboratorio:}
+In laboratorio, $\eta$ può essere ricavato direttamente dalle misure della risposta in frequenza attorno a $f_0 \approx \SI{417.8}{\kilo\hertz}$.  
+Esattamente al picco di risonanza, l'induttanza motrice $L_m$ e la capacità $C_m$ entrano in risonanza serie compensandosi perfettamente ($j\omega_0 L_m + \frac{1}{j\omega_0 C_m} = 0$). L'impedenza motrice vista dal segnale diviene puramente resistiva:
+\begin{equation}
+    Z_{\text{mot}}(\omega_0) = R_m = \frac{b_{\text{eff}}}{\eta^2} = \frac{\omega_0 m_{\text{eff}}}{Q \cdot \eta^2}
+\end{equation}
+Misurando l'ampiezza della corrente al picco $I_{\text{picco}} = V_{\text{in}} / R_m$ (tramite la tensione di uscita del TIA $V_{\text{out}} = G_{\text{tot}} I_{\text{picco}}$), si estrae sperimentalmente $R_m$. Conoscendo la frequenza di risonanza $\omega_0$, il fattore di merito $Q$ (stimato dal transitorio di decadimento esponenziale di ringdown) e la massa efficace $m_{\text{eff}}$, si determina univocamente il valore sperimentale del fattore di trasduzione:
+\begin{equation}
+    \eta = \sqrt{\frac{\omega_0 m_{\text{eff}}}{Q \, R_m}}
+\end{equation}
+
+\subsection{Derivazione Analitica del Ramo RLC Serie Equivalente}
+Ripartiamo dall'equazione dinamica meccanica linearizzata:
+\begin{equation}
+    m_{\text{eff}} \frac{d \dot{x}}{dt} + b_{\text{eff}} \dot{x}(t) + k_{\text{eff}} \int \dot{x}(t) \, dt = \eta \, v_{\text{in}}(t)
+\end{equation}
+Sostituendo la relazione cinematica $\dot{x}(t) = \frac{i_s(t)}{\eta}$:
+\begin{equation}
+    m_{\text{eff}} \frac{d}{dt}\left( \frac{i_s(t)}{\eta} \right) + b_{\text{eff}} \left( \frac{i_s(t)}{\eta} \right) + k_{\text{eff}} \int \left( \frac{i_s(t)}{\eta} \right) dt = \eta \, v_{\text{in}}(t)
+\end{equation}
+Dividendo l'intera equazione per il fattore di accoppiamento $\eta$:
+\begin{equation}
+    \label{eq:rlc_fondamentale}
+    \underbrace{\left(\frac{m_{\text{eff}}}{\eta^2}\right)}_{L_m} \frac{di_s(t)}{dt} + \underbrace{\left(\frac{b_{\text{eff}}}{\eta^2}\right)}_{R_m} i_s(t) + \underbrace{\left(\frac{k_{\text{eff}}}{\eta^2}\right)}_{\frac{1}{C_m}} \int i_s(t) \, dt = v_{\text{in}}(t)
+\end{equation}
+L'equazione \eqref{eq:rlc_fondamentale} è formalmente **identica alla legge di Kirchhoff per una maglia RLC serie**, dove i componenti assumono i seguenti valori:
+\begin{itemize}
+    \item \textbf{Induttanza motrice $L_m$ (Inerzia / Massa del silicio):}
+    \begin{equation}
+        L_m = \frac{m_{\text{eff}}}{\eta^2} = \frac{m_{\text{eff}}}{\left( \varepsilon_0 c_{0,DA} V_{\text{DC}} \right)^2} \quad [\si{\henry}]
+    \end{equation}
+    \item \textbf{Resistenza motrice $R_m$ (Perdite viscose e termoelastiche):}
+    \begin{equation}
+        R_m = \frac{b_{\text{eff}}}{\eta^2} = \frac{\omega_0 L_m}{Q} \quad [\si{\ohm}]
+    \end{equation}
+    \item \textbf{Capacità motrice $C_m$ (Cedevolezza elastica efficace):}
+    \begin{equation}
+        C_m = \frac{\eta^2}{k_{\text{eff}}} = \frac{1}{\omega_r^2(V_{\text{DC}}) \, L_m} \quad [\si{\farad}]
+    \end{equation}
+\end{itemize}
+
+\subsection{La Capacità Parassita Diretta (\texorpdfstring{$C_p$}{Cp})}
+Oltre alla trasduzione elettromeccanica dovuta al moto, esiste un accoppiamento capacitivo elettrostatico puramente dielettrico tra i conduttori di drive e di sense, attraverso il substrato di silicio, le piste di interconnessione e il package PLCC68. Tale cammino elettrico è modellato da una capacità parassita $C_p$ posta **in parallelo** al ramo $RLC$ motrice (Fig.~\ref{fig:mems_circuito}). Anche a MEMS completamente fermo o con polarizzazione disattivata ($V_{\text{DC}} = 0\text{ V} \implies \eta = 0 \implies L_m \to \infty$), il segnale $v_{\text{in}}(t)$ inietta comunque attraverso $C_p$ una corrente parassita di \textit{feedthrough}:
+\begin{equation}
+    i_{Cp}(t) = C_p \frac{dv_{\text{in}}(t)}{dt}
+\end{equation}
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1.0, transform shape]
+    % Morsetto di ingresso
+    \draw (0, 1.5) node[left] {$v_{\text{in}}(t)$} to[short, o-*] (1.5, 1.5);
+
+    % Ramo parassita Cp in alto
+    \draw (1.5, 1.5) -- (1.5, 3.0) to[C, l=$C_p$] (6.5, 3.0) -- (6.5, 1.5);
+
+    % Ramo motrice RLC serie in basso
+    \draw (1.5, 1.5) -- (1.5, 0)
+        to[R, l=$R_m$] (3.0, 0)
+        to[L, l=$L_m$] (4.8, 0)
+        to[C, l=$C_m$] (6.5, 0)
+        -- (6.5, 1.5);
+
+    % Morsetto di uscita
+    \draw (6.5, 1.5) to[short, *-o] (8.0, 1.5) node[right] {$i_{\text{tot}}(t)$ (Al nodo TIA)};
+
+    \draw[dashed, color=black!50] (1.1, -0.7) rectangle (6.9, 3.6);
+    \node[above=2pt, font=\small\bfseries, color=black!70] at (4.0, 3.6) {Modello Equivalente del Risonatore MEMS};
+\end{circuitikz}
+\caption{Circuito equivalente a parametri concentrati del risonatore MEMS: ramo motrice serie $R_m$-$L_m$-$C_m$ in parallelo alla capacità parassita di feedthrough $C_p$.}
+\label{fig:mems_circuito}
+\end{figure}
+
+% =============================================================================
+% SEZIONE 6: CATENA ELETTRONICA DI LETTURA
+% =============================================================================
+\section{Front-End Elettronico di Lettura e Catena di Acquisizione}
+
+La corrente complessiva $i_{\text{tot}}(t) = i_s(t) + i_{Cp}(t)$ prodotta dal MEMS viene processata dalla catena di amplificazione riportata in Fig.~\ref{fig:frontend_schema}.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=0.8, transform shape]
+    % Ingresso e blocco MEMS
+    \draw (-3.5, 0) node[left] {$v_{\text{in}}(t)$} to[short, o-] (-2.5, 0);
+    \draw[thick, fill=white] (-2.5, -0.8) rectangle (-0.5, 0.8);
+    \node[font=\footnotesize, align=center] at (-1.5, 0) {\textbf{MEMS}\\$RLC \parallel C_p$};
+    \draw (-0.5, 0) to[short, -*] (0.8, 0) coordinate (sense_node);
+
+    % Capacità di ingresso Cin
+    \draw (sense_node) to[C, l_=$C_{\text{in}}$] (0.8, -2.0) node[ground]{};
+
+    % TIA (OPA656)
+    \node[op amp] (tia) at (3.0, -0.5) {};
+    \node[font=\scriptsize, below=3pt] at (tia.south) {OPA656 (TIA)};
+    \draw (sense_node) -- (tia.-);
+    \draw (tia.+) -- ++(0, -0.5) node[ground]{};
+
+    % Retroazione TIA (Rf // Cf)
+    \draw (sense_node) -- (0.8, 1.8) -- (1.5, 1.8);
+    \draw (1.5, 2.4) to[R, l=$R_f$] (4.5, 2.4);
+    \draw (1.5, 1.2) to[C, l=$C_f$] (4.5, 1.2);
+    \draw (1.5, 2.4) -- (1.5, 1.2);
+    \draw (4.5, 2.4) -- (4.5, 1.2);
+    \draw (4.5, 1.8) -| (tia.out);
+
+    % Secondo Stadio: Invertente (AD817)
+    \draw (tia.out) to[R, l=$R_1$, *-] (6.8, -0.5) coordinate (inv_in);
+    \node[op amp] (inv) at (8.5, -1.0) {};
+    \node[font=\scriptsize, below=3pt] at (inv.south) {AD817 ($G = -10$)};
+    \draw (inv_in) -- (inv.-);
+    \draw (inv.+) -- ++(0, -0.5) node[ground]{};
+
+    % Retroazione Invertente (R2)
+    \draw (inv_in) to[short, *-] (6.8, 0.8) to[R, l=$R_2$] (10.0, 0.8) -| (inv.out);
+
+    % Uscita finale
+    \draw (inv.out) to[short, -o] (11.0, -1.0) node[right] {$v_{\text{out}}(t)$};
+\end{circuitikz}
+\caption{Schema elettrico del front-end di acquisizione: amplificatore a transimpedenza (TIA) a basso rumore seguito da uno stadio invertente di guadagno in tensione.}
+\label{fig:frontend_schema}
+\end{figure}
+
+\subsection{Analisi Funzionale degli Stadi}
+La catena è articolata in due stadi ad alta banda passante:
+\begin{enumerate}
+    \item \textbf{Stadio a Transimpedenza (TIA) - OPA656:}
+    L'amplificatore operazionale con ingressi a FET (OPA656) presenta una corrente di polarizzazione trascurabile ed un'elevata banda (GBW di $\approx \SI{230}{\mega\hertz}$). L'ingresso invertente fissa il nodo di sense a massa virtuale. La corrente in ingresso viene convertita in tensione attraverso l'impedenza di retroazione $Z_f = R_f \parallel \frac{1}{j\omega C_f}$:
+    \begin{equation}
+        v_{\text{out, TIA}}(s) = - Z_f(s) \cdot i_{\text{tot}}(s) = - \frac{R_f}{1 + s R_f C_f} \, i_{\text{tot}}(s)
+    \end{equation}
+    \item \textbf{Secondo Stadio Invertente - AD817:}
+    L'amplificatore AD817 realizza un guadagno in tensione invertente a banda ultralarga:
+    \begin{equation}
+        G = -\frac{R_2}{R_1} = -10
+    \end{equation}
+    Esso svolge due compiti:
+    \begin{itemize}
+        \item Ripristina la fase positiva del segnale rispetto alla corrente originale:
+        \begin{equation}
+            v_{\text{out}}(s) = -10 \cdot v_{\text{out, TIA}}(s) = + 10 \, Z_f(s) \cdot i_{\text{tot}}(s)
+        \end{equation}
+        \item Amplifica di un fattore $10$ l'ampiezza del segnale per sfruttare l'intera dinamica di quantizzazione dell'oscilloscopio digitale e del lock-in amplifier.
+    \end{itemize}
+\end{enumerate}
+
+% =============================================================================
+% SEZIONE 7: TABELLA DI CORRISPONDENZA MECCANICA-ELETTRICA
+% =============================================================================
+\section{Tavola di Conversione delle Notazioni e Isomorfismo Elettromeccanico}
+A beneficio della chiarezza interdisciplinare tra il formalismo della meccanica razionale (adottato nei paper scientifici sui MEMS) e la teoria dei circuiti elettronici, la Tabella~\ref{tab:isomorfismo} riassume la corrispondenza univoca tra tutte le variabili e i parametri trattati.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{4.2cm}p{3.2cm}p{4.5cm}l@{}}
+\toprule
+\textbf{Descrizione Fisica} & \textbf{Paper (Meccanica)} & \textbf{Relazione (Elettronica)} & \textbf{Unità SI} \\
+\midrule
+Spostamento scalare / ampiezza modale & $q(t)$ o $q_1(t)$ & $x(t)$ & $\si{\meter}$ ($\si{\micro\meter}$) \\
+Velocità istantanea della trave & $\dot{q}(t)$ & $\dot{x}(t)$ & $\si{\meter/\second}$ \\
+Forma modale nello spazio & $\psi_1(y)$ & $\phi(y)$ & adimensionale \\
+Massa equivalente del risonatore & $\mathcal{M} = 1$ & $m_{\text{eff}}$ & $\si{\kilo\gram}$ \\
+Rigidezza elastica intrinseca & $c_{1,\beta} = \omega_0^2$ & $k_m = \omega_0^2 m_{\text{eff}}$ & $\si{\newton/\meter}$ \\
+Coefficiente di smorzamento & $\omega_0 / Q$ & $b_{\text{eff}} = \omega_0 m_{\text{eff}} / Q$ & $\si{\newton\second/\meter}$ \\
+Fattore di accoppiamento & $\varepsilon_0 c_{0,DA} V_{\text{DC}}$ & $\eta = V_{\text{DC}} \left. \frac{\partial C}{\partial x} \right|_0$ & $\si{\newton/\volt} \equiv \si{\coulomb/\meter}$ \\
+Corrente di risposta del risonatore & $i_s(t)$ & $i_s(t) = \eta \dot{x}(t)$ & $\si{\ampere}$ \\
+Induttanza equivalente (inerzia) & $L_m = \frac{1}{2(\varepsilon_0 c_{0,DA} V_{\text{DC}})^2}$ & $L_m = \frac{m_{\text{eff}}}{\eta^2}$ & $\si{\henry}$ \\
+Resistenza equivalente (attrito) & $R_m = \frac{\omega_0 L_m}{Q}$ & $R_m = \frac{b_{\text{eff}}}{\eta^2}$ & $\si{\ohm}$ \\
+Capacità equivalente (cedevolezza) & $C_m = \frac{1}{\omega_r^2 L_m}$ & $C_m = \frac{\eta^2}{k_{\text{eff}}}$ & $\si{\farad}$ \\
+Capacità parassita di feedthrough & $C_p$ & $C_p$ & $\si{\farad}$ \\
+Tensione di sintonizzazione & $V_T$ & $V_T = \SI{0}{\volt}$ (non usata) & $\si{\volt}$ \\
+\bottomrule
+\end{tabular}
+\caption{Dizionario di corrispondenza tra la notazione dei paper accademici di meccanica e la notazione circuitale per ingegneri elettronici.}
+\label{tab:isomorfismo}
+\end{table}
+
+\end{document}

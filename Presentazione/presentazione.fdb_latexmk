@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1790754901.75579 "/Users/matteoluca/Downloads/es2m progetto/Presentazione/presentazione.tex" "presentazione.pdf" "presentazione" 1790754908.54517 0
+["pdflatex"] 1791365552.23371 "/Users/matteoluca/Downloads/es2m progetto/Presentazione/presentazione.tex" "presentazione.pdf" "presentazione" 1791365559.27759 0
   "../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png" 1790754727.48169 192199 36dfc1067da01323453a81560668b72f ""
   "../Ampiezza_Frequenza/grafici/frequenza_vs_fin.png" 1790754729.58507 164354 b7f4871dd1dfdd08ab47797d9805b336 ""
   "../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png" 1790754728.23557 1081964 cdd1d9d049c2cc91ab5544cf2ee3f63d ""
@@ -19,7 +19,7 @@
   "../Oscillazione parassita/Grafici/transitorio_elettrico_vdc0.png" 1790440673.6528 437680 0ed7ff380ae6bd43775f492b44af4b03 ""
   "../Risposta in frequenza/grafici/bode_compensato.png" 1790533394.90188 402159 c72be8f791bcb2643adbcc466bcc3f9f ""
   "../Risposta in frequenza/grafici/bode_completo.png" 1790533394.61913 376920 ed0a13af2bd5ee1ce37fc96ce62f207b ""
-  "/Users/matteoluca/Downloads/es2m progetto/Presentazione/presentazione.tex" 1790754901.26982 19931 a8c7a9ebc6d47cba282f79cf025e5c7b ""
+  "/Users/matteoluca/Downloads/es2m progetto/Presentazione/presentazione.tex" 1791365550.21984 19906 1c23e47143ab5781ef281a4d411b1810 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -305,10 +305,10 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1784573198 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1784573143 3636773 8cd1802d1ce5bb871c77f339a0427035 ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "presentazione.aux" 1790754908.43654 3797 2883076752cad8c5d9feeb1eaed3abfb "pdflatex"
-  "presentazione.nav" 1790754908.43779 2504 f282411faecc54988344dd4ba00e9875 "pdflatex"
-  "presentazione.out" 1790754902.49588 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "presentazione.tex" 1790754901.26982 19931 a8c7a9ebc6d47cba282f79cf025e5c7b ""
+  "presentazione.aux" 1791365559.1478 3797 2883076752cad8c5d9feeb1eaed3abfb "pdflatex"
+  "presentazione.nav" 1791365559.14928 2504 f282411faecc54988344dd4ba00e9875 "pdflatex"
+  "presentazione.out" 1791365553.02997 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "presentazione.tex" 1791365550.21984 19906 1c23e47143ab5781ef281a4d411b1810 ""
   (generated)
   "presentazione.aux"
   "presentazione.log"

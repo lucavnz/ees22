@@ -1,0 +1,30 @@
+\babel@toc {italian}{}\relax 
+\babel@toc {italian}{}\relax 
+\contentsline {section}{\numberline {1}Architettura Fisica e Principio di Funzionamento del MEMS}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Geometria del Micro-Arco e Tecnologia Costruttiva}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Perché la trave vibra nel piano del chip (\textit {In-Plane})?}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Configurazione degli Elettrodi e Polarizzazione Elettrica}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Topologia Elettrostatica a 3 Terminali: La Trave come Armatura Comune}{4}{subsection.1.4}%
+\contentsline {paragraph}{Perché nello schema equivalente si disegna un dipolo a 2 terminali?}{5}{section*.2}%
+\contentsline {subsection}{\numberline {1.5}Perché gli Elettrodi di Drive e Sense non si annullano a vicenda?}{5}{subsection.1.5}%
+\contentsline {section}{\numberline {2}Dal Continuo al Modello a Ordine Ridotto (ROM): Significato Fisico di $x(t)$}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Il Limite del Modello Continuo per l'Ingegnere Elettronico}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Separazione delle Variabili e Forma Modale}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Cosa permette di calcolare la conoscenza di $x(t)$?}{6}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Dinamica a un Grado di Libertà (1-DOF)}{7}{section.3}%
+\contentsline {section}{\numberline {4}Forze Elettrostatiche e Fenomeno dello \textit {Spring Softening}}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Origine della Forza Elettrostatica}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Sviluppo in Serie di Taylor della Capacità: Rigidezza Elettrostatica Negativa}{8}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Esiste uno \textit {Spring Softening} Dinamico dovuto a $v_{\text {in}}(t)$ (AC)?}{9}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Generazione della Corrente Elettrica e Circuito Equivalente RLC}{9}{section.5}%
+\contentsline {subsection}{\numberline {5.1}La Corrente Motrice di Rilevamento ($i_s$)}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Il Modello a Due Porte con Trasformatori Elettromeccanici}{10}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Come si ricava e quanto vale il Fattore di Trasduzione $\eta $?}{10}{subsection.5.3}%
+\contentsline {paragraph}{1. Ricavazione analitica (Modello a facce piane):}{11}{section*.3}%
+\contentsline {paragraph}{2. Corrispondenza con i coefficienti del paper di Frangi et al.:}{11}{section*.4}%
+\contentsline {paragraph}{3. Estrazione sperimentale di $\eta $ in laboratorio:}{11}{section*.5}%
+\contentsline {subsection}{\numberline {5.4}Derivazione Analitica del Ramo RLC Serie Equivalente}{12}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}La Capacità Parassita Diretta ($C_p$)}{12}{subsection.5.5}%
+\contentsline {section}{\numberline {6}Front-End Elettronico di Lettura e Catena di Acquisizione}{12}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Analisi Funzionale degli Stadi}{14}{subsection.6.1}%
+\contentsline {section}{\numberline {7}Tavola di Conversione delle Notazioni e Isomorfismo Elettromeccanico}{14}{section.7}%
