@@ -161,7 +161,7 @@ Lateralmente all'arco sono disposti degli elettrodi ad una distanza di $g_0 = \S
 % =============================================================================
 \section{Equazione del moto}
 
-Un corpo elastico reale come una trave di silicio possiede infiniti gradi di libertà. Lo spostamento lungo $x$ di un generico punto materiale $y \in [0, L]$ all'istante di tempo $t$ è descritto da un campo continuo bidimensionale $u(y, t)$.
+Un corpo elastico reale come una trave di silicio possiede infiniti gradi di libertà. Lo spostamento lungo $x$ di un generico punto materiale $y \in [0, L]$ all'istante di tempo $t$ è descritto da un campo bidimensionale $u(y, t)$.
 
 \vspace{0.3cm}
 \noindent
@@ -243,7 +243,7 @@ Tuttavia, il dispositivo opera con un fattore di qualità molto elevato ($Q \app
 
 \noindent Quando la trave oscilla sul suo modo fondamentale, $\phi(y)$ rimane invariato nel tempo: l'unica grandezza che evolve è l'ampiezza dell'oscillazione al centro, $x(t)$. 
 
-Come riportato nel lavoro di Frangi \cite{frangi2023}, in regime di piccolo segnale (ovvero per spostamenti al centro molto inferiori al gap a riposo, $x(t) \ll g_0$), applicando la seconda legge di Newton ($\sum F = m \cdot a$), l'equazione del moto della trave è:
+In regime di piccolo segnale (ovvero per spostamenti al centro molto inferiori al gap a riposo, $x(t) \ll g_0$), applicando la seconda legge di Newton ($\sum F = m \cdot a$), l'equazione del moto del punto centrale della trave è:
 
 \begin{equation}
     \label{eq:meccanica_1dof}
@@ -261,11 +261,11 @@ dove:
     \item $F_e(t)$ è la risultante delle forze elettrostatiche esercitate dall'elettrodo di attuazione.
 \end{itemize}
 
-\noindent Questa formulazione coincide con il modello a ordine ridotto (ROM) ricavato da Frangi in Eq.~(8) a pag.~7 di \cite{frangi2023}:
+\noindent Questa formulazione coincide con il modello a ordine ridotto (ROM) ricavato da Frangi in eq.~(8) a pag.~7 di \cite{frangi2023}:
 \begin{equation}
     \mathcal{M} \ddot{q}_1(t) + \mathcal{M} \beta_1(q_1) = F_1(q_1)
 \end{equation}
-la variabile $q_1(t)$ coincide con lo spostamento fisico $x(t)$, mentre la funzione elastica $\mathcal{M}\beta_1(q_1)$ si riduce al termine lineare $\mathcal{M} c_1^{(1)} q_1 \equiv k_m x(t)$ (con il coefficiente $c_1^{(1)} = \omega_0^2$ dalla tabella~1 di \cite{frangi2023}). Includendo la dissipazione lineare $\mathcal{M}\frac{\omega_0}{Q}\dot{q}_1$, l'equazione del paper coincide con l'eq.~\eqref{eq:meccanica_1dof}.
+la variabile $q_1(t)$ coincide con lo spostamento $x(t)$, $\mathcal{M}\beta_1(q_1)$ si riduce al termine lineare $\mathcal{M} c_1^{(1)} q_1 = k_m x(t)$ (con il coefficiente $c_1^{(1)} = \omega_0^2$ dalla tabella~1 di \cite{frangi2023}). Includendo la dissipazione lineare $\mathcal{M}\frac{\omega_0}{Q}\dot{q}_1$, l'equazione del paper coincide con l'eq.~\eqref{eq:meccanica_1dof}.
 
 % =============================================================================
 % SEZIONE 4: FORZE ELETTROSTATICHE E SPRING SOFTENING
@@ -296,7 +296,7 @@ dove la differenza di potenziale applicata tra la trave (a potenziale $V_{\text{
 
 Poiché in regime di piccolo segnale $|v_{\text{in}}(t)| \ll V_{\text{DC}}$, il termine quadratico $v_{\text{in}}^2(t)$ può essere trascurato.
 
-In regime di piccole oscillazioni di $x(t)$, rispetto al gap a riposo ($x \ll g_0$), possiamo approssimare la derivata della capacità tramite sviluppo di Taylor attorno alla posizione di riposo $x = 0$:
+In regime di piccole oscillazioni di $x(t)$, possiamo approssimare la derivata della capacità tramite sviluppo di Taylor attorno alla posizione di riposo $x = 0$:
 
 \begin{equation}
     \frac{\partial C_d(x)}{\partial x} \approx \left. \frac{\partial C_d}{\partial x} \right|_{x=0} + \left. \frac{\partial^2 C_d}{\partial x^2} \right|_{x=0} x(t)
@@ -310,7 +310,7 @@ In regime di piccole oscillazioni di $x(t)$, rispetto al gap a riposo ($x \ll g_
 
 \begin{enumerate}
     \item $F_{\text{DC}}$ è la forza statica che determina un minuscolo spostamento della posizione della trave verso l'elettrodo, attorno a cui avviene la vibrazione.
-    \item $k_e$ è la rigidezza elettrostatica. Sostituendo lo sviluppo di $F_e(x, t)$ nell'equazione del moto \eqref{eq:meccanica_1dof} e spostando il termine $k_e x(t)$ al primo membro, l'equazione differenziale della trave diventa:
+    \item $k_e x(t)$ include la rigidezza elettrostatica $k_e$. Sostituendo lo sviluppo di $F_e(x, t)$ nell'equazione del moto \eqref{eq:meccanica_1dof} e spostando il termine $k_e x(t)$ al primo membro, l'equazione differenziale della trave diventa:
     \begin{equation}
         \label{eq:moto_keff}
         m_{\text{eff}} \ddot{x}(t) + b_{\text{eff}} \dot{x}(t) + \underbrace{\left( k_m - k_e \right)}_{k_{\text{eff}}(V_{\text{DC}})} x(t) = F_{\text{drive}}(t)
@@ -360,11 +360,11 @@ Definiamo il fattore di trasduzione in uscita $\eta_{\text{s}} = V_{\text{DC}} \
 L'espressione della corrente di rilevamento si scrive come:
 \begin{equation}
     \label{eq:is_vs_xdot}
-    \bm{i_s(t) = \eta \, \dot{x}(t)}
+    i_s(t) = \eta \, \dot{x}(t)
 \end{equation}
 La corrente erogata dal MEMS è direttamente proporzionale alla velocità meccanica della trave.
 
-\section{Modello equivalente con trasformatori elettromeccanici}
+\section{Modello elettrico equivalente RLC}
 \label{sec:modello_rlc}
 Il legame tra il dominio elettrico e quello meccanico può essere studiato rappresentando il MEMS come un doppio trasformatore ideale (Fig.~\ref{fig:trasformatore}):
 \begin{enumerate}
@@ -437,20 +437,10 @@ Dividendo entrambi i membri per il fattore di accoppiamento $\eta$, otteniamo:
     \underbrace{\left(\frac{m_{\text{eff}}}{\eta^2}\right)}_{L_m} \frac{di_s(t)}{dt} + \underbrace{\left(\frac{b_{\text{eff}}}{\eta^2}\right)}_{R_m} i_s(t) + \underbrace{\left(\frac{k_{\text{eff}}}{\eta^2}\right)}_{\frac{1}{C_m}} \int i_s(t) \, dt = v_{\text{in}}(t)
 \end{equation}
 
-\noindent I tre parametri $L_m$, $R_m$ e $C_m$ costituiscono il cosiddetto \textbf{ramo motrice} (\textit{motional branch}) del circuito equivalente, rappresentando la trasposizione elettrica diretta delle proprietà meccaniche della trave:
-\begin{itemize}
-    \item \textbf{Induttanza motrice ($L_m = \frac{m_{\text{eff}}}{\eta^2}$):} modella l'\textbf{inerzia} della massa risonante $m_{\text{eff}}$. Esattamente come un induttore si oppone alle variazioni di corrente accumulando energia magnetica ($\frac{1}{2} L i^2$), così la massa del silicio si oppone alle variazioni di velocità (accelerazioni) accumulando energia cinetica ($\frac{1}{2} m \dot{x}^2$).
-    
-    \item \textbf{Resistenza motrice ($R_m = \frac{b_{\text{eff}}}{\eta^2}$):} modella i fenomeni di \textbf{dissipazione e attrito} interno (smorzamento viscoso con il gas residuo nella camera a vuoto e perdite termoelastiche nel reticolo cristallino). Come un resistore dissipa potenza elettrica in calore per effetto Joule ($P = R i^2$), così l'attrito dissipa l'energia meccanica della vibrazione in calore ($P = b \dot{x}^2$). Alla frequenza di risonanza, dove le reattanze di $L_m$ e $C_m$ si compensano, $R_m$ è l'unico termine che limita l'ampiezza della corrente: $I_{\text{picco}} = V_{\text{in}} / R_m$.
-    
-    \item \textbf{Capacità motrice ($C_m = \frac{\eta^2}{k_{\text{eff}}}$):} modella la \textbf{cedevolezza elastica} della trave ($1/k_{\text{eff}}$). Così come un condensatore immagazzina energia potenziale elettrostatica sotto forma di carica accumulata sulle armature ($q = C v$), la molla immagazzina energia potenziale elastica sotto forma di deformazione e deflessione meccanica ($x = \frac{1}{k} F$).
-\end{itemize}
+\noindent I tre parametri $L_m$, $R_m$ e $C_m$ costituiscono il modello elettrico equivalente RLC della trave.
 
-\subsection{La Capacità Parassita Diretta (\texorpdfstring{$C_p$}{Cp})}
-Oltre alla trasduzione elettromeccanica dovuta al moto, esiste un accoppiamento capacitivo elettrostatico puramente dielettrico tra i conduttori di drive e di sense, attraverso il substrato di silicio, le piste di interconnessione e il package PLCC68. Tale cammino elettrico è modellato da una capacità parassita $C_p$ posta \textbf{in parallelo} al ramo $RLC$ motrice (Fig.~\ref{fig:mems_circuito}). Anche a MEMS completamente fermo o con polarizzazione disattivata ($V_{\text{DC}} = 0\text{ V} \implies \eta = 0 \implies L_m \to \infty$), il segnale $v_{\text{in}}(t)$ inietta comunque attraverso $C_p$ una corrente parassita di \textit{feedthrough}:
-\begin{equation}
-    i_{Cp}(t) = C_p \frac{dv_{\text{in}}(t)}{dt}
-\end{equation}
+\subsection{Capacità parassita in parallelo}
+Nel dispositivo reale sono presenti accoppiamenti capacitivi parassiti. I risultati raccolti durante la sperimentazione in laboratorio ci hanno indirizzato a modellare una capacità parassita $C_p$ in parallelo al ramo serie RLC, come mostrato in Fig.~\ref{fig:mems_circuito}. Come si vedrà a breve, il nodo da cui viene estratta la corrente $i_{\text{tot}}(t)$ sarà mantenuto a $0\text{ V}$ dalla massa virtuale di un amplificatore a transimpedenza (TIA).
 
 \begin{figure}[htbp]
 \centering
@@ -468,17 +458,19 @@ Oltre alla trasduzione elettromeccanica dovuta al moto, esiste un accoppiamento 
         to[C, l=$C_m$] (6.5, 0)
         -- (6.5, 1.5);
 
-    % Morsetto di uscita
-    \draw (6.5, 1.5) to[short, *-o] (8.0, 1.5) node[right] {$i_{\text{tot}}(t)$ (Al nodo TIA)};
-
-    \draw[dashed, color=black!50] (1.1, -0.7) rectangle (6.9, 3.6);
-    \node[above=2pt, font=\small\bfseries, color=black!70] at (4.0, 3.6) {Modello Equivalente del Risonatore MEMS};
+    % Morsetto di uscita (corrente erogata verso massa virtuale)
+    \draw (6.5, 1.5) to[short, *-o, i=$i_{\text{tot}}(t)$] (8.0, 1.5);
 \end{circuitikz}
-\caption{Circuito equivalente a parametri concentrati del risonatore MEMS: ramo motrice serie $R_m$-$L_m$-$C_m$ in parallelo alla capacità parassita di feedthrough $C_p$.}
+\caption{Circuito equivalente del risonatore MEMS: ramo motrice serie $R_m$-$L_m$-$C_m$ in parallelo alla capacità parassita $C_p$ (con porta di uscita chiusa su massa virtuale).}
 \label{fig:mems_circuito}
 \end{figure}
 
-% =============================================================================
+
+\newpage
+
+
+% 
+=============================================================================
 % SEZIONE 6: CATENA ELETTRONICA DI LETTURA
 % =============================================================================
 \section{Front-End Elettronico di Lettura e Catena di Acquisizione}
@@ -556,38 +548,6 @@ La catena è articolata in due stadi ad alta banda passante:
     \end{itemize}
 \end{enumerate}
 
-% =============================================================================
-% SEZIONE 7: TABELLA DI CORRISPONDENZA MECCANICA-ELETTRICA
-% =============================================================================
-\section{Tavola di Conversione delle Notazioni e Isomorfismo Elettromeccanico}
-A beneficio della chiarezza interdisciplinare tra il formalismo della meccanica razionale (adottato nei paper scientifici sui MEMS) e la teoria dei circuiti elettronici, la Tabella~\ref{tab:isomorfismo} riassume la corrispondenza univoca tra tutte le variabili e i parametri trattati.
-
-\begin{table}[htbp]
-\centering
-\footnotesize
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}p{4.2cm}p{3.2cm}p{4.5cm}l@{}}
-\toprule
-\textbf{Descrizione Fisica} & \textbf{Paper (Meccanica)} & \textbf{Relazione (Elettronica)} & \textbf{Unità SI} \\
-\midrule
-Spostamento scalare / ampiezza modale & $q(t)$ o $q_1(t)$ & $x(t)$ & $\si{\meter}$ ($\si{\micro\meter}$) \\
-Velocità istantanea della trave & $\dot{q}(t)$ & $\dot{x}(t)$ & $\si{\meter/\second}$ \\
-Forma modale nello spazio & $\psi_1(y)$ & $\phi(y)$ & adimensionale \\
-Massa equivalente del risonatore & $\mathcal{M} = 1$ & $m_{\text{eff}}$ & $\si{\kilo\gram}$ \\
-Rigidezza elastica intrinseca & $c_{1,\beta} = \omega_0^2$ & $k_m = \omega_0^2 m_{\text{eff}}$ & $\si{\newton/\meter}$ \\
-Coefficiente di smorzamento & $\omega_0 / Q$ & $b_{\text{eff}} = \omega_0 m_{\text{eff}} / Q$ & $\si{\newton\second/\meter}$ \\
-Fattore di accoppiamento & $\eta_{\text{sense}} = \varepsilon_0 c_{0,DA} V_{\text{DC}}$ & $\eta = V_{\text{DC}} \left. \frac{\partial C}{\partial x} \right|_0$ & $\si{\newton/\volt} \equiv \si{\coulomb/\meter}$ \\
-Corrente di risposta del risonatore & $i_s(t) = \eta_{\text{sense}} \dot{q}_1(t)$ & $i_s(t) = \eta \dot{x}(t)$ & $\si{\ampere}$ \\
-Induttanza equivalente (inerzia) & $L_m = \frac{\mathcal{M}}{\eta_{\text{drive}} \eta_{\text{sense}}} = \frac{1}{2(\varepsilon_0 c_{0,DA} V_{\text{DC}})^2}$ & $L_m = \frac{m_{\text{eff}}}{\eta^2}$ & $\si{\henry}$ \\
-Resistenza equivalente (attrito) & $R_m = \frac{\omega_0 L_m}{Q}$ & $R_m = \frac{b_{\text{eff}}}{\eta^2}$ & $\si{\ohm}$ \\
-Capacità equivalente (cedevolezza) & $C_m = \frac{1}{\omega_r^2 L_m}$ & $C_m = \frac{\eta^2}{k_{\text{eff}}}$ & $\si{\farad}$ \\
-Capacità parassita di feedthrough & $C_p$ & $C_p$ & $\si{\farad}$ \\
-Tensione di sintonizzazione & $V_T$ & $V_T = \SI{0}{\volt}$ (non usata) & $\si{\volt}$ \\
-\bottomrule
-\end{tabular}
-\caption{Dizionario di corrispondenza tra la notazione dei paper accademici di meccanica e la notazione circuitale per ingegneri elettronici.}
-\label{tab:isomorfismo}
-\end{table}
 
 \begin{thebibliography}{9}
 \bibitem{frangi2023}

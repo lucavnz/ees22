@@ -6,8 +6,7 @@
 \contentsline {section}{\numberline {2}Equazione del moto}{3}{section.2}%
 \contentsline {section}{\numberline {3}Forze elettrostatiche}{4}{section.3}%
 \contentsline {section}{\numberline {4}Segnale di corrente dal MEMS}{6}{section.4}%
-\contentsline {section}{\numberline {5}Modello equivalente con trasformatori elettromeccanici}{6}{section.5}%
-\contentsline {subsection}{\numberline {5.1}La Capacità Parassita Diretta ($C_p$)}{7}{subsection.5.1}%
+\contentsline {section}{\numberline {5}Modello elettrico equivalente RLC}{6}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Capacità parassita in parallelo}{7}{subsection.5.1}%
 \contentsline {section}{\numberline {6}Front-End Elettronico di Lettura e Catena di Acquisizione}{8}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Analisi Funzionale degli Stadi}{8}{subsection.6.1}%
-\contentsline {section}{\numberline {7}Tavola di Conversione delle Notazioni e Isomorfismo Elettromeccanico}{9}{section.7}%
