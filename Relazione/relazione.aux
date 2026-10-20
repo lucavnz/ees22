@@ -27,15 +27,79 @@
 \newlabel{eq:is_vs_xdot}{{20}{6}{Segnale di corrente dal MEMS}{equation.20}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Modello elettrico equivalente RLC}{6}{section.5}\protected@file@percent }
 \newlabel{sec:modello_rlc}{{5}{6}{Modello elettrico equivalente RLC}{section.5}{}}
+\citation{frangi2023}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Modello elettromeccanico a due porte del risonatore MEMS.}}{7}{figure.3}\protected@file@percent }
 \newlabel{fig:trasformatore}{{3}{7}{Modello elettromeccanico a due porte del risonatore MEMS}{figure.3}{}}
 \newlabel{eq:rlc_fondamentale}{{26}{7}{Modello elettrico equivalente RLC}{equation.26}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Capacità parassita in parallelo}{7}{subsection.5.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Circuito equivalente del risonatore MEMS: ramo motrice serie $R_m$-$L_m$-$C_m$ in parallelo alla capacità parassita $C_p$ (con porta di uscita chiusa su massa virtuale).}}{7}{figure.4}\protected@file@percent }
-\newlabel{fig:mems_circuito}{{4}{7}{Circuito equivalente del risonatore MEMS: ramo motrice serie $R_m$-$L_m$-$C_m$ in parallelo alla capacità parassita $C_p$ (con porta di uscita chiusa su massa virtuale)}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Capacità parassita in parallelo}{8}{subsection.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Circuito equivalente del risonatore MEMS: ramo motrice serie $R_m$-$L_m$-$C_m$ in parallelo alla capacità parassita $C_p$ (con porta di uscita chiusa su massa virtuale).}}{8}{figure.4}\protected@file@percent }
+\newlabel{fig:mems_circuito}{{4}{8}{Circuito equivalente del risonatore MEMS: ramo motrice serie $R_m$-$L_m$-$C_m$ in parallelo alla capacità parassita $C_p$ (con porta di uscita chiusa su massa virtuale)}{figure.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Circuito di condizionamento}{8}{section.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Schema circuitale del setup di laboratorio: circuito equivalente RLC del MEMS con in parallelo la capacità parassita, e il circuito di condizionamento in uscita.}}{8}{figure.5}\protected@file@percent }
+\newlabel{fig:frontend_schema}{{5}{8}{Schema circuitale del setup di laboratorio: circuito equivalente RLC del MEMS con in parallelo la capacità parassita, e il circuito di condizionamento in uscita}{figure.5}{}}
+\newlabel{eq:transresistenza_totale}{{30}{9}{Circuito di condizionamento}{equation.30}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Caratterizzazione sperimentale della risposta libera (Ring-Down)}{10}{section.7}\protected@file@percent }
+\newlabel{sec:ringdown}{{7}{10}{Caratterizzazione sperimentale della risposta libera (Ring-Down)}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Setup di misura e condizioni di polarizzazione}{10}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Metodologia ed elaborazione del segnale}{10}{subsection.7.2}\protected@file@percent }
+\newlabel{subsec:algoritmi_ringdown}{{7.2}{10}{Metodologia ed elaborazione del segnale}{subsection.7.2}{}}
+\newlabel{eq:legge_decadimento}{{32}{11}{Metodologia ed elaborazione del segnale}{equation.32}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Analisi dei transitori di oscillazione nei diversi regimi}{11}{subsection.7.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Decadimento temporale dell'oscillazione libera (ring-down) in quattro condizioni sperimentali a $V_{\text  {DC}} = \SI {5.0}{\volt }$. In azzurro la traccia campionata (al netto dell'offset DC), in blu i picchi di oscillazione meccanica rilevati e in rosso l'inviluppo esponenziale $A(t) = A_0 e^{-t/\tau }$.}}{12}{figure.6}\protected@file@percent }
+\newlabel{fig:ringdown_4casi}{{6}{12}{Decadimento temporale dell'oscillazione libera (ring-down) in quattro condizioni sperimentali a $V_{\text {DC}} = \SI {5.0}{\volt }$. In azzurro la traccia campionata (al netto dell'offset DC), in blu i picchi di oscillazione meccanica rilevati e in rosso l'inviluppo esponenziale $A(t) = A_0 e^{-t/\tau }$}{figure.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Risposta in ampiezza del risonatore ($A_0$ vs $f_{\text  {in}}$)}{12}{subsection.7.4}\protected@file@percent }
+\newlabel{subsec:risposta_ampiezza}{{7.4}{12}{Risposta in ampiezza del risonatore (\texorpdfstring {$A_0$}{A0} vs \texorpdfstring {$f_{\text {in}}$}{fin})}{subsection.7.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Ampiezza iniziale di oscillazione $A_0$ al momento dello spegnimento dell'eccitazione in funzione della frequenza forzante $f_{\text  {in}}$, a $V_{\text  {DC}} = \SI {5.0}{\volt }$. I cerchi blu sono i dati sperimentali; la linea tratteggiata rossa rappresenta il fit lorentziano.}}{13}{figure.7}\protected@file@percent }
+\newlabel{fig:ampiezza_vs_frequenza}{{7}{13}{Ampiezza iniziale di oscillazione $A_0$ al momento dello spegnimento dell'eccitazione in funzione della frequenza forzante $f_{\text {in}}$, a $V_{\text {DC}} = \SI {5.0}{\volt }$. I cerchi blu sono i dati sperimentali; la linea tratteggiata rossa rappresenta il fit lorentziano}{figure.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Frequenza di oscillazione libera durante il ring-down ($f_1$ vs $f_{\text  {in}}$)}{13}{subsection.7.5}\protected@file@percent }
+\newlabel{subsec:frequenza_ringdown}{{7.5}{13}{Frequenza di oscillazione libera durante il ring-down (\texorpdfstring {$f_1$}{f1} vs \texorpdfstring {$f_{\text {in}}$}{fin})}{subsection.7.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Frequenza di oscillazione libera $f_1$ misurata durante il ring-down rispetto alla frequenza di eccitazione in ingresso $f_{\text  {in}}$. I punti blu indicano le stime ottenute con il metodo Hilbert, i quadrati arancioni quelle con FFT interpolata; la linea tratteggiata rossa evidenzia la media sperimentale $f_1 \approx \SI {417850}{\hertz }$.}}{14}{figure.8}\protected@file@percent }
+\newlabel{fig:frequenza_vs_fin}{{8}{14}{Frequenza di oscillazione libera $f_1$ misurata durante il ring-down rispetto alla frequenza di eccitazione in ingresso $f_{\text {in}}$. I punti blu indicano le stime ottenute con il metodo Hilbert, i quadrati arancioni quelle con FFT interpolata; la linea tratteggiata rossa evidenzia la media sperimentale $f_1 \approx \SI {417850}{\hertz }$}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.6}Costante di tempo di decadimento $\tau $ e stima del fattore di merito $Q$}{14}{subsection.7.6}\protected@file@percent }
+\newlabel{subsec:tau_q}{{7.6}{14}{Costante di tempo di decadimento \texorpdfstring {$\tau $}{tau} e stima del fattore di merito \texorpdfstring {$Q$}{Q}}{subsection.7.6}{}}
+\citation{frangi2023}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Costante di tempo di decadimento $\tau $ ricavata dal fit esponenziale dei picchi durante il ring-down in funzione della frequenza di eccitazione $f_{\text  {in}}$. I quadrati verdi indicano le stime per ciascun file; la linea rossa tratteggiata rappresenta il valor medio sperimentale ($\tau _{\text  {medio}} = \SI {2.32}{\milli \second }$).}}{15}{figure.9}\protected@file@percent }
+\newlabel{fig:tau_vs_frequenza}{{9}{15}{Costante di tempo di decadimento $\tau $ ricavata dal fit esponenziale dei picchi durante il ring-down in funzione della frequenza di eccitazione $f_{\text {in}}$. I quadrati verdi indicano le stime per ciascun file; la linea rossa tratteggiata rappresenta il valor medio sperimentale ($\tau _{\text {medio}} = \SI {2.32}{\milli \second }$)}{figure.9}{}}
+\newlabel{eq:calcolo_Q_sperimentale}{{38}{15}{Costante di tempo di decadimento \texorpdfstring {$\tau $}{tau} e stima del fattore di merito \texorpdfstring {$Q$}{Q}}{equation.38}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Riepilogo dei parametri sperimentali estratti dalle misure di ring-down a $V_{\text  {DC}} = \SI {5.0}{\volt }$.}}{16}{table.1}\protected@file@percent }
+\newlabel{tab:parametri_ringdown}{{1}{16}{Riepilogo dei parametri sperimentali estratti dalle misure di ring-down a $V_{\text {DC}} = \SI {5.0}{\volt }$}{table.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Caratterizzazione sperimentale della risposta in frequenza}{16}{section.8}\protected@file@percent }
+\newlabel{sec:risposta_in_frequenza}{{8}{16}{Caratterizzazione sperimentale della risposta in frequenza}{section.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Setup sperimentale e principio della misura}{16}{subsection.8.1}\protected@file@percent }
+\newlabel{subsec:setup_frequenza}{{8.1}{16}{Setup sperimentale e principio della misura}{subsection.8.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Modello di ammettenza complessiva e interferenza con $C_p$}{17}{subsection.8.2}\protected@file@percent }
+\newlabel{subsec:modello_ammettenza_cp}{{8.2}{17}{Modello di ammettenza complessiva e interferenza con \texorpdfstring {$C_p$}{Cp}}{subsection.8.2}{}}
+\newlabel{eq:trasferimento_totale}{{43}{17}{Modello di ammettenza complessiva e interferenza con \texorpdfstring {$C_p$}{Cp}}{equation.43}{}}
+\@writefile{toc}{\contentsline {paragraph}{Origine fisica della coppia risonanza-antirisonanza (Profilo Fano)}{17}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Risposta in frequenza completa e fit del modello RLC + $C_p$}{18}{subsection.8.3}\protected@file@percent }
+\newlabel{subsec:bode_completo}{{8.3}{18}{Risposta in frequenza completa e fit del modello RLC + \texorpdfstring {$C_p$}{Cp}}{subsection.8.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Diagramma di Bode della risposta in frequenza sperimentale del MEMS a $V_{\text  {DC}} = \SI {5.0}{\volt }$ (fino a $\SI {418.0}{\kilo \hertz }$). In alto il modulo $|V_{\text  {out}}/V_{\text  {in}}|$ espresso in $\si {\decibel }$; in basso lo sfasamento in gradi. I cerchi blu e arancioni rappresentano i 501 punti sperimentali misurati; la linea continua evidenzia la curva di fit del modello congiunto RLC $+ C_p$.}}{18}{figure.10}\protected@file@percent }
+\newlabel{fig:bode_completo}{{10}{18}{Diagramma di Bode della risposta in frequenza sperimentale del MEMS a $V_{\text {DC}} = \SI {5.0}{\volt }$ (fino a $\SI {418.0}{\kilo \hertz }$). In alto il modulo $|V_{\text {out}}/V_{\text {in}}|$ espresso in $\si {\decibel }$; in basso lo sfasamento in gradi. I cerchi blu e arancioni rappresentano i 501 punti sperimentali misurati; la linea continua evidenzia la curva di fit del modello congiunto RLC $+ C_p$}{figure.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.3.1}Algoritmo di fit vettoriale nel piano complesso}{18}{subsubsection.8.3.1}\protected@file@percent }
+\newlabel{eq:modello_fit_complesso}{{46}{19}{Algoritmo di fit vettoriale nel piano complesso}{equation.46}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.3.2}Risultati numerici del fit}{19}{subsubsection.8.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Stima indipendente della capacità parassita $C_p$ (Validazione a tre vie)}{20}{subsection.8.4}\protected@file@percent }
+\newlabel{subsec:stima_indipendente_cp}{{8.4}{20}{Stima indipendente della capacità parassita \texorpdfstring {$C_p$}{Cp} (Validazione a tre vie)}{subsection.8.4}{}}
+\newlabel{eq:cp_da_fit}{{48}{20}{Stima indipendente della capacità parassita \texorpdfstring {$C_p$}{Cp} (Validazione a tre vie)}{equation.48}{}}
+\@writefile{toc}{\contentsline {paragraph}{Perché misurare a $V_{\text  {DC}} = \SI {0}{\volt }$?}{20}{section*.3}\protected@file@percent }
+\newlabel{eq:cp_scope_formula}{{50}{20}{Perché misurare a $V_{\text {DC}} = \SI {0}{\volt }$?}{equation.50}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Confronto a tre vie indipendente sulla capacità parassita $C_p$.}}{21}{table.2}\protected@file@percent }
+\newlabel{tab:confronto_cp}{{2}{21}{Confronto a tre vie indipendente sulla capacità parassita $C_p$}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.5}Compensazione software di $C_p$ e isolamento del picco motrice}{21}{subsection.8.5}\protected@file@percent }
+\newlabel{subsec:compensazione_software}{{8.5}{21}{Compensazione software di \texorpdfstring {$C_p$}{Cp} e isolamento del picco motrice}{subsection.8.5}{}}
+\newlabel{eq:sottrazione_software}{{53}{21}{Compensazione software di \texorpdfstring {$C_p$}{Cp} e isolamento del picco motrice}{equation.53}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.5.1}Interpretazione fisica della risposta compensata}{21}{subsubsection.8.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Diagramma di Bode della risposta in frequenza del solo ramo motrice elettromeccanico, ottenuta a seguito della compensazione software di $C_p$ a $V_{\text  {DC}} = \SI {5.0}{\volt }$. In alto il modulo in scala lineare $|V_{\text  {out}}/V_{\text  {in}}|$; in basso la fase con transizione completa di $180^\circ $. I punti verdi e viola rappresentano i dati sperimentali compensati; la linea continua indica la curva teorica del risonatore del secondo ordine.}}{22}{figure.11}\protected@file@percent }
+\newlabel{fig:bode_compensato}{{11}{22}{Diagramma di Bode della risposta in frequenza del solo ramo motrice elettromeccanico, ottenuta a seguito della compensazione software di $C_p$ a $V_{\text {DC}} = \SI {5.0}{\volt }$. In alto il modulo in scala lineare $|V_{\text {out}}/V_{\text {in}}|$; in basso la fase con transizione completa di $180^\circ $. I punti verdi e viola rappresentano i dati sperimentali compensati; la linea continua indica la curva teorica del risonatore del secondo ordine}{figure.11}{}}
+\citation{frangi2023}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.6}Stima dei parametri RLC equivalenti e confronto con il modello teorico}{23}{subsection.8.6}\protected@file@percent }
+\newlabel{subsec:stima_parametri_rlc}{{8.6}{23}{Stima dei parametri RLC equivalenti e confronto con il modello teorico}{subsection.8.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.6.1}Formule di determinazione dei parametri RLC}{23}{subsubsection.8.6.1}\protected@file@percent }
+\newlabel{eq:rm_sperimentale}{{59}{23}{Formule di determinazione dei parametri RLC}{equation.59}{}}
+\newlabel{eq:lm_sperimentale}{{60}{23}{Formule di determinazione dei parametri RLC}{equation.60}{}}
+\newlabel{eq:cm_sperimentale}{{61}{23}{Formule di determinazione dei parametri RLC}{equation.61}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.6.2}Confronto critico con i valori teorici e interpretazione fisica}{23}{subsubsection.8.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Confronto tra i parametri teorici del paper di riferimento e le stime sperimentali a $V_{\text  {DC}} = \SI {5.0}{\volt }$.}}{24}{table.3}\protected@file@percent }
+\newlabel{tab:confronto_rlc}{{3}{24}{Confronto tra i parametri teorici del paper di riferimento e le stime sperimentali a $V_{\text {DC}} = \SI {5.0}{\volt }$}{table.3}{}}
 \bibcite{frangi2023}{1}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Front-End Elettronico di Lettura e Catena di Acquisizione}{8}{section.6}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Schema elettrico del front-end di acquisizione: amplificatore a transimpedenza (TIA) a basso rumore seguito da uno stadio invertente di guadagno in tensione.}}{8}{figure.5}\protected@file@percent }
-\newlabel{fig:frontend_schema}{{5}{8}{Schema elettrico del front-end di acquisizione: amplificatore a transimpedenza (TIA) a basso rumore seguito da uno stadio invertente di guadagno in tensione}{figure.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Analisi Funzionale degli Stadi}{8}{subsection.6.1}\protected@file@percent }
-\gdef \@abspage@last{9}
+\gdef \@abspage@last{25}
