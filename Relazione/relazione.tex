@@ -583,7 +583,7 @@ In questa sezione presentiamo le misure sperimentali condotte sul risonatore MEM
 Per caratterizzare la risposta dinamica della trave mantenendo il dispositivo in regime lineare di piccolo segnale, sono stati fissati i seguenti parametri operativi:
 \begin{itemize}
     \item \textbf{Tensione di polarizzazione continua (corpo del MEMS):} $V_{\text{DC}} = \SI{5.0}{\volt}$. Questo potenziale costante polarizza il gap elettrostatico, attivando i meccanismi di trasduzione elettromeccanica $\eta$ e definendo la frequenza di risonanza effettiva per effetto di \textit{spring softening}.
-    \item \textbf{Segnale di eccitazione sinusoidale (elettrodo di drive):} $v_{\text{in}}(t) = V_{\text{AC}} \sin(2\pi f_{\text{in}} t)$, con ampiezza costante $V_{\text{AC}} \approx \SI{100}{\milli\volt}$ (corrispondente a una tensione picco-picco di $\SI{200}{\milli\volt_{pp}}$). Tale livello di tensione è sufficientemente basso da non innescare non-linearità geometriche o Duffing durante la vibrazione a regime.
+    \item \textbf{Segnale di eccitazione sinusoidale (elettrodo di drive):} $v_{\text{in}}(t) = V_{\text{AC}} \sin(2\pi f_{\text{in}} t)$, con ampiezza costante $V_{\text{AC}} \approx \SI{100}{\milli\volt}$ (corrispondente a una tensione picco-picco di $\SI{200}{\milli\volt_{pp}}$). Tale livello di tensione è sufficientemente basso da non innescare non-linearità geometriche o di rigidezza ad ampiezza finita durante la vibrazione a regime.
     \item \textbf{Elettrodo di sense e catena di lettura:} l'elettrodo di sense è mantenuto a massa virtuale ($\SI{0}{\volt}$) dall'ingresso del TIA ($R_f = \SI{500}{\kilo\ohm}$), seguito dal secondo stadio con guadagno $-10$, per una trans-resistenza complessiva $R_{\text{trans}} = \SI{5.0}{\mega\ohm}$ come definito dall'eq.~\eqref{eq:transresistenza_totale}.
     \item \textbf{Segnale di modulazione (Gate TTL a $\SI{2.5}{\volt}$):} l'eccitazione sinusoidale $v_{\text{in}}(t)$ è controllata da un segnale di sincronizzazione logico (Gate). Finché il Gate è alto, il segnale sinusoidale alimenta il risonatore che raggiunge la vibrazione stazionaria. Al fronte di discesa del Gate (istante $t = t_{\text{gate}}$), la forzante $v_{\text{in}}(t)$ viene interrotta bruscamente azzerando l'ingresso.
     \item \textbf{Sweep in frequenza:} l'esperimento è stato ripetuto per 25 diverse frequenze discrete di ingresso $f_{\text{in}}$, distribuite in una finestra compresa tra $\SI{417.26}{\kilo\hertz}$ e $\SI{418.40}{\kilo\hertz}$, addensando i punti con un passo fino a $\SI{10}{\hertz}$ in corrispondenza del picco di risonanza.
@@ -776,7 +776,7 @@ Nelle sezioni precedenti abbiamo indagato la dinamica della trave nel dominio de
 Per misurare la funzione di trasferimento del sistema mantenendo il risonatore in regime lineare di piccolo segnale, sono state impostate le seguenti condizioni di misura:
 \begin{itemize}
     \item \textbf{Tensione di polarizzazione continua (corpo del silicio):} $V_{\text{DC}} = \SI{5.0}{\volt}$, identica a quella impiegata nelle misure temporali, attivando la trasduzione elettrostatica $\eta$ e fissando il punto di lavoro del dispositivo.
-    \item \textbf{Segnale di eccitazione sinusoidale di sweep ($v_{\text{in}}$):} generato all'elettrodo di drive con un'ampiezza costante picco-picco di circa $V_{\text{in}} \approx \SI{101.3}{\milli\volt_{pp}}$ (ampiezza di picco $V_{\text{in, pk}} \approx \SI{50.6}{\milli\volt}$). L'ampiezza è sufficientemente ridotta da prevenire deformazioni asimmetriche Duffing della risposta in frequenza.
+    \item \textbf{Segnale di eccitazione sinusoidale di sweep ($v_{\text{in}}$):} generato all'elettrodo di drive con un'ampiezza costante picco-picco di circa $V_{\text{in}} \approx \SI{101.3}{\milli\volt_{pp}}$ (ampiezza di picco $V_{\text{in, pk}} \approx \SI{50.6}{\milli\volt}$). L'ampiezza è sufficientemente ridotta da prevenire distorsioni non lineari asimmetriche della risposta in frequenza.
     \item \textbf{Finestra di sweep in frequenza:} il generatore esegue una scansione discreta su 501 punti compresi nell'intervallo $f_{\text{in}} \in [\SI{417.20}{\kilo\hertz}, \SI{418.00}{\kilo\hertz}]$, con un passo inferiore a $\SI{2}{\hertz}$, così da campionare densamente sia la regione di risonanza che quella di antirisonanza.
     \item \textbf{Catena analogica di condizionamento:} l'elettrodo di sense è mantenuto a massa virtuale ($\SI{0}{\volt}$) dallo stadio TIA (OPA656 con $R_f = \SI{500}{\kilo\ohm}$), seguito dal secondo stadio amplificatore invertente (AD817 con guadagno $G_2 = -10$). Come ricavato nell'eq.~\eqref{eq:transresistenza_totale}, la trans-resistenza complessiva vale:
     \begin{equation}
@@ -1113,6 +1113,806 @@ Frequenza naturale $1/\sqrt{L_m C_m}$ & $f_0$ & $416.3$ & $417.67$ & -- & \si{\k
 \end{enumerate}
 
 \noindent Questo risultato corona l'analisi sperimentale: il modello a lumped-elements RLC in parallelo a $C_p$ non solo riproduce con accuratezza millimetrica le curve di Bode reali, ma rispecchia fedelmente la fisica elettromeccanica intrinseca della microstruttura, separando con limpidezza i parametri puramente elastomeccanici del silicio da quelli di trasduzione elettrostatica e di accoppiamento parassita.
+
+% =============================================================================
+% SEZIONE 9: COMPENSAZIONE HARDWARE ATTIVA E ANALISI NEL PIANO COMPLESSO
+% =============================================================================
+\newpage
+\section{Compensazione hardware attiva della capacità parassita e analisi nel piano complesso}
+\label{sec:compensazione_hardware}
+
+Nella Sezione~\ref{sec:risposta_in_frequenza} abbiamo dimostrato che la risposta in frequenza del MEMS è fortemente mascherata dalla capacità parassita di feedthrough $C_p \approx \SI{0.892}{\pico\farad}$, la cui corrente $i_{Cp}(t) = C_p \frac{dv_{\text{in}}}{dt}$ supera di circa $27\text{ volte}$ la corrente motrice $i_s(t)$ generata dalla vibrazione meccanica della trave.
+
+Sebbene la compensazione software (Sezione~\ref{subsec:compensazione_software}) consenta di isolare analiticamente il picco motrice a posteriori, essa opera esclusivamente a valle dell'acquisizione digitale e presenta tre importanti limitazioni sperimentali:
+\begin{enumerate}
+    \item \textbf{Rischio di saturazione del front-end analogico:} l'amplificatore a transimpedenza (OPA656) e il secondo stadio (AD817) devono comunque elaborare l'intera corrente parassita $i_{Cp}(t)$. All'aumentare della tensione di eccitazione $V_{\text{AC}}$ (ad esempio per esplorare il regime non lineare di grande segnale), l'uscita satura a causa del feedthrough molto prima che la corrente motrice raggiunga livelli elevati.
+    \item \textbf{Perdita di gamma dinamica sull'oscilloscopio:} poiché oltre il $96\%$ dell'ampiezza del segnale in uscita è costituito dal fondo parassita ($\approx \SI{1.2}{\volt}$ contro poche decine di millivolt di segnale motrice), il convertitore A/D dell'oscilloscopio è costretto a lavorare su una scala verticale ampia, riducendo la risoluzione effettiva e degradando il rapporto segnale/rumore di quantizzazione sulla componente meccanica.
+    \item \textbf{Impossibilità di lettura diretta in tempo reale:} all'uscita fisica del circuito la fase rimane bloccata attorno a $+68.6^\circ$, impedendo l'osservazione diretta della risonanza sull'oscilloscopio o l'inserimento del MEMS in un anello analogico chiuso (come un oscillatore auto-sostenuto o un anello ad aggancio di fase PLL).
+\end{enumerate}
+
+Per superare in modo definitivo questi limiti, è stato progettato e realizzato in laboratorio un \textbf{circuito di compensazione hardware attiva}, capace di iniettare direttamente nel nodo di massa virtuale $V^-$ del TIA una corrente di cancellazione $i_{\text{comp}}(t)$ uguale in modulo e sfasata esattamente di $180^\circ$ rispetto alla corrente parassita $i_{Cp}(t)$, elidendo il feedthrough fisicamente e in tempo reale prima che esso entri nello stadio di amplificazione.
+
+\subsection{Architettura del circuito di compensazione hardware attiva}
+\label{subsec:architettura_circuito_comp}
+
+In Fig.~\ref{fig:schema_comp_hw} è riportato lo schema elettrico completo del circuito di compensazione hardware attiva realizzato sperimentalmente, mentre in Fig.~\ref{fig:schema_blocchi_comp_mems} è illustrato il principio di inserzione del ramo di compensazione in parallelo al risonatore MEMS sul nodo di somma a massa virtuale del TIA.
+
+\begin{figure}[htbp]
+\centering
+\vspace{0.3em}
+\begin{circuitikz}[scale=0.62, transform shape, line width=0.7pt]
+  % -----------------------------------------------------------
+  % INGRESSO Vin E STADIO 1: REGOLAZIONE DI FASE (U1)
+  % Ramo ingresso distanziato con C_phi, R_phi1 fissa e R_Pphi1 trimmer
+  % -----------------------------------------------------------
+  \draw (-2.3, 0.5) node[left] {$v_{\text{in}}(t)$} to[short, o-] (-1.6, 0.5)
+    to[C, l=$C_{\phi}$] (-0.3, 0.5)
+    to[short] (0.1, 0.5)
+    to[R, l=$R_{\phi 1}$] (1.6, 0.5)
+    to[short] (2.0, 0.5)
+    to[vR, l=$R_{P\phi 1}$] (3.5, 0.5)
+    to[short] (4.0, 0.5) coordinate (in1);
+
+  \node[op amp] (oa1) at (5.4, 0) {};
+  \node[font=\scriptsize, below=3pt] at (oa1.south) {$U_1$};
+  \draw (in1) -- (oa1.-);
+  \draw (oa1.+) -- ++(0, -0.4) node[ground]{};
+
+  % Retroazione Stadio 1: Rfissa R_phi2 + R_Pphi2 con spaziature
+  \draw (in1) to[short, *-] ++(0, 1.8) coordinate (fb1_start)
+    to[R, l=$R_{\phi 2}$] ++(1.6, 0)
+    to[short] ++(0.3, 0)
+    to[vR, l=$R_{P\phi 2}$] ++(1.6, 0)
+    -- ++(0.3, 0) coordinate (fb1_drop);
+
+  % Connessione uscita U1 e chiusura anello di retroazione
+  \draw (oa1.out) -- (fb1_drop |- oa1.out) coordinate (oa1_join);
+  \draw (fb1_drop) to[short, -*] (oa1_join);
+  
+  % Prolungamento orizzontale verso il partitore
+  \draw (oa1_join) to[short] (9.0, 0) coordinate (turn_div);
+  \node[above=2pt, font=\scriptsize, color=black!65] at (turn_div) {$\Delta\phi \approx 180^\circ$};
+
+  % -----------------------------------------------------------
+  % STADIO 2: REGOLAZIONE DI AMPIEZZA (Partitore R_PA)
+  % -----------------------------------------------------------
+  \draw (turn_div) to[short] (9.0, -0.4)
+    to[R, l_={$R_{A1}$}] (9.0, -2.0)
+    to[short, -*] (9.0, -2.3) coordinate (wiper)
+    to[short] (9.0, -2.6)
+    to[R, l_={$R_{A2}$}] (9.0, -4.2)
+    to[short] (9.0, -4.5) node[ground]{};
+
+  \node[left=3pt, font=\scriptsize, color=black!75] at (wiper) {$R_{PA}$};
+
+  % -----------------------------------------------------------
+  % STADIO 3: BUFFER A GUADAGNO UNITARIO (U2)
+  % -----------------------------------------------------------
+  \node[op amp] (oa2) at (12.0, -1.8) {};
+  \node[font=\scriptsize, below=3pt] at (oa2.south) {$U_2$};
+  
+  % Connessione orizzontale al morsetto (+)
+  \draw (wiper) to[short] (oa2.+);
+
+  % Retroazione unitaria
+  \draw (oa2.out) to[short, -*] ++(0.4, 0) coordinate (buf_out)
+    -- ++(0, 1.4) coordinate (buf_top)
+    -- (10.8, -0.4)
+    |- (oa2.-);
+
+  % -----------------------------------------------------------
+  % STADIO 4: RETE FISSA DI INIEZIONE Cc // R_Pc (senza frecce variabili)
+  % -----------------------------------------------------------
+  \draw (buf_out) to[short] ++(0.6, 0) coordinate (split_inj);
+  
+  % Ramo superiore: Condensatore fisso Cc = 10 pF (senza freccia)
+  \draw (split_inj) to[short, *-] ++(0, 0.8)
+    to[C, l=$C_c$] ++(2.2, 0) coordinate (top_inj);
+
+  % Ramo inferiore: Resistore fisso R_Pc = 1 MOhm (senza freccia)
+  \draw (split_inj) to[short, *-] ++(0, -0.8)
+    to[R, l_=$R_{Pc}$] ++(2.2, 0) coordinate (bot_inj);
+
+  % Ricongiungimento
+  \draw (top_inj) -- ++(0, -0.8) coordinate (join_inj)
+    -- (bot_inj);
+
+  % Connessione finale al nodo TIA con freccia corrente
+  \draw (join_inj) to[short, *-, i=$i_{\text{comp}}(t)$] ++(1.4, 0)
+    to[short, -o] ++(0.3, 0) coordinate (final_node);
+  \node[right=2pt, font=\footnotesize] at (final_node) {Al nodo $V^-$ del TIA};
+
+\end{circuitikz}
+\caption{Schema elettrico del circuito di compensazione hardware attiva: stadio invertitore/sfasatore regolabile ($U_1$), partitore potenziometrico di ampiezza ($R_{PA}$), buffer a guadagno unitario ($U_2$) e rete passiva fissa di iniezione ($C_c = \SI{10}{\pico\farad}$ in parallelo a $R_{Pc} = \SI{1}{\mega\ohm}$) collegata alla massa virtuale $V^-$ del TIA.}
+\label{fig:schema_comp_hw}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=0.72, transform shape, line width=0.7pt]
+    % Ingresso Vin
+    \draw (-1.8, 0.5) node[left] {$v_{\text{in}}(t)$} to[short, o-*] (-0.8, 0.5) coordinate (vin_split);
+
+    % Ramo superiore: MEMS (Cp // RLC)
+    \draw (vin_split) -- (-0.8, 2.2) to[short, -*] (-0.2, 2.2) coordinate (mems_in);
+    \draw (mems_in) -- (-0.2, 3.0) to[C, l=$C_p$] (4.2, 3.0) -- (4.2, 2.2);
+    \draw (mems_in) -- (-0.2, 1.4)
+        to[R, l=$R_m$] (1.2, 1.4)
+        to[L, l=$L_m$] (2.7, 1.4)
+        to[C, l=$C_m$] (4.2, 1.4) -- (4.2, 2.2);
+    \draw (4.2, 2.2) to[short, *-, i=$i_{\text{mems}}(t)$] (5.2, 2.2) -- (5.2, 0.5);
+
+    % Ramo inferiore: Compensazione hardware attiva
+    \draw (vin_split) -- (-0.8, -1.2) -- (0.0, -1.2);
+    \node[draw, rectangle, rounded corners=2pt, fill=chipbg, inner sep=4.5pt, font=\scriptsize\bfseries] (blk_inv) at (1.1, -1.2) {$-\alpha e^{j\delta\phi}$};
+    \node[below=2pt, font=\tiny, color=black!65] at (blk_inv.south) {$U_1 + R_{PA} + U_2$};
+    \draw (blk_inv.east) -- (2.2, -1.2) to[short, -*] (2.4, -1.2) coordinate (inj_in);
+    \draw (inj_in) -- (2.4, -0.5) to[C, l=$C_c$] (4.2, -0.5) -- (4.2, -1.2);
+    \draw (inj_in) -- (2.4, -1.9) to[R, l_=$R_{Pc}$] (4.2, -1.9) -- (4.2, -1.2);
+    \draw (4.2, -1.2) to[short, *-, i_=$i_{\text{comp}}(t)$] (5.2, -1.2) -- (5.2, 0.5);
+
+    % Nodo di somma a massa virtuale V^-
+    \draw (5.2, 0.5) to[short, *-*] (6.0, 0.5) coordinate (sense);
+    \node[above left=1pt, font=\scriptsize\bfseries, text=memsblue!90!black] at (sense) {$V^-$};
+
+    % TIA OPA656
+    \node[op amp] (opamp1) at (7.9, 0) {};
+    \node[font=\scriptsize, below=3pt] at (opamp1.south) {OPA656};
+    \draw (sense) -- (opamp1.-);
+    \draw (opamp1.+) -- ++(0, -0.4) node[ground]{};
+    \draw (sense) to[short, *-] ++(0, 1.5) coordinate (fb1_s)
+        to[R, l=$R_f$] (fb1_s -| opamp1.out)
+        to[short, -*] (opamp1.out);
+
+    % Secondo stadio AD817
+    \draw (opamp1.out) to[short] ++(0.4, 0) to[R, l_=$R_1$] ++(1.7, 0) coordinate (in2);
+    \node[op amp] (opamp2) at (12.5, -0.5) {};
+    \node[font=\scriptsize, below=3pt] at (opamp2.south) {AD817};
+    \draw (in2) -- (opamp2.-);
+    \draw (opamp2.+) -- ++(0, -0.4) node[ground]{};
+    \draw (in2) to[short, *-] ++(0, 1.5) coordinate (fb2_s)
+        to[R, l=$R_2$] (fb2_s -| opamp2.out)
+        to[short, -*] (opamp2.out);
+    \draw (opamp2.out) to[short, -o] ++(0.7, 0) node[right] {$v_{\text{out}}(t)$};
+\end{circuitikz}
+\caption{Schema complessivo dell'architettura di cancellazione attiva: la corrente parassita del MEMS e la corrente in controfase del ramo di compensazione si sommano algebricamente nel nodo di massa virtuale $V^-$ del TIA.}
+\label{fig:schema_blocchi_comp_mems}
+\end{figure}
+
+\subsection{Analisi dettagliata degli stadi e procedura di taratura}
+\label{subsec:analisi_stadi_comp}
+
+Analizziamo la fisica e il dimensionamento di ciascuno dei quattro blocchi che compongono il circuito di Fig.~\ref{fig:schema_comp_hw}:
+
+\subsubsection{Stadio 1 (\texorpdfstring{$U_1$}{U1}): Sfasatore invertente a regolazione disaccoppiata di fase e modulo}
+Per cancellare esattamente la corrente parassita $i_{Cp}(t)$ alla frequenza di risonanza $f_0 \approx \SI{417.8}{\kilo\hertz}$, non è sufficiente un semplice invertitore resistivo ideale. Nella realtà sperimentale, infatti, gli amplificatori operazionali a oltre $\SI{400}{\kilo\hertz}$ introducono un ritardo di fase finito e l'accoppiamento parassita del substrato presenta una piccola componente dissipativa in fase (resistenza parassita di dispersione). Di conseguenza, è indispensabile poter regolare finemente sia la \textbf{fase} (attorno a $180^\circ$) sia il \textbf{modulo} del segnale invertito.
+
+Lo stadio basato sull'operazionale $U_1$ presenta:
+\begin{itemize}
+    \item Un ramo serie di ingresso formato dal condensatore di disaccoppiamento/sfasamento $C_\phi$, dalla resistenza fissa $R_{\phi 1}$ e dal trimmer potenziometrico $R_{P\phi 1}$, per una resistenza serie d'ingresso complessiva:
+    \begin{equation}
+        R_{\text{in}} = R_{\phi 1} + R_{P\phi 1}
+    \end{equation}
+    e un'impedenza complessa d'ingresso $Z_{\text{in}}(s) = R_{\text{in}} + \frac{1}{s C_\phi} = \frac{1 + s C_\phi R_{\text{in}}}{s C_\phi}$.
+    \item Un ramo di retroazione puramente resistivo formato dal resistore fisso $R_{\phi 2}$ in serie al trimmer potenziometrico $R_{P\phi 2}$, per una resistenza di feedback complessiva:
+    \begin{equation}
+        R_{f1} = R_{\phi 2} + R_{P\phi 2}
+    \end{equation}
+\end{itemize}
+La funzione di trasferimento dello stadio $U_1$ nel dominio di Laplace è:
+\begin{equation}
+    \label{eq:T1_laplace}
+    T_1(s) = \frac{V_{U1}(s)}{V_{\text{in}}(s)} = -\frac{R_{f1}}{Z_{\text{in}}(s)} = -\frac{s C_\phi R_{f1}}{1 + s C_\phi R_{\text{in}}} = -\frac{s C_\phi \left(R_{\phi 2} + R_{P\phi 2}\right)}{1 + s C_\phi \left(R_{\phi 1} + R_{P\phi 1}\right)}
+\end{equation}
+Passando al regime sinusoidale permanente ($s = j\omega$), il modulo e la fase di $T_1(j\omega)$ valgono:
+\begin{align}
+    \label{eq:T1_modulo}
+    |T_1(j\omega)| &= \frac{\omega C_\phi R_{f1}}{\sqrt{1 + \left(\omega C_\phi R_{\text{in}}\right)^2}} = \frac{\omega C_\phi \left(R_{\phi 2} + R_{P\phi 2}\right)}{\sqrt{1 + \left[\omega C_\phi \left(R_{\phi 1} + R_{P\phi 1}\right)\right]^2}} \\[6pt]
+    \label{eq:T1_fase}
+    \angle T_1(j\omega) &= 180^\circ + \arctan\left(\frac{1}{\omega C_\phi R_{\text{in}}}\right) = 180^\circ + \arctan\left(\frac{1}{\omega C_\phi \left(R_{\phi 1} + R_{P\phi 1}\right)}\right)
+\end{align}
+
+\paragraph{Ortogonalità della taratura (Fase $\to$ Guadagno):}
+Le equazioni \eqref{eq:T1_modulo} e \eqref{eq:T1_fase} mettono in luce una proprietà progettuale fondamentale:
+\begin{enumerate}
+    \item \textbf{Passo 1 -- Taratura della fase tramite $R_{P\phi 1}$:}
+    Alla frequenza di risonanza $\omega_0 = 2\pi f_0$, si agisce sul trimmer d'ingresso $R_{P\phi 1}$ (con $C_\phi$ scelto in modo che il polo $f_p = \frac{1}{2\pi C_\phi R_{\text{in}}}$ si trovi a frequenza molto più bassa di $f_0$, ossia $\omega_0 C_\phi R_{\text{in}} \gg 1$) per regolare l'angolo di correzione $\delta\phi = \arctan\left(\frac{1}{\omega_0 C_\phi R_{\text{in}}}\right)$ fino ad ottenere l'esatta opposizione di fase ($\Delta\phi = 180.0^\circ$) rispetto alla corrente parassita del MEMS.
+    \item \textbf{Passo 2 -- Taratura del guadagno unitario tramite $R_{P\phi 2}$:}
+    Una volta fissata la fase, si agisce sul trimmer di retroazione $R_{P\phi 2}$ per portare il modulo del guadagno esattamente al valore unitario $|T_1(j\omega_0)| = 1$ (realizzando così l'inversione $T_1(j\omega_0) = -1$). Poiché la resistenza di retroazione $R_{f1} = R_{\phi 2} + R_{P\phi 2}$ non compare nell'espressione della fase \eqref{eq:T1_fase}, vale identicamente:
+    \begin{equation}
+        \frac{\partial \angle T_1(j\omega)}{\partial R_{P\phi 2}} = 0
+    \end{equation}
+    Di conseguenza, la regolazione dell'ampiezza tramite $R_{P\phi 2}$ è \textbf{completamente disaccoppiata dalla fase}: è possibile aggiustare il guadagno senza spostare minimamente la condizione di controfase appena raggiunta.
+\end{enumerate}
+
+\subsubsection{Stadio 2 (\texorpdfstring{$R_{PA}$}{RPA}) e Stadio 3 (\texorpdfstring{$U_2$}{U2}): Partitore potenziometrico e Buffer a guadagno unitario}
+All'uscita dell'operazionale $U_1$ è posto un potenziometro di precisione $R_{PA}$ collegato come partitore di tensione resistivo verso massa (schematizzato in Fig.~\ref{fig:schema_comp_hw} dalle due resistenze complementari $R_{A1}$ e $R_{A2}$ separate dal cursore mobile). Indicando con $\alpha \in [0, 1]$ la posizione adimensionale del cursore:
+\begin{equation}
+    \alpha = \frac{R_{A2}}{R_{A1} + R_{A2}} = \frac{R_{A2}}{R_{PA}}
+\end{equation}
+la tensione prelevata dal cursore viene applicata all'ingresso non invertente dell'operazionale $U_2$, configurato come inseguitore di tensione (\textit{buffer} a guadagno unitario, $G_{U2} = +1$).
+
+La presenza del buffer $U_2$ svolge due funzioni essenziali:
+\begin{itemize}
+    \item Offre un'impedenza d'ingresso altissima al cursore del potenziometro $R_{PA}$, eliminando qualsiasi effetto di carico (\textit{loading effect}) e garantendo che la tensione all'uscita del buffer sia una frazione puramente reale e lineare della tensione di $U_1$, senza introdurre sfasamenti parassiti dipendenti dalla posizione del potenziometro:
+    \begin{equation}
+        v_{\text{buf}}(t) = \alpha \, v_{U1}(t) \approx -\alpha \, v_{\text{in}}(t)
+    \end{equation}
+    \item Presenta un'impedenza d'uscita bassissima (pochi ohm), in grado di pilotare idealmente la rete passiva di iniezione posta a valle.
+\end{itemize}
+
+\subsubsection{Stadio 4 (\texorpdfstring{$C_c \parallel R_{Pc}$}{Cc || RPc}): Sintesi della capacità equivalente variabile con componenti fissi}
+L'uscita del buffer $U_2$ pilota la rete passiva di iniezione costituita dal parallelo di due componenti passivi \textbf{fissi} (privi di regolazione meccanica diretta):
+\begin{itemize}
+    \item Un condensatore ceramico fisso di precisione $C_c = \mathbf{\SI{10}{\pico\farad}}$;
+    \item Un resistore fisso di valore elevato $R_{Pc} = \mathbf{\SI{1}{\mega\ohm}}$.
+\end{itemize}
+
+\paragraph{Perché utilizzare $C_c = \SI{10}{\pico\farad}$ fisso invece di un condensatore variabile?}
+La capacità parassita da compensare nel MEMS vale appena $C_p \approx \SI{0.892}{\pico\farad}$. Impiegare un condensatore variabile (trimmer capacitivo) con capacità inferiore a $\SI{1}{\pico\farad}$ sarebbe impraticabile: i trimmer capacitivi commerciali hanno capacità minime di diversi picofarad, soffrono di forti derive termiche e meccaniche e la sola capacità parassita introdotta dall'utensile di regolazione altererebbe completamente l'equilibrio del ponte.
+
+La topologia adottata risolve elegantemente il problema sintetizzando una \textbf{capacità variabile equivalente controllata in tensione} tramite il partitore resistivo $\alpha$: poiché il terminale di destra di $C_c$ e $R_{Pc}$ è collegato al nodo di massa virtuale $V^-$ del TIA ($\SI{0}{\volt}$), la corrente di compensazione $i_{\text{comp}}(t)$ iniettata nel nodo di somma vale:
+\begin{equation}
+    \label{eq:icomp_completa}
+    i_{\text{comp}}(t) = C_c \frac{dv_{\text{buf}}(t)}{dt} + \frac{v_{\text{buf}}(t)}{R_{Pc}} = -\underbrace{\left(\alpha C_c\right)}_{C_{c,\text{eff}}(\alpha)} \frac{dv_{\text{in}}(t)}{dt} - \underbrace{\left(\frac{\alpha}{R_{Pc}}\right)}_{G_{c,\text{eff}}(\alpha)} v_{\text{in}}(t)
+\end{equation}
+Dal punto di vista del nodo di sense del TIA, l'intero ramo attivo si comporta esattamente come:
+\begin{enumerate}
+    \item Una \textbf{capacità di compensazione equivalente regolabile con continuità}:
+    \begin{equation}
+        C_{c,\text{eff}}(\alpha) = \alpha \, C_c \in [\SI{0}{\pico\farad}, \SI{10}{\pico\farad}]
+    \end{equation}
+    Per eguagliare la capacità parassita del MEMS ($C_p \approx \SI{0.892}{\pico\farad}$) utilizzando il condensatore fisso $C_c = \SI{10}{\pico\farad}$, è sufficiente regolare il potenziometro $R_{PA}$ attorno al rapporto di partizione:
+    \begin{equation}
+        \alpha_{\text{opt}} = \frac{C_p}{C_c} \approx \frac{\SI{0.892}{\pico\farad}}{\SI{10}{\pico\farad}} \approx \mathbf{0.0892} \quad (8.92\%)
+    \end{equation}
+    Un potenziometro multigiri consente così di regolare $C_{c,\text{eff}}$ con una sensibilità nella scala delle frazioni di femtofarad!
+    \item Una \textbf{resistenza di compensazione parassita equivalente}:
+    \begin{equation}
+        R_{Pc,\text{eff}}(\alpha) = \frac{R_{Pc}}{\alpha} \approx \frac{\SI{1}{\mega\ohm}}{0.0892} \approx \SI{11.2}{\mega\ohm}
+    \end{equation}
+    Il resistore fisso $R_{Pc} = \SI{1}{\mega\ohm}$ posto in parallelo a $C_c$ inietta una piccola corrente in controfase puramente resistiva ($-\frac{\alpha}{R_{Pc}} v_{\text{in}}$) che, congiuntamente alla regolazione fine di fase di $U_1$, compensa la conduttanza parassita di perdita del substrato e del package in parallelo al MEMS.
+\end{enumerate}
+
+\noindent Applicando la legge di Kirchhoff delle correnti al nodo invertente $V^-$ del TIA (Fig.~\ref{fig:schema_blocchi_comp_mems}), la corrente netta che fluisce nella resistenza di transimpedenza $R_f = \SI{500}{\kilo\ohm}$ è:
+\begin{equation}
+    \label{eq:inet_tia}
+    i_{\text{net}}(t) = i_{\text{mems}}(t) + i_{\text{comp}}(t) = i_s(t) + \underbrace{\left(C_p - \alpha C_c\right)}_{\Delta C} \frac{dv_{\text{in}}(t)}{dt}
+\end{equation}
+Quando il circuito è tarato ($\alpha C_c \approx C_p$), la capacità differenziale residua $\Delta C = C_p - C_{c,\text{eff}}$ si riduce a poche unità di femtofarad ($\Delta C \approx \SI{6}{\femto\farad} - \SI{13}{\femto\farad}$ rispetto agli $\SI{892}{\femto\farad}$ originari), sopprimendo alla radice oltre il $98.5\%$ della corrente parassita prima che essa entri nell'amplificatore a transimpedenza.
+
+\subsection{Caratterizzazione della cancellazione capacitiva a MEMS spento (\texorpdfstring{$V_{\text{DC}} = \SI{0}{\volt}$}{Vdc = 0 V})}
+\label{subsec:comp_hw_off}
+
+Per verificare sperimentalmente il funzionamento della sola rete di cancellazione in assenza di moto meccanico, è stata eseguita una prima misura spegnendo la tensione di polarizzazione del MEMS ($V_{\text{DC}} = \SI{0}{\volt}$, configurazione \texttt{Off}) ed effettuando uno sweep in frequenza su una banda larga di $\SI{20}{\kilo\hertz}$ ($f_{\text{in}} \in [\SI{407.75}{\kilo\hertz}, \SI{427.75}{\kilo\hertz}]$, 401 punti con passo $\SI{50}{\hertz}$).
+
+Come dimostrato nella Sezione~\ref{subsec:stima_indipendente_cp}, a $V_{\text{DC}} = \SI{0}{\volt}$ il fattore di trasduzione elettromeccanica è nullo ($\eta = 0 \implies i_s(t) = 0$) e il MEMS si riduce alla sola capacità parassita $C_p$. In Fig.~\ref{fig:bode_hw_off} è riportato il diagramma di Bode misurato in questa condizione.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.90\textwidth]{../Compensazione Hardware/grafici/bode_off.png}
+\caption{Funzione di trasferimento sperimentale del sistema con compensazione hardware attiva a MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$) su una banda di $\SI{20}{\kilo\hertz}$. In alto il modulo $|V_{\text{out}}/V_{\text{in}}|$ in $\si{\decibel}$, che evidenzia il profondo notch di cancellazione capacitiva ($-\SI{20.05}{\decibel}$) centrato attorno alla frequenza di lavoro del MEMS; in basso la fase in gradi, caratterizzata dall'inversione di $180^\circ$ nell'attraversamento del punto di bilanciamento.}
+\label{fig:bode_hw_off}
+\end{figure}
+
+\noindent L'analisi fisica di Fig.~\ref{fig:bode_hw_off} fornisce una dimostrazione esemplare del comportamento del circuito:
+\begin{enumerate}
+    \item \textbf{Il notch di cancellazione in modulo:}
+    Lontano dalla frequenza di taratura (agli estremi $\SI{408}{\kilo\hertz}$ e $\SI{427.5}{\kilo\hertz}$), il guadagno vale circa $-\SI{6.0}{\decibel}$ ($V_{\text{out}} \approx \SI{50}{\milli\volt_{pp}}$). Avvicinandosi alla frequenza di risonanza del MEMS ($\approx \SI{417.8}{\kilo\hertz} - \SI{418.5}{\kilo\hertz}$), il modulo sprofonda in un marcato \textbf{minimo di cancellazione (notch)} dove il guadagno scende fino a $\mathbf{-\SI{20.05}{\decibel}}$ ($|V_{\text{out}}/V_{\text{in}}| \approx 0.099$, corrispondente a $V_{\text{out}} \approx \SI{9.9}{\milli\volt_{pp}}$). Rispetto al livello di feedthrough non compensato ($+\SI{21.36}{\decibel}$), al centro del notch si raggiunge un'attenuazione complessiva del disturbo parassita di ben $\mathbf{\SI{41.4}{\decibel}}$ (oltre $117\text{ volte}$ in ampiezza!).
+    \item \textbf{Perché la cancellazione è selettiva in frequenza (forma a V)?}
+    Come ricavato nelle eq.~\eqref{eq:T1_modulo}--\eqref{eq:T1_fase}, lo stadio invertitore/sfasatore $U_1$ contiene la rete passa-alto $C_\phi$-$R_{\text{in}}$, per cui sia il suo modulo $|T_1(\omega)|$ sia il suo sfasamento $\angle T_1(\omega) = 180^\circ + \arctan\left(\frac{1}{\omega C_\phi R_{\text{in}}}\right)$ variano dolcemente al variare della frequenza $\omega$. La funzione di trasferimento residua a $V_{\text{DC}} = \SI{0}{\volt}$ è data dalla differenza vettoriale:
+    \begin{equation}
+        T_{\text{off}}(j\omega) = R_{\text{trans}} \left[ j\omega C_p + T_1(j\omega) \cdot \alpha \left(j\omega C_c + \frac{1}{R_{Pc}}\right) \right]
+    \end{equation}
+    La taratura dei potenziometri $R_{P\phi 1}$ e $R_{PA}$ impone che i due vettori si elidano quasi perfettamente alla frequenza operativa del MEMS ($\omega \approx \omega_0$). Man mano che la frequenza di sweep si discosta da $\omega_0$ di diversi kilohertz, lo sfasamento di $T_1(j\omega)$ deriva lievemente rispetto al valore ottimo di $180^\circ$, facendo crescere linearmente il modulo del vettore differenza residuo.
+    \item \textbf{Il salto di fase di $180^\circ$:}
+    Nel pannello inferiore di Fig.~\ref{fig:bode_hw_off}, per $f < \SI{418}{\kilo\hertz}$ la fase è piatta e stabile attorno a $-10^\circ$ (dove predomina lievemente uno dei due rami), mentre per $f > \SI{419}{\kilo\hertz}$ la fase si assesta piatta a $+165^\circ$. L'attraversamento del punto di equilibrio inverte il segno del vettore corrente differenziale $\Delta \vec{I}$, producendo l'esatta rotazione di $\approx 180^\circ$ tipica del passaggio per uno zero complesso.
+\end{enumerate}
+
+\subsection{Risposta in frequenza a MEMS attivo (\texorpdfstring{$V_{\text{DC}} = \SI{5.0}{\volt}$}{Vdc = 5.0 V}) con compensazione hardware}
+\label{subsec:comp_hw_on}
+
+Una volta tarato il notch di cancellazione, è stata applicata la tensione di polarizzazione continua $V_{\text{DC}} = \SI{5.0}{\volt}$ per attivare il risonatore MEMS ed è stato eseguito uno sweep ad alta risoluzione ($\Delta f_{\text{step}} = \SI{2}{\hertz}$, 401 punti, $V_{\text{in}} \approx \SI{100}{\milli\volt_{pp}}$) attorno alla risonanza meccanica.
+
+L'esperimento è stato condotto per due livelli successivi di affinamento della taratura dei potenziometri:
+\begin{itemize}
+    \item \textbf{Configurazione \texttt{Set 1} (Prima taratura):} regolazione iniziale del ponte di compensazione, che riduce la capacità parassita residua a $\Delta C \approx \SI{10.9}{\femto\farad} - \SI{12.8}{\femto\farad}$.
+    \item \textbf{Configurazione \texttt{Set 2} (Taratura fine ottimizzata):} affinamento micrometrico dei potenziometri $R_{P\phi 1}$ e $R_{PA}$, che porta il residuo capacitivo nel fit complesso fino a $\Delta C \approx \SI{5.7}{\femto\farad}$ (con pavimento di bordo a $-\SI{16.36}{\decibel}$).
+\end{itemize}
+
+In Fig.~\ref{fig:bode_hw_set2} è riportato il diagramma di Bode completo (modulo e fase) ottenuto nella configurazione ottimizzata \texttt{Set 2}, mentre in Fig.~\ref{fig:confronto_set1_set2_off} è mostrato il confronto diretto tra \texttt{Set 1}, \texttt{Set 2} e il fondo a MEMS spento (\texttt{Off}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.90\textwidth]{../Compensazione Hardware/grafici/bode_set2.png}
+\caption{Diagramma di Bode della risposta in frequenza del MEMS con compensazione hardware attiva nella taratura ottimizzata (\texttt{Set 2}, $V_{\text{DC}} = \SI{5.0}{\volt}$). In alto il modulo $|V_{\text{out}}/V_{\text{in}}|$ in $\si{\decibel}$; in basso la fase in gradi, che mostra il completo recupero della transizione di risonanza di $\approx 180^\circ$.}
+\label{fig:bode_hw_set2}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{../Compensazione Hardware/grafici/confronto_modulo_tutti.png}
+\caption{Confronto del modulo della risposta in frequenza attorno alla risonanza tra la prima taratura hardware (\texttt{Set 1}, in magenta), la seconda taratura ottimizzata (\texttt{Set 2}, in blu) e il livello di fondo puramente elettrico misurato a MEMS spento (\texttt{Off}, $V_{\text{DC}} = \SI{0}{\volt}$, in grigio a $-\SI{20}{\decibel}$).}
+\label{fig:confronto_set1_set2_off}
+\end{figure}
+
+\subsubsection{Confronto diretto: senza compensazione vs compensazione hardware e software}
+Per apprezzare visivamente l'efficacia del circuito realizzato, in Fig.~\ref{fig:benchmark_con_senza_hw} è riportato il confronto sulla medesima scala tra la risposta grezza non compensata e la risposta con compensazione hardware attiva (\texttt{Set 2}), mentre in Fig.~\ref{fig:confronto_hw_vs_sw} il modulo lineare ottenuto via hardware è sovrapposto a quello ricavato tramite compensazione software nella Sezione~\ref{subsec:compensazione_software}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.90\textwidth]{../Compensazione Hardware/grafici/confronto_con_senza_compensazione.png}
+\caption{Benchmark diretto tra la risposta in frequenza grezza non compensata (in grigio, dominata da $C_p \approx \SI{892}{\femto\farad}$) e la risposta con compensazione hardware attiva (\texttt{Set 2}, in verde/viola): il pavimento di feedthrough viene abbattuto di oltre $\SI{36.6}{\decibel}$ ($\approx 68\times$) e la fase viene sbloccata dalla quota fissa di $+68.6^\circ$, recuperando l'intera escursione di $180^\circ$.}
+\label{fig:benchmark_con_senza_hw}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{../Compensazione Hardware/grafici/confronto_hardware_vs_software.png}
+\caption{Confronto in scala lineare $|V_{\text{out}}/V_{\text{in}}|$ tra la risposta ottenuta mediante compensazione software (sottrazione vettoriale numerica a posteriori, in viola) e quella misurata direttamente in tempo reale con il circuito di compensazione hardware attiva (\texttt{Set 2}, in verde).}
+\label{fig:confronto_hw_vs_sw}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4.5pt}
+\caption{Confronto quantitativo tra la caratterizzazione senza compensazione, con compensazione software e con compensazione hardware attiva (\texttt{Set 1} e \texttt{Set 2}) a $V_{\text{DC}} = \SI{5.0}{\volt}$.}
+\label{tab:confronto_comp_hw}
+\vspace{0.25cm}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Parametro fisico} & \textbf{Simbolo} & \textbf{Non comp.} & \textbf{Comp. SW} & \textbf{Comp. HW (\texttt{Set 1})} & \textbf{Comp. HW (\texttt{Set 2})} \\
+\midrule
+Frequenza di risonanza & $f_0$ & $\SI{417.67}{\kilo\hertz}$ & $\SI{417.67}{\kilo\hertz}$ & $\SI{417.77}{\kilo\hertz}$ & $\mathbf{\SI{417.75}{\kilo\hertz}}$ \\
+Guadagno al picco & $G_{\text{pk}}$ & $+\SI{21.53}{\decibel}$ ($11.93$) & $-\SI{7.20}{\decibel}$ ($0.436$) & $-\SI{7.70}{\decibel}$ ($0.412$) & $\mathbf{-\SI{6.69}{\decibel}}$ ($\mathbf{0.463}$) \\
+Livello di fondo ai bordi & $G_{\text{base}}$ & $+\SI{21.36}{\decibel}$ ($11.70$) & $\SI{0}{}$ (ideale) & $-\SI{14.92}{\decibel}$ ($0.179$) & $\mathbf{-\SI{16.36}{\decibel}}$ ($\mathbf{0.152}$) \\
+Contrasto picco/fondo & $\Delta G$ & $+\SI{0.17}{\decibel}$ ($1.02\times$) & -- & $+\SI{7.22}{\decibel}$ ($2.30\times$) & $\mathbf{+\SI{9.67}{\decibel}}$ ($\mathbf{3.05\times}$) \\
+Capacità parassita efficace & $C_{\text{eff}}$ & $\SI{892}{\femto\farad}$ ($C_p$) & $\approx \SI{0}{\femto\farad}$ & $\SI{10.9}{\femto\farad} - \SI{12.8}{\femto\farad}$ & $\mathbf{\SI{5.7}{\femto\farad} - \SI{13.3}{\femto\farad}}$ \\
+Frazione di $C_p$ cancellata & $\%$ & $0\%$ & $100\%$ (num.) & $98.6\%$ & $\mathbf{98.5\% - 99.4\%}$ \\
+Escursione di fase & $\Delta\phi$ & $2.2^\circ$ (bloccata) & $180^\circ$ & $\approx 180^\circ$ & $\mathbf{\approx 180^\circ}$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\noindent Dall'esame congiunto dei grafici e della Tabella~\ref{tab:confronto_comp_hw} emergono conclusioni di grande rilievo:
+\begin{enumerate}
+    \item \textbf{Soppressione di oltre il $98.5\%$ del feedthrough in tempo reale:}
+    Nella misura non compensata il picco meccanico era una minuscola increspatura di appena $+\SI{0.17}{\decibel}$ sopra un piedistallo di $+\SI{21.36}{\decibel}$. Il circuito hardware abbatte il fondo parassita di circa $\mathbf{\SI{37}{\decibel} - \SI{41}{\decibel}}$, riducendo la capacità parassita residua $\Delta C$ a circa $\SI{6}{\femto\farad} - \SI{13}{\femto\farad}$ e facendo svettare il picco di risonanza con un contrasto netto di $\mathbf{+\SI{9.67}{\decibel}}$ ($> 3\times$ in tensione lineare) direttamente sullo schermo dell'oscilloscopio.
+    \item \textbf{Coerenza tra compensazione hardware e compensazione software:}
+    Come mostrato in Fig.~\ref{fig:confronto_hw_vs_sw}, l'ampiezza massima del picco misurata fisicamente all'uscita del circuito compensato ($0.463$ lineare, corrispondente a $V_{\text{out}} = \SI{46.0}{\milli\volt_{pp}}$ per $V_{\text{in}} = \SI{99.3}{\milli\volt_{pp}}$) coincide entro il $3\% - 5\%$ con il guadagno motrice puro predetto dalla sottrazione vettoriale software ($A_{\text{mot}} \approx 0.44 - 0.48$). Il lieve spostamento orizzontale della frequenza di risonanza ($\SI{417.75}{\kilo\hertz}$ contro $\SI{417.67}{\kilo\hertz}$, pari a $+\SI{85}{\hertz}$, ovvero appena lo $0.02\%$) è interamente imputabile alla naturale deriva termica del modulo di Young del silicio tra sessioni di misura condotte in giorni differenti.
+\end{enumerate}
+
+\subsection{Analisi vettoriale nel piano complesso (Diagrammi di Nyquist / Cerchi di Ammettenza)}
+\label{subsec:piano_complesso_nyquist}
+
+Un modo estremamente potente ed elegante per unificare l'analisi della risposta in frequenza, l'effetto della capacità parassita $C_p$ e l'azione della compensazione (sia software che hardware) consiste nel rappresentare la funzione di trasferimento $T(j\omega) = \mathrm{Re}\{T(j\omega)\} + j\,\mathrm{Im}\{T(j\omega)\}$ come una curva parametrica nel \textbf{piano complesso di Gauss} (diagramma polare o luogo di Nyquist dell'ammettenza riscalata per $R_{\text{trans}}$).
+
+\subsubsection{Dimostrazione analitica dell'equazione del cerchio di risonanza}
+Consideriamo inizialmente il solo ramo motrice ideale del MEMS allineato in fase ($\phi_m = 0$). In funzione della coordinata adimensionale di disallineamento in frequenza $x(f) = 2Q \frac{f - f_0}{f_0} \in (-\infty, +\infty)$, la funzione di trasferimento motrice si scrive:
+\begin{equation}
+    T_{\text{mot}}(x) = \frac{A_{\text{mot}}}{1 + j x} = \underbrace{\frac{A_{\text{mot}}}{1 + x^2}}_{u(x) = \mathrm{Re}\{T_{\text{mot}}\}} + j \underbrace{\left(-\frac{A_{\text{mot}} x}{1 + x^2}\right)}_{v(x) = \mathrm{Im}\{T_{\text{mot}}\}}
+\end{equation}
+Calcoliamo la distanza quadratica nel piano $(u, v)$ rispetto al punto di coordinate $(A_{\text{mot}}/2, 0)$:
+\begin{align}
+    \left(u(x) - \frac{A_{\text{mot}}}{2}\right)^2 + v^2(x) &= \left(\frac{A_{\text{mot}}}{1 + x^2} - \frac{A_{\text{mot}}}{2}\right)^2 + \left(-\frac{A_{\text{mot}} x}{1 + x^2}\right)^2 \nonumber \\
+    &= \frac{A_{\text{mot}}^2}{4} \frac{(1 - x^2)^2 + 4x^2}{(1 + x^2)^2} = \frac{A_{\text{mot}}^2}{4} \frac{(1 + x^2)^2}{(1 + x^2)^2} = \left(\frac{A_{\text{mot}}}{2}\right)^2
+\end{align}
+Abbiamo così dimostrato che, al variare della frequenza $f$ da $-\infty$ a $+\infty$, il fasore della risposta motrice traccia nel piano complesso una \textbf{circonferenza esatta} (\textit{cerchio di Nyquist o di ammettenza di Kennedy-Pancu}), caratterizzata dalle seguenti proprietà geometriche:
+\begin{itemize}
+    \item \textbf{Diametro della circonferenza:} è esattamente pari al guadagno motrice di picco $D = A_{\text{mot}} = \frac{R_{\text{trans}}}{R_m}$ (raggio $R_{\text{cerchio}} = A_{\text{mot}}/2$), ed è dunque inversamente proporzionale allo smorzamento meccanico del MEMS;
+    \item \textbf{Passaggio per l'origine $(0,0)$:} lontano dalla risonanza ($f \ll f_0$ ovvero $x \to -\infty$, e $f \gg f_0$ ovvero $x \to +\infty$), il punto si chiude sull'origine $(0,0)$ tangenzialmente all'asse immaginario (fase $+90^\circ$ sotto-risonanza e $-90^\circ$ sopra-risonanza);
+    \item \textbf{Vertice di risonanza ($f = f_0 \iff x = 0$):} il fasore si trova nel punto diametralmente opposto all'origine, $(u, v) = (A_{\text{mot}}, 0)$, dove il modulo è massimo e la velocità angolare di scorrimento lungo l'arco rispetto alla frequenza $\left|\frac{d\theta}{df}\right|_{f_0} = \frac{4Q}{f_0}$ raggiunge il suo valore massimo;
+    \item \textbf{Punti di quadratura a metà potenza ($-3\text{ dB}$, $x = \pm 1 \iff f = f_0 \pm \frac{\Delta f}{2}$):} corrispondono ai due vertici superiore e inferiore del diametro trasversale, di coordinate $(A_{\text{mot}}/2, \pm A_{\text{mot}}/2)$ e sfasamento $\mp 45^\circ$.
+\end{itemize}
+
+\paragraph{Effetto geometrico di $\phi_m$ e della capacità parassita $C_p$:}
+Quando includiamo lo sfasamento elettronico della catena di lettura $\phi_m$ e il termine di feedthrough parassita $\vec{T}_{\text{feed}} = C_{\text{re}} + j C_{\text{im}} \approx j\omega_0 C_p R_{\text{trans}}$, la funzione di trasferimento complessiva:
+\begin{equation}
+    \label{eq:cerchio_traslato_complesso}
+    T(f) = \vec{T}_{\text{feed}} + \frac{A_{\text{mot}} e^{j\phi_m}}{1 + j x(f)}
+\end{equation}
+descrive \textbf{la medesima circonferenza di diametro $A_{\text{mot}}$}, ma sottoposta a due trasformazioni rigide elementari nel piano di Gauss:
+\begin{enumerate}
+    \item Una \textbf{rotazione rigida} di un angolo $\phi_m \approx -22^\circ$ attorno al punto di ancoraggio;
+    \item Una \textbf{traslazione rigida} dell'intera circonferenza governata dal vettore di feedthrough $\vec{T}_{\text{feed}} = (C_{\text{re}}, C_{\text{im}})$, che sposta il centro geometrico del cerchio nel punto:
+    \begin{equation}
+        \vec{C}_{\text{centro}} = \vec{T}_{\text{feed}} + \frac{1}{2} A_{\text{mot}} e^{j\phi_m}
+    \end{equation}
+\end{enumerate}
+
+\subsubsection{Confronto sperimentale dei cerchi di Nyquist: prima e dopo la compensazione}
+Per visualizzare questo comportamento direttamente sui dati di laboratorio, è stato sviluppato uno script dedicato (\texttt{Compensazione Hardware/analizza\_piano\_complesso.py}) che esegue un fit vettoriale a proiezione di variabili nel piano complesso e traccia i luoghi di Nyquist sperimentali e teorici.
+
+In Fig.~\ref{fig:cerchio_nyquist_globale} è presentato il confronto tra la vista globale del piano complesso (pannello sinistro) e lo zoom attorno all'origine $(0,0)$ per le configurazioni compensate (pannello destro).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\textwidth]{../Compensazione Hardware/grafici/cerchio_nyquist_confronto_globale.png}
+\caption{Analisi nel piano complesso $\mathrm{Re}\{T(j\omega)\}$ vs $\mathrm{Im}\{T(j\omega)\}$. A sinistra: vista globale che mostra come il vettore parassita $\vec{T}_{\text{feed}}$ ($|\vec{T}_{\text{feed}}| \approx 11.70$, $C_p \approx \SI{0.89}{\pico\farad}$) trasli il piccolo cerchio di risonanza motrice (diametro $A_{\text{mot}} \approx 0.44$) a grande distanza dall'origine $(0,0)$. A destra: zoom sull'origine che mostra il ritorno della circonferenza di risonanza sull'origine grazie alla compensazione software (tratteggio verde) e alla compensazione hardware attiva (\texttt{Set 1} in magenta e \texttt{Set 2} in blu).}
+\label{fig:cerchio_nyquist_globale}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\textwidth]{../Compensazione Hardware/grafici/cerchio_nyquist_dettaglio_fano.png}
+\caption{Interpretazione geometrica vettoriale nel piano complesso. A sinistra: zoom sul cerchio non compensato attorno a $\vec{T}_{\text{feed}} = (4.27, 10.90)$; l'asse radiale uscente dall'origine $(0,0)$ interseca la circonferenza nel punto di massima distanza dall'origine (risonanza costruttiva, $\blacktriangle$ verde a $\SI{21.53}{\decibel}$) e nel punto di minima distanza (antirisonanza distruttiva di Fano, $\blacktriangledown$ rosso a $\SI{21.19}{\decibel}$), distinti dalla risonanza meccanica pura $f_0$ ($\blacklozenge$ arancione). A destra: cerchio ottenuto con compensazione hardware attiva (\texttt{Set 2}), in cui il feedthrough residuo ($\blacksquare$ nero, $\Delta C \approx \SI{5.7}{\femto\farad}$) cade vicinissimo all'origine $(0,0)$, restituendo al vettore $\vec{T}(f)$ (freccia arancione) il pieno contrasto d'ampiezza e la rotazione di fase di $\approx 180^\circ$.}
+\label{fig:cerchio_nyquist_fano}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\textwidth]{../Compensazione Hardware/grafici/nyquist_set2_frequenza.png}
+\caption{Luogo di Nyquist sperimentale nella configurazione compensata hardware ottimizzata (\texttt{Set 2}), mappato cromaticamente in funzione della frequenza forzante $f_{\text{in}} \in [\SI{417.54}{\kilo\hertz}, \SI{418.10}{\kilo\hertz}]$ (con passo costante $\Delta f_{\text{step}} = \SI{2}{\hertz}$). Si noti la rapida spaziatura angolare dei punti lungo l'arco destro nell'intorno della risonanza $f_0 = \SI{417.75}{\kilo\hertz}$, indice dell'elevato fattore di merito $Q$.}
+\label{fig:nyquist_set2_freq}
+\end{figure}
+
+\noindent Le figure~\ref{fig:cerchio_nyquist_globale}, \ref{fig:cerchio_nyquist_fano} e \ref{fig:nyquist_set2_freq} forniscono una chiave di lettura geometrica immediata di tutti i fenomeni osservati nei diagrammi di Bode:
+\begin{enumerate}
+    \item \textbf{Perché senza compensazione si formano una risonanza e un'antirisonanza (Profilo di Fano) traslate rispetto a $f_0$?}
+    Osservando il pannello sinistro di Fig.~\ref{fig:cerchio_nyquist_fano}, il modulo misurato $|T(f)|$ corrisponde geometricamente alla \textbf{distanza euclidea dall'origine $(0,0)$} di un punto che percorre la circonferenza in senso orario al crescere di $f_{\text{in}}$.
+    Tracciando la retta radiale che congiunge l'origine $(0,0)$ con il centro della circonferenza $\vec{C}_{\text{centro}}$ (linea punteggiata grigia), la geometria elementare ci dice che:
+    \begin{itemize}
+        \item Il punto della circonferenza a \textbf{distanza massima dall'origine} ($|\vec{C}_{\text{centro}}| + R_{\text{cerchio}}$, triangolo verde $\blacktriangle$) viene raggiunto \textit{prima} della risonanza meccanica pura $f_0$ (rombo arancione $\blacklozenge$): questo è il picco di risonanza apparente ($\SI{21.53}{\decibel}$ a $\SI{417.59}{\kilo\hertz}$), dove $\vec{T}_{\text{mot}}$ è allineato positivamente lungo la direzione radiale di $\vec{T}_{\text{feed}}$ (interferenza costruttiva).
+        \item Proseguendo lungo il cerchio oltre $f_0$, il fasore attraversa il punto a \textbf{distanza minima dall'origine} ($|\vec{C}_{\text{centro}}| - R_{\text{cerchio}}$, triangolo rosso $\blacktriangledown$): questo è il minimo di antirisonanza ($\SI{21.19}{\decibel}$ a $\SI{417.73}{\kilo\hertz}$), dove $\vec{T}_{\text{mot}}$ punta in verso opposto alla direzione radiale (interferenza distruttiva).
+    \end{itemize}
+    \item \textbf{Perché senza compensazione la fase oscilla di soli $2.2^\circ$ invece di ruotare di $180^\circ$?}
+    Nel pannello sinistro di Fig.~\ref{fig:cerchio_nyquist_globale}, poiché la circonferenza di raggio $R_{\text{cerchio}} \approx 0.22$ si trova a una distanza $|\vec{C}_{\text{centro}}| \approx 11.7$ dall'origine $(0,0)$, essa non racchiude né tocca l'origine: vista dall'origine $(0,0)$, l'intera circonferenza è sottesa da un cono angolare strettissimo di semi-apertura:
+    \begin{equation}
+        \Delta\phi_{\max} = 2 \arcsin\left(\frac{R_{\text{cerchio}}}{|\vec{C}_{\text{centro}}|}\right) \approx 2 \arcsin\left(\frac{0.218}{11.70}\right) \approx \mathbf{2.14^\circ}
+    \end{equation}
+    in perfetto accordo con l'escursione di fase di $\approx 2.2^\circ$ attorno a $+68.6^\circ$ misurata nel diagramma di Bode di Fig.~\ref{fig:bode_completo}!
+    \item \textbf{L'effetto geometrico della compensazione hardware attiva (\texttt{Set 1} e \texttt{Set 2}):}
+    Come mostrato nel pannello destro di Fig.~\ref{fig:cerchio_nyquist_globale} e Fig.~\ref{fig:cerchio_nyquist_fano}, l'iniezione della corrente analogica $i_{\text{comp}}(t)$ cancella il vettore $\vec{T}_{\text{feed}}$, riportando il punto di accumulazione fuori-risonanza ($\blacksquare$ nero) a ridosso dell'origine $(0,0)$ ($|\vec{T}_{\text{feed, res}}| \approx 0.074$, pari a $\Delta C \approx \SI{5.7}{\femto\farad}$ per \texttt{Set 2}). Con la circonferenza ora ancorata all'origine:
+    \begin{itemize}
+        \item La distanza dall'origine passa da un valore quasi nullo fuori risonanza fino all'intero diametro $A_{\text{mot}} \approx 0.46 - 0.50$ a $f = f_0$ (freccia arancione in Fig.~\ref{fig:cerchio_nyquist_fano}), eliminando l'antirisonanza e massimizzando il contrasto;
+        \item Il raggio vettore uscente dall'origine $(0,0)$ spazza un angolo di quasi $180^\circ$ mentre il punto percorre la circonferenza, restituendo per intero la transizione di fase del risonatore meccanico.
+    \end{itemize}
+    \item \textbf{Distribuzione di velocità lungo il cerchio (Fig.~\ref{fig:nyquist_set2_freq}):}
+    Infine, la mappa cromatica di Fig.~\ref{fig:nyquist_set2_freq} evidenzia la dinamica spettrale lungo il cerchio di Nyquist: poiché i campioni sono acquisiti a passo di frequenza costante ($\Delta f_{\text{step}} = \SI{2}{\hertz}$), i punti si accalcano densamente vicino all'origine nelle code fuori banda ($f < \SI{417.60}{\kilo\hertz}$ in viola scuro e $f > \SI{417.95}{\kilo\hertz}$ in giallo-verde), mentre compiono balzi angolari ampi lungo l'arco destro tra $\SI{417.70}{\kilo\hertz}$ e $\SI{417.80}{\kilo\hertz}$ (in corrispondenza dei due punti a metà potenza a $-3\text{ dB}$, separati da una banda $\Delta f = f_0 / Q \approx \SI{218}{\hertz}$).
+\end{enumerate}
+
+\noindent In conclusione, l'integrazione tra il circuito di compensazione hardware attiva e l'analisi vettoriale nel piano complesso dimostra come una rete analogica accuratamente tarata (con condensatore fisso $C_c = \SI{10}{\pico\farad}$, resistore fisso $R_{Pc} = \SI{1}{\mega\ohm}$, partitore potenziometrico disaccoppiato da buffer e stadio sfasatore a regolazione ortogonale) permetta di neutralizzare alla radice una capacità parassita quasi trenta volte superiore al segnale utile, rendendo direttamente osservabile in tempo reale la pura risposta elettromeccanica del micro-risonatore in silicio.
+
+% =============================================================================
+% SEZIONE 10: CARATTERIZZAZIONE IN REGIME DI GRANDE SEGNALE E DERIVA NON LINEARE
+% =============================================================================
+\newpage
+\section{Caratterizzazione in regime di grande segnale: compressione di ampiezza e deriva non lineare di frequenza}
+\label{sec:regime_non_lineare}
+
+Nelle Sezioni~\ref{sec:ringdown}, \ref{sec:risposta_in_frequenza} e \ref{sec:compensazione_hardware} il risonatore MEMS è stato caratterizzato mantenendo l'ampiezza del segnale di pilotaggio entro il limite di piccolo segnale ($V_{\text{in}} \le \SI{200}{\milli\volt_{pp}}$). In tali condizioni lo spostamento del centro dell'arco $q_1(t) = x(t)$ rimane molto inferiore sia allo spessore nel piano della trave ($w = \SI{5}{\micro\meter}$) sia al gap elettrostatico a riposo ($g_0 = \SI{1.8}{\micro\meter}$), garantendo una risposta rigorosamente lineare in cui la frequenza naturale $f_1$ e il guadagno sono indipendenti dall'ampiezza di oscillazione.
+
+In questa sezione studiamo sperimentalmente cosa accade quando la tensione di eccitazione $V_{\text{in}}$ viene incrementata progressivamente fino a $\SI{2000}{\milli\volt_{pp}}$ ($\SI{2.0}{\volt_{pp}}$), spingendo la microstruttura in \textbf{regime non lineare di grande segnale}. Come vedremo, l'ingresso in questo regime si manifesta attraverso due fenomeni fisici strettamente correlati:
+\begin{enumerate}
+    \item Una marcata \textbf{compressione del guadagno (saturazione dell'ampiezza iniziale di ring-down $A_0$)} al crescere della tensione forzante $V_{\text{in}}$;
+    \item Una \textbf{deriva temporale della frequenza istantanea di risonanza $f_1(t)$} durante il decadimento libero (\textit{ring-down}), che parte da un valore più basso ad alta ampiezza e rilassa esponenzialmente verso la frequenza naturale lineare asintotica $f_0$ man mano che l'oscillazione si smorza.
+\end{enumerate}
+
+\subsection{Origine fisica delle non-linearità di rigidezza ad ampiezza finita}
+\label{subsec:origine_non_linearita}
+
+Per comprendere l'origine fisica di questi fenomeni, riprendiamo l'equazione del moto del modello a ordine ridotto (ROM) sviluppato da Gobat, Zega, Frangi et al.~\cite{frangi2023} (eq.~5, 13 e 17 del paper). Quando il risonatore viene eccitato attorno al primo modo flessionale ($i = 1$, con il secondo modo non risonante $q_2 \approx 0$ e tensione di tuning $V_{\text{T}} = \SI{0}{\volt}$), la forza di richiamo elastica del polisilicio $\mathcal{M}\beta_1(q_1)$ e la forza elettrostatica agli elettrodi $F_1(q_1)$ non possono più essere troncate al solo termine lineare in $q_1$, ma devono includere i termini polinomiali quadratici e cubici:
+\begin{enumerate}
+    \item \textbf{Non-linearità meccanica geometrica ($\beta_1(q_1)$):}
+    Dalla Tabella~1 (eq.~5) di~\cite{frangi2023}, l'accelerazione di richiamo elastico della trave ad arco vale:
+    \begin{equation}
+        \beta_1(q_1) = c_1^{(1)} q_1 + c_3^{(1)} q_1^2 + c_6^{(1)} q_1^3
+    \end{equation}
+    dove:
+    \begin{itemize}
+        \item $c_1^{(1)} = \SI{6.85}{\micro\meter/\micro\second^2} = \omega_{01}^2$ rappresenta la rigidezza lineare per unità di massa;
+        \item $c_3^{(1)} = \SI{9.55e-2}{\micro\second^{-2}}$ è il \textbf{coefficiente quadratico meccanico}, generato dall'asimmetria geometrica della curvatura iniziale ad arco della trave;
+        \item $c_6^{(1)} = \SI{3.62e-4}{\micro\meter^{-1}\micro\second^{-2}}$ è il \textbf{coefficiente cubico meccanico}, dovuto all'allungamento assiale della linea media della trave (\textit{mid-plane stretching}) imposto dal vincolo di doppio incastro agli estremi.
+    \end{itemize}
+    \item \textbf{Non-linearità elettrostatica ($f_{DD}^{(1)}(q_1)\,V_{\text{DC}}^2$):}
+    La forza di attrazione elettrostatica nel gap $g_0 - x$ scala in modo fortemente non lineare con lo spostamento ($\propto \frac{V_{\text{DC}}^2}{(g_0 - x)^2}$). Sviluppando in serie di Taylor oltre il primo ordine (Tabella~2 di~\cite{frangi2023}), il contributo elettrostatico al primo modo è:
+    \begin{equation}
+        f_{DD}^{(1)}(q_1) V_{\text{DC}}^2 = \left( c_{0,DD}^{(1)} + c_{1,DD}^{(1)} q_1 + c_{3,DD}^{(1)} q_1^2 + c_{6,DD}^{(1)} q_1^3 \right) V_{\text{DC}}^2
+    \end{equation}
+\end{enumerate}
+
+\noindent Raccogliendo i contributi meccanici ed elettrostatici attorno alla configurazione di equilibrio statico a $V_{\text{DC}} = \SI{5.0}{\volt}$, l'equazione differenziale non lineare del primo modo flessionale assume la forma:
+\begin{equation}
+    \label{eq:oscillatore_non_lineare}
+    \ddot{q}_1 + \frac{\omega_{01}}{Q_1}\dot{q}_1 + \omega_1^2 q_1 + \alpha_2 q_1^2 + \alpha_3 q_1^3 = F_{\text{drive}}(t)
+\end{equation}
+dove $\omega_1 = 2\pi f_0 = \sqrt{c_1^{(1)} - c_{1,DD}^{(1)} V_{\text{DC}}^2}$ è la pulsazione naturale di piccolo segnale, mentre $\alpha_2 = c_3^{(1)} - c_{3,DD}^{(1)} V_{\text{DC}}^2$ e $\alpha_3 = c_6^{(1)} - c_{6,DD}^{(1)} V_{\text{DC}}^2$ sono rispettivamente i coefficienti di rigidezza non lineare quadratica e cubica netti.
+
+\paragraph{Dipendenza della frequenza di risonanza dall'ampiezza di oscillazione (Rammollimento dinamico):}
+In presenza dei termini non lineari $\alpha_2 q_1^2$ e $\alpha_3 q_1^3$, la rigidezza efficace media avvertita dalla trave lungo un ciclo di oscillazione $q_1(t) \approx Q_0 \cos(\omega t)$ dipende dall'ampiezza di vibrazione $Q_0$. Mediante sviluppo perturbativo asintotico (bilanciamento armonico o metodo delle scale multiple fino al secondo ordine), la frequenza naturale di oscillazione $f_1$ varia quadraticamente con l'ampiezza del segnale di uscita $A = R_{\text{trans}} \eta \omega_1 Q_0$:
+\begin{equation}
+    \label{eq:backbone_legge}
+    f_1(A) = f_0 + \kappa_{\text{NL}} A^2 = f_0 - |\kappa_{\text{NL}}| A^2
+\end{equation}
+dove il coefficiente effettivo di anisocronismo $\kappa_{\text{NL}}$, legato ai parametri strutturali da:
+\begin{equation}
+    \kappa_{\text{NL}} \propto f_0 \left( \frac{3\alpha_3}{8\omega_1^2} - \frac{5\alpha_2^2}{12\omega_1^4} \right) < 0
+\end{equation}
+risulta \textbf{negativo} sia per effetto del termine quadratico dell'arco ($-\frac{5\alpha_2^2}{12\omega_1^4} < 0$, che al secondo ordine perturbativo produce sempre una riduzione di rigidezza), sia per il contributo attrattivo elettrostatico ($-c_{6,DD}^{(1)} V_{\text{DC}}^2 < 0$). Fisicamente, all'aumentare dell'ampiezza di oscillazione $A$, la trave sperimenta un \textbf{rammollimento dinamico della rigidezza efficace} (\textit{amplitude-dependent softening}), che sposta la sua frequenza di risonanza verso valori più bassi rispetto alla frequenza lineare $f_0$.
+
+\subsection{Setup sperimentale e compressione dell'ampiezza di risposta (\texorpdfstring{$A_0$}{A0} vs \texorpdfstring{$V_{\text{in}}$}{Vin})}
+\label{subsec:compressione_ampiezza}
+
+Per quantificare sperimentalmente l'insorgere del comportamento non lineare, è stata condotta una campagna di 17 acquisizioni di \textit{ring-down} all'oscilloscopio (\texttt{scope\_49} -- \texttt{scope\_66}) mantenendo fissa la tensione di polarizzazione $V_{\text{DC}} = \SI{5.0}{\volt}$ e la frequenza di eccitazione $f_{\text{in}}$ centrata sulla risonanza di piccolo segnale, e variando l'ampiezza del segnale sinusoidale di ingresso $V_{\text{in}}$ su un intervallo dinamico di 25 volte: da $\SI{80}{\milli\volt_{pp}}$ fino a $\SI{2000}{\milli\volt_{pp}}$.
+Poiché il generatore RF è internamente calibrato su un carico standard da $\SI{50}{\ohm}$ mentre l'elettrodo di drive del MEMS presenta un'impedenza d'ingresso puramente capacitiva ad alta impedenza ($\text{High-}Z$), l'effettiva tensione picco-picco applicata al dispositivo (verificata direttamente sul canale Ch3 dell'oscilloscopio) è pari al doppio del valore nominale impostato ($V_{\text{in, reale}} = 2\,V_{\text{in, nom}}$).
+
+Per ciascuna delle 17 tracce acquisite, il segnale di uscita post-spegnimento del Gate ($t > t_{\text{gate}}$) è stato elaborato scartando i primi $\SI{20}{\micro\second}$ di transitorio elettrico, applicando il filtro passa-banda a fase zero Butterworth ($\SI{390}{\kilo\hertz} - \SI{445}{\kilo\hertz}$, che rimuove qualsiasi deriva di baseline a bassa frequenza) ed estraendo l'ampiezza iniziale $A_0$ e la costante di tempo $\tau$ mediante regressione log-lineare sull'inviluppo analitico di Hilbert.
+
+In Fig.~\ref{fig:ampiezza_compressione_nl} è riportato l'andamento dell'ampiezza iniziale di ring-down $A_0$ in funzione della tensione di eccitazione $V_{\text{in}}$, mentre in Tabella~\ref{tab:risultati_non_lineari} sono elencati i parametri numerici estratti per tutti i 17 livelli di tensione.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{../Duffing/duffing_ampiezza_compressione.png}
+\caption{Ampiezza iniziale del ring-down $A_0$ in funzione della tensione di eccitazione picco-picco $V_{\text{in}}$ a $V_{\text{DC}} = \SI{5.0}{\volt}$. I cerchi blu rappresentano i 17 punti sperimentali misurati; la retta continua blu indica il fit lineare di piccolo segnale ($A_{0,\text{lin}} = k_{\text{lin}} V_{\text{in}}$ con $k_{\text{lin}} = \SI{0.1344}{\milli\volt/\milli\volt_{pp}}$, calcolato per $V_{\text{in}} \le \SI{280}{\milli\volt_{pp}}$).}
+\label{fig:ampiezza_compressione_nl}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{6.5pt}
+\caption{Parametri estratti dalle 17 acquisizioni di ring-down al variare della tensione di eccitazione $V_{\text{in}}$ ($V_{\text{DC}} = \SI{5.0}{\volt}$): ampiezza iniziale misurata $A_0$, stima lineare $A_{0,\text{lin}} = k_{\text{lin}} V_{\text{in}}$, compressione relativa rispetto al regime lineare e costante di tempo di decadimento $\tau$.}
+\label{tab:risultati_non_lineari}
+\vspace{0.2cm}
+\begin{tabular}{cccccc}
+\toprule
+\textbf{File Scope} & $V_{\text{in}}$ [\si{\milli\volt_{pp}}] & $A_0$ misurata [\si{\milli\volt}] & $A_{0,\text{lin}}$ [\si{\milli\volt}] & \textbf{Compressione} & $\tau$ [\si{\milli\second}] \\
+\midrule
+\texttt{scope\_49} & $80.0$   & $11.24$  & $10.75$  & $\approx 0\%$ (lineare) & $2.36$ \\
+\texttt{scope\_51} & $120.0$  & $16.16$  & $16.13$  & $\approx 0\%$ (lineare) & $2.44$ \\
+\texttt{scope\_52} & $160.0$  & $22.84$  & $21.50$  & $\approx 0\%$ (lineare) & $2.28$ \\
+\texttt{scope\_53} & $200.0$  & $27.57$  & $26.88$  & $\approx 0\%$ (lineare) & $2.32$ \\
+\texttt{scope\_54} & $240.0$  & $32.02$  & $32.26$  & $-0.7\%$  & $2.32$ \\
+\texttt{scope\_55} & $280.0$  & $36.34$  & $37.63$  & $-3.4\%$  & $2.32$ \\
+\texttt{scope\_56} & $340.0$  & $41.17$  & $45.70$  & $-9.9\%$  & $2.31$ \\
+\texttt{scope\_57} & $420.0$  & $46.75$  & $56.45$  & $-17.2\%$ & $2.31$ \\
+\texttt{scope\_58} & $500.0$  & $49.97$  & $67.20$  & $-25.6\%$ & $2.29$ \\
+\texttt{scope\_59} & $600.0$  & $54.31$  & $80.64$  & $-32.7\%$ & $2.28$ \\
+\texttt{scope\_60} & $700.0$  & $59.92$  & $94.08$  & $-36.3\%$ & $2.28$ \\
+\texttt{scope\_61} & $800.0$  & $66.06$  & $107.52$ & $-38.6\%$ & $2.27$ \\
+\texttt{scope\_62} & $900.0$  & $72.25$  & $120.96$ & $-40.3\%$ & $2.29$ \\
+\texttt{scope\_63} & $1000.0$ & $78.14$  & $134.40$ & $-41.9\%$ & $2.29$ \\
+\texttt{scope\_64} & $1200.0$ & $86.35$  & $161.28$ & $-46.5\%$ & $2.29$ \\
+\texttt{scope\_65} & $1500.0$ & $90.16$  & $201.60$ & $-55.3\%$ & $2.29$ \\
+\texttt{scope\_66} & $2000.0$ & $100.73$ & $268.80$ & $\mathbf{-62.5\%}$ & $2.29$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Dall'analisi di Fig.~\ref{fig:ampiezza_compressione_nl} e della Tabella~\ref{tab:risultati_non_lineari} si deducono tre risultati fondamentali:
+\begin{enumerate}
+    \item \textbf{Regione di linearità per piccolo segnale ($V_{\text{in}} \le \SI{280}{\milli\volt_{pp}}$):}
+    Per i primi sei punti sperimentali ($\SI{80}{\milli\volt_{pp}} \le V_{\text{in}} \le \SI{280}{\milli\volt_{pp}}$), l'ampiezza di risposta $A_0$ cresce in modo strettamente proporzionale alla tensione di eccitazione, seguendo con precisione la retta passante per l'origine:
+    \begin{equation}
+        A_{0,\text{lin}}(V_{\text{in}}) = k_{\text{lin}} \cdot V_{\text{in}}, \qquad k_{\text{lin}} = \mathbf{\SI{0.1344}{\milli\volt/\milli\volt_{pp}}}
+    \end{equation}
+    Questo conferma a posteriori che la scelta di operare a $V_{\text{in}} \le \SI{200}{\milli\volt_{pp}}$ nelle Sezioni~\ref{sec:ringdown}--\ref{sec:compensazione_hardware} garantisce il pieno rispetto dell'ipotesi di linearità.
+    \item \textbf{Soglia di compressione e saturazione ad alto segnale ($V_{\text{in}} > \SI{300}{\milli\volt_{pp}}$):}
+    Superata la soglia di circa $\SI{280}{\milli\volt_{pp}} - \SI{300}{\milli\volt_{pp}}$ ($A_0 \approx \SI{36}{\milli\volt}$), i punti sperimentali si distaccano progressivamente verso il basso rispetto alla retta teorica lineare, mostrando una forte \textbf{compressione di guadagno}. A $V_{\text{in}} = \SI{500}{\milli\volt_{pp}}$ la risposta è già compressa del $25.6\%$ ($\SI{49.97}{\milli\volt}$ contro $\SI{67.20}{\milli\volt}$); a $V_{\text{in}} = \SI{1000}{\milli\volt_{pp}}$ la riduzione raggiunge il $41.9\%$ ($\SI{78.14}{\milli\volt}$ contro $\SI{134.40}{\milli\volt}$); infine, alla massima eccitazione di $V_{\text{in}} = \SI{2000}{\milli\volt_{pp}}$, l'ampiezza misurata è pari a $\mathbf{\SI{100.73}{\milli\volt}}$ a fronte dei $\SI{268.80}{\milli\volt}$ predetti dal modello lineare, con una compressione netta del $\mathbf{62.5\%}$ ($-\SI{8.52}{\decibel}$).
+    \item \textbf{Meccanismo fisico dell'auto-disaccordamento risonante (\textit{self-detuning}):}
+    È essenziale osservare dall'ultima colonna della Tabella~\ref{tab:risultati_non_lineari} che la costante di tempo di smorzamento $\tau$ rimane invariata attorno a $\tau \approx \SI{2.29}{\milli\second} - \SI{2.32}{\milli\second}$ fino a $\SI{2000}{\milli\volt_{pp}}$: la compressione di $A_0$ \textbf{non è dunque causata da un aumento dell'attrito o della dissipazione meccanica}.
+    Il fenomeno è invece governato dallo spostamento non lineare della frequenza di risonanza \eqref{eq:backbone_legge}: prima dello spegnimento del Gate, il generatore pilota la trave a frequenza fissa $f_{\text{in}} \approx f_0$. Non appena l'ampiezza di oscillazione $A$ cresce, il rammollimento dinamico abbassa la frequenza naturale istantanea del MEMS ($f_1(A) = f_0 - |\kappa_{\text{NL}}| A^2 < f_{\text{in}}$). Poiché la campana di risonanza del MEMS è estremamente stretta ($\Delta f = f_0 / Q \approx \SI{137}{\hertz}$), uno slittamento verso il basso della frequenza propria di poche decine o centinaia di hertz porta rapidamente il risonatore \textbf{fuori sintonia rispetto alla forzante esterna}. Di conseguenza, l'impedenza meccanica vista dal generatore diventa fortemente reattiva, limitando il trasferimento di energia meccanica alla trave e determinando l'andamento sub-lineare osservato in Fig.~\ref{fig:ampiezza_compressione_nl}.
+\end{enumerate}
+
+\subsection{Evoluzione temporale della frequenza istantanea durante il ring-down (\texorpdfstring{$f_1(t)$}{f1(t)})}
+\label{subsec:chirp_frequenza_ringdown}
+
+La prova sperimentale diretta e definitiva del legame tra ampiezza di oscillazione e frequenza propria di risonanza $f_1(A) = f_0 - |\kappa_{\text{NL}}| A^2$ si ottiene analizzando l'evoluzione temporale della frequenza istantanea $f_1(t)$ \textbf{all'interno di un singolo transitorio di ring-down} successivo allo spegnimento del Gate ($t > 0$).
+
+\subsubsection{Modello analitico del rilassamento di frequenza}
+Durante il decadimento libero post-spegnimento ($v_{\text{in}}(t) = 0$), l'ampiezza dell'oscillazione meccanica si smorza esponenzialmente nel tempo con costante caratteristica $\tau$:
+\begin{equation}
+    A(t) = A_0 \, e^{-t/\tau}
+\end{equation}
+Sostituendo la legge di decadimento dell'ampiezza $A(t)$ all'interno della relazione di dipendenza ampiezza-frequenza \eqref{eq:backbone_legge}, otteniamo la legge analitica che governa l'evoluzione temporale della frequenza istantanea di oscillazione libera $f_1(t)$ dal taglio del Gate fino allo spegnimento completo:
+\begin{equation}
+    \label{eq:chirp_esponenziale}
+    f_1(t) = f_0 - |\kappa_{\text{NL}}| \left( A_0 \, e^{-t/\tau} \right)^2 = f_0 - \Delta f_0 \, e^{-2t/\tau} = f_0 - \Delta f_0 \, e^{-t/\tau_f}
+\end{equation}
+dove:
+\begin{itemize}
+    \item $f_0$ è la \textbf{frequenza naturale lineare asintotica} (raggiunta per $t \gg \tau_f$, quando l'ampiezza residua $A(t) \to 0$ ritorna nel regime di piccolo segnale);
+    \item $\Delta f_0 = |\kappa_{\text{NL}}| A_0^2 \ge 0$ è l'abbassamento iniziale di frequenza (\textit{frequency shift} non lineare) all'istante $t = 0$, tanto più marcato quanto maggiore è l'ampiezza iniziale $A_0$ (e dunque la tensione $V_{\text{in}}$ applicata prima dello spegnimento);
+    \item $\tau_f \approx \frac{\tau}{2}$ è la costante di tempo di rilassamento della frequenza: poiché lo spostamento di frequenza dipende dal \textbf{quadrato dell'ampiezza} $A^2(t)$ (ossia dall'energia meccanica istantanea $E(t) \propto A^2(t) \propto e^{-2t/\tau}$), la frequenza recupera il proprio valore lineare a una velocità doppia rispetto al decadimento dell'inviluppo di tensione ($\tau_f \approx \SI{1.05}{\milli\second} - \SI{1.15}{\milli\second}$ a fronte di $\tau \approx \SI{2.30}{\milli\second}$).
+\end{itemize}
+
+\subsubsection{Stima numerica della frequenza istantanea e risultati sperimentali}
+Per misurare variazioni di frequenza dell'ordine di poche decine di hertz su una portante di $\SI{417.8}{\kilo\hertz}$ ($\Delta f / f_0 \sim 10^{-4}$) nell'arco di soli $\SI{3.5}{\milli\second}$, la semplice derivata numerica punto-punto della fase istantanea amplificherebbe in modo inaccettabile il rumore ad alta frequenza. È stato pertanto adottato uno stimatore a \textbf{regressione lineare mobile (OLS su finestra scorrevole)} applicato alla fase srotolata dell'inviluppo analitico di Hilbert $\phi(t) = \mathrm{unwrap}\left(\angle z(t)\right)$:
+\begin{itemize}
+    \item Per ciascun istante centrale $t_c \in [\SI{0.42}{\milli\second}, \SI{3.75}{\milli\second}]$ (con passo di avanzamento di $\SI{60}{\micro\second}$), viene isolata una finestra temporale simmetrica di larghezza $W = \SI{0.75}{\milli\second}$ (contenente circa $313$ cicli completi di oscillazione del MEMS);
+    \item All'interno della finestra viene calcolata la pendenza della retta dei minimi quadrati $\phi(t) \approx 2\pi f_1(t_c)\, t + \phi_0$, ottenendo una stima di $f_1(t_c)$ con risoluzione sub-hertziana;
+    \item I dati sperimentali estratti per quattro livelli rappresentativi di eccitazione ($V_{\text{in}} = \SI{200}{\milli\volt_{pp}}$, $\SI{500}{\milli\volt_{pp}}$, $\SI{1000}{\milli\volt_{pp}}$ e $\SI{2000}{\milli\volt_{pp}}$) sono stati infine sottoposti a un \textbf{fit globale pesato} del modello esponenziale \eqref{eq:chirp_esponenziale}, vincolando un'unica frequenza asintotica lineare comune $f_0$ per tutte le curve.
+\end{itemize}
+
+In Fig.~\ref{fig:frequenza_tempo_nl} è riportato il grafico dell'evoluzione temporale della frequenza di risonanza $f_1(t)$ al variare della tensione di eccitazione $V_{\text{in}}$.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{../Duffing/duffing_backbone_e_chirp.png}
+\caption{Evoluzione temporale della frequenza istantanea di risonanza $f_1(t)$ durante il ring-down (in funzione del tempo trascorso dal taglio del Gate) per quattro tensioni di eccitazione: $V_{\text{in}} = \SI{200}{\milli\volt}$ (cerchi verdi), $\SI{500}{\milli\volt}$ (quadrati ambra), $\SI{1000}{\milli\volt}$ (triangoli arancio scuro) e $\SI{2000}{\milli\volt}$ (rombi rossi). Le curve continue rappresentano il fit congiunto del modello teorico di rilassamento esponenziale $f_1(t) = f_0 - \Delta f_0 e^{-t/\tau_f}$ convergente alla frequenza lineare comune $f_0 \approx \SI{417787}{\hertz}$.}
+\label{fig:frequenza_tempo_nl}
+\end{figure}
+
+\noindent L'esame di Fig.~\ref{fig:frequenza_tempo_nl} mette in luce in modo cristallino la fisica non lineare della microtrave:
+\begin{enumerate}
+    \item \textbf{Costanza della frequenza nel regime di piccolo segnale ($V_{\text{in}} = \SI{200}{\milli\volt_{pp}}$, curva verde):}
+    Per $V_{\text{in}} = \SI{200}{\milli\volt_{pp}}$ ($A_0 = \SI{27.57}{\milli\volt}$), i punti sperimentali (cerchi verdi) si dispongono attorno a una retta perfettamente orizzontale dal principio alla fine del decadimento, al valore costante:
+    \begin{equation}
+        f_0 \approx \mathbf{\SI{417787}{\hertz}} \quad (\SI{417.787}{\kilo\hertz})
+    \end{equation}
+    In questa condizione lo spostamento della trave è sufficientemente piccolo da rendere trascurabile il termine $|\kappa_{\text{NL}}|A^2$: l'oscillatore è rigorosamente isocrono (la frequenza non dipende dall'ampiezza).
+    \item \textbf{Abbassamento iniziale della frequenza e deriva positiva (\textit{up-chirp}) ad alta eccitazione:}
+    All'aumentare della tensione di eccitazione, la frequenza iniziale misurata subito dopo il taglio del Gate ($t = \SI{0.42}{\milli\second}$) subisce uno spostamento negativo sempre più pronunciato:
+    \begin{itemize}
+        \item Per $\mathbf{V_{\text{in}} = \SI{500}{\milli\volt_{pp}}}$ (curva ambra): la frequenza parte da $f_1(\SI{0.42}{\milli\second}) \approx \SI{417762}{\hertz}$ ($-\SI{25}{\hertz}$ rispetto a $f_0$, con $\Delta f_0 \approx \SI{37}{\hertz}$ estrapolato a $t=0$) e risale gradualmente con costante di tempo $\tau_f \approx \SI{1.05}{\milli\second}$;
+        \item Per $\mathbf{V_{\text{in}} = \SI{1000}{\milli\volt_{pp}}}$ (curva arancio scuro): la frequenza parte da $f_1(\SI{0.42}{\milli\second}) \approx \SI{417720}{\hertz}$ ($-\SI{67}{\hertz}$ rispetto a $f_0$, con $\Delta f_0 \approx \SI{98}{\hertz}$ a $t=0$) e recupera monotonamente verso l'alto;
+        \item Per $\mathbf{V_{\text{in}} = \SI{2000}{\milli\volt_{pp}}}$ (curva rossa): nei primi istanti del decadimento, quando la trave vibra alla massima ampiezza ($A_0 \approx \SI{100.7}{\milli\volt}$), la frequenza propria scende fino a $f_1(\SI{0.42}{\milli\second}) \approx \mathbf{\SI{417676}{\hertz}}$, ovvero oltre $\mathbf{\SI{111}{\hertz}}$ al di sotto della frequenza lineare (con uno shift iniziale estrapolato a $t=0$ di $\Delta f_0 \approx \SI{163}{\hertz}$, superiore all'intera larghezza di banda a $-\SI{3}{\decibel}$ del risonatore!).
+    \end{itemize}
+    \item \textbf{Convergenza asintotica universale per $t \gtrsim \SI{3.5}{\milli\second}$:}
+    Man mano che il tempo scorre e l'energia meccanica immagazzinata nella trave viene dissipata ($t > \SI{3.0}{\milli\second} - \SI{3.5}{\milli\second}$), l'ampiezza residua $A(t)$ di tutte le tracce scende al di sotto dei $\SI{15}{\milli\volt} - \SI{20}{\milli\volt}$, rientrando nel regime lineare di piccolo segnale. Come previsto dall'eq.~\eqref{eq:chirp_esponenziale}, l'effetto di rammollimento non lineare svanisce ($\Delta f_0 e^{-t/\tau_f} \to 0$) e \textbf{tutte e quattro le curve convergono asintoticamente al medesimo valore lineare $f_0 \approx \SI{417787}{\hertz}$}, dimostrando che la variazione di frequenza osservata è un fenomeno elastico-elettrostatico completamente reversibile legato unicamente all'ampiezza istantanea di oscillazione della trave.
+\end{enumerate}
+
+% =============================================================================
+% SEZIONE 11: DISTORSIONE ARMONICA E ACCOPPIAMENTO CON IL SECONDO MODO (1:2)
+% =============================================================================
+\newpage
+\section{Distorsione armonica di secondo ordine e accoppiamento con il secondo modo flessionale}
+\label{sec:distorsione_armonica}
+
+Nella Sezione~\ref{sec:regime_non_lineare} abbiamo esaminato gli effetti delle non-linearità meccaniche ed elettrostatiche sulla frequenza e sull'ampiezza della componente fondamentale di oscillazione ($f_1 \approx \SI{417.8}{\kilo\hertz}$). In questa sezione estendiamo l'analisi al dominio spettrale in regime forzato permanente, studiando la generazione della \textbf{componente di seconda armonica} a frequenza doppia ($f_2 = 2 f_1 \approx \SI{835.6}{\kilo\hertz}$) e il suo legame con il \textbf{secondo modo flessionale} della trave ad arco ($f_{02} \approx \SI{834.15}{\kilo\hertz}$).
+
+\subsection{Origine fisica della componente a frequenza doppia (\texorpdfstring{$f_2 = 2 f_1$}{f2 = 2 f1}) e risonanza interna 1:2}
+\label{subsec:origine_distorsione_12}
+
+Come descritto nella Sezione~1 e formalizzato da Gobat, Zega, Frangi et al.~\cite{frangi2023}, la geometria ad arco della microtrave è stata specificamente progettata affinché la frequenza naturale del primo modo flessionale simmetrico ($f_{01} \approx \SI{416.66}{\kilo\hertz}$ da analisi FEM) e quella del secondo modo flessionale nel piano ($f_{02} \approx \SI{834.15}{\kilo\hertz}$, sesto autovalore globale della struttura) si trovino in un rapporto prossimo a $1:2$ ($\omega_{02} \approx 2\omega_{01}$).
+
+Quando il risonatore viene pilotato all'elettrodo di drive con una tensione sinusoidale pura $v_{\text{in}}(t) = V_{\text{AC}}\sin(\omega_1 t)$ di ampiezza picco-picco $V_{\text{ac}} = 2 V_{\text{AC}}$ centrata sulla risonanza del primo modo ($\omega_1 \approx \omega_{01}$), il sistema di equazioni differenziali accoppiate del modello a ordine ridotto (eq.~19--20 a pag.~23 di~\cite{frangi2023}) si scrive:
+\begin{align}
+    \label{eq:rom_accoppiato_modo1}
+    \ddot{q}_1 + \frac{\omega_{01}}{Q_1}\dot{q}_1 + k_1 q_1 + k_3 q_1 q_2 &= f_1 \sin(\omega_1 t) \\[4pt]
+    \label{eq:rom_accoppiato_modo2}
+    \ddot{q}_2 + \frac{\omega_{02}}{Q_2}\dot{q}_2 + k_2 q_2 + k_4 q_1^2 &= 0
+\end{align}
+dove $q_1(t)$ e $q_2(t)$ sono le coordinate modali del primo e del secondo modo flessionale, $k_1 = \omega_1^2$, $k_2 = \omega_2^2$ sono le rigidezze lineari efficaci (comprensive del termine di \textit{spring softening} elettrostatico a $V_{\text{DC}} = \SI{5.0}{\volt}$), $f_1 = 2 V_{\text{DC}} V_{\text{AC}} c_{0,DA}^{(1)}$ è l'ampiezza della forzante sul primo modo, e i coefficienti di accoppiamento non lineare quadratico valgono (dalle Tabelle~1 e 2 di~\cite{frangi2023} per $V_{\text{T}} = \SI{0}{\volt}$):
+\begin{equation}
+    k_3 = c_4^{(1)} - c_{4,DD}^{(1)} V_{\text{DC}}^2, \qquad
+    k_4 = c_3^{(2)} - c_{3,DD}^{(2)} V_{\text{DC}}^2
+\end{equation}
+con $c_3^{(2)} = -\SI{5.52e-2}{\micro\second^{-2}}$ (derivante dalla curvatura iniziale dell'arco) e $c_{3,DD}^{(2)} = -\SI{0.51}{\micro\newton\,\micro\meter/(\volt^2\,\pico\farad)}$ (derivante dalla non-linearità elettrostatica).
+
+\paragraph{Meccanismo di generazione quadratica del secondo modo:}
+Analizziamo passo-passo come l'eccitazione a frequenza $\omega_1$ generi la risposta a frequenza doppia $2\omega_1$:
+\begin{enumerate}
+    \item \textbf{Risposta lineare del primo modo ($p_1 \propto V_{\text{ac}}$):}
+    In regime di piccolo e medio segnale, la coordinata del primo modo risponde alla forzante risonante con un'oscillazione armonica alla frequenza fondamentale $\omega_1$:
+    \begin{equation}
+        q_1(t) = Q_1 \cos(\omega_1 t + \phi_1), \qquad \text{con } Q_1 \propto V_{\text{ac}}
+    \end{equation}
+    \item \textbf{Forzante interna quadratica sul secondo modo ($q_1^2(t)$):}
+    Nell'equazione \eqref{eq:rom_accoppiato_modo2} del secondo modo non è presente alcuna forzante elettrica diretta a frequenza $\omega_1$, ma compare il termine di accoppiamento quadratico $-k_4 q_1^2(t)$. Sviluppando il quadrato di $q_1(t)$ mediante le formule di duplicazione del coseno:
+    \begin{equation}
+        -k_4 q_1^2(t) = -k_4 Q_1^2 \cos^2(\omega_1 t + \phi_1) = -\frac{1}{2} k_4 Q_1^2 - \frac{1}{2} k_4 Q_1^2 \cos(2\omega_1 t + 2\phi_1)
+    \end{equation}
+    si osserva che la vibrazione del primo modo agisce come una \textbf{sorgente di eccitazione interna a frequenza esattamente doppia} $\omega_2 = 2\omega_1 \approx 2\pi \times \SI{835.6}{\kilo\hertz}$, la cui ampiezza di spinta scala con il \textbf{quadrato} dell'ampiezza del primo modo ($Q_1^2 \propto V_{\text{ac}}^2$). Poiché la frequenza $2\omega_1 \approx \SI{835.6}{\kilo\hertz}$ cade nelle immediate vicinanze della risonanza propria del secondo modo flessionale ($f_{02} \approx \SI{834.15}{\kilo\hertz}$), tale termine quadratico eccita selettivamente il secondo modo con ampiezza:
+    \begin{equation}
+        Q_2 = \frac{\frac{1}{2}|k_4| Q_1^2}{\sqrt{\left(\omega_2^2 - (2\omega_1)^2\right)^2 + \left(\frac{\omega_{02} \cdot 2\omega_1}{Q_2}\right)^2}} \propto Q_1^2 \propto V_{\text{ac}}^2
+    \end{equation}
+    \item \textbf{Contributi quadratici concorrenti (auto-distorsione del primo modo e lettura capacitiva):}
+    Alla risposta meccanica del secondo modo $q_2(t)$ si sommano in modo coerente alla medesima frequenza $2\omega_1$ anche la componente di seconda armonica di $q_1(t)$ generata dalla rigidezza quadratica $\alpha_2 q_1^2$ nell'eq.~\eqref{eq:oscillatore_non_lineare} e il termine quadratico della corrente di lettura (eq.~15 di~\cite{frangi2023}):
+    \begin{equation}
+        i_s(t) = V_{\text{DC}} \left[ f_{DA}^{(1)}(q_1, q_2)\,\dot{q}_1 + f_{DA}^{(2)}(q_1, q_2)\,\dot{q}_2 \right]
+    \end{equation}
+    in cui sia il termine lineare del secondo modo $c_{0,DA}^{(2)} \dot{q}_2(t)$ sia il termine misto del primo modo $c_{1,DA}^{(1)} q_1(t)\dot{q}_1(t) = -\frac{1}{2}\omega_1 c_{1,DA}^{(1)} Q_1^2 \sin(2\omega_1 t)$ oscillano a $2\omega_1$ con ampiezza rigorosamente proporzionale a $V_{\text{ac}}^2$.
+\end{enumerate}
+
+\paragraph{Leggi teoriche di scala per le ampiezze spettrali $p_1$, $p_2$ e per la distorsione $p_2 / p_1$:}
+Indicando con $p_1$ l'ampiezza della riga spettrale di tensione in uscita alla frequenza fondamentale $f_1 \approx \SI{417.8}{\kilo\hertz}$ e con $p_2$ l'ampiezza della riga spettrale a frequenza doppia $f_2 = 2 f_1 \approx \SI{835.6}{\kilo\hertz}$, il modello teorico predice le tre relazioni fondamentali:
+\begin{align}
+    \label{eq:legge_p1_lineare}
+    p_1(V_{\text{ac}}) &= k_1 \, V_{\text{ac}} && \text{(legge lineare del } 1^\circ \text{ modo)} \\[4pt]
+    \label{eq:legge_p2_quadratica}
+    p_2(V_{\text{ac}}) &= k_2 \, V_{\text{ac}}^2 && \text{(legge quadratica del } 2^\circ \text{ modo)} \\[4pt]
+    \label{eq:legge_hd2_lineare}
+    \text{HD}_2(V_{\text{ac}}) &= \frac{p_2(V_{\text{ac}})}{p_1(V_{\text{ac}})} = \frac{k_2 \, V_{\text{ac}}^2}{k_1 \, V_{\text{ac}}} = \left(\frac{k_2}{k_1}\right) V_{\text{ac}} = k_{\text{hd2}} \, V_{\text{ac}} && \text{(crescita lineare del rapporto } p_2/p_1\text{)}
+\end{align}
+
+\subsection{Setup di misura e metodologia di analisi spettrale ad alta accuratezza}
+\label{subsec:setup_metodologia_distorsione}
+
+Per verificare sperimentalmente le leggi di scala \eqref{eq:legge_p1_lineare}--\eqref{eq:legge_hd2_lineare}, il risonatore MEMS (polarizzato a $V_{\text{DC}} = \SI{5.0}{\volt}$ e collegato al circuito di compensazione hardware attiva) è stato eccitato in regime sinusoidale continuo alla frequenza di risonanza del primo modo ($f_1 \approx \SI{417.81}{\kilo\hertz}$), acquisendo all'oscilloscopio 16 tracce temporali (\texttt{scope\_174} -- \texttt{scope\_189}, ciascuna di $N = 16000$ campioni) al variare dell'ampiezza di eccitazione nominale:
+\begin{equation*}
+    V_{\text{ac}} \in \{20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 300, 400, 500, 600, 700, 800\}\,\si{\milli\volt_{pp}}
+\end{equation*}
+
+\paragraph{Eliminazione dello \textit{scalloping loss} (effetto \textit{picket-fence}) tramite finestra di Hann e Zero-Padding $64\times$:}
+Un'analisi FFT elementare eseguita su una finestra rettangolare di $N = 16000$ campioni senza sovra-campionamento in frequenza presenta una spaziatura discreta tra i bin spettrali di circa $\Delta f_{\text{bin}} = F_s / N \approx \SI{1}{\kilo\hertz}$. Poiché le righe spettrali a $f_1 \approx \SI{417.81}{\kilo\hertz}$ e $f_2 \approx \SI{835.62}{\kilo\hertz}$ sono puramente monocromatiche ma non cadono quasi mai su un multiplo intero di $\Delta f_{\text{bin}}$, il campionamento discreto dello spettro cade tra due bin adiacenti (\textit{picket-fence effect}), producendo una grave sottostima dell'ampiezza dei picchi (\textit{scalloping loss} fino al $20\% - 25\%$) e una dispersione erratica della distorsione misurata.
+
+Per estrarre le vere ampiezze fisiche $p_1$ e $p_2$ con precisione metrologica (script \texttt{Distorsione/analizza\_distorsione.py}), a ciascuna traccia è stata applicata la seguente pipeline spettrale:
+\begin{enumerate}
+    \item \textbf{Rimozione della componente continua (DC):} sottrazione del valor medio $\bar{v}_{\text{out}}$ per eliminare il lobo a frequenza zero;
+    \item \textbf{Finestratura di Hann con compensazione del guadagno coerente:} moltiplicazione del segnale per la finestra di Hann $w[n] = \frac{1}{2}\left[1 - \cos\left(\frac{2\pi n}{N-1}\right)\right]$ (che abbatte i lobi secondari di \textit{spectral leakage} a oltre $-\SI{31.5}{\decibel}$) e normalizzazione dell'ampiezza spettrale per il guadagno coerente esatto $G_{\text{coh}} = \frac{1}{N}\sum_{n=0}^{N-1} w[n] = 0.5$;
+    \item \textbf{Zero-Padding a $64\times$ ($N_{\text{pad}} = 64 N = 1\,024\,000$ punti):} aggiunta di zeri in coda prima del calcolo della FFT, che interpola in modo esatto la Trasformata di Fourier a Tempo Discreto (DTFT) su una griglia finissima con passo $\Delta f_{\text{pad}} = \Delta f_{\text{bin}} / 64 \approx \SI{15}{\hertz}$, permettendo di centrare il vertice esatto dei lobi principali a $f_1$ e $f_2$ con errore di scalloping inferiore allo $0.01\%$.
+\end{enumerate}
+
+\subsection{Risultati sperimentali: ampiezze armoniche (\texorpdfstring{$p_1, p_2$}{p1, p2}) e distorsione di secondo modo (\texorpdfstring{$p_2 / p_1$}{p2/p1})}
+\label{subsec:risultati_distorsione}
+
+In Fig.~\ref{fig:distorsione_armoniche_vac} è riportato l'andamento sperimentale delle ampiezze spettrali del primo modo ($p_1$ a $f_1 \approx \SI{417.8}{\kilo\hertz}$, cerchi blu) e del secondo modo ($p_2$ a $f_2 \approx \SI{835.6}{\kilo\hertz}$, quadrati rossi) in funzione della tensione di eccitazione $V_{\text{ac}}$, insieme alle rispettive curve di fit teorico lineare e quadratico.
+In Fig.~\ref{fig:distorsione_hd2_rapporto} è invece mostrato il rapporto percentuale di distorsione del secondo modo $\text{HD}_2 = p_2 / p_1$ in funzione di $V_{\text{ac}}$, mentre la Tabella~\ref{tab:risultati_distorsione} riassume i valori numerici estratti su tutte le 16 acquisizioni.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{../Distorsione/distorsione_armoniche_vs_vac.png}
+\caption{Ampiezze delle componenti armoniche all'uscita del circuito di condizionamento in funzione dell'ampiezza di eccitazione $V_{\text{ac}}$ ($V_{\text{DC}} = \SI{5.0}{\volt}$): componente fondamentale del primo modo $p_1$ a $f_1 \approx \SI{417.8}{\kilo\hertz}$ (cerchi blu e fit lineare $p_1 = k_1 V_{\text{ac}}$) e componente di seconda armonica / secondo modo $p_2$ a $f_2 \approx \SI{835.6}{\kilo\hertz}$ (quadrati rossi e fit quadratico $p_2 = k_2 V_{\text{ac}}^2$).}
+\label{fig:distorsione_armoniche_vac}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{../Distorsione/distorsione_hd2_rapporto.png}
+\caption{Rapporto di distorsione armonica di secondo modo $\text{HD}_2 = p_2 / p_1$ (espresso in percentuale) in funzione dell'ampiezza di eccitazione $V_{\text{ac}}$. I cerchi verdi rappresentano i dati sperimentali; la retta continua verde mostra la legge teorica lineare $\text{HD}_2 = (k_2/k_1)\,V_{\text{ac}}$ con pendenza $k_{\text{hd2}} = \SI{0.01911}{\%/\milli\volt_{pp}}$.}
+\label{fig:distorsione_hd2_rapporto}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{6.5pt}
+\caption{Risultati dell'analisi spettrale ad alta risoluzione (Finestra di Hann + Zero-Padding $64\times$) sulle 16 acquisizioni all'oscilloscopio (\texttt{scope\_174} -- \texttt{scope\_189}) al variare di $V_{\text{ac}}$.}
+\label{tab:risultati_distorsione}
+\vspace{0.2cm}
+\begin{tabular}{ccccccc}
+\toprule
+\textbf{File Scope} & $V_{\text{ac}}$ [\si{\milli\volt_{pp}}] & $f_1$ [\si{\kilo\hertz}] & $p_1$ (\textbf{$1^\circ$ modo}) [\si{\milli\volt}] & $f_2$ [\si{\kilo\hertz}] & $p_2$ (\textbf{$2^\circ$ modo}) [\si{\milli\volt}] & $\text{HD}_2 = p_2/p_1$ [\%] \\
+\midrule
+\texttt{scope\_175} & $20.0$  & $417.81$ & $1.50$  & $830.16^*$ & $0.013^*$ & $0.84\%$ \\
+\texttt{scope\_176} & $40.0$  & $417.78$ & $2.74$  & $836.03$   & $0.028$   & $1.02\%$ \\
+\texttt{scope\_177} & $60.0$  & $417.81$ & $3.93$  & $838.13$   & $0.068$   & $1.73\%$ \\
+\texttt{scope\_178} & $80.0$  & $417.81$ & $4.98$  & $835.94$   & $0.101$   & $2.03\%$ \\
+\texttt{scope\_174} & $100.0$ & $417.81$ & $5.99$  & $835.63$   & $0.146$   & $2.43\%$ \\
+\texttt{scope\_179} & $120.0$ & $417.81$ & $6.12$  & $835.94$   & $0.163$   & $2.67\%$ \\
+\texttt{scope\_180} & $140.0$ & $417.81$ & $6.87$  & $835.63$   & $0.226$   & $3.29\%$ \\
+\texttt{scope\_181} & $160.0$ & $417.78$ & $7.99$  & $835.40$   & $0.281$   & $3.51\%$ \\
+\texttt{scope\_182} & $180.0$ & $417.81$ & $8.66$  & $835.63$   & $0.330$   & $3.82\%$ \\
+\texttt{scope\_183} & $200.0$ & $417.81$ & $9.15$  & $835.94$   & $0.379$   & $4.15\%$ \\
+\texttt{scope\_184} & $300.0$ & $417.78$ & $16.42$ & $835.87$   & $0.959$   & $5.84\%$ \\
+\texttt{scope\_185} & $400.0$ & $417.81$ & $20.51$ & $836.25$   & $1.675$   & $8.17\%$ \\
+\texttt{scope\_186} & $500.0$ & $417.81$ & $22.87$ & $836.56$   & $2.268$   & $9.92\%$ \\
+\texttt{scope\_187} & $600.0$ & $417.81$ & $23.45$ & $836.56$   & $2.456$   & $10.47\%$ \\
+\texttt{scope\_188} & $700.0$ & $417.81$ & $24.90$ & $836.56$   & $2.776$   & $11.15\%$ \\
+\texttt{scope\_189} & $800.0$ & $417.81$ & $\mathbf{28.14}$ & $836.56$ & $\mathbf{3.457}$ & $\mathbf{12.28\%}$ \\
+\bottomrule
+\multicolumn{7}{l}{\footnotesize $^*$A $V_{\text{ac}} = \SI{20}{\milli\volt_{pp}}$ l'ampiezza della seconda armonica ($\approx \SI{13}{\micro\volt}$) è prossima al pavimento di rumore termico dell'oscilloscopio.}
+\end{tabular}
+\end{table}
+
+\noindent Dall'esame congiunto di Fig.~\ref{fig:distorsione_armoniche_vac}, Fig.~\ref{fig:distorsione_hd2_rapporto} e della Tabella~\ref{tab:risultati_distorsione} emergono conclusioni fisiche di grande rilievo:
+\begin{enumerate}
+    \item \textbf{Verifica delle leggi teoriche di scala per $V_{\text{ac}} \le \SI{500}{\milli\volt_{pp}}$:}
+    \begin{itemize}
+        \item \textit{Primo modo ($p_1$, curva blu in Fig.~\ref{fig:distorsione_armoniche_vac}):} fino a $V_{\text{ac}} \approx \SI{400}{\milli\volt_{pp}}$, l'ampiezza della fondamentale segue fedelmente la retta di proporzionalità diretta:
+        \begin{equation}
+            p_1(V_{\text{ac}}) = k_1 \, V_{\text{ac}}, \qquad k_1 = \mathbf{\SI{0.05019}{\milli\volt/\milli\volt_{pp}}}
+        \end{equation}
+        raggiungendo $p_1 = \SI{20.51}{\milli\volt}$ per $V_{\text{ac}} = \SI{400}{\milli\volt_{pp}}$ (in pieno accordo con la previsione lineare di $\SI{20.08}{\milli\volt}$).
+        \item \textit{Secondo modo ($p_2$, curva rossa in Fig.~\ref{fig:distorsione_armoniche_vac}):} nell'intero intervallo da $\SI{60}{\milli\volt_{pp}}$ fino a $\SI{500}{\milli\volt_{pp}}$, i punti sperimentali di $p_2$ si adagiano con eccellente accuratezza sulla parabola quadratica passante per l'origine:
+        \begin{equation}
+            p_2(V_{\text{ac}}) = k_2 \, V_{\text{ac}}^2, \qquad k_2 = \mathbf{\SI{9.589e-6}{\milli\volt/\milli\volt_{pp}^2}}
+        \end{equation}
+        Ad esempio, raddoppiando la tensione di eccitazione da $\SI{200}{\milli\volt_{pp}}$ a $\SI{400}{\milli\volt_{pp}}$, l'ampiezza del secondo modo quadruplica da $\SI{0.379}{\milli\volt}$ a $\SI{1.675}{\milli\volt}$ (rapporto $\approx 4.4\times$), dimostrando in modo inequivocabile la natura quadratica ($\propto q_1^2$) del meccanismo di generazione a $f_2 = 2 f_1 \approx \SI{835.6}{\kilo\hertz}$.
+        \item \textit{Crescita lineare della distorsione armonica $\text{HD}_2 = p_2 / p_1$ (Fig.~\ref{fig:distorsione_hd2_rapporto}):} il rapporto tra la parabola quadratica $p_2$ e la retta lineare $p_1$ cresce linearmente con l'ampiezza di eccitazione secondo la pendenza teorica:
+        \begin{equation}
+            \text{HD}_2(V_{\text{ac}}) = k_{\text{hd2}} \, V_{\text{ac}}, \qquad k_{\text{hd2}} = \frac{k_2}{k_1} \times 100\% = \mathbf{\SI{0.01911}{\%/\milli\volt_{pp}}} \quad (\approx \SI{1.91}{\%} \text{ ogni } \SI{100}{\milli\volt_{pp}})
+        \end{equation}
+        passando da circa l'$1\%$ a $\SI{40}{\milli\volt_{pp}}$, al $4.15\%$ a $\SI{200}{\milli\volt_{pp}}$, fino al $9.92\%$ a $\SI{500}{\milli\volt_{pp}}$.
+    \end{itemize}
+    \item \textbf{Compressione ad alta eccitazione ($V_{\text{ac}} \in [\SI{600}{\milli\volt_{pp}}, \SI{800}{\milli\volt_{pp}}]$):}
+    Per tensioni superiori a $\SI{500}{\milli\volt_{pp}}$, si osserva in Fig.~\ref{fig:distorsione_armoniche_vac} che l'ampiezza della fondamentale $p_1$ inizia a piegare al di sotto della retta blu (attestandosi a $\SI{28.14}{\milli\volt}$ a $\SI{800}{\milli\volt_{pp}}$ rispetto ai $\SI{40.15}{\milli\volt}$ del modello lineare, con una compressione del $-29.9\%$), in perfetta coerenza con il fenomeno di auto-disaccordamento risonante dimostrato nella Sezione~\ref{sec:regime_non_lineare}.
+    Poiché l'eccitazione interna del secondo modo è governata dal termine quadratico $-k_4 q_1^2(t)$, la saturazione dell'ampiezza $q_1$ del primo modo frena conseguentemente anche la crescita di $p_2$ (che a $\SI{800}{\milli\volt_{pp}}$ raggiunge $\SI{3.46}{\milli\volt}$ invece dei $\SI{6.14}{\milli\volt}$ della parabola teorica), facendo sì che anche il rapporto $\text{HD}_2 = p_2 / p_1$ in Fig.~\ref{fig:distorsione_hd2_rapporto} mostri una lieve flessione sub-lineare ad alti livelli di pilotaggio, raggiungendo il valore massimo di $\mathbf{12.28\%}$ a $V_{\text{ac}} = \SI{800}{\milli\volt_{pp}}$.
+\end{enumerate}
 
 \begin{thebibliography}{9}
 \bibitem{frangi2023}

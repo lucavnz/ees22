@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.10.20)  20 OCT 2026 16:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.10.20)  22 OCT 2026 16:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1148,17 +1148,18 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) (relazione.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10.95> on input line 4.
-)
-\tf@toc=\write5
-\openout5 = `relazione.toc'.
-
  [1
 
 {C:/Users/Accetazione/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/User
 s/Accetazione/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}{C:/Us
 ers/Accetazione/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}
 {C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.en
-c}]
+c}])
+\tf@toc=\write5
+\openout5 = `relazione.toc'.
+
+ [2{C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ma
+thsy.enc}]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 6
 3.
 
@@ -1174,11 +1175,10 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <9> on input line 136.
 
-[2{C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mat
-hsy.enc}{C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/
-lm-ts1.enc}] [3] [4{C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/en
-c/dvips/lm/lm-mathex.enc}] [5] [6] [7] [8] [9] [10] [11]
-<../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png, id=299, 1011.78pt x 722.
+[3{C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1
+.enc}] [4] [5{C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/enc/dvip
+s/lm/lm-mathex.enc}] [6] [7] [8] [9] [10] [11] [12]
+<../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png, id=423, 1011.78pt x 722.
 7pt>
 File: ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png Graphic file (type p
 ng)
@@ -1186,7 +1186,7 @@ ng)
 Package pdftex.def Info: ../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png  
 used on input line 646.
 (pdftex.def)             Requested size: 437.0374pt x 312.17749pt.
-<../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png, id=302, 635.976pt x 3
+<../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png, id=426, 635.976pt x 3
 97.485pt>
 File: ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png Graphic file (typ
 e png)
@@ -1194,8 +1194,8 @@ e png)
 Package pdftex.def Info: ../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.pn
 g  used on input line 664.
 (pdftex.def)             Requested size: 373.3035pt x 233.31322pt.
- [12 <../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png>]
-<../Ampiezza_Frequenza/grafici/ringdown_fit_dettaglio.png, id=313, 635.976pt x 
+ [13 <../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png>]
+<../Ampiezza_Frequenza/grafici/ringdown_fit_dettaglio.png, id=438, 635.976pt x 
 397.485pt>
 File: ../Ampiezza_Frequenza/grafici/ringdown_fit_dettaglio.png Graphic file (ty
 pe png)
@@ -1203,8 +1203,8 @@ pe png)
 Package pdftex.def Info: ../Ampiezza_Frequenza/grafici/ringdown_fit_dettaglio.p
 ng  used on input line 689.
 (pdftex.def)             Requested size: 373.3035pt x 233.31322pt.
- [13 <../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png>]
-<../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png, id=324, 635.976pt x 397.48
+ [14 <../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png>]
+<../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png, id=448, 635.976pt x 397.48
 5pt>
 File: ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png Graphic file (type png
 )
@@ -1212,9 +1212,9 @@ File: ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png Graphic file (type png
 Package pdftex.def Info: ../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png  us
 ed on input line 710.
 (pdftex.def)             Requested size: 373.3035pt x 233.31322pt.
- [14 <../Ampiezza_Frequenza/grafici/ringdown_fit_dettaglio.png>] [15 <../Ampiez
-za_Frequenza/grafici/tau_vs_frequenza.png>] [16] [17]
-<../Risposta in frequenza/grafici/bode_completo.png, id=364, 635.976pt x 505.89
+ [15 <../Ampiezza_Frequenza/grafici/ringdown_fit_dettaglio.png>] [16 <../Ampiez
+za_Frequenza/grafici/tau_vs_frequenza.png>] [17] [18]
+<../Risposta in frequenza/grafici/bode_completo.png, id=488, 635.976pt x 505.89
 pt>
 File: ../Risposta in frequenza/grafici/bode_completo.png Graphic file (type png
 )
@@ -1222,9 +1222,8 @@ File: ../Risposta in frequenza/grafici/bode_completo.png Graphic file (type png
 Package pdftex.def Info: ../Risposta in frequenza/grafici/bode_completo.png  us
 ed on input line 840.
 (pdftex.def)             Requested size: 418.82375pt x 333.15509pt.
-
-[18 <../Risposta in frequenza/grafici/bode_completo.png>] [19] [20]
-<../Risposta in frequenza/grafici/bode_compensato.png, id=399, 635.976pt x 505.
+ [19 <../Risposta in frequenza/grafici/bode_completo.png>] [20] [21]
+<../Risposta in frequenza/grafici/bode_compensato.png, id=523, 635.976pt x 505.
 89pt>
 File: ../Risposta in frequenza/grafici/bode_compensato.png Graphic file (type p
 ng)
@@ -1232,24 +1231,167 @@ ng)
 Package pdftex.def Info: ../Risposta in frequenza/grafici/bode_compensato.png  
 used on input line 966.
 (pdftex.def)             Requested size: 418.82375pt x 333.15509pt.
- [21]
-[22 <../Risposta in frequenza/grafici/bode_compensato.png>] [23] [24] [25]
-(relazione.aux)
+ [22] [23 <../Risposta in frequenza/grafici/bode_compensato.png>] [24] [25] [26
+] [27] [28] [29]
+[30]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
+387.
+ (C:\Users\Accetazione\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `lmtt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+<../Compensazione Hardware/grafici/bode_off.png, id=630, 635.976pt x 505.89pt>
+File: ../Compensazione Hardware/grafici/bode_off.png Graphic file (type png)
+<use ../Compensazione Hardware/grafici/bode_off.png>
+Package pdftex.def Info: ../Compensazione Hardware/grafici/bode_off.png  used o
+n input line 1393.
+(pdftex.def)             Requested size: 409.71692pt x 325.90671pt.
+ [31] [32 <../Compensazione Hardware/grafici/bode_off.png>]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1419.
+<../Compensazione Hardware/grafici/bode_set2.png, id=656, 635.976pt x 505.89pt>
+
+File: ../Compensazione Hardware/grafici/bode_set2.png Graphic file (type png)
+<use ../Compensazione Hardware/grafici/bode_set2.png>
+Package pdftex.def Info: ../Compensazione Hardware/grafici/bode_set2.png  used 
+on input line 1427.
+(pdftex.def)             Requested size: 409.71692pt x 325.90671pt.
+<../Compensazione Hardware/grafici/confronto_modulo_tutti.png, id=657, 635.976p
+t x 397.485pt>
+File: ../Compensazione Hardware/grafici/confronto_modulo_tutti.png Graphic file
+ (type png)
+<use ../Compensazione Hardware/grafici/confronto_modulo_tutti.png>
+Package pdftex.def Info: ../Compensazione Hardware/grafici/confronto_modulo_tut
+ti.png  used on input line 1434.
+(pdftex.def)             Requested size: 400.61703pt x 250.38654pt.
+<../Compensazione Hardware/grafici/confronto_con_senza_compensazione.png, id=66
+1, 635.976pt x 520.344pt>
+File: ../Compensazione Hardware/grafici/confronto_con_senza_compensazione.png G
+raphic file (type png)
+<use ../Compensazione Hardware/grafici/confronto_con_senza_compensazione.png>
+Package pdftex.def Info: ../Compensazione Hardware/grafici/confronto_con_senza_
+compensazione.png  used on input line 1444.
+(pdftex.def)             Requested size: 409.71692pt x 335.21834pt.
+<../Compensazione Hardware/grafici/confronto_hardware_vs_software.png, id=662, 
+635.976pt x 397.485pt>
+File: ../Compensazione Hardware/grafici/confronto_hardware_vs_software.png Grap
+hic file (type png)
+<use ../Compensazione Hardware/grafici/confronto_hardware_vs_software.png>
+Package pdftex.def Info: ../Compensazione Hardware/grafici/confronto_hardware_v
+s_software.png  used on input line 1451.
+(pdftex.def)             Requested size: 391.51021pt x 244.69139pt.
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1477.
+ [33] [34 <../Compensazione Hardware/grafici/bode_set2.png> <../Compensazione H
+ardware/grafici/confronto_modulo_tutti.png>] [35 <../Compensazione Hardware/gra
+fici/confronto_con_senza_compensazione.png>] [36 <../Compensazione Hardware/gra
+fici/confronto_hardware_vs_software.png>]
+<../Compensazione Hardware/grafici/cerchio_nyquist_confronto_globale.png, id=69
+7, 896.148pt x 419.166pt>
+File: ../Compensazione Hardware/grafici/cerchio_nyquist_confronto_globale.png G
+raphic file (type png)
+<use ../Compensazione Hardware/grafici/cerchio_nyquist_confronto_globale.png>
+Package pdftex.def Info: ../Compensazione Hardware/grafici/cerchio_nyquist_conf
+ronto_globale.png  used on input line 1533.
+(pdftex.def)             Requested size: 446.13727pt x 208.68065pt.
+<../Compensazione Hardware/grafici/cerchio_nyquist_dettaglio_fano.png, id=698, 
+896.148pt x 419.166pt>
+File: ../Compensazione Hardware/grafici/cerchio_nyquist_dettaglio_fano.png Grap
+hic file (type png)
+<use ../Compensazione Hardware/grafici/cerchio_nyquist_dettaglio_fano.png>
+Package pdftex.def Info: ../Compensazione Hardware/grafici/cerchio_nyquist_dett
+aglio_fano.png  used on input line 1540.
+(pdftex.def)             Requested size: 446.13727pt x 208.68065pt.
+<../Compensazione Hardware/grafici/nyquist_set2_frequenza.png, id=699, 592.614p
+t x 448.074pt>
+File: ../Compensazione Hardware/grafici/nyquist_set2_frequenza.png Graphic file
+ (type png)
+<use ../Compensazione Hardware/grafici/nyquist_set2_frequenza.png>
+Package pdftex.def Info: ../Compensazione Hardware/grafici/nyquist_set2_frequen
+za.png  used on input line 1547.
+(pdftex.def)             Requested size: 355.08984pt x 268.49094pt.
+ [37] [38 <../Compensazione Hardware/grafici/cerchio_nyquist_confronto_globale.
+png> <../Compensazione Hardware/grafici/cerchio_nyquist_dettaglio_fano.png>] [3
+9 <../Compensazione Hardware/grafici/nyquist_set2_frequenza.png>] [40] [41]
+<../Duffing/duffing_ampiezza_compressione.png, id=763, 614.295pt x 433.62pt>
+File: ../Duffing/duffing_ampiezza_compressione.png Graphic file (type png)
+<use ../Duffing/duffing_ampiezza_compressione.png>
+Package pdftex.def Info: ../Duffing/duffing_ampiezza_compressione.png  used on 
+input line 1648.
+(pdftex.def)             Requested size: 391.51021pt x 276.36458pt.
+ [42] [43 <../Duffing/duffing_ampiezza_compressione.png>]
+[44]
+<../Duffing/duffing_backbone_e_chirp.png, id=801, 614.295pt x 433.62pt>
+File: ../Duffing/duffing_backbone_e_chirp.png Graphic file (type png)
+<use ../Duffing/duffing_backbone_e_chirp.png>
+Package pdftex.def Info: ../Duffing/duffing_backbone_e_chirp.png  used on input
+ line 1734.
+(pdftex.def)             Requested size: 400.61703pt x 282.7892pt.
+ [45] [46 <../Duffing/duffing_backbone_e_chirp.png>] [47]
+Overfull \hbox (31.03465pt too wide) in paragraph at lines 1783--1785
+\T1/lmr/m/n/10.95 (-20) con $\OML/lmm/m/it/10.95 c[] \OT1/lmr/m/n/10.95 (-20) =
+ \OMS/lmsy/m/n/10.95 ^^@\OT1/lmr/m/n/10.95 (-20) 5[]52 \OMS/lmsy/m/n/10.95 ^^B 
+\OT1/lmr/m/n/10.95 (-20) 10[] [][]$ \T1/lmr/m/n/10.95 (-20) (de-ri-van-te dal-l
+a cur-va-tu-ra ini-zia-le del-l'ar-co) e $\OML/lmm/m/it/10.95 c[] \OT1/lmr/m/n/
+10.95 (-20) = \OMS/lmsy/m/n/10.95 ^^@\OT1/lmr/m/n/10.95 (-20) 0[]51 []\OML/lmm/
+m/it/10.95 =[][][]$
+ []
+
+[48]
+Overfull \hbox (121.82152pt too wide) in paragraph at lines 1833--1834
+[]\T1/lmr/m/n/10.95 (-20) Per estrar-re le ve-re am-piez-ze fi-si-che $\OML/lmm
+/m/it/10.95 p[]$ \T1/lmr/m/n/10.95 (-20) e $\OML/lmm/m/it/10.95 p[]$ \T1/lmr/m/
+n/10.95 (-20) con pre-ci-sio-ne me-tro-lo-gi-ca (script \T1/lmtt/m/n/10.95 Dist
+orsione/analizza_distorsione.py\T1/lmr/m/n/10.95 (-20) ),
+ []
+
+[49]
+<../Distorsione/distorsione_armoniche_vs_vac.png, id=859, 614.295pt x 433.62pt>
+
+File: ../Distorsione/distorsione_armoniche_vs_vac.png Graphic file (type png)
+<use ../Distorsione/distorsione_armoniche_vs_vac.png>
+Package pdftex.def Info: ../Distorsione/distorsione_armoniche_vs_vac.png  used 
+on input line 1848.
+(pdftex.def)             Requested size: 391.51021pt x 276.36458pt.
+<../Distorsione/distorsione_hd2_rapporto.png, id=860, 614.295pt x 433.62pt>
+File: ../Distorsione/distorsione_hd2_rapporto.png Graphic file (type png)
+<use ../Distorsione/distorsione_hd2_rapporto.png>
+Package pdftex.def Info: ../Distorsione/distorsione_hd2_rapporto.png  used on i
+nput line 1855.
+(pdftex.def)             Requested size: 391.51021pt x 276.36458pt.
+
+Overfull \hbox (64.79143pt too wide) in paragraph at lines 1867--1890
+ [][] 
+ []
+
+[50 <../Distorsione/distorsione_armoniche_vs_vac.png>] [51 <../Distorsione/dist
+orsione_hd2_rapporto.png>]
+Overfull \hbox (29.11174pt too wide) detected at line 1909
+[][][][][]\OT1/lmr/m/n/10.95 (\OML/lmm/m/it/10.95 V[]\OT1/lmr/m/n/10.95 ) = \OM
+L/lmm/m/it/10.95 k[] V[];  k[] \OT1/lmr/m/n/10.95 = [] \OMS/lmsy/m/n/10.95 ^^B 
+\OT1/lmr/m/n/10.95 100% = [] (\OMS/lmsy/m/n/10.95 ^^Y \OT1/lmr/m/n/10.95 1[]91 
+%[]100 [][])
+ []
+
+[52] (relazione.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
 Package rerunfilecheck Info: File `relazione.out' has not changed.
-(rerunfilecheck)             Checksum: 5FE58B254BA1915B85706F0CBE0280CC;8592.
+(rerunfilecheck)             Checksum: 7864E75377B9C01F0D38764974E93BBC;18945.
  ) 
 Here is how much of TeX's memory you used:
- 50263 strings out of 467871
- 1220867 string characters out of 5415471
- 1897915 words of memory out of 5000000
- 78091 multiletter control sequences out of 15000+600000
- 769369 words of font info for 294 fonts, out of 8000000 for 9000
+ 52104 strings out of 467871
+ 1272835 string characters out of 5415471
+ 1992610 words of memory out of 5000000
+ 79678 multiletter control sequences out of 15000+600000
+ 788877 words of font info for 350 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,13n,94p,1008b,1277s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,14n,94p,1054b,1277s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmb
 sy10.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public
 /lm/lmbx10.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/
@@ -1257,30 +1399,37 @@ public/lm/lmbx12.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/
 type1/public/lm/lmbx7.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/f
 onts/type1/public/lm/lmbx8.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiK
 TeX/fonts/type1/public/lm/lmbx9.pfb><C:/Users/Accetazione/AppData/Local/Program
-s/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/Accetazione/AppData/Local/P
-rograms/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/Accetazione/AppData/L
-ocal/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Accetazione/App
-Data/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi6.pfb><C:/Users/Accetazion
-e/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/Accet
-azione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/
-Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi9.pfb><C:/U
-sers/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmib10.pf
-b><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr
-10.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/l
-m/lmr12.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/pub
-lic/lm/lmr5.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1
-/public/lm/lmr6.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/lm/lmr7.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fon
-ts/type1/public/lm/lmr8.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX
-/fonts/type1/public/lm/lmr9.pfb><C:/Users/Accetazione/AppData/Local/Programs/Mi
-KTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/Accetazione/AppData/Local/Progr
-ams/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Accetazione/AppData/Local
-/Programs/MiKTeX/fonts/type1/public/lm/lmsy6.pfb><C:/Users/Accetazione/AppData/
-Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy8.pfb><C:/Users/Accetazione/App
-Data/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on relazione.pdf (25 pages, 2538410 bytes).
+s/MiKTeX/fonts/type1/public/lm/lmbxi10.pfb><C:/Users/Accetazione/AppData/Local/
+Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/Accetazione/AppData/
+Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/Accetazione/Ap
+pData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Accetazi
+one/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi5.pfb><C:/Users/Acc
+etazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi6.pfb><C:/User
+s/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:
+/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pf
+b><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmm
+i9.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/l
+m/lmmib10.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/lm/lmr10.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/ty
+pe1/public/lm/lmr12.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fon
+ts/type1/public/lm/lmr5.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX
+/fonts/type1/public/lm/lmr6.pfb><C:/Users/Accetazione/AppData/Local/Programs/Mi
+KTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/Accetazione/AppData/Local/Program
+s/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Accetazione/AppData/Local/Pro
+grams/MiKTeX/fonts/type1/public/lm/lmr9.pfb><C:/Users/Accetazione/AppData/Local
+/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/Accetazione/AppData
+/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Accetazione/A
+ppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy6.pfb><C:/Users/Accetazi
+one/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/Acc
+etazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy8.pfb><C:/User
+s/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy9.pfb><C:
+/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.p
+fb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lm
+tt10.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public
+/amsfonts/symbols/msam10.pfb>
+Output written on relazione.pdf (52 pages, 6373878 bytes).
 PDF statistics:
- 618 PDF objects out of 1000 (max. 8388607)
- 175 named destinations out of 1000 (max. 500000)
- 82191 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 1124 PDF objects out of 1200 (max. 8388607)
+ 325 named destinations out of 1000 (max. 500000)
+ 94715 words of extra memory for PDF output out of 106986 (max. 10000000)
 

@@ -1,32 +1,61 @@
 \babel@toc {italian}{}\relax 
 \babel@toc {italian}{}\relax 
-\contentsline {section}{\numberline {1}Struttura e principi di funzionamento del MEMS}{2}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Geometria della trave}{2}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Configurazione degli elettrodi e polarizzazione elettrica}{2}{subsection.1.2}%
-\contentsline {section}{\numberline {2}Equazione del moto}{3}{section.2}%
-\contentsline {section}{\numberline {3}Forze elettrostatiche}{4}{section.3}%
-\contentsline {section}{\numberline {4}Segnale di corrente dal MEMS}{6}{section.4}%
-\contentsline {section}{\numberline {5}Modello elettrico equivalente RLC}{6}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Capacità parassita in parallelo}{8}{subsection.5.1}%
-\contentsline {section}{\numberline {6}Circuito di condizionamento}{8}{section.6}%
-\contentsline {section}{\numberline {7}Caratterizzazione sperimentale della risposta libera (Ring-Down)}{10}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Setup di misura e condizioni di polarizzazione}{10}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Metodologia ed elaborazione del segnale}{10}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Analisi dei transitori di oscillazione nei diversi regimi}{11}{subsection.7.3}%
-\contentsline {subsection}{\numberline {7.4}Risposta in ampiezza del risonatore ($A_0$ vs $f_{\text {in}}$)}{12}{subsection.7.4}%
-\contentsline {subsection}{\numberline {7.5}Frequenza di oscillazione libera durante il ring-down ($f_1$ vs $f_{\text {in}}$)}{13}{subsection.7.5}%
-\contentsline {subsection}{\numberline {7.6}Costante di tempo di decadimento $\tau $ e stima del fattore di merito $Q$}{14}{subsection.7.6}%
-\contentsline {section}{\numberline {8}Caratterizzazione sperimentale della risposta in frequenza}{16}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Setup sperimentale e principio della misura}{16}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Modello di ammettenza complessiva e interferenza con $C_p$}{17}{subsection.8.2}%
-\contentsline {paragraph}{Origine fisica della coppia risonanza-antirisonanza (Profilo Fano)}{17}{section*.2}%
-\contentsline {subsection}{\numberline {8.3}Risposta in frequenza completa e fit del modello RLC + $C_p$}{18}{subsection.8.3}%
-\contentsline {subsubsection}{\numberline {8.3.1}Algoritmo di fit vettoriale nel piano complesso}{18}{subsubsection.8.3.1}%
-\contentsline {subsubsection}{\numberline {8.3.2}Risultati numerici del fit}{19}{subsubsection.8.3.2}%
-\contentsline {subsection}{\numberline {8.4}Stima indipendente della capacità parassita $C_p$ (Validazione a tre vie)}{20}{subsection.8.4}%
-\contentsline {paragraph}{Perché misurare a $V_{\text {DC}} = \SI {0}{\volt }$?}{20}{section*.3}%
-\contentsline {subsection}{\numberline {8.5}Compensazione software di $C_p$ e isolamento del picco motrice}{21}{subsection.8.5}%
-\contentsline {subsubsection}{\numberline {8.5.1}Interpretazione fisica della risposta compensata}{21}{subsubsection.8.5.1}%
-\contentsline {subsection}{\numberline {8.6}Stima dei parametri RLC equivalenti e confronto con il modello teorico}{23}{subsection.8.6}%
-\contentsline {subsubsection}{\numberline {8.6.1}Formule di determinazione dei parametri RLC}{23}{subsubsection.8.6.1}%
-\contentsline {subsubsection}{\numberline {8.6.2}Confronto critico con i valori teorici e interpretazione fisica}{23}{subsubsection.8.6.2}%
+\contentsline {section}{\numberline {1}Struttura e principi di funzionamento del MEMS}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Geometria della trave}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Configurazione degli elettrodi e polarizzazione elettrica}{3}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Equazione del moto}{4}{section.2}%
+\contentsline {section}{\numberline {3}Forze elettrostatiche}{5}{section.3}%
+\contentsline {section}{\numberline {4}Segnale di corrente dal MEMS}{7}{section.4}%
+\contentsline {section}{\numberline {5}Modello elettrico equivalente RLC}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Capacità parassita in parallelo}{9}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Circuito di condizionamento}{9}{section.6}%
+\contentsline {section}{\numberline {7}Caratterizzazione sperimentale della risposta libera (Ring-Down)}{11}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Setup di misura e condizioni di polarizzazione}{11}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Metodologia ed elaborazione del segnale}{11}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Analisi dei transitori di oscillazione nei diversi regimi}{12}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Risposta in ampiezza del risonatore ($A_0$ vs $f_{\text {in}}$)}{13}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.5}Frequenza di oscillazione libera durante il ring-down ($f_1$ vs $f_{\text {in}}$)}{14}{subsection.7.5}%
+\contentsline {subsection}{\numberline {7.6}Costante di tempo di decadimento $\tau $ e stima del fattore di merito $Q$}{15}{subsection.7.6}%
+\contentsline {section}{\numberline {8}Caratterizzazione sperimentale della risposta in frequenza}{17}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Setup sperimentale e principio della misura}{17}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Modello di ammettenza complessiva e interferenza con $C_p$}{18}{subsection.8.2}%
+\contentsline {paragraph}{Origine fisica della coppia risonanza-antirisonanza (Profilo Fano)}{18}{section*.2}%
+\contentsline {subsection}{\numberline {8.3}Risposta in frequenza completa e fit del modello RLC + $C_p$}{19}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}Algoritmo di fit vettoriale nel piano complesso}{19}{subsubsection.8.3.1}%
+\contentsline {subsubsection}{\numberline {8.3.2}Risultati numerici del fit}{20}{subsubsection.8.3.2}%
+\contentsline {subsection}{\numberline {8.4}Stima indipendente della capacità parassita $C_p$ (Validazione a tre vie)}{21}{subsection.8.4}%
+\contentsline {paragraph}{Perché misurare a $V_{\text {DC}} = \SI {0}{\volt }$?}{21}{section*.3}%
+\contentsline {subsection}{\numberline {8.5}Compensazione software di $C_p$ e isolamento del picco motrice}{22}{subsection.8.5}%
+\contentsline {subsubsection}{\numberline {8.5.1}Interpretazione fisica della risposta compensata}{22}{subsubsection.8.5.1}%
+\contentsline {subsection}{\numberline {8.6}Stima dei parametri RLC equivalenti e confronto con il modello teorico}{24}{subsection.8.6}%
+\contentsline {subsubsection}{\numberline {8.6.1}Formule di determinazione dei parametri RLC}{24}{subsubsection.8.6.1}%
+\contentsline {subsubsection}{\numberline {8.6.2}Confronto critico con i valori teorici e interpretazione fisica}{24}{subsubsection.8.6.2}%
+\contentsline {section}{\numberline {9}Compensazione hardware attiva della capacità parassita e analisi nel piano complesso}{27}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Architettura del circuito di compensazione hardware attiva}{27}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Analisi dettagliata degli stadi e procedura di taratura}{27}{subsection.9.2}%
+\contentsline {subsubsection}{\numberline {9.2.1}Stadio 1 ($U_1$): Sfasatore invertente a regolazione disaccoppiata di fase e modulo}{27}{subsubsection.9.2.1}%
+\contentsline {paragraph}{Ortogonalità della taratura (Fase $\to $ Guadagno):}{29}{section*.4}%
+\contentsline {subsubsection}{\numberline {9.2.2}Stadio 2 ($R_{PA}$) e Stadio 3 ($U_2$): Partitore potenziometrico e Buffer a guadagno unitario}{29}{subsubsection.9.2.2}%
+\contentsline {subsubsection}{\numberline {9.2.3}Stadio 4 ($C_c \parallel R_{Pc}$): Sintesi della capacità equivalente variabile con componenti fissi}{30}{subsubsection.9.2.3}%
+\contentsline {paragraph}{Perché utilizzare $C_c = \SI {10}{\pico \farad }$ fisso invece di un condensatore variabile?}{30}{section*.5}%
+\contentsline {subsection}{\numberline {9.3}Caratterizzazione della cancellazione capacitiva a MEMS spento ($V_{\text {DC}} = \SI {0}{\volt }$)}{31}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.4}Risposta in frequenza a MEMS attivo ($V_{\text {DC}} = \SI {5.0}{\volt }$) con compensazione hardware}{33}{subsection.9.4}%
+\contentsline {subsubsection}{\numberline {9.4.1}Confronto diretto: senza compensazione vs compensazione hardware e software}{33}{subsubsection.9.4.1}%
+\contentsline {subsection}{\numberline {9.5}Analisi vettoriale nel piano complesso (Diagrammi di Nyquist / Cerchi di Ammettenza)}{36}{subsection.9.5}%
+\contentsline {subsubsection}{\numberline {9.5.1}Dimostrazione analitica dell'equazione del cerchio di risonanza}{36}{subsubsection.9.5.1}%
+\contentsline {paragraph}{Effetto geometrico di $\phi _m$ e della capacità parassita $C_p$:}{37}{section*.6}%
+\contentsline {subsubsection}{\numberline {9.5.2}Confronto sperimentale dei cerchi di Nyquist: prima e dopo la compensazione}{37}{subsubsection.9.5.2}%
+\contentsline {section}{\numberline {10}Caratterizzazione in regime di grande segnale: compressione di ampiezza e deriva non lineare di frequenza}{41}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Origine fisica delle non-linearità di rigidezza ad ampiezza finita}{41}{subsection.10.1}%
+\contentsline {paragraph}{Dipendenza della frequenza di risonanza dall'ampiezza di oscillazione (Rammollimento dinamico):}{42}{section*.7}%
+\contentsline {subsection}{\numberline {10.2}Setup sperimentale e compressione dell'ampiezza di risposta ($A_0$ vs $V_{\text {in}}$)}{42}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Evoluzione temporale della frequenza istantanea durante il ring-down ($f_1(t)$)}{44}{subsection.10.3}%
+\contentsline {subsubsection}{\numberline {10.3.1}Modello analitico del rilassamento di frequenza}{44}{subsubsection.10.3.1}%
+\contentsline {subsubsection}{\numberline {10.3.2}Stima numerica della frequenza istantanea e risultati sperimentali}{45}{subsubsection.10.3.2}%
+\contentsline {section}{\numberline {11}Distorsione armonica di secondo ordine e accoppiamento con il secondo modo flessionale}{48}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Origine fisica della componente a frequenza doppia ($f_2 = 2 f_1$) e risonanza interna 1:2}{48}{subsection.11.1}%
+\contentsline {paragraph}{Meccanismo di generazione quadratica del secondo modo:}{48}{section*.8}%
+\contentsline {paragraph}{Leggi teoriche di scala per le ampiezze spettrali $p_1$, $p_2$ e per la distorsione $p_2 / p_1$:}{49}{section*.9}%
+\contentsline {subsection}{\numberline {11.2}Setup di misura e metodologia di analisi spettrale ad alta accuratezza}{49}{subsection.11.2}%
+\contentsline {paragraph}{Eliminazione dello \textit {scalloping loss} (effetto \textit {picket-fence}) tramite finestra di Hann e Zero-Padding $64\times $:}{49}{section*.10}%
+\contentsline {subsection}{\numberline {11.3}Risultati sperimentali: ampiezze armoniche ($p_1, p_2$) e distorsione di secondo modo ($p_2 / p_1$)}{50}{subsection.11.3}%
