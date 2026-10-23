@@ -321,11 +321,12 @@ In regime di piccole oscillazioni di $x(t)$, possiamo approssimare la derivata d
     \end{equation}
     \noindent A causa di questo fenomeno, la frequenza di risonanza diminuisce all'aumentare di $V_{\text{DC}}$ secondo la legge:
     \begin{equation}
-        \omega_r^2(V_{\text{DC}}) = \frac{k_{\text{eff}}(V_{\text{DC}})}{m_{\text{eff}}} = \omega_0^2 - \frac{1}{2 m_{\text{eff}}} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2
+        \omega_1^2(V_{\text{DC}}) = \frac{k_{\text{eff}}(V_{\text{DC}})}{m_{\text{eff}}} = \omega_0^2 - \frac{1}{2 m_{\text{eff}}} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2
     \end{equation}
     Nel lavoro di Frangi et al. \cite{frangi2023}, il coefficiente $\frac{1}{2 m_{\text{eff}}} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0$ è indicato come $\varepsilon_0 c_{1,DD}$, ottenendo l'equazione:
     \begin{equation}
-        \omega_r(V_{\text{DC}}) \approx \sqrt{\omega_0^2 - \varepsilon_0 c_{1,DD} V_{\text{DC}}^2}
+        \label{eq:softening}
+        \omega_1(V_{\text{DC}}) \approx \sqrt{\omega_0^2 - \varepsilon_0 c_{1,DD} V_{\text{DC}}^2}
     \end{equation}
     \item $F_{\text{drive}}$ è la forza che trasforma la tensione sinusoidale d'ingresso $v_{\text{in}}(t)$ in una spinta meccanica, governata dal fattore di trasduzione elettromeccanica $\eta$:
     \begin{equation}
@@ -574,137 +575,99 @@ Una corrente motrice di picco di $\SI{1}{\nano\ampere}$ si traduce in un segnale
 % SEZIONE 7: CARATTERIZZAZIONE SPERIMENTALE DELLA RISPOSTA LIBERA (RING-DOWN)
 % =============================================================================
 \newpage
-\section{Caratterizzazione sperimentale della risposta libera (Ring-Down)}
+\section{Caratterizzazione sperimentale della risposta libera (ringdown)}
 \label{sec:ringdown}
 
-In questa sezione presentiamo le misure sperimentali condotte sul risonatore MEMS volte a determinare con precisione la frequenza di risonanza $f_0$, il tempo caratteristico di smorzamento $\tau$ e il fattore di merito $Q$ del primo modo flessionale, tramite la tecnica del \textit{ring-down} (risposta libera a seguito dell'interruzione brusca dell'eccitazione).
-
-\subsection{Setup di misura e condizioni di polarizzazione}
-Per caratterizzare la risposta dinamica della trave mantenendo il dispositivo in regime lineare di piccolo segnale, sono stati fissati i seguenti parametri operativi:
+In questa sezione presentiamo le misure sperimentali condotte sul MEMS per determinare la frequenza di risonanza $f_1$, il tempo caratteristico di smorzamento $\tau$ e il fattore di merito $Q$ del primo modo flessionale, analizzando la risposta libera a seguito dell'interruzione brusca di una forzante:
 \begin{itemize}
-    \item \textbf{Tensione di polarizzazione continua (corpo del MEMS):} $V_{\text{DC}} = \SI{5.0}{\volt}$. Questo potenziale costante polarizza il gap elettrostatico, attivando i meccanismi di trasduzione elettromeccanica $\eta$ e definendo la frequenza di risonanza effettiva per effetto di \textit{spring softening}.
-    \item \textbf{Segnale di eccitazione sinusoidale (elettrodo di drive):} $v_{\text{in}}(t) = V_{\text{AC}} \sin(2\pi f_{\text{in}} t)$, con ampiezza costante $V_{\text{AC}} \approx \SI{100}{\milli\volt}$ (corrispondente a una tensione picco-picco di $\SI{200}{\milli\volt_{pp}}$). Tale livello di tensione è sufficientemente basso da non innescare non-linearità geometriche o di rigidezza ad ampiezza finita durante la vibrazione a regime.
-    \item \textbf{Elettrodo di sense e catena di lettura:} l'elettrodo di sense è mantenuto a massa virtuale ($\SI{0}{\volt}$) dall'ingresso del TIA ($R_f = \SI{500}{\kilo\ohm}$), seguito dal secondo stadio con guadagno $-10$, per una trans-resistenza complessiva $R_{\text{trans}} = \SI{5.0}{\mega\ohm}$ come definito dall'eq.~\eqref{eq:transresistenza_totale}.
-    \item \textbf{Segnale di modulazione (Gate TTL a $\SI{2.5}{\volt}$):} l'eccitazione sinusoidale $v_{\text{in}}(t)$ è controllata da un segnale di sincronizzazione logico (Gate). Finché il Gate è alto, il segnale sinusoidale alimenta il risonatore che raggiunge la vibrazione stazionaria. Al fronte di discesa del Gate (istante $t = t_{\text{gate}}$), la forzante $v_{\text{in}}(t)$ viene interrotta bruscamente azzerando l'ingresso.
-    \item \textbf{Sweep in frequenza:} l'esperimento è stato ripetuto per 25 diverse frequenze discrete di ingresso $f_{\text{in}}$, distribuite in una finestra compresa tra $\SI{417.26}{\kilo\hertz}$ e $\SI{418.40}{\kilo\hertz}$, addensando i punti con un passo fino a $\SI{10}{\hertz}$ in corrispondenza del picco di risonanza.
+    \item La tensione di polarizzazione della trave è stata fissata a $V_{\text{DC}} = \SI{5.0}{\volt}$.
+    \item Abbiamo applicato un segnale sinusoide $v_{\text{in}}(t) = V_{\text{AC}} \sin(2\pi f_{\text{in}} t)$, con ampiezza $V_{\text{AC}} = \SI{100}{\milli\volt}$, sull'elettrodo di drive. Come vedremo, è un valore di tensione sufficientemente basso da non innescare le non linearità. L'eccitazione sinusoidale $v_{\text{in}}(t)$ è controllata da un segnale di sincronizzazione logico (Gate). Finché il gate è alto, il segnale sinusoidale agisce sul mems. Al fronte di discesa del gate (istante $t = \text{0}$ nella scala dei tempi nelle misure che presenteremo), la forzante $v_{\text{in}}(t)$ viene interrotta bruscamente azzerando l'ingresso.
+    \item Tramite l'oscilloscopio, abbiamo estrapolato la traccia del ringdown. L'esperimento è stato ripetuto per 25 diverse frequenze di ingresso $f_{\text{in}}$, distribuite in una finestra compresa tra $\SI{417.26}{\kilo\hertz}$ e $\SI{418.40}{\kilo\hertz}$, addensando i punti con un passo fino a $\SI{10}{\hertz}$ in corrispondenza del picco di risonanza.
 \end{itemize}
 
-\noindent A partire dall'istante di spegnimento dell'eccitazione, la trave non riceve più alcuna spinta forzante dall'esterno e si ritrova in regime di \textit{oscillazione libera smorzata}. L'energia meccanica accumulata viene gradualmente dissipata per attrito viscoso e perdite al supporto.
+\noindent A partire dall'istante di spegnimento dell'eccitazione, la trave non riceve più alcuna spinta forzante dall'esterno e si ritrova in regime di oscillazione libera smorzata. L'energia meccanica accumulata viene gradualmente dissipata per attrito viscoso.
+\vspace{0.3cm}
 
-\subsection{Metodologia ed elaborazione del segnale}
-\label{subsec:algoritmi_ringdown}
-Ciascuna traccia registrata dall'oscilloscopio digitale contiene l'evoluzione temporale della tensione di uscita $v_{\text{out}}(t)$ (Ch1), del segnale di Gate TTL (Ch2) e della tensione di ingresso $v_{\text{in}}(t)$ (Ch3). Per estrarre i parametri fisici in modo riproducibile ed esente da derive sistematiche, è stata applicata una pipeline di elaborazione articolata nei seguenti passi:
+\noindent All'istante di commutazione del gate, la tensione d'ingresso $v_{\text{in}}(t)$ passa bruscamente a zero. A causa della presenza della capacità parassita $C_p$ che collega direttamente l'elettrodo di drive a quello di sense (Fig.~\ref{fig:frontend_schema}), questa repentina variazione di tensione genera una corrente impulsiva, che si esaurisce in $\SI{2.4}{\micro\second}$; per evitare che contamini la stima dei parametri, abbiamo scartato i primi $\SI{20}{\micro\second}$ successivi al fronte del gate. 
 
-\begin{enumerate}
-    \item \textbf{Rilevamento del fronte di discesa del Gate:}
-    Viene individuato automaticamente l'istante temporale $t_{\text{gate}}$ in cui la tensione del segnale di controllo su Ch2 scende al di sotto della soglia logica di $\SI{1.2}{\volt}$. Questo istante viene assunto come origine dei tempi per il decadimento ($t = 0$).
-
-    \item \textbf{Sottrazione dell'offset continuo (DC):}
-    L'elettronica analogica reale presenta un lieve offset DC residuo (dell'ordine di circa $\SI{9.4}{\milli\volt}$). L'offset viene stimato calcolando la media del segnale nella parte finale dell'acquisizione (a vibrazione oramai spenta) e sottratto alla traccia temporale, centrando l'oscillazione attorno allo zero volt.
-
-    \item \textbf{Mascheramento del transitorio parassita di $C_p$ ($t_{\text{cut}} = \SI{20}{\micro\second}$):}
-    All'istante di commutazione del Gate, la tensione d'ingresso $v_{\text{in}}(t)$ passa bruscamente a zero. A causa della presenza della capacità parassita $C_p$ che collega direttamente l'elettrodo di drive a quello di sense (Fig.~\ref{fig:frontend_schema}), questa repentina variazione di tensione genera una corrente impulsiva puramente elettrica:
-    \begin{equation}
-        i_{Cp}(t) = C_p \frac{dv_{\text{in}}}{dt}
-    \end{equation}
-    Questo impulso è di natura puramente elettrostatica e si esaurisce rapidamente nel giro di circa $\SI{10}{\micro\second}$. Per evitare che tale glitch contamini la stima dei parametri meccanici della trave, viene applicato un mascheramento temporale che scarta i primi $\SI{20}{\micro\second}$ successivi al fronte del Gate. A partire da $t > \SI{20}{\micro\second}$, il segnale residuo è dovuto unicamente al moto inerziale della trave oscillante.
-
-    \item \textbf{Filtraggio passa-banda e ricerca dei picchi:}
-    Per rimuovere il rumore termico a larga banda dell'operazionale senza alterare l'ampiezza o la fase dell'oscillazione a $417\text{ kHz}$, il segnale viene filtrato digitalmente con un filtro passa-banda a fase lineare (Butterworth del $2^\circ$ ordine tra $\SI{390}{\kilo\hertz}$ e $\SI{445}{\kilo\hertz}$ applicato in modalità avanti-indietro \textit{zero-phase}). L'algoritmo individua quindi i massimi locali (picchi positivi) della sinusoide smorzata.
-
-    \item \textbf{Fit esponenziale dell'inviluppo:}
-    I picchi estratti seguono la legge analitica del decadimento di un oscillatore del secondo ordine:
-    \begin{equation}
+\vspace{0.3cm}
+\noindent Abbiamo realizzato un algoritmo che individua i picchi locali della sinusoide smorzata. Questi picchi seguono la legge del decadimento esponenziale:
+\begin{equation}
         \label{eq:legge_decadimento}
         A(t) = A_0 e^{-t/\tau}
     \end{equation}
-    Eseguendo una regressione lineare sul logaritmo naturale delle ampiezze dei picchi ($\ln A(t) = \ln A_0 - t/\tau$), si determinano con elevata robustezza:
-    \begin{itemize}
-        \item $A_0$: l'ampiezza di picco estrapolata all'istante di spegnimento $t=0$ (in $\si{\milli\volt}$);
-        \item $\tau$: la costante di tempo di decadimento meccanico del modo (in $\si{\milli\second}$).
-    \end{itemize}
+dove $A_0$ è l'ampiezza di picco estrapolata all'istante di spegnimento $t=0$, e $\tau$ è la costante di tempo del ringdown. Abbiamo fittato i picchi ai minimi quadrati.
 
-    \item \textbf{Stima della frequenza di oscillazione libera $f_1$:}
-    La frequenza di vibrazione della trave durante la risposta libera viene determinata mediante due metodologie indipendenti:
-    \begin{itemize}
-        \item \textit{Fase istantanea tramite trasformata di Hilbert:} viene calcolato il segnale analitico e srotolata la fase istantanea $\phi(t)$; la pendenza della regressione lineare $\phi(t) = 2\pi f_1 t + \phi_0$ fornisce la frequenza media di oscillazione.
-        \item \textit{FFT con zero-padding 64x:} viene applicata la trasformata di Fourier con sovra-campionamento per interpolazione sinc nello spazio delle frequenze, consentendo una risoluzione sub-hertziana del picco spettrale.
-    \end{itemize}
-\end{enumerate}
 
-\subsection{Analisi dei transitori di oscillazione nei diversi regimi}
-In Fig.~\ref{fig:ringdown_4casi} sono riportati i transitori temporali misurati per quattro frequenze di eccitazione rappresentative dell'intervallo esplorato:
-\begin{enumerate}
-    \item \textbf{Risonanza perfetta ($f_{\text{in}} = \SI{417.83}{\kilo\hertz}$):} il risonatore è sollecitato in perfetta sintonia. L'ampiezza accumulata prima dello spegnimento è massima, con $A_0 = \SI{36.13}{\milli\volt}$.
-    \item \textbf{Frequenza intermedia ($f_{\text{in}} = \SI{417.71}{\kilo\hertz}$):} la forzante dista circa $\SI{120}{\hertz}$ dal picco, determinando un'ampiezza iniziale di $A_0 = \SI{20.90}{\milli\volt}$.
-    \item \textbf{Bassa ampiezza sotto-risonanza ($f_{\text{in}} = \SI{417.26}{\kilo\hertz}$):} la frequenza forzante è disallineata di circa $-\SI{570}{\hertz}$; l'ampiezza iniziale è molto ridotta, pari a $A_0 = \SI{4.57}{\milli\volt}$.
-    \item \textbf{Bassa ampiezza sopra-risonanza ($f_{\text{in}} = \SI{418.40}{\kilo\hertz}$):} la forzante è disallineata di circa $+\SI{570}{\hertz}$, con un'ampiezza iniziale di $A_0 = \SI{5.48}{\milli\volt}$.
-\end{enumerate}
+\newpage
 
+\noindent In Fig.~\ref{fig:ringdown_4casi} sono riportati i transitori di quattro frequenze di eccitazione rappresentative.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.96\textwidth]{../Ampiezza_Frequenza/grafici/ringdown_fit_4casi.png}
-\caption{Decadimento temporale dell'oscillazione libera (ring-down) in quattro condizioni sperimentali a $V_{\text{DC}} = \SI{5.0}{\volt}$. In azzurro la traccia campionata (al netto dell'offset DC), in blu i picchi di oscillazione meccanica rilevati e in rosso l'inviluppo esponenziale $A(t) = A_0 e^{-t/\tau}$.}
+\caption{Decadimento temporale dell'oscillazione libera per quattro frequenze di eccitazione in ingresso.}
 \label{fig:ringdown_4casi}
 \end{figure}
 
-\noindent Osservando la figura emergono chiaramente le seguenti evidenze sperimentali:
-\begin{itemize}
-    \item In ciascun caso il segnale compie centinaia di cicli sinusoidali prima di spegnersi completamente nell'arco di circa $\SI{4}{\milli\second} - \SI{5}{\milli\second}$, a testimonianza dell'elevata riserva energetica del risonatore e del basso smorzamento.
-    \item I picchi estratti dall'algoritmo (punti blu) risultano perfettamente descritti dalla curva esponenziale teorica decrescente (linea rossa), confermando che il sistema opera in regime rigorosamente lineare (assenza di dissipazioni quadratiche non-lineari o effetti a soglia).
-    \item La pendenza relativa del decadimento nei quattro grafici è identica: la costante di tempo $\tau$ rimane praticamente invariata ($\tau \approx \SI{2.3}{\milli\second}$), indipendentemente dal fatto che l'ampiezza iniziale sia di $\SI{36}{\milli\volt}$ oppure di appena $\SI{4.5}{\milli\volt}$.
-\end{itemize}
 
 \subsection{Risposta in ampiezza del risonatore (\texorpdfstring{$A_0$}{A0} vs \texorpdfstring{$f_{\text{in}}$}{fin})}
 \label{subsec:risposta_ampiezza}
-Riportando in grafico l'ampiezza iniziale $A_0$ estratta all'istante di spegnimento in funzione della frequenza forzante $f_{\text{in}}$, si ottiene la curva di risposta mostrata in Fig.~\ref{fig:ampiezza_vs_frequenza}.
+
+
+In Fig.~\ref{fig:ampiezza_vs_frequenza} è riportato il grafico dell'ampiezza iniziale $A_0$ estratta all'istante di spegnimento del gate ($t=0$) in funzione della frequenza forzante $f_{\text{in}}$. Poiché per $t < 0$ la trave si trova in regime sinusoidale forzato, ci aspettiamo che l'energia meccanica accumulata (e quindi l'ampiezza di vibrazione $A_0$ al rilascio) sia massima quando la frequenza di eccitazione coincide con la frequenza di risonanza del primo modo flessionale alla tensione continua applicata $V_{\text{DC}} = \SI{5.0}{\volt}$, ossia $f_{\text{in}} = f_1$.
+
+\noindent La linea tratteggiata rossa rappresenta il fit lorenziano ottenuto per regressione ai minimi quadrati:
+
+\begin{equation}
+    A_0(f_{\text{in}}) = \frac{A_{\max}}{\sqrt{1 + \left( \frac{2(f_{\text{in}} - f_1)}{\Delta f} \right)^2}}
+\end{equation}
+dove:
+\begin{itemize}
+    \item $A_{\max}$ è l'ampiezza di picco in tensione alla risonanza;
+    \item $f_1$ è la frequenza di risonanza del primo modo flessionale a $V_{\text{DC}} = \SI{5.0}{\volt}$;
+    \item $\Delta f$ è la larghezza di banda a metà potenza ($\SI{-3}{\decibel}$ in ampiezza, per $A_0 = A_{\max}/\sqrt{2}$).
+\end{itemize}
+
+\newpage 
+
+\noindent I parametri stimati dal fit dello script sono:
+\begin{equation}
+    f_1 = \SI{417.84}{\kilo\hertz}, \quad A_{\max} = \SI{37.26}{\milli\volt}, \quad \Delta f = \SI{175.1}{\hertz}
+\end{equation}
+Il punto sperimentale più vicino al picco si trova a $f_{\text{in}} = \SI{417.83}{\kilo\hertz}$ con ampiezza misurata $A_0 = \SI{36.13}{\milli\volt}$.
+
+\noindent Dato che la transresistenza complessiva del circuito di condizionamento è $R_{\text{trans}} = \SI{5.0}{\mega\ohm}$, ricaviamo l'ampiezza della corrente motrice di picco $i_{m, \max}$:
+    \begin{equation}
+        i_{m, \max} = \frac{A_{\max}}{R_{\text{trans}}} = \frac{\SI{37.26}{\milli\volt}}{\SI{5.0}{\mega\ohm}} \approx \SI{7.45}{\nano\ampere}
+    \end{equation}
+Allontanandosi di $\pm \SI{500}{\hertz}$ dal picco, l'ampiezza di oscillazione crolla a valori inferiori a $\SI{5}{\milli\volt}$.
+
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png}
-\caption{Ampiezza iniziale di oscillazione $A_0$ al momento dello spegnimento dell'eccitazione in funzione della frequenza forzante $f_{\text{in}}$, a $V_{\text{DC}} = \SI{5.0}{\volt}$. I cerchi blu sono i dati sperimentali; la linea tratteggiata rossa rappresenta il fit lorentziano.}
+\caption{Ampiezza iniziale di oscillazione $A_0$ al momento dello spegnimento dell'eccitazione in funzione della frequenza forzante $f_{\text{in}}$, a $V_{\text{DC}} = \SI{5.0}{\volt}$.}
 \label{fig:ampiezza_vs_frequenza}
 \end{figure}
 
-\noindent La curva presenta la caratteristica forma a campana simmetrica tipica del profilo lorentziano di un risonatore del secondo ordine:
-\begin{equation}
-    A_0(f_{\text{in}}) = \frac{A_{\max}}{\sqrt{1 + \left( \frac{2(f_{\text{in}} - f_0)}{\Delta f} \right)^2}}
-\end{equation}
-Dall'analisi dei dati si ricavano i seguenti aspetti fondamentali:
-\begin{itemize}
-    \item \textbf{Picco di risonanza:} il massimo trasferimento di potenza si verifica esattamente alla frequenza $f_0 \approx \SI{417.83}{\kilo\hertz}$, con un'ampiezza massima di $A_{\max} = \SI{36.13}{\milli\volt}$.
-    \item \textbf{Corrente motrice di picco:} conoscendo la trans-resistenza complessiva del front-end ($R_{\text{trans}} = \SI{5.0}{\mega\ohm}$), l'ampiezza della corrente motrice $i_s$ che fluisce dall'elettrodo di sense alla risonanza è:
-    \begin{equation}
-        i_{s, \max} = \frac{A_{\max}}{R_{\text{trans}}} = \frac{\SI{36.13}{\milli\volt}}{\SI{5.0}{\mega\ohm}} \approx \SI{7.23}{\nano\ampere}
-    \end{equation}
-    \item \textbf{Selettività:} allontanandosi di soli $\pm \SI{500}{\hertz}$ dal centro della risonanza, l'ampiezza di oscillazione crolla a valori inferiori a $\SI{5}{\milli\volt}$ (meno del $14\%$ del picco). La larghezza di banda a metà potenza risulta pari a $\Delta f \approx \SI{140}{\hertz}$, confermando l'elevatissima selettività meccanica della microstruttura.
-\end{itemize}
+\newpage
 
 \subsection{Frequenza di oscillazione libera durante il ring-down (\texorpdfstring{$f_1$}{f1} vs \texorpdfstring{$f_{\text{in}}$}{fin})}
 \label{subsec:frequenza_ringdown}
-Un aspetto concettuale fondamentale del metodo di ring-down riguarda la frequenza alla quale la trave vibra dopo lo spegnimento della forzante. In Fig.~\ref{fig:frequenza_vs_fin} è riportata la frequenza di oscillazione $f_1$ misurata durante il decadimento libero rispetto alla frequenza $f_{\text{in}}$ con cui il generatore stava pilotando il sistema prima dell'interruzione.
+
+In fig.~\ref{fig:frequenza_vs_fin} è riportata la frequenza di oscillazione $f_1$ misurata durante il decadimento libero rispetto alla frequenza $f_{\text{in}}$ di eccitazione. I punti arancio sono stati attenuti tramite FFT, mentre quelli blu tramite fit lineare della fase istantanea $\phi(t) = 2\pi f_1 t + \phi_0$, il cui valor medio, rappresentato tramite la linea tratteggiata rossa, è di $f_1 = \SI{417859}{\hertz}$
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{../Ampiezza_Frequenza/grafici/ringdown_fit_dettaglio.png}
-\caption{Frequenza di oscillazione libera $f_1$ misurata durante il ring-down rispetto alla frequenza di eccitazione in ingresso $f_{\text{in}}$. I punti blu indicano le stime ottenute con il metodo Hilbert, i quadrati arancioni quelle con FFT interpolata; la linea tratteggiata rossa evidenzia la media sperimentale $f_1 \approx \SI{417850}{\hertz}$.}
+\caption{Frequenza di oscillazione libera $f_1$ misurata durante il ring-down rispetto alla frequenza di eccitazione in ingresso $f_{\text{in}}$.}
 \label{fig:frequenza_vs_fin}
 \end{figure}
 
-\noindent Il grafico rivela un comportamento fisico di straordinaria chiarezza:
-\begin{itemize}
-    \item I punti sperimentali si distribuiscono lungo una retta perfettamente orizzontale, centrata sul valore medio:
-    \begin{equation}
-        f_1 = \SI{417850}{\hertz} \quad (\SI{417.85}{\kilo\hertz})
-    \end{equation}
-    con oscillazioni massime entro pochissimi hertz su tutto l'intervallo (compatibili con il limite di risoluzione del segnale in presenza di rumore).
-    \item \textbf{Significato fisico di risposta libera:} finché il Gate è attivo, il risonatore è forzato a vibrare esattamente alla frequenza $f_{\text{in}}$ imposta dal generatore. Non appena il segnale di ingresso viene interrotto, l'eccitazione esterna scompare: la trave si rilassa e oscilla \textbf{esclusivamente alla propria frequenza naturale di risonanza} $f_1$. La frequenza durante il ring-down è dunque una proprietà puramente interna del risonatore (governata unicamente dalla massa efficace e dalla rigidezza elettrostatica equivalente a $V_{\text{DC}} = \SI{5.0}{\volt}$, $f_1 = \frac{1}{2\pi}\sqrt{k_{\text{eff}}/m_{\text{eff}}}$), risultando totalmente indipendente da quale fosse la frequenza forzante $f_{\text{in}}$ prima del rilascio.
-\end{itemize}
 
 \subsection{Costante di tempo di decadimento \texorpdfstring{$\tau$}{tau} e stima del fattore di merito \texorpdfstring{$Q$}{Q}}
 \label{subsec:tau_q}
-In Fig.~\ref{fig:tau_vs_frequenza} sono riportati i valori della costante di tempo di decadimento $\tau$, estratti dal fit esponenziale dei picchi, al variare della frequenza forzante $f_{\text{in}}$.
-
+In fig.~\ref{fig:tau_vs_frequenza} sono riportati i valori della costante di tempo di decadimento $\tau$, estratti dal fit esponenziale dei picchi, al variare della frequenza forzante $f_{\text{in}}$. Il valor medio sperimentale risulta essere $\tau_{\text{medio}} = \SI{2.32}{\milli\second}$.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{../Ampiezza_Frequenza/grafici/tau_vs_frequenza.png}
@@ -751,12 +714,14 @@ Questo valore sperimentale è in accordo eccellente con la stima teorica di rife
 Tensione di polarizzazione continua & $V_{\text{DC}}$ & $5.0$ & \si{\volt} \\
 Ampiezza tensione AC di pilotaggio & $V_{\text{AC}}$ & $100$ & \si{\milli\volt} \\
 Trans-resistenza front-end di lettura & $R_{\text{trans}}$ & $5.0$ & \si{\mega\ohm} \\
-Frequenza di risonanza al picco & $f_0$ & $417.83$ & \si{\kilo\hertz} \\
-Ampiezza massima in tensione di ring-down & $A_{\max}$ & $36.13$ & \si{\milli\volt} \\
-Corrente motrice di picco alla risonanza & $i_{s,\max}$ & $7.23$ & \si{\nano\ampere} \\
+Frequenza di risonanza al picco (fit) & $f_1$ & $417.84$ & \si{\kilo\hertz} \\
+Larghezza di banda a metà potenza (fit) & $\Delta f$ & $175.1$ & \si{\hertz} \\
+Ampiezza massima in tensione (fit) & $A_{\max}$ & $37.26$ & \si{\milli\volt} \\
+Corrente motrice di picco alla risonanza & $i_{m,\max}$ & $7.45$ & \si{\nano\ampere} \\
 Frequenza media durante il ring-down & $f_1$ & $417.85$ & \si{\kilo\hertz} \\
 Costante di tempo di decadimento media & $\tau$ & $2.32$ & \si{\milli\second} \\
-Fattore di merito meccanico & $Q$ & $3045$ & -- \\
+Fattore di merito meccanico (da ring-down $\tau$) & $Q$ & $3045$ & -- \\
+Fattore di merito (da fit spettrale $f_1/\Delta f$) & $Q_{\text{fit}}$ & $2386$ & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
