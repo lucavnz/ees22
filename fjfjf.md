@@ -1,164 +1,80 @@
-Listed directory es2m%20progetto
-Viewed relazione.tex:600-660
-Listed directory Ampiezza_Frequenza
-Searched for "lorentz"
-Viewed analizza_ringdown.py:285-340
-Viewed risultati_ringdown.csv:1-27
-Ran command: `python3 -c "
-import numpy as np
-import pandas as pd
-from scipy.optimize import curve_fit
+Searched for "C_{\text{feed}}"
+Searched for "C_{\text{re}}"
 
-df = pd.read_csv('Ampiezza_Frequenza/risultati_ringdown.csv')
-freqs = df['Frequenza_in_Hz'].values
-a0 = df['A0_mV'].values
+Ecco il motivo della confusione, ed è un equivoco normalissimo generato dalla lettera usata:
 
-def lorentz_profile(f, a_max, f0, bw):
-    return a_max / np.sqrt(1.0 + (2.0 * (f - f0) / bw)**2)
+> **$C_{\text{feed}}$ NON è una capacità! Non si misura in Farad!**  
+> $C_{\text{feed}}$ è un **GUADAGNO DI TENSIONE** adimensionale ($V_{\text{out}}/V_{\text{in}}$).  
+> Nello script python è stato chiamato $C$ solo dall'inglese *"Constant"* (il fondo costante) o *"Coupling"*, ma **non è un condensatore**.
 
-popt, pcov = curve_fit(lorentz_profile, freqs, a0, p0=[37.0, 417835.0, 150.0])
-perr = np.sqrt(np.diag(pcov))
-print(f'A_max: {popt[0]:.4f} +/- {perr[0]:.4f} mV')
-print(f'f0:    {popt[1]:.4f} +/- {perr[1]:.4f} Hz')
-print(f'bw:    {popt[2]:.4f} +/- {perr[2]:.4f} Hz')
-"`
-Ran command: `python3 -c "
-import csv
-import numpy as np
-from scipy.optimize import curve_fit
-
-freqs, a0 = [], []
-with open('Ampiezza_Frequenza/risultati_ringdown.csv') as f:
-    r = csv.DictReader(f)
-    for row in r:
-        freqs.append(float(row['Frequenza_in_Hz']))
-        a0.append(float(row['A0_mV']))
-
-freqs = np.array(freqs)
-a0 = np.array(a0)
-
-def lorentz_profile(f, a_max, f0, bw):
-    return a_max / np.sqrt(1.0 + (2.0 * (f - f0) / bw)**2)
-
-popt, pcov = curve_fit(lorentz_profile, freqs, a0, p0=[37.0, 417835.0, 150.0])
-perr = np.sqrt(np.diag(pcov))
-print(f'A_max: {popt[0]:.4f} +/- {perr[0]:.4f} mV')
-print(f'f0:    {popt[1]:.4f} +/- {perr[1]:.4f} Hz')
-print(f'bw:    {popt[2]:.4f} +/- {perr[2]:.4f} Hz (Delta f)')
-print(f'Q_factor: {popt[1]/popt[2]:.1f}')
-"`
-Used tool: manage_task
-Viewed relazione.tex:540-600
-Listed directory Paper
-Viewed relazione.tex:660-730
-
-Ecco una spiegazione completa, fisica e computazionale di quella formula, di cosa fa esattamente lo script e di come definire in modo rigoroso tutti i parametri nella tua relazione.
+Vediamo passo dopo passo cosa significa fisicamente e perché si fa il modulo:
 
 ---
 
-### 1. Cos'è quella formula e perché ha questa forma? (Origine Fisica)
+### 1. Che cos'è quel numero $11.7$?
+Nel circuito ideale, il segnale che attraversa il condensatore parassita $C_p$ e arriva all'uscita produce una funzione di trasferimento:
+$$
+T_{Cp}(j\omega) = \frac{V_{\text{out}}}{V_{\text{in}}} = j \omega C_p R_{\text{trans}}
+$$
+Guardiamo le unità di misura:
+* $\omega \approx 2\pi \cdot 418\,000\text{ rad/s}$ ($1/\text{s}$)
+* $C_p \approx 0.89\cdot 10^{-12}\text{ F}$ ($\text{A}\cdot\text{s}/\text{V}$)
+* $R_{\text{trans}} = 5.0\cdot 10^6\ \Omega$ ($\text{V}/\text{A}$)
 
-Nel tuo circuito, il MEMS è polarizzato in continua con $V_{\text{DC}} = 5\,\text{V}$ ed eccitato con una tensione alternata $v_{\text{in}}(t) = V_{\text{AC}}\sin(2\pi f_{\text{in}} t)$ con $V_{\text{AC}} = 100\,\text{mV}$. Il comportamento dinamico del risonatore attorno al primo modo di flessione è modellato con il circuito equivalente **RLC serie** ($R_m, L_m, C_m$) in parallelo alla capacità parassita $C_p$:
-
-1. **L'ammettenza del ramo motrice RLC** è data da:
-   $$Y_m(\omega) = \frac{1}{R_m + j\left(\omega L_m - \frac{1}{\omega C_m}\right)}$$
-2. In prossimità della risonanza propria $\omega_0 = 2\pi f_0 = \frac{1}{\sqrt{L_m C_m}}$, con scostamento $\Delta\omega = \omega - \omega_0 \ll \omega_0$, la reattanza si linearizza:
-   $$\omega L_m - \frac{1}{\omega C_m} = L_m \frac{\omega^2 - \omega_0^2}{\omega} \approx 2 L_m (\omega - \omega_0) = 4\pi L_m (f_{\text{in}} - f_0)$$
-3. Il modulo dell'ammettenza vale quindi:
-   $$|Y_m(f_{\text{in}})| \approx \frac{1}{\sqrt{R_m^2 + \left[4\pi L_m (f_{\text{in}} - f_0)\right]^2}} = \frac{1/R_m}{\sqrt{1 + \left( \frac{4\pi L_m}{R_m} (f_{\text{in}} - f_0) \right)^2}}$$
-4. Definiamo la **larghezza di banda a metà potenza ($-3\,\text{dB}$)** del risonatore:
-   $$\Delta f = \frac{R_m}{2\pi L_m} = \frac{f_0}{Q}$$
-   da cui:
-   $$\frac{4\pi L_m}{R_m} = \frac{2}{\Delta f}$$
-5. La corrente motrice $i_m(t)$ entra nel TIA ($v_{\text{out,TIA}} = -R_f i_m$) e viene amplificata dall'inverting amplifier ($G_{\text{IA}} = -10$), per una transresistenza totale $R_{\text{trans}} = 10 R_f = 5.0\,\text{M}\Omega$.
-   L'ampiezza iniziale del segnale al momento dello spegnimento ($t=0$) è l'ampiezza a regime stazionario:
-   $$A_0(f_{\text{in}}) = R_{\text{trans}} \cdot |Y_m(f_{\text{in}})| \cdot V_{\text{AC}}$$
-   Ponendo l'ampiezza massima di picco $A_{\max} = R_{\text{trans}} \frac{V_{\text{AC}}}{R_m}$, otteniamo esattamente l'**espressione lorentziana**:
-   $$A_0(f_{\text{in}}) = \frac{A_{\max}}{\sqrt{1 + \left( \frac{2(f_{\text{in}} - f_0)}{\Delta f} \right)^2}}$$
-
----
-
-### 2. Cosa sono $A_{\max}$, $f_0$ e $\Delta f$?
-
-Nella relazione mancano queste definizioni, che vanno inserite subito sotto l'equazione:
-
-* **$f_{\text{in}}$**: la frequenza della forzante sinusoidale applicata prima dello spegnimento del gate.
-* **$A_0(f_{\text{in}})$**: l'ampiezza iniziale dell'oscillazione libera (a $t=0$) estratta dalla traccia di ring-down.
-* **$A_{\max}$**: l'**ampiezza massima teorica** al centro esatto della risonanza ($f_{\text{in}} = f_0$).
-* **$f_0$**: la **frequenza centrale di risonanza** meccanica del primo modo.
-* **$\Delta f$** (chiamato `bw` nello script per *bandwidth*): la **larghezza di banda a $-3\,\text{dB}$** (Full Width at Half Maximum per la potenza, o fattore $1/\sqrt{2} \approx 0.707$ per l'ampiezza). È l'intervallo di frequenza attorno al picco entro cui l'ampiezza soddisfa $A_0 \ge \frac{A_{\max}}{\sqrt{2}}$.
-* Dal rapporto tra frequenza centrale e banda si ricava direttamente il fattore di merito nel dominio della frequenza:
-  $$Q = \frac{f_0}{\Delta f}$$
+Se li moltiplichi tra loro:  
+$(1/\text{s}) \times (\text{A}\cdot\text{s}/\text{V}) \times (\text{V}/\text{A}) =$ **un numero puro, senza unità di misura**!  
+È il guadagno di tensione $|V_{\text{out}}/V_{\text{in}}|$. E quanto vale numericamente?
+$$
+2\pi \cdot (417\,665) \cdot (0.892\cdot 10^{-12}) \cdot (5.0\cdot 10^6) \approx \mathbf{11.70}
+$$
+In decibel:
+$$
+20 \log_{10}(11.70) \approx \mathbf{+21.36\text{ dB}}
+$$
+Se guardi il grafico di Bode (Fig. 8.1), **la linea di base piatta** (fuori dalla risonanza) sta esattamente a $+21.36\text{ dB}$! Quello è il guadagno con cui l'ingresso passa dritto all'uscita attraverso $C_p$.
 
 ---
 
-### 3. Cosa fa esattamente lo script? Li trova tutti lo script?
+### 2. Perché questo guadagno ha una parte reale e una parte immaginaria?
+La capacità $C_p$ in sé è un normale condensatore reale (non ha una "componente reale").  
+Se gli amplificatori operazionali fossero perfetti e istantanei:
+* La corrente del condensatore avrebbe sfasamento di $+90^\circ$ ($j$ puro).
+* Il guadagno all'uscita sarebbe puramente immaginario: $0 + j\, 11.70$.
 
-**Sì, lo script trova tutti e tre i parametri in automatico!**
+**MA nella realtà del laboratorio:**
+Il segnale parassita deve attraversare il TIA (OPA656) e l'amplificatore invertente (AD817). A $\SI{418}{\kilo\hertz}$, gli operazionali non sono infinitamente veloci: hanno una banda finita e introducono un **ritardo di propagazione** (uno sfasamento di circa $-21.4^\circ$).  
+In più, il substrato di silicio ha una piccola perdita dielettrica conduttiva.
 
-Nel file [analizza_ringdown.py:L298-L306](file:///Users/matteoluca/Downloads/es2m%20progetto/Ampiezza_Frequenza/analizza_ringdown.py#L298-L306):
-1. **Passaggio nel tempo (su ciascuno dei 25 file di misura):**
-   Per ogni frequenza $f_{\text{in}}$, lo script isola la risposta libera post-spegnimento (scartando i primi $20\,\mu\text{s}$ dovuti alla corrente impulsiva attraverso $C_p$), individua i picchi e fitta l'esponenziale:
-   $$A(t) = A_0 e^{-t/\tau}$$
-   In questo modo estrae una coppia sperimentale $(f_{\text{in}}, A_0)$ per ciascuna frequenza (salvate in [risultati_ringdown.csv](file:///Users/matteoluca/Downloads/es2m%20progetto/Ampiezza_Frequenza/risultati_ringdown.csv)).
-2. **Passaggio in frequenza (Grafico 1):**
-   Lo script prende l'array delle 25 frequenze e delle 25 ampiezze $A_0$ e applica la funzione di fitting non-lineare ai minimi quadrati (`scipy.optimize.curve_fit`):
-   ```python
-   def lorentz_profile(f, a_max, f0, bw):
-       return a_max / np.sqrt(1.0 + (2.0 * (f - f0) / bw)**2)
+Quindi il segnale parassita che esce su $V_{\text{out}}$ non arriva a $+90^\circ$, ma arriva sfasato a:
+$$
++90^\circ - 21.4^\circ = \mathbf{+68.6^\circ}
+$$
+Nel piano complesso, un vettore che ha ampiezza $11.70$ e angolo $+68.6^\circ$ si scompone con seno e coseno:
+* **Parte reale**: $11.70 \cdot \cos(68.6^\circ) = \mathbf{4.27}$
+* **Parte immaginaria**: $11.70 \cdot \sin(68.6^\circ) = \mathbf{10.90}$
 
-   popt_l, _ = curve_fit(lorentz_profile, freqs, a0_vals, p0=[37.0, 417835.0, 150.0])
-   ```
-   I parametri restituiti dal fit numerico su [risultati_ringdown.csv](file:///Users/matteoluca/Downloads/es2m%20progetto/Ampiezza_Frequenza/risultati_ringdown.csv) sono:
-   * **$A_{\max} = 37.26 \pm 0.46\,\text{mV}$** (il picco teorico della curva continua)
-   * **$f_0 = 417836.2 \pm 2.3\,\text{Hz} \approx 417.84\,\text{kHz}$**
-   * **$\Delta f = 175.1 \pm 7.0\,\text{Hz}$**
-   * Fattore di merito da fit frequenziale: $Q = \frac{f_0}{\Delta f} \approx \frac{417836}{175.1} \approx \mathbf{2386}$
-
-> **Attenzione a una svista presente in [relazione.tex](file:///Users/matteoluca/Downloads/es2m%20progetto/Relazione/relazione.tex#L632):**
-> Nel testo attuale della relazione hai scritto:
-> *"Il picco si ha in corrispondenza di $f_{in} = 417.83\,\text{kHz}$, con ampiezza $A_0 = 36.13\,\text{mV}$"*.
-> Questo valore ($36.13\,\text{mV}$) è il punto discreto misurato più alto (il file `Scope 5`), **non** il parametro $A_{\max}$ del fit lorentziano ($37.26\,\text{mV}$ a $417.84\,\text{kHz}$). È buona norma scientifica distinguere il massimo campionato discreto dai parametri ottimali del fit continuo.
+Ecco perché il fit trova due numeri: $C_{\text{re}} = 4.27$ e $C_{\text{im}} = 10.90$!  
+Non è la capacità ad avere una parte reale: **è la tensione di uscita del fondo parassita che è ruotata a $68.6^\circ$ a causa del ritardo degli operazionali!**
 
 ---
 
-### 4. Come integrare e correggere [relazione.tex](file:///Users/matteoluca/Downloads/es2m%20progetto/Relazione/relazione.tex#L618-L644)
+### 3. Perché facciamo il modulo con Pitagora per trovare $C_p$?
+Il ritardo degli operazionali ha solo girato l'angolo del vettore, ma **non ne ha cambiato la lunghezza totale**!  
+La lunghezza totale del vettore (il modulo del guadagno) è determinata unicamente da $C_p$:
+$$
+\text{Modulo del guadagno} = \sqrt{(\text{Re})^2 + (\text{Im})^2} = \sqrt{4.27^2 + 10.90^2} = \mathbf{11.701}
+$$
+Poiché sappiamo che questo modulo vale teoricamente $\omega_0 C_p R_{\text{trans}}$, invertiamo la formula e ricaviamo la vera capacità fisica $C_p$:
+$$
+C_p = \frac{\text{Modulo del guadagno}}{2\pi f_0 R_{\text{trans}}} = \frac{11.701}{2\pi \cdot (417\,665\text{ Hz}) \cdot (5.0\cdot 10^6\ \Omega)} = \mathbf{0.892\text{ pF}}
+$$
 
-Per rendere la sottosezione 7.2 chiara e completa, ti propongo di aggiornare quel paragrafo in questo modo:
+---
 
-```latex
-\subsection{Risposta in ampiezza del risonatore (\texorpdfstring{$A_0$}{A0} vs \texorpdfstring{$f_{\text{in}}$}{fin})}
-\label{subsec:risposta_ampiezza}
-
-In Fig.~\ref{fig:ampiezza_vs_frequenza} è riportata l'ampiezza iniziale $A_0$ del ring-down, estrapolata all'istante di spegnimento della forzante ($t=0$), in funzione della frequenza di eccitazione $f_{\text{in}}$.
-
-\noindent La linea tratteggiata rossa rappresenta il fit lorentziano non lineare ai minimi quadrati, caratterizzato dalla curva di risonanza universale del secondo ordine:
-\begin{equation}
-    A_0(f_{\text{in}}) = \frac{A_{\max}}{\sqrt{1 + \left( \frac{2(f_{\text{in}} - f_0)}{\Delta f} \right)^2}}
-\end{equation}
-dove:
-\begin{itemize}
-    \item $A_{\max}$ è l'ampiezza di picco in tensione alla frequenza di risonanza centrale;
-    \item $f_0$ è la frequenza di risonanza del primo modo flessionale;
-    \item $\Delta f$ è la larghezza di banda a metà potenza (a $\SI{-3}{\decibel}$ in ampiezza, cioè per $A_0 = A_{\max}/\sqrt{2}$).
-\end{itemize}
-
-\vspace{0.2cm}
-\noindent I parametri ottimali ottenuti dalla regressione sono:
-\begin{equation}
-    f_0 = \SI{417.84}{\kilo\hertz}, \quad A_{\max} = \SI{37.26}{\milli\volt}, \quad \Delta f = \SI{175.1}{\hertz}
-\end{equation}
-Il singolo punto sperimentale campionato più prossimo al vertice corrisponde a $f_{\text{in}} = \SI{417.83}{\kilo\hertz}$ con ampiezza misurata $A_0 = \SI{36.13}{\milli\volt}$. 
-
-Dalla larghezza di banda $\Delta f$ possiamo ricavare una prima stima del fattore di merito nel dominio della frequenza:
-\begin{equation}
-    Q = \frac{f_0}{\Delta f} = \frac{\SI{417836}{\hertz}}{\SI{175.1}{\hertz}} \approx 2386
-\end{equation}
-Dato che la transresistenza complessiva del circuito di condizionamento è $R_{\text{trans}} = \SI{5.0}{\mega\ohm}$, possiamo ricavare l'ampiezza della corrente motrice di picco $i_{m, \max}$ che fluisce dal terminale di sense del MEMS alla risonanza:
-\begin{equation}
-    i_{m, \max} = \frac{A_{\max}}{R_{\text{trans}}} = \frac{\SI{37.26}{\milli\volt}}{\SI{5.0}{\mega\ohm}} \approx \SI{7.45}{\nano\ampere}
-\end{equation}
-Allontanandosi di appena $\pm \SI{500}{\hertz}$ dalla risonanza, l'ampiezza di oscillazione crolla a valori inferiori a $\SI{5}{\milli\volt}$, confermando l'elevata selettività del dispositivo.
-```
-
-Se desideri, posso procedere ad applicare direttamente questa modifica in [relazione.tex](file:///Users/matteoluca/Downloads/es2m%20progetto/Relazione/relazione.tex).
+### Consiglio per la relazione
+Chiamarlo $C_{\text{feed}} = C_{\text{re}} + j C_{\text{im}}$ trae in inganno perché fa pensare a una capacità in Farad.  
+Se vuoi, nella relazione possiamo cambiare la notazione chiamandolo:
+$$
+T_{\text{feed}} = T_{\text{feed, re}} + j T_{\text{feed, im}} \quad \text{oppure} \quad G_{\text{feed}} = G_{\text{re}} + j G_{\text{im}}
+$$
+dove $T$ sta per *"Transfer function di feedthrough"* (o $G$ per *"Guadagno di fondo"*). Così chiunque legga capisce al primo sguardo che è un guadagno di tensione in uscita, non una bizzarra "capacità complessa"!
