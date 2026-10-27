@@ -537,4 +537,63 @@ if has_uncomp:
     plt.close()
     print(f"[OK] Grafico salvato: {p_hw_sw}")
 
+# -----------------------------------------------------------------------------
+# GRAFICO 8: Tracce temporali oscilloscopio (scope_161 vs scope_165) - Ruolo di Rp
+# -----------------------------------------------------------------------------
+file_161 = os.path.join(BASE_DIR, 'scope_161.csv')
+file_165 = os.path.join(BASE_DIR, 'scope_165.csv')
+
+if os.path.exists(file_161) and os.path.exists(file_165):
+    def load_scope_aligned(path):
+        d = np.loadtxt(path, delimiter=',', skiprows=2)
+        t = d[:, 0]
+        v_out = d[:, 1] - np.mean(d[:, 1])
+        v_in  = d[:, 2] - np.mean(d[:, 2])
+        dt = t[1] - t[0]
+        zc = np.where((v_in[:-1] <= 0) & (v_in[1:] > 0))[0]
+        t0 = t[zc[0]] - v_in[zc[0]] * dt / (v_in[zc[0]+1] - v_in[zc[0]])
+        t_us = (t - t0) * 1e6
+        return t_us, v_in * 1e3, v_out * 1e3
+
+    t161, vin161, vout161 = load_scope_aligned(file_161)
+    t165, vin165, vout165 = load_scope_aligned(file_165)
+
+    T_MAX = 7.185  # 3 periodi completi a 417.63 kHz
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.6), sharey=True, dpi=300)
+
+    m1 = (t161 >= 0) & (t161 <= T_MAX)
+    ax1.plot(t161[m1], vin161[m1], color='#495057', alpha=0.85, linewidth=1.6,
+             label=r'$v_{in}(t)$ ($V_{in,pk} = 100.0$ mV)')
+    ax1.plot(t161[m1], vout161[m1], color='#e03131', linewidth=1.8,
+             label=r'$v_{out}(t)$ ($V_{out,pk} = 44.3$ mV, $\Delta\phi \approx 180^\circ$)')
+    ax1.axhline(0, color='black', linewidth=0.6, alpha=0.35)
+    ax1.set_xlabel(r'Tempo $t$ [$\mu$s]')
+    ax1.set_ylabel('Tensione [mV]')
+    ax1.set_title(r'Scope 161: senza $R_c$ (solo $C_c = 10$ pF)', pad=9)
+    ax1.set_xlim(0, T_MAX)
+    ax1.set_ylim(-118, 118)
+    ax1.grid(True)
+    ax1.legend(loc='upper right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
+
+    m2 = (t165 >= 0) & (t165 <= T_MAX)
+    ax2.plot(t165[m2], vin165[m2], color='#495057', alpha=0.85, linewidth=1.6,
+             label=r'$v_{in}(t)$ ($V_{in,pk} = 99.9$ mV)')
+    ax2.plot(t165[m2], vout165[m2], color='#1971c2', linewidth=1.8,
+             label=r'$v_{out}(t)$ ($V_{out,pk} = 2.5$ mV, cancellato)')
+    ax2.axhline(0, color='black', linewidth=0.6, alpha=0.35)
+    ax2.set_xlabel(r'Tempo $t$ [$\mu$s]')
+    ax2.set_title(r'Scope 165: con $R_c = 1\ \mathrm{M}\Omega$ in parallelo a $C_c$', pad=9)
+    ax2.set_xlim(0, T_MAX)
+    ax2.set_ylim(-118, 118)
+    ax2.grid(True)
+    ax2.legend(loc='upper right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
+
+    plt.tight_layout()
+    p_rp = os.path.join(OUT_DIR, 'confronto_scope_161_165_rp.png')
+    plt.savefig(p_rp)
+    plt.close()
+    print(f"[OK] Grafico salvato: {p_rp}")
+
 print("\nTutti i grafici aggiornati sono stati generati con successo!")
+
