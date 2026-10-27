@@ -1015,107 +1015,95 @@ Poiché il partitore $R_A$ può soltanto attenuare l'ampiezza del segnale ($\alp
 \end{equation}
 Affinché esista una posizione del cursore $\alpha \in (0, 1)$ in grado di bilanciare esattamente la capacità parassita del MEMS, è indispensabile scegliere $C_c$ strettamente maggiore di $C_p$. Abbiamo scelto un condensatore da $C_c = \SI{10}{\pico\farad}$. In questo modo, non ci serve conoscere esattamente il valore di $C_p$ (anche perchè con tutti i nuovi componenti collegati, la capacità parassita complessiva potrebbe essere maggiore rispetto al valore ricavato di $\SI{0.892}{\pico\farad}$): ruotiamo direttamente la vite del potenziometro $R_A$ fino a trovare la posizione del cursore che garantisce la massima compensazione possibile (ossia la minima ampiezza residua in uscita).
 
-\subsection{Resistenza parassita \texorpdfstring{$R_p$}{Rp}}
+\subsection{Resistenza parassita \texorpdfstring{$R_p$}{Rp} e dimensionamento di \texorpdfstring{$R_c$}{Rc}}
 \label{subsec:ruolo_rp_scope}
 
-Analizziamo ora perché nella rete di compensazione di fig.~\ref{fig:schema_comp_hw} abbiamo deciso di inserire in parallelo al condensatore $C_c = \SI{10}{\pico\farad}$ anche il resistore di compensazione $R_c = \SI{1}{\mega\ohm}$.
+Analizziamo ora perch? nella rete di compensazione di fig.~\ref{fig:schema_comp_hw} abbiamo inserito in parallelo al condensatore $C_c = \SI{10}{\pico\farad}$ anche il resistore di compensazione $R_c = \SI{1}{\mega\ohm}$.
 
 \vspace{0.3cm}
 
-\noindent Quando poniamo $V_{\text{DC}} = \SI{0}{\volt}$, la corrente del ramo RLC si annulla. Se tra l'ingresso $v_{\text{in}}(t) = V_{\text{in, pk}} \sin(\omega t)$ e il nodo invertente $V^-$ del TIA ci fosse unicamente una capacità parassita ideale $C_p$ e gli amplificatori operazionali della catena ($v_{\text{in}} \to \text{corrente} \to v_{\text{out}}$) non introducessero alcuno sfasamento, il segnale in uscita sarebbe sfasato esattamente di $+90^\circ$ rispetto a $v_{\text{in}}(t)$ (puramente in quadratura, proporzionale a $\cos\omega t$, ovvero immaginario puro $j\omega C_p$).
-
-Nella realtà sperimentale, tuttavia, come già osservato nella Sezione~\ref{subsec:bode_completo} (dove a $f \approx \SI{417.8}{\kilo\hertz}$ la fase della risposta non compensata era $\approx +68.6^\circ \div +77^\circ$ anziché $+90^\circ$), gli amplificatori operazionali introducono un ritardo di fase finito nella conversione da $v_{\text{in}}$ a $v_{\text{out}}$ e il dispositivo presenta perdite resistive parassite sul substrato/package. Di conseguenza, lo sfasamento complessivo del ramo parassita non è di $90^\circ$ esatti: scomponendo il fasore della corrente parassita nelle sue due componenti ortogonali (parte immaginaria in quadratura $\propto j$, cioè $\cos\omega t$, e parte reale in fase/controfase, cioè $\sin\omega t$), questo effetto equivale fisicamente alla presenza di una \textbf{resistenza parassita $R_p$ posta in parallelo a $C_p$} (e quindi in parallelo al ramo RLC del MEMS).
-
-Poiché l'altro capo del MEMS è collegato alla massa virtuale $V^-$ del TIA ($\SI{0}{\volt}$), \textbf{ai capi del parallelo parassita $C_p \parallel R_p$ cade l'intera tensione d'ingresso $v_{\text{in}}(t) = V_{\text{in, pk}} \sin(\omega t)$}, e la corrente parassita $i_p(t)$ che entra nel nodo $V^-$ del TIA è la somma di due contributi:
+\noindent Ai capi del parallelo $C_p \parallel R_p$ cade la tensione d'ingresso $v_{\text{in}}(t) = V_{\text{in, pk}} \sin(\omega t)$. La corrente parassita $i_p(t)$ che entra nel nodo di massa virtuale $V^-$ del TIA ? la somma di un contributo capacitivo in quadratura ($\cos\omega t$) e di un contributo resistivo \textbf{in fase} ($\sin\omega t$):
 \begin{equation}
     \label{eq:ip_scomposiz}
-    i_p(t) = C_p \frac{dv_{\text{in}}(t)}{dt} + \frac{v_{\text{in}}(t)}{R_p} = \underbrace{\omega C_p V_{\text{in, pk}} \cos(\omega t)}_{\text{quadratura } (+90^\circ)} + \underbrace{\frac{V_{\text{in, pk}}}{R_p} \sin(\omega t)}_{\text{in fase/controfase}}
-    \;\Longleftrightarrow\;
-    I_p(j\omega) = \left( \frac{1}{R_p} + j\omega C_p \right) V_{\text{in}}(j\omega)
+    i_p(t) = C_p \frac{dv_{\text{in}}(t)}{dt} + \frac{v_{\text{in}}(t)}{R_p} = \omega C_p V_{\text{in, pk}} \cos(\omega t) + \frac{V_{\text{in, pk}}}{R_p} \sin(\omega t)
 \end{equation}
-
-\paragraph{2. Compensazione con il solo condensatore $C_c$ (senza $R_c$, misura \texttt{scope\_161}):}
-Supponiamo inizialmente di collegare tra l'uscita del secondo operazionale $U_2$ e il nodo di massa virtuale $V^-$ del TIA \textbf{soltanto il condensatore di compensazione $C_c = \SI{10}{\pico\farad}$}, senza $R_c$. Essendo lo sfasamento tra l'ingresso $v_{\text{in}}(t)$ e l'uscita del secondo operazionale $v_{U2}(t)$ tarato a $180^\circ$ (eq.~\ref{eq:vU2_definizione}), \textbf{ai capi di $C_c$ cade la tensione $v_{U2}(t) = -\alpha v_{\text{in}}(t) = -\alpha V_{\text{in, pk}} \sin(\omega t)$} (ovvero $V_{U2}(j\omega) = -\alpha V_{\text{in}}(j\omega)$), e la corrente iniettata nel nodo $V^-$ è:
+Se utilizziamo il solo condensatore $C_c$ senza il resistore $R_c$, essendo $v_{U2}(t) = -\alpha v_{\text{in}}(t)$, la corrente di compensazione iniettata nel nodo $V^-$ ? puramente in quadratura:
 \begin{equation}
-    i_{Cc}(t) = C_c \frac{dv_{U2}(t)}{dt} = -\alpha C_c \frac{dv_{\text{in}}(t)}{dt} = -\omega (\alpha C_c) V_{\text{in, pk}} \cos(\omega t)
-    \;\Longleftrightarrow\;
-    I_{Cc}(j\omega) = j\omega C_c V_{U2}(j\omega) = -j\omega \alpha C_c \, V_{\text{in}}(j\omega)
+    i_{Cc}(t) = C_c \frac{dv_{U2}(t)}{dt} = -\alpha C_c \frac{dv_{\text{in}}(t)}{dt} = -\omega \alpha C_c V_{\text{in, pk}} \cos(\omega t)
 \end{equation}
-Sommando le correnti al nodo di massa virtuale $V^-$ del TIA ($I_{\text{net}} = I_p + I_{Cc}$) e ruotando il potenziometro $R_A$ fino al punto di massima compensazione ($\alpha C_c = C_p$), si ottiene:
+Sommando le correnti al nodo di massa virtuale $V^-$ del TIA ($I_{\text{net}} = I_p + I_{Cc}$) e ruotando il potenziometro $R_A$ fino al punto di bilanciamento capacitivo ($\alpha C_c = C_p$), si ottiene:
 \begin{equation}
-    I_{\text{net}}(j\omega) = \left( \frac{1}{R_p} + j\omega C_p \right) V_{\text{in}}(j\omega) - j\omega \alpha C_c V_{\text{in}}(j\omega) = \frac{V_{\text{in}}(j\omega)}{R_p} + j\omega \underbrace{\left( C_p - \alpha C_c \right)}_{= \, 0} V_{\text{in}}(j\omega) = \frac{V_{\text{in}}(j\omega)}{R_p}
+    I_{\text{net}}(j\omega) = \left( \frac{1}{R_p} + j\omega C_p \right) V_{\text{in}}(j\omega) - j\omega \alpha C_c V_{\text{in}}(j\omega) = \frac{V_{\text{in}}(j\omega)}{R_p} + j\omega \underbrace{\left( C_p - \alpha C_c \right)}_{= \, 0} V_{\text{in}}(j\omega)
 \end{equation}
-Nel dominio del tempo ciò significa che il termine in quadratura $\cos(\omega t)$ viene completamente cancellato, ma \textbf{rimane scoperta la componente legata a $R_p$ proporzionale a $\sin(\omega t)$}:
+Nel dominio del tempo, ci? significa che il termine in quadratura $\cos(\omega t)$ dovuto a $C_p$ viene completamente cancellato, ma \textbf{rimane scoperta la componente in fase legata a $R_p$, proporzionale a $+\sin(\omega t)$}:
 \begin{equation}
-    i_{\text{net}}(t) = \underbrace{\left( \omega C_p - \omega \alpha C_c \right)}_{= \, 0} V_{\text{in, pk}} \cos(\omega t) + \frac{V_{\text{in, pk}}}{R_p} \sin(\omega t)
+    i_{\text{net}}(t) = \underbrace{\left( \omega C_p - \omega \alpha C_c \right)}_{= \, 0} V_{\text{in, pk}} \cos(\omega t) + \frac{V_{\text{in, pk}}}{R_p} \sin(\omega t) = +\frac{V_{\text{in, pk}}}{R_p} \sin(\omega t)
 \end{equation}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.98\textwidth]{../Compensazione Hardware/grafici/confronto_scope_161_165_rp.png}
-\caption{Verifica sperimentale all'oscilloscopio dell'effetto del resistore di compensazione $R_c$ a $f_{\text{in}} \approx \SI{417.63}{\kilo\hertz}$ ($V_{\text{DC}} = \SI{0}{\volt}$, $V_{\text{in, pk}} = \SI{100.0}{\milli\volt}$). A sinistra (\texttt{scope\_161}, senza $R_c$, con il solo condensatore $C_c = \SI{10}{\pico\farad}$): ruotando il potenziometro di guadagno $R_A$ fino alla massima compensazione possibile si annulla la componente in quadratura $\cos(\omega t)$ di $C_p$, ma permane all'uscita $v_{\text{out}}(t)$ un'onda sinusoidale residua di ampiezza $V_{\text{out, pk}} = \SI{44.3}{\milli\volt}$ in controfase ($\Delta\phi \approx 180^\circ$) rispetto a $v_{\text{in}}(t)$, dovuta a $R_p$. A destra (\texttt{scope\_165}, dopo l'inserimento di $R_c = \SI{1}{\mega\ohm}$ in parallelo a $C_c$): anche la componente in controfase viene annullata e il segnale $v_{\text{out}}(t)$ scende al livello del rumore di fondo ($V_{\text{out, pk}} = \SI{2.5}{\milli\volt}$).}
-\label{fig:scope_161_165_rp}
-\end{figure}
-
-Questo è esattamente ciò che abbiamo osservato nel primo oscillogramma sperimentale \texttt{scope\_161} (pannello sinistro di Fig.~\ref{fig:scope_161_165_rp}), acquisito a $V_{\text{DC}} = \SI{0}{\volt}$ e $f_{\text{in}} = \SI{417.63}{\kilo\hertz}$ con $V_{\text{in, pk}} = \SI{100.0}{\milli\volt}$ ($\SI{200.0}{\milli\volt_{pp}}$) dopo aver ruotato il potenziometro di partizione fino a ottenere la massima compensazione possibile con il solo condensatore $C_c = \SI{10}{\pico\farad}$. Scomponendo ai minimi quadrati la traccia d'uscita $v_{\text{out}}(t)$ rispetto a $v_{\text{in}}(t) = V_{\text{in, pk}} \sin(\omega t)$, si ricava:
+Poich? la catena di condizionamento complessiva (formata dal TIA invertente con $-R_f$ e dal secondo stadio invertente con guadagno $-10$) presenta una transresistenza equivalente positiva $R_{\text{trans}} = +10 R_f = \SI{5.0}{\mega\ohm}$, tale corrente residua produce all'uscita $v_{\text{out}}(t) = R_{\text{trans}} \, i_{\text{net}}(t)$ un'onda sinusoidale residua \textbf{in fase} con $v_{\text{in}}(t)$ (a meno del ritardo di fase introdotto dagli operazionali ad alta frequenza):
 \begin{equation}
-    v_{\text{out, 161}}(t) = -\SI{44.27}{\milli\volt} \sin(\omega t) - \SI{2.17}{\milli\volt} \cos(\omega t) \approx -\SI{44.3}{\milli\volt} \sin(\omega t)
+    v_{\text{out, res}}(t) = R_{\text{trans}} \, i_{\text{net}}(t) = +\frac{R_{\text{trans}}}{R_p} V_{\text{in, pk}} \sin(\omega t)
 \end{equation}
-Come mostra il grafico di sinistra di Fig.~\ref{fig:scope_161_165_rp}, mentre il termine in quadratura $\cos(\omega t)$ (che senza compensazione valeva $\approx \SI{1.2}{\volt}$) è stato abbattuto a $\SI{2.17}{\milli\volt}$, all'uscita permane un'onda sinusoidale di ampiezza di picco $V_{\text{out, res}} = \SI{44.33}{\milli\volt}$ ($\SI{88.65}{\milli\volt_{pp}}$) sfasata di $\Delta\phi = -177.2^\circ \approx 180^\circ$ (\textbf{in controfase}) rispetto all'ingresso $v_{\text{in}}(t)$. Da questa misura possiamo stimare il valore della resistenza parassita equivalente $R_p$:
+Durante la taratura sperimentale a $V_{\text{DC}} = \SI{0}{\volt}$ e $f_{\text{in}} \approx \SI{417.63}{\kilo\hertz}$ ($V_{\text{in, pk}} = \SI{100.0}{\milli\volt}$) con il solo condensatore $C_c = \SI{10}{\pico\farad}$, una volta annullato il contributo capacitivo dominante ($\approx \SI{1.17}{\volt}$), si osserva infatti che l'uscita non si azzera completamente, ma permane un segnale sinusoidale residuo di ampiezza di picco $V_{\text{out, res}} \approx \SI{44.5}{\milli\volt}$, corrispondente a una resistenza parassita equivalente:
 \begin{equation}
     \label{eq:stima_rp_mems}
-    R_p = R_{\text{trans}} \frac{V_{\text{in, pk}}}{V_{\text{out, res}}} = \SI{5.0}{\mega\ohm} \times \frac{\SI{100.0}{\milli\volt}}{\SI{44.33}{\milli\volt}} = \mathbf{\SI{11.28}{\mega\ohm}}
+    R_p = R_{\text{trans}} \frac{V_{\text{in, pk}}}{V_{\text{out, res}}} \approx \SI{5.0}{\mega\ohm} \times \frac{\SI{100.0}{\milli\volt}}{\SI{44.5}{\milli\volt}} \approx \mathbf{\SI{11.2}{\mega\ohm}}
 \end{equation}
 
-\paragraph{3. Perché $R_p$ è stata trascurata nei capitoli precedenti e diventa rilevante solo ora:}
-È importante chiarire perché nei Capitoli~\ref{sec:modello_rlc}, \ref{sec:ringdown} e \ref{sec:risposta_in_frequenza} abbiamo modellato il ramo parassita con la sola capacità $C_p$, introducendo $R_p$ soltanto nella compensazione hardware:
+\paragraph{Perch? $R_p$ ? stata trascurata nei capitoli precedenti e diventa rilevante solo ora:}
+? importante chiarire perch? nei Capitoli~\ref{sec:modello_rlc}, \ref{sec:ringdown} e \ref{sec:risposta_in_frequenza} abbiamo modellato il ramo parassita con la sola capacit? $C_p$, introducendo $R_p$ soltanto nella compensazione hardware:
 \begin{itemize}
-    \item \textit{Predominanza di $C_p$ nella risposta non compensata:} alla frequenza di lavoro $f_0 \approx \SI{417.7}{\kilo\hertz}$, la reattanza di $C_p = \SI{0.892}{\pico\farad}$ vale $X_{Cp} = \frac{1}{2\pi f_0 C_p} \approx \SI{427}{\kilo\ohm}$, un valore \textbf{oltre $26\text{ volte}$ inferiore} a $R_p \approx \SI{11.28}{\mega\ohm}$. Di conseguenza, la corrente in quadratura di $C_p$ ($\approx \SI{234}{\nano\ampere}$, che dà $V_{\text{out}, Cp} \approx \SI{1170}{\milli\volt}$) è enormemente più grande di quella in $R_p$ ($\approx \SI{8.87}{\nano\ampere}$, che dà $V_{\text{out}, Rp} \approx \SI{44.3}{\milli\volt}$). Poiché i due contributi sono ortogonali ($90^\circ$), il modulo totale non compensato si somma in quadratura:
+    \item \textit{Predominanza di $C_p$ nella risposta non compensata:} alla frequenza di lavoro $f_0 \approx \SI{417.7}{\kilo\hertz}$, la reattanza di $C_p = \SI{0.892}{\pico\farad}$ vale $X_{Cp} = \frac{1}{2\pi f_0 C_p} \approx \SI{427}{\kilo\ohm}$, un valore \textbf{oltre $26\text{ volte}$ inferiore} a $R_p \approx \SI{11.2}{\mega\ohm}$. Di conseguenza, la corrente in quadratura di $C_p$ ($\approx \SI{234}{\nano\ampere}$, che d? $V_{\text{out}, Cp} \approx \SI{1170}{\milli\volt}$) ? enormemente pi? grande di quella in fase di $R_p$ ($\approx \SI{8.9}{\nano\ampere}$, che d? $V_{\text{out}, Rp} \approx \SI{44.5}{\milli\volt}$). Poich? i due contributi sono ortogonali ($90^\circ$), il modulo totale non compensato si somma in quadratura:
     \begin{equation}
-        |V_{\text{out, tot}}| = \sqrt{V_{\text{out}, Cp}^2 + V_{\text{out}, Rp}^2} = \sqrt{(\SI{1170}{\milli\volt})^2 + (\SI{44.3}{\milli\volt})^2} = \SI{1170.8}{\milli\volt}
+        |V_{\text{out, tot}}| = \sqrt{V_{\text{out}, Cp}^2 + V_{\text{out}, Rp}^2} = \sqrt{(\SI{1170}{\milli\volt})^2 + (\SI{44.5}{\milli\volt})^2} = \SI{1170.8}{\milli\volt}
     \end{equation}
     In assenza di compensazione hardware, $R_p$ altera il modulo totale per \textbf{meno dello $0.07\%$}, risultando del tutto invisibile sotto la corrente di $C_p$.
     \item \textit{Ininfluenza nel ring-down e nella compensazione software:} nelle misure di ring-down (Sezione~\ref{sec:ringdown}) l'ingresso viene spento ($v_{\text{in}}(t) = 0$ per $t > 0$), per cui sia $C_p$ sia $R_p$ non sono attraversati da corrente; nella compensazione software (Sezione~\ref{subsec:compensazione_software}), la sottrazione numerica del vettore complesso di fondo $\vec{T}_p = C_{\text{re}} + j C_{\text{im}}$ rimuove automaticamente in un solo passaggio sia la parte immaginaria ($C_p$) sia la parte reale ($R_p$).
-    \item \textit{Emersione di $R_p$ nella compensazione hardware a $V_{\text{DC}} = \SI{0}{\volt}$:} solo quando cerchiamo di azzerare fisicamente il segnale all'oscilloscopio a MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$), una volta cancellato con $C_c$ il contributo dominante di $C_p$ da $\SI{1170}{\milli\volt}$, il segnale da $\SI{44.3}{\milli\volt}$ dovuto a $R_p$ rimane scoperto (\texttt{scope\_161}), rendendo necessaria la sua compensazione tramite $R_c$.
+    \item \textit{Emersione di $R_p$ nella compensazione hardware a $V_{\text{DC}} = \SI{0}{\volt}$:} solo quando cerchiamo di azzerare fisicamente il segnale all'oscilloscopio a MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$), una volta cancellato con $C_c$ il contributo in quadratura dominante di $C_p$ da $\SI{1170}{\milli\volt}$, il contributo in fase da $\approx \SI{44.5}{\milli\volt}$ dovuto a $R_p$ rimane scoperto, rendendo necessaria la sua compensazione tramite $R_c$.
 \end{itemize}
 
-\paragraph{4. Introduzione e dimensionamento del resistore di compensazione $R_c$ (misura \texttt{scope\_165}):}
-Per cancellare al nodo $V^-$ anche la corrente $\frac{V_{\text{in}}}{R_p}$ senza alterare il bilanciamento capacitivo già fissato da $\alpha = \frac{C_p}{C_c}$, abbiamo inserito il resistore di compensazione $R_c$ in parallelo a $C_c$ tra l'uscita del secondo operazionale $U_2$ e il nodo $V^-$ del TIA (Fig.~\ref{fig:schema_comp_hw}). Essendo \textbf{ai capi del parallelo $C_c \parallel R_c$ applicata la tensione $v_{U2}(t) = -\alpha v_{\text{in}}(t)$} (sfasata di $180^\circ$ rispetto a $v_{\text{in}}(t)$), la corrente totale iniettata dal ramo di compensazione è:
+\paragraph{Dimensionamento del resistore di compensazione $R_c$ e verifica post-compensazione:}
+Per cancellare al nodo $V^-$ anche la corrente in fase $+\frac{v_{\text{in}}(t)}{R_p}$ senza alterare il bilanciamento capacitivo gi? fissato da $\alpha = \frac{C_p}{C_c}$, abbiamo inserito il resistore di compensazione $R_c$ in parallelo a $C_c$ tra l'uscita del secondo operazionale $U_2$ e il nodo $V^-$ del TIA (Fig.~\ref{fig:schema_comp_hw}). Essendo \textbf{ai capi del parallelo $C_c \parallel R_c$ applicata la tensione $v_{U2}(t) = -\alpha v_{\text{in}}(t)$} (in \textbf{controfase}, $180^\circ$, rispetto a $v_{\text{in}}(t)$), il resistore $R_c$ inietta nel nodo $V^-$ una corrente $-\frac{\alpha}{R_c} v_{\text{in}}(t)$ in controfase che si oppone direttamente alla corrente in fase $+\frac{1}{R_p} v_{\text{in}}(t)$ di $R_p$:
 \begin{equation}
     \label{eq:icomp_completa}
     i_{\text{comp}}(t) = C_c \frac{dv_{U2}(t)}{dt} + \frac{v_{U2}(t)}{R_c} = -\alpha C_c \frac{dv_{\text{in}}(t)}{dt} - \frac{\alpha}{R_c} v_{\text{in}}(t)
     \;\Longleftrightarrow\;
-    I_{\text{comp}}(j\omega) = \left( \frac{1}{R_c} + j\omega C_c \right) V_{U2}(j\omega) = -\alpha \left( \frac{1}{R_c} + j\omega C_c \right) V_{\text{in}}(j\omega)
+    I_{\text{comp}}(j\omega) = -\alpha \left( \frac{1}{R_c} + j\omega C_c \right) V_{\text{in}}(j\omega)
 \end{equation}
-Sommando al nodo $V^-$ del TIA la corrente parassita $I_p(j\omega)$ (generata da $V_{\text{in}}$ ai capi di $R_p \parallel C_p$) e la corrente di compensazione $I_{\text{comp}}(j\omega)$ (generata da $V_{U2} = -\alpha V_{\text{in}}$ ai capi di $R_c \parallel C_c$), la corrente netta a MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$) risulta:
+Sommando al nodo $V^-$ del TIA la corrente parassita $I_p(j\omega)$ e la corrente di compensazione $I_{\text{comp}}(j\omega)$, la corrente netta a MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$) risulta:
 \begin{equation}
-    I_{\text{net}}(j\omega) = I_p(j\omega) + I_{\text{comp}}(j\omega) = \underbrace{\left( \frac{1}{R_p} - \frac{\alpha}{R_c} \right)}_{\text{parte reale } (\sin\omega t)} V_{\text{in}}(j\omega) \;+\; j\omega \underbrace{\left( C_p - \alpha C_c \right)}_{\text{parte immaginaria } (\cos\omega t)} V_{\text{in}}(j\omega)
+    I_{\text{net}}(j\omega) = I_p(j\omega) + I_{\text{comp}}(j\omega) = \underbrace{\left( \frac{1}{R_p} - \frac{\alpha}{R_c} \right)}_{\text{parte in fase } (\sin\omega t)} V_{\text{in}}(j\omega) \;+\; j\omega \underbrace{\left( C_p - \alpha C_c \right)}_{\text{parte in quadratura } (\cos\omega t)} V_{\text{in}}(j\omega)
 \end{equation}
-Affinché si annullino simultaneamente sia la componente in quadratura sia la componente in controfase, devono valere le due condizioni:
+Affinch? si annullino simultaneamente sia la componente in quadratura sia la componente in fase, devono valere le due condizioni:
 \begin{equation}
     \label{eq:formula_progetto_rp}
     \begin{cases}
         C_p - \alpha C_c = 0 \implies \alpha = \dfrac{C_p}{C_c} \approx 0.0892 \\[10pt]
-        \dfrac{1}{R_p} - \dfrac{\alpha}{R_c} = 0 \implies R_c = \alpha \, R_p = \dfrac{C_p}{C_c} R_p = R_{\text{trans}} \, \dfrac{C_p}{C_c} \, \dfrac{V_{\text{in, pk}}}{V_{\text{out, res}}}
+        \dfrac{1}{R_p} - \dfrac{\alpha}{R_c} = 0 \implies R_c = \alpha \, R_p = \dfrac{C_p}{C_c} R_p
     \end{cases}
 \end{equation}
-Sostituendo i valori sperimentali misurati in \texttt{scope\_161} ($R_p = \SI{11.28}{\mega\ohm}$ e $\alpha = 0.0892$):
+Sostituendo $\alpha \approx 0.0892$ e $R_p \approx \SI{11.2}{\mega\ohm}$, otteniamo il valore di progetto del resistore di compensazione:
 \begin{equation}
-    R_c = \alpha \, R_p = 0.0892 \times \SI{11.28}{\mega\ohm} = \SI{5.0}{\mega\ohm} \times \frac{\SI{0.892}{\pico\farad}}{\SI{10}{\pico\farad}} \times \frac{\SI{100.0}{\milli\volt}}{\SI{44.33}{\milli\volt}} = \mathbf{\SI{1.006}{\mega\ohm}} \approx \mathbf{\SI{1}{\mega\ohm}}
+    R_c = \alpha \, R_p \approx 0.0892 \times \SI{11.2}{\mega\ohm} \approx \mathbf{\SI{1.0}{\mega\ohm}}
 \end{equation}
 
-\noindent Inserendo il resistore commerciale da $R_c = \SI{1}{\mega\ohm}$ in parallelo a $C_c = \SI{10}{\pico\farad}$, abbiamo acquisito la traccia \texttt{scope\_165}, riportata nel pannello destro di Fig.~\ref{fig:scope_161_165_rp}:
-\begin{equation}
-    v_{\text{out, 165}}(t) = +\SI{0.99}{\milli\volt} \sin(\omega t) + \SI{2.29}{\milli\volt} \cos(\omega t) \qquad \left(V_{\text{out, pk}} = \SI{2.50}{\milli\volt}, \;\; V_{\text{out, pp}} = \SI{4.99}{\milli\volt_{pp}}\right)
-\end{equation}
-Come mostra il confronto tra i due grafici di Fig.~\ref{fig:scope_161_165_rp}, l'aggiunta di $R_c = \SI{1}{\mega\ohm}$ rimuove completamente la sinusoide in controfase da $\SI{44.3}{\milli\volt}$, riducendo l'uscita a $V_{\text{DC}} = \SI{0}{\volt}$ al solo rumore di fondo dell'oscilloscopio.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\textwidth]{../Compensazione Hardware/grafici/scope_165_compensato.png}
+\caption{Verifica sperimentale all'oscilloscopio dell'azzeramento del segnale parassita post-compensazione (\texttt{scope\_165}, acquisito a $f_{\text{in}} \approx \SI{417.63}{\kilo\hertz}$, $V_{\text{DC}} = \SI{0}{\volt}$, $V_{\text{in, pk}} = \SI{100.0}{\milli\volt}$) con la rete completa $C_c = \SI{10}{\pico\farad} \parallel R_c = \SI{1}{\mega\ohm}$: sia la componente in quadratura di $C_p$ sia la componente in fase di $R_p$ risultano cancellate, abbattendo il segnale d'uscita $v_{\text{out}}(t)$ al livello del rumore di fondo ($V_{\text{out, pk}} = \SI{2.5}{\milli\volt}$).}
+\label{fig:scope_161_165_rp}
+\end{figure}
 
-\noindent Quando infine accendiamo la polarizzazione del MEMS ($V_{\text{DC}} = \SI{5.0}{\volt}$), applicando la legge di Kirchhoff delle correnti al nodo invertente $V^-$ del TIA, la corrente netta che fluisce nella resistenza di transimpedenza $R_f = \SI{500}{\kilo\ohm}$ si riduce alla corrente motrice $i_s(t)$ più un minimo residuo capacitivo differenziale $\Delta C = C_p - \alpha C_c$:
+\noindent Inserendo il resistore commerciale da $R_c = \SI{1}{\mega\ohm}$ in parallelo a $C_c = \SI{10}{\pico\farad}$, abbiamo acquisito la traccia post-compensazione riportata in Fig.~\ref{fig:scope_161_165_rp} (\texttt{scope\_165}), in cui l'uscita residua a $V_{\text{DC}} = \SI{0}{\volt}$ risulta ridotta al solo rumore di fondo dell'oscilloscopio:
+\begin{equation}
+    v_{\text{out, comp}}(t) = +\SI{0.99}{\milli\volt} \sin(\omega t) + \SI{2.29}{\milli\volt} \cos(\omega t) \qquad \left(V_{\text{out, pk}} = \SI{2.50}{\milli\volt}, \;\; V_{\text{out, pp}} = \SI{4.99}{\milli\volt_{pp}}\right)
+\end{equation}
+
+\noindent Quando infine accendiamo la polarizzazione del MEMS ($V_{\text{DC}} = \SI{5.0}{\volt}$), applicando la legge di Kirchhoff delle correnti al nodo invertente $V^-$ del TIA, la corrente netta che fluisce nella resistenza di transimpedenza $R_f = \SI{500}{\kilo\ohm}$ si riduce alla corrente motrice $i_s(t)$ pi? un minimo residuo capacitivo differenziale $\Delta C = C_p - \alpha C_c$:
 \begin{equation}
     \label{eq:inet_tia}
     i_{\text{net}}(t) = i_{\text{mems}}(t) + i_{\text{comp}}(t) \approx i_s(t) + \underbrace{\left(C_p - \alpha C_c\right)}_{\Delta C} \frac{dv_{\text{in}}(t)}{dt}
 \end{equation}
-Quando il circuito è tarato ($\alpha C_c \approx C_p$), la capacità differenziale residua $\Delta C$ scende a poche unità di femtofarad ($\Delta C \approx \SI{6}{\femto\farad} - \SI{13}{\femto\farad}$ rispetto agli $\SI{892}{\femto\farad}$ originari), sopprimendo oltre il $98.5\%$ della corrente parassita prima che essa entri nell'amplificatore a transimpedenza.
+Quando il circuito ? tarato ($\alpha C_c \approx C_p$), la capacit? differenziale residua $\Delta C$ scende a poche unit? di femtofarad ($\Delta C \approx \SI{6}{\femto\farad} - \SI{13}{\femto\farad}$ rispetto agli $\SI{892}{\femto\farad}$ originari), sopprimendo oltre il $98.5\%$ della corrente parassita prima che essa entri nell'amplificatore a transimpedenza.
 
 \subsection{Caratterizzazione della cancellazione capacitiva a MEMS spento (\texorpdfstring{$V_{\text{DC}} = \SI{0}{\volt}$}{Vdc = 0 V})}
 \label{subsec:comp_hw_off}
