@@ -20,15 +20,16 @@
 \contentsline {subsection}{\numberline {9.2}Risposta in frequenza con compensazione capacitiva}{24}{subsection.9.2}%
 \contentsline {section}{\numberline {10}Caratterizzazione in regime di grande segnale: compressione di ampiezza e deriva non lineare di frequenza}{30}{section.10}%
 \contentsline {subsection}{\numberline {10.1}Origine fisica delle non-linearità di rigidezza ad ampiezza finita}{30}{subsection.10.1}%
-\contentsline {paragraph}{Dipendenza della frequenza di risonanza dall'ampiezza di oscillazione (Rammollimento dinamico):}{31}{section*.2}%
-\contentsline {subsection}{\numberline {10.2}Setup sperimentale e compressione dell'ampiezza di risposta ($A_0$ vs $V_{\text {in}}$)}{31}{subsection.10.2}%
-\contentsline {subsection}{\numberline {10.3}Evoluzione temporale della frequenza istantanea durante il ring-down ($f_1(t)$)}{33}{subsection.10.3}%
-\contentsline {subsubsection}{\numberline {10.3.1}Modello analitico del rilassamento di frequenza}{33}{subsubsection.10.3.1}%
-\contentsline {subsubsection}{\numberline {10.3.2}Stima numerica della frequenza istantanea e risultati sperimentali}{34}{subsubsection.10.3.2}%
-\contentsline {section}{\numberline {11}Distorsione armonica di secondo ordine e accoppiamento con il secondo modo flessionale}{37}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Origine fisica della componente a frequenza doppia ($f_2 = 2 f_1$) e risonanza interna 1:2}{37}{subsection.11.1}%
-\contentsline {paragraph}{Meccanismo di generazione quadratica del secondo modo:}{37}{section*.3}%
-\contentsline {paragraph}{Leggi teoriche di scala per le ampiezze spettrali $p_1$, $p_2$ e per la distorsione $p_2 / p_1$:}{38}{section*.4}%
-\contentsline {subsection}{\numberline {11.2}Setup di misura e metodologia di analisi spettrale ad alta accuratezza}{38}{subsection.11.2}%
-\contentsline {paragraph}{Eliminazione dello \textit {scalloping loss} (effetto \textit {picket-fence}) tramite finestra di Hann e Zero-Padding $64\times $:}{38}{section*.5}%
-\contentsline {subsection}{\numberline {11.3}Risultati sperimentali: ampiezze armoniche ($p_1, p_2$) e distorsione di secondo modo ($p_2 / p_1$)}{39}{subsection.11.3}%
+\contentsline {paragraph}{Relazione tra lo spostamento fisico $x(t)$ e la tensione di uscita misurata $v_{\text {out}}(t)$ via circuito di condizionamento:}{32}{section*.2}%
+\contentsline {paragraph}{Dipendenza della frequenza di risonanza dall'ampiezza di oscillazione (Rammollimento dinamico):}{32}{section*.3}%
+\contentsline {subsection}{\numberline {10.2}Setup sperimentale e compressione dell'ampiezza di risposta ($A_0$ vs $V_{\text {in}}$)}{33}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Evoluzione temporale della frequenza istantanea durante il ring-down ($f_1(t)$)}{35}{subsection.10.3}%
+\contentsline {subsubsection}{\numberline {10.3.1}Modello analitico del rilassamento di frequenza}{35}{subsubsection.10.3.1}%
+\contentsline {subsubsection}{\numberline {10.3.2}Stima numerica della frequenza istantanea e risultati sperimentali}{36}{subsubsection.10.3.2}%
+\contentsline {section}{\numberline {11}Distorsione armonica di secondo ordine e accoppiamento con il secondo modo flessionale}{39}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Origine fisica della componente a frequenza doppia ($f_2 = 2 f_1$) e risonanza interna 1:2}{39}{subsection.11.1}%
+\contentsline {paragraph}{Meccanismo di generazione quadratica del secondo modo:}{39}{section*.4}%
+\contentsline {paragraph}{Leggi teoriche di scala per le ampiezze spettrali $p_1$, $p_2$ e per la distorsione $p_2 / p_1$:}{40}{section*.5}%
+\contentsline {subsection}{\numberline {11.2}Setup di misura e metodologia di analisi spettrale ad alta accuratezza}{40}{subsection.11.2}%
+\contentsline {paragraph}{Eliminazione dello \textit {scalloping loss} (effetto \textit {picket-fence}) tramite finestra di Hann e Zero-Padding $64\times $:}{40}{section*.6}%
+\contentsline {subsection}{\numberline {11.3}Risultati sperimentali: ampiezze armoniche ($p_1, p_2$) e distorsione di secondo modo ($p_2 / p_1$)}{41}{subsection.11.3}%

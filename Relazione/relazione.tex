@@ -1229,7 +1229,7 @@ descrive quindi una circonferenza sottoposta a due trasformazioni geometriche ne
 \section{Caratterizzazione in regime di grande segnale: compressione di ampiezza e deriva non lineare di frequenza}
 \label{sec:regime_non_lineare}
 
-Nelle Sezioni~\ref{sec:ringdown}, \ref{sec:risposta_in_frequenza} e \ref{sec:compensazione_hardware} il risonatore MEMS è stato caratterizzato mantenendo l'ampiezza del segnale di pilotaggio entro il limite di piccolo segnale ($V_{\text{in}} \le \SI{200}{\milli\volt_{pp}}$). In tali condizioni lo spostamento del centro dell'arco $q_1(t) = x(t)$ rimane molto inferiore sia allo spessore nel piano della trave ($w = \SI{5}{\micro\meter}$) sia al gap elettrostatico a riposo ($g_0 = \SI{1.8}{\micro\meter}$), garantendo una risposta rigorosamente lineare in cui la frequenza naturale $f_1$ e il guadagno sono indipendenti dall'ampiezza di oscillazione.
+Nelle Sezioni~\ref{sec:ringdown}, \ref{sec:risposta_in_frequenza} e \ref{sec:compensazione_hardware} il risonatore MEMS è stato caratterizzato mantenendo l'ampiezza del segnale di pilotaggio entro il limite di piccolo segnale ($V_{\text{in}} \le \SI{200}{\milli\volt_{pp}}$). In tali condizioni lo spostamento fisico del centro dell'arco $x(t)$ rimane molto inferiore sia allo spessore nel piano della trave ($w = \SI{5}{\micro\meter}$) sia al gap elettrostatico a riposo ($g_0 = \SI{1.8}{\micro\meter}$), garantendo una risposta rigorosamente lineare in cui la frequenza naturale $f_1$ e il guadagno sono indipendenti dall'ampiezza di oscillazione.
 
 In questa sezione studiamo sperimentalmente cosa accade quando la tensione di eccitazione $V_{\text{in}}$ viene incrementata progressivamente fino a $\SI{2000}{\milli\volt_{pp}}$ ($\SI{2.0}{\volt_{pp}}$), spingendo la microstruttura in \textbf{regime non lineare di grande segnale}. Come vedremo, l'ingresso in questo regime si manifesta attraverso due fenomeni fisici strettamente correlati:
 \begin{enumerate}
@@ -1240,44 +1240,118 @@ In questa sezione studiamo sperimentalmente cosa accade quando la tensione di ec
 \subsection{Origine fisica delle non-linearità di rigidezza ad ampiezza finita}
 \label{subsec:origine_non_linearita}
 
-Per comprendere l'origine fisica di questi fenomeni, riprendiamo l'equazione del moto del modello a ordine ridotto (ROM) sviluppato da Gobat, Zega, Frangi et al.~\cite{frangi2023} (eq.~5, 13 e 17 del paper). Quando il risonatore viene eccitato attorno al primo modo flessionale ($i = 1$, con il secondo modo non risonante $q_2 \approx 0$ e tensione di tuning $V_{\text{T}} = \SI{0}{\volt}$), la forza di richiamo elastica del polisilicio $\mathcal{M}\beta_1(q_1)$ e la forza elettrostatica agli elettrodi $F_1(q_1)$ non possono più essere troncate al solo termine lineare in $q_1$, ma devono includere i termini polinomiali quadratici e cubici:
+Per comprendere l'origine fisica di questi fenomeni, analizziamo la dinamica della trave ad arco descritta dalla variabile fisica di spostamento al centro $x(t)$ (introdotta nella Sezione~2, dove $u(y, t) = \phi(y) x(t)$ con $\phi(L/2) = 1$). Quando l'ampiezza di oscillazione $x(t)$ non è più trascurabile rispetto alle dimensioni caratteristiche della struttura e del gap, le forze elastiche del silicio e le forze elettrostatiche esercitate dagli attuatori manifestano una marcata dipendenza non lineare dalla posizione:
+
 \begin{enumerate}
-    \item \textbf{Non-linearità meccanica geometrica ($\beta_1(q_1)$):}
-    Dalla Tabella~1 (eq.~5) di~\cite{frangi2023}, l'accelerazione di richiamo elastico della trave ad arco vale:
+    \item \textbf{Non-linearità meccanica geometrica della trave ad arco ($F_{\text{m}}(x)$):}
+    In regime di piccole deflessioni, la forza di richiamo elastica a flessione segue la legge lineare di Hooke $F_{\text{m}}(x) \approx k_m x$. All'aumentare dello spostamento $x(t)$, sviluppando la forza elastica in serie di Taylor attorno alla posizione di riposo $x = 0$:
     \begin{equation}
-        \beta_1(q_1) = c_1^{(1)} q_1 + c_3^{(1)} q_1^2 + c_6^{(1)} q_1^3
+        F_{\text{m}}(x) = k_m x + k_{m2} x^2 + k_{m3} x^3
     \end{equation}
     dove:
     \begin{itemize}
-        \item $c_1^{(1)} = \SI{6.85}{\micro\meter/\micro\second^2} = \omega_{01}^2$ rappresenta la rigidezza lineare per unità di massa;
-        \item $c_3^{(1)} = \SI{9.55e-2}{\micro\second^{-2}}$ è il \textbf{coefficiente quadratico meccanico}, generato dall'asimmetria geometrica della curvatura iniziale ad arco della trave;
-        \item $c_6^{(1)} = \SI{3.62e-4}{\micro\meter^{-1}\micro\second^{-2}}$ è il \textbf{coefficiente cubico meccanico}, dovuto all'allungamento assiale della linea media della trave (\textit{mid-plane stretching}) imposto dal vincolo di doppio incastro agli estremi.
+        \item $k_m = m_{\text{eff}} \omega_0^2$ è la rigidezza elastica lineare a flessione associata al primo modo;
+        \item $k_{m2}$ è il \textbf{coefficiente di rigidezza meccanica quadratica}. Fisicamente, questo termine nasce dall'asimmetria geometrica introdotta dalla curvatura iniziale ad arco fabbricata nella trave: a causa di tale pre-curvatura, la risposta elastica per deflessioni concordi o discordi rispetto alla convessità iniziale non è simmetrica ($F_{\text{m}}(x) \neq -F_{\text{m}}(-x)$);
+        \item $k_{m3}$ è il \textbf{coefficiente di rigidezza meccanica cubica} (\textit{geometric hardening}). Fisicamente, per una trave doppiamente incastrata agli estremi ($y = 0$ e $y = L$), ogni deflessione flessionale trasversale $x(t)$ induce per vincolo geometrico un allungamento assiale della linea media (\textit{mid-plane stretching}). Questo genera uno sforzo normale di trazione proporzionale a $x^2$, la cui componente di richiamo trasversale cresce come $x^3$, irrigidendo la struttura per grandi spostamenti ($k_{m3} > 0$).
     \end{itemize}
-    \item \textbf{Non-linearità elettrostatica ($f_{DD}^{(1)}(q_1)\,V_{\text{DC}}^2$):}
-    La forza di attrazione elettrostatica nel gap $g_0 - x$ scala in modo fortemente non lineare con lo spostamento ($\propto \frac{V_{\text{DC}}^2}{(g_0 - x)^2}$). Sviluppando in serie di Taylor oltre il primo ordine (Tabella~2 di~\cite{frangi2023}), il contributo elettrostatico al primo modo è:
+
+    \item \textbf{Non-linearità elettrostatica e sviluppo delle derivate della capacità ($F_e(x)$):}
+    La forza elettrostatica esercitata dall'elettrodo di attuazione sulla trave polarizzata a potenziale continuo $V_{\text{DC}}$ (e durante l'oscillazione libera in cui il segnale forzante alternato $v_{\text{in}} = 0$) vale:
     \begin{equation}
-        f_{DD}^{(1)}(q_1) V_{\text{DC}}^2 = \left( c_{0,DD}^{(1)} + c_{1,DD}^{(1)} q_1 + c_{3,DD}^{(1)} q_1^2 + c_{6,DD}^{(1)} q_1^3 \right) V_{\text{DC}}^2
+        F_e(x) = \frac{\partial U_e}{\partial x} = \frac{1}{2} \frac{\partial C_d(x)}{\partial x} V_{\text{DC}}^2
     \end{equation}
+    In regime di grandi oscillazioni, la derivata della capacità rispetto allo spostamento $\frac{\partial C_d(x)}{\partial x}$ non può essere arrestata al primo ordine (come fatto in piccolo segnale nella Sezione~4), ma deve essere sviluppata in serie di Taylor attorno alla posizione di riposo $x = 0$ fino al terzo ordine:
+    \begin{equation}
+        \frac{\partial C_d(x)}{\partial x} \approx \left. \frac{\partial C_d}{\partial x} \right|_0 + \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 x + \frac{1}{2} \left. \frac{\partial^3 C_d}{\partial x^3} \right|_0 x^2 + \frac{1}{6} \left. \frac{\partial^4 C_d}{\partial x^4} \right|_0 x^3
+    \end{equation}
+    Sostituendo nell'espressione della forza elettrostatica:
+    \begin{equation}
+        F_e(x) \approx F_{\text{DC}} + k_e x + k_{e2} x^2 + k_{e3} x^3
+    \end{equation}
+    dove:
+    \begin{itemize}
+        \item $F_{\text{DC}} = \frac{1}{2} \left. \frac{\partial C_d}{\partial x} \right|_0 V_{\text{DC}}^2$ è la forza elettrostatica statica che determina un minuscolo scostamento della posizione di equilibrio;
+        \item $k_e = \frac{1}{2} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2 > 0$ è la rigidezza elettrostatica lineare (responsabile del noto \textit{spring softening});
+        \item $k_{e2} = \frac{1}{4} \left. \frac{\partial^3 C_d}{\partial x^3} \right|_0 V_{\text{DC}}^2 > 0$ è il coefficiente di rigidezza elettrostatica quadratica;
+        \item $k_{e3} = \frac{1}{12} \left. \frac{\partial^4 C_d}{\partial x^4} \right|_0 V_{\text{DC}}^2 > 0$ è il coefficiente di rigidezza elettrostatica cubica.
+    \end{itemize}
+    Nel modello a facce piane con gap $g_0$ ($C_d(x) \approx \frac{\varepsilon_0 A}{g_0 - x}$), le derivate successive $\left. \frac{\partial^n C_d}{\partial x^n} \right|_0 = n! \frac{\varepsilon_0 A}{g_0^{n+1}}$ sono tutte rigorosamente positive, indicando che la forza elettrostatica cresce in modo fortemente non lineare all'avvicinarsi della trave all'elettrodo.
 \end{enumerate}
 
-\noindent Raccogliendo i contributi meccanici ed elettrostatici attorno alla configurazione di equilibrio statico a $V_{\text{DC}} = \SI{5.0}{\volt}$, l'equazione differenziale non lineare del primo modo flessionale assume la forma:
+\noindent Raccogliendo i contributi meccanici ed elettrostatici ed applicando la seconda legge di Newton per la massa efficace del primo modo $m_{\text{eff}}$:
+\begin{equation}
+    m_{\text{eff}} \ddot{x}(t) + b_{\text{eff}} \dot{x}(t) + F_{\text{m}}(x) = F_e(x) + F_{\text{drive}}(t)
+\end{equation}
+Portando i termini dipendenti dalla deflessione $x(t)$ al primo membro:
+\begin{equation}
+    m_{\text{eff}} \ddot{x}(t) + b_{\text{eff}} \dot{x}(t) + \underbrace{(k_m - k_e)}_{k_{\text{eff}}} x(t) + \underbrace{(k_{m2} - k_{e2})}_{k_{\text{eff}, 2}} x^2(t) + \underbrace{(k_{m3} - k_{e3})}_{k_{\text{eff}, 3}} x^3(t) = F_{\text{drive}}(t)
+\end{equation}
+Dividendo entrambi i membri per la massa efficace $m_{\text{eff}}$ ed esprimendo il termine dissipativo lineare tramite il fattore di merito meccanico ($\frac{b_{\text{eff}}}{m_{\text{eff}}} = \frac{\omega_0}{Q_1}$), otteniamo l'equazione differenziale non lineare del moto per lo spostamento fisico $x(t)$:
 \begin{equation}
     \label{eq:oscillatore_non_lineare}
-    \ddot{q}_1 + \frac{\omega_{01}}{Q_1}\dot{q}_1 + \omega_1^2 q_1 + \alpha_2 q_1^2 + \alpha_3 q_1^3 = F_{\text{drive}}(t)
+    \ddot{x}(t) + \frac{\omega_0}{Q_1}\dot{x}(t) + \omega_1^2 x(t) + \alpha_2 x^2(t) + \alpha_3 x^3(t) = \frac{F_{\text{drive}}(t)}{m_{\text{eff}}}
 \end{equation}
-dove $\omega_1 = 2\pi f_0 = \sqrt{c_1^{(1)} - c_{1,DD}^{(1)} V_{\text{DC}}^2}$ è la pulsazione naturale di piccolo segnale, mentre $\alpha_2 = c_3^{(1)} - c_{3,DD}^{(1)} V_{\text{DC}}^2$ e $\alpha_3 = c_6^{(1)} - c_{6,DD}^{(1)} V_{\text{DC}}^2$ sono rispettivamente i coefficienti di rigidezza non lineare quadratica e cubica netti.
+dove:
+\begin{itemize}
+    \item $\omega_1 = 2\pi f_0 = \sqrt{\frac{k_m - k_e}{m_{\text{eff}}}} = \sqrt{\omega_0^2 - \frac{1}{2 m_{\text{eff}}} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2}$ è la pulsazione naturale di risonanza lineare di piccolo segnale a $V_{\text{DC}} = \SI{5.0}{\volt}$;
+    \item $\alpha_2 = \frac{k_{m2} - k_{e2}}{m_{\text{eff}}} = \frac{k_{m2}}{m_{\text{eff}}} - \frac{1}{4 m_{\text{eff}}} \left. \frac{\partial^3 C_d}{\partial x^3} \right|_0 V_{\text{DC}}^2$ è il coefficiente netto di non-linearità quadratica;
+    \item $\alpha_3 = \frac{k_{m3} - k_{e3}}{m_{\text{eff}}} = \frac{k_{m3}}{m_{\text{eff}}} - \frac{1}{12 m_{\text{eff}}} \left. \frac{\partial^4 C_d}{\partial x^4} \right|_0 V_{\text{DC}}^2$ è il coefficiente netto di non-linearità cubica.
+\end{itemize}
+
+\paragraph{Relazione tra lo spostamento fisico $x(t)$ e la tensione di uscita misurata $v_{\text{out}}(t)$ via circuito di condizionamento:}
+Per connettere l'ampiezza dell'oscillazione meccanica $x(t)$ ai segnali di tensione acquisiti sperimentalmente all'oscilloscopio, consideriamo la catena di lettura elettronica presentata nella Sezione~\ref{sec:corrente_motrice} e schematizzata in Fig.~\ref{fig:frontend_schema}:
+\begin{enumerate}
+    \item L'elettrodo di rilevamento (sense) è mantenuto a massa virtuale dal morsetto invertente del TIA (OPA656). La modulazione della capacità di sense $C_s(x)$ sotto polarizzazione continua $V_{\text{DC}}$ genera la corrente motrice di sense:
+    \begin{equation}
+        i_s(t) = \frac{d q_s}{dt} = \frac{d}{dt}\left[ C_s(x) V_{\text{DC}} \right] = V_{\text{DC}} \left. \frac{\partial C_s}{\partial x} \right|_0 \dot{x}(t) = \eta \, \dot{x}(t)
+    \end{equation}
+    dove $\eta = V_{\text{DC}} \left. \frac{\partial C_s}{\partial x} \right|_0$ è il fattore di trasduzione elettromeccanica (espresso in $\si{\newton/\volt}$ o $\si{\coulomb/\meter}$).
+    \item Il primo stadio amplificatore a transimpedenza (TIA) converte la corrente $i_s(t)$ in tensione attraverso la resistenza di retroazione $R_f = \SI{500}{\kilo\ohm}$:
+    \begin{equation}
+        v_{\text{out, TIA}}(t) = - R_f \cdot i_s(t)
+    \end{equation}
+    \item Il secondo stadio amplificatore invertente (AD817) applica un guadagno di tensione in modulo pari a 10 ($G_{\text{IA}} = -R_2/R_1 = -10$):
+    \begin{equation}
+        v_{\text{out}}(t) = G_{\text{IA}} \cdot v_{\text{out, TIA}}(t) = (-10) \cdot \left( -R_f \cdot i_s(t) \right) = 10 R_f \cdot i_s(t) = R_{\text{trans}} \cdot i_s(t)
+    \end{equation}
+    determinando una trans-resistenza complessiva equivalente di:
+    \begin{equation}
+        R_{\text{trans}} = 10 \, R_f = 10 \times \SI{500}{\kilo\ohm} = \SI{5}{\mega\ohm}
+    \end{equation}
+    \item Durante il decadimento libero di ring-down (dopo il taglio del Gate, con $v_{\text{in}} = 0$), la corrente attraverso la capacità parassita $C_p$ è rigorosamente nulla ($i_{Cp} = C_p \frac{dv_{\text{in}}}{dt} = 0$), per cui l'intera corrente condizionata coincide con la corrente motrice: $i_{\text{tot}}(t) = i_s(t) = \eta \dot{x}(t)$. Sostituendo nell'uscita del circuito di condizionamento:
+    \begin{equation}
+        v_{\text{out}}(t) = R_{\text{trans}} \, \eta \, \dot{x}(t) = (10 R_f) \, \eta \, \dot{x}(t)
+    \end{equation}
+    \item Per un'oscillazione sinusoidale quasi-armonica attorno alla frequenza di risonanza $x(t) = X_0 \cos(\omega_1 t)$, la velocità istantanea della trave vale $\dot{x}(t) = -\omega_1 X_0 \sin(\omega_1 t)$, da cui l'ampiezza di picco della tensione misurata all'uscita della catena di condizionamento risulta:
+    \begin{equation}
+        \label{eq:legame_ampiezza_x_A}
+        A = R_{\text{trans}} \, \eta \, \omega_1 \, X_0 = (10 R_f) \, \eta \, \omega_1 \, X_0 \iff X_0 = \frac{A}{R_{\text{trans}} \eta \omega_1} = \frac{A}{(10 R_f) \, \eta \, \omega_1}
+    \end{equation}
+    dimostrando che l'ampiezza di tensione $A$ acquisita all'oscilloscopio è rigorosamente proporzionale all'ampiezza dello spostamento meccanico $X_0$ del centro dell'arco.
+\end{enumerate}
 
 \paragraph{Dipendenza della frequenza di risonanza dall'ampiezza di oscillazione (Rammollimento dinamico):}
-In presenza dei termini non lineari $\alpha_2 q_1^2$ e $\alpha_3 q_1^3$, la rigidezza efficace media avvertita dalla trave lungo un ciclo di oscillazione $q_1(t) \approx Q_0 \cos(\omega t)$ dipende dall'ampiezza di vibrazione $Q_0$. Mediante sviluppo perturbativo asintotico (bilanciamento armonico o metodo delle scale multiple fino al secondo ordine), la frequenza naturale di oscillazione $f_1$ varia quadraticamente con l'ampiezza del segnale di uscita $A = R_{\text{trans}} \eta \omega_1 Q_0$:
+In presenza dei termini non lineari $\alpha_2 x^2(t)$ e $\alpha_3 x^3(t)$, la rigidezza efficace media avvertita dalla trave lungo un ciclo di oscillazione $x(t) \approx X_0 \cos(\omega t)$ dipende dall'ampiezza di vibrazione $X_0$.
+Mediante sviluppo perturbativo asintotico (bilanciamento armonico o metodo delle scale multiple fino al secondo ordine), la pulsazione istantanea di oscillazione $\omega$ varia quadraticamente con l'ampiezza dello spostamento fisico $X_0$:
+\begin{equation}
+    \omega(X_0) = \omega_1 + \left( \frac{3\alpha_3}{8\omega_1} - \frac{5\alpha_2^2}{12\omega_1^3} \right) X_0^2
+\end{equation}
+Convertendo in frequenza ciclica $f = \omega / (2\pi)$ ed esprimendo l'ampiezza di spostamento $X_0$ in termini dell'ampiezza del segnale di tensione misurato $A$ tramite l'eq.~\eqref{eq:legame_ampiezza_x_A}, otteniamo la fondamentale legge della curva a spina dorsale (\textit{backbone curve}):
 \begin{equation}
     \label{eq:backbone_legge}
     f_1(A) = f_0 + \kappa_{\text{NL}} A^2 = f_0 - |\kappa_{\text{NL}}| A^2
 \end{equation}
-dove il coefficiente effettivo di anisocronismo $\kappa_{\text{NL}}$, legato ai parametri strutturali da:
+dove il coefficiente effettivo di anisocronismo $\kappa_{\text{NL}}$ vale:
 \begin{equation}
-    \kappa_{\text{NL}} \propto f_0 \left( \frac{3\alpha_3}{8\omega_1^2} - \frac{5\alpha_2^2}{12\omega_1^4} \right) < 0
+    \kappa_{\text{NL}} = \frac{f_0}{2\omega_1^2 (R_{\text{trans}} \eta \omega_1)^2} \left( \frac{3\alpha_3}{8} - \frac{5\alpha_2^2}{12\omega_1^2} \right) < 0
 \end{equation}
-risulta \textbf{negativo} sia per effetto del termine quadratico dell'arco ($-\frac{5\alpha_2^2}{12\omega_1^4} < 0$, che al secondo ordine perturbativo produce sempre una riduzione di rigidezza), sia per il contributo attrattivo elettrostatico ($-c_{6,DD}^{(1)} V_{\text{DC}}^2 < 0$). Fisicamente, all'aumentare dell'ampiezza di oscillazione $A$, la trave sperimenta un \textbf{rammollimento dinamico della rigidezza efficace} (\textit{amplitude-dependent softening}), che sposta la sua frequenza di risonanza verso valori più bassi rispetto alla frequenza lineare $f_0$.
+Tale coefficiente risulta \textbf{negativo} per due ragioni fisiche concorrenti:
+\begin{itemize}
+    \item Il termine non lineare quadratico $-\frac{5\alpha_2^2}{12\omega_1^2} < 0$, originato dall'asimmetria geometrica della curvatura ad arco iniziale della trave, al secondo ordine perturbativo genera sempre una riduzione netta della frequenza propria di vibrazione;
+    \item Il contributo elettrostatico cubico $-k_{e3} = -\frac{1}{12}\left. \frac{\partial^4 C_d}{\partial x^4} \right|_0 V_{\text{DC}}^2 < 0$, dovuto all'attrazione elettrostatica non lineare nel gap, è negativo e prevale sull'irrigidimento cubico dovuto all'allungamento assiale ($k_{m3}$).
+\end{itemize}
+Fisicamente, all'aumentare dell'ampiezza di oscillazione $A$, la trave sperimenta un \textbf{rammollimento dinamico della rigidezza efficace} (\textit{amplitude-dependent softening}), che sposta la sua frequenza di risonanza verso valori progressivamente più bassi rispetto alla frequenza lineare $f_0$.
+
 
 \subsection{Setup sperimentale e compressione dell'ampiezza di risposta (\texorpdfstring{$A_0$}{A0} vs \texorpdfstring{$V_{\text{in}}$}{Vin})}
 \label{subsec:compressione_ampiezza}

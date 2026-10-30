@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.10.20)  30 OCT 2026 16:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.10.20)  30 OCT 2026 17:04
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1304,9 +1304,9 @@ za.png  used on input line 1208.
 (pdftex.def)             Requested size: 355.08984pt x 268.49094pt.
  [28 <../Compensazione Hardware/grafici/cerchio_nyquist_confronto_globale.png>]
  [29 <../Compensazione Hardware/grafici/cerchio_nyquist_dettaglio_fano.png> <..
-/Compensazione Hardware/grafici/nyquist_set2_frequenza.png>] [30]
+/Compensazione Hardware/grafici/nyquist_set2_frequenza.png>] [30] [31] [32]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-285.
+359.
 
 (C:\Users\Accetazione\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -1315,22 +1315,22 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<../Duffing/duffing_ampiezza_compressione.png, id=518, 614.295pt x 433.62pt>
+<../Duffing/duffing_ampiezza_compressione.png, id=546, 614.295pt x 433.62pt>
 File: ../Duffing/duffing_ampiezza_compressione.png Graphic file (type png)
 <use ../Duffing/duffing_ampiezza_compressione.png>
 Package pdftex.def Info: ../Duffing/duffing_ampiezza_compressione.png  used on 
-input line 1294.
+input line 1368.
 (pdftex.def)             Requested size: 391.51021pt x 276.36458pt.
 
-[31] [32 <../Duffing/duffing_ampiezza_compressione.png>] [33]
-<../Duffing/duffing_backbone_e_chirp.png, id=561, 614.295pt x 433.62pt>
+[33] [34 <../Duffing/duffing_ampiezza_compressione.png>] [35]
+<../Duffing/duffing_backbone_e_chirp.png, id=586, 614.295pt x 433.62pt>
 File: ../Duffing/duffing_backbone_e_chirp.png Graphic file (type png)
 <use ../Duffing/duffing_backbone_e_chirp.png>
 Package pdftex.def Info: ../Duffing/duffing_backbone_e_chirp.png  used on input
- line 1380.
+ line 1454.
 (pdftex.def)             Requested size: 400.61703pt x 282.7892pt.
- [34] [35 <../Duffing/duffing_backbone_e_chirp.png>] [36]
-Overfull \hbox (31.03465pt too wide) in paragraph at lines 1429--1431
+ [36] [37 <../Duffing/duffing_backbone_e_chirp.png>] [38]
+Overfull \hbox (31.03465pt too wide) in paragraph at lines 1503--1505
 \T1/lmr/m/n/10.95 (-20) con $\OML/lmm/m/it/10.95 c[] \OT1/lmr/m/n/10.95 (-20) =
  \OMS/lmsy/m/n/10.95 ^^@\OT1/lmr/m/n/10.95 (-20) 5[]52 \OMS/lmsy/m/n/10.95 ^^B 
 \OT1/lmr/m/n/10.95 (-20) 10[] [][]$ \T1/lmr/m/n/10.95 (-20) (de-ri-van-te dal-l
@@ -1339,43 +1339,43 @@ a cur-va-tu-ra ini-zia-le del-l'ar-co) e $\OML/lmm/m/it/10.95 c[] \OT1/lmr/m/n/
 m/it/10.95 =[][][]$
  []
 
-[37]
-Overfull \hbox (121.82152pt too wide) in paragraph at lines 1479--1480
+[39]
+Overfull \hbox (121.82152pt too wide) in paragraph at lines 1553--1554
 []\T1/lmr/m/n/10.95 (-20) Per estrar-re le ve-re am-piez-ze fi-si-che $\OML/lmm
 /m/it/10.95 p[]$ \T1/lmr/m/n/10.95 (-20) e $\OML/lmm/m/it/10.95 p[]$ \T1/lmr/m/
 n/10.95 (-20) con pre-ci-sio-ne me-tro-lo-gi-ca (script \T1/lmtt/m/n/10.95 Dist
 orsione/analizza_distorsione.py\T1/lmr/m/n/10.95 (-20) ),
  []
 
-[38]
-<../Distorsione/distorsione_armoniche_vs_vac.png, id=619, 614.295pt x 433.62pt>
+[40]
+<../Distorsione/distorsione_armoniche_vs_vac.png, id=644, 614.295pt x 433.62pt>
 
 File: ../Distorsione/distorsione_armoniche_vs_vac.png Graphic file (type png)
 <use ../Distorsione/distorsione_armoniche_vs_vac.png>
 Package pdftex.def Info: ../Distorsione/distorsione_armoniche_vs_vac.png  used 
-on input line 1494.
+on input line 1568.
 (pdftex.def)             Requested size: 391.51021pt x 276.36458pt.
-<../Distorsione/distorsione_hd2_rapporto.png, id=620, 614.295pt x 433.62pt>
+<../Distorsione/distorsione_hd2_rapporto.png, id=645, 614.295pt x 433.62pt>
 File: ../Distorsione/distorsione_hd2_rapporto.png Graphic file (type png)
 <use ../Distorsione/distorsione_hd2_rapporto.png>
 Package pdftex.def Info: ../Distorsione/distorsione_hd2_rapporto.png  used on i
-nput line 1501.
+nput line 1575.
 (pdftex.def)             Requested size: 391.51021pt x 276.36458pt.
 
-Overfull \hbox (64.79143pt too wide) in paragraph at lines 1513--1536
+Overfull \hbox (64.79143pt too wide) in paragraph at lines 1587--1610
  [][] 
  []
 
-[39 <../Distorsione/distorsione_armoniche_vs_vac.png>] [40 <../Distorsione/dist
+[41 <../Distorsione/distorsione_armoniche_vs_vac.png>] [42 <../Distorsione/dist
 orsione_hd2_rapporto.png>]
-Overfull \hbox (29.11174pt too wide) detected at line 1555
+Overfull \hbox (29.11174pt too wide) detected at line 1629
 [][][][][]\OT1/lmr/m/n/10.95 (\OML/lmm/m/it/10.95 V[]\OT1/lmr/m/n/10.95 ) = \OM
 L/lmm/m/it/10.95 k[] V[];  k[] \OT1/lmr/m/n/10.95 = [] \OMS/lmsy/m/n/10.95 ^^B 
 \OT1/lmr/m/n/10.95 100% = [] (\OMS/lmsy/m/n/10.95 ^^Y \OT1/lmr/m/n/10.95 1[]91 
 %[]100 [][])
  []
 
-[41] (relazione.aux)
+[43] (relazione.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
@@ -1384,13 +1384,13 @@ Package rerunfilecheck Info: File `relazione.out' has not changed.
 (rerunfilecheck)             Checksum: 19FDAB30EA9947C3CF90BFC1A53CA3AC;10032.
  ) 
 Here is how much of TeX's memory you used:
- 51345 strings out of 467871
- 1252733 string characters out of 5415471
- 1922359 words of memory out of 5000000
- 79064 multiletter control sequences out of 15000+600000
- 779327 words of font info for 317 fonts, out of 8000000 for 9000
+ 51350 strings out of 467871
+ 1252376 string characters out of 5415471
+ 1922086 words of memory out of 5000000
+ 79044 multiletter control sequences out of 15000+600000
+ 779622 words of font info for 320 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,14n,94p,1062b,1245s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,14n,94p,1062b,1219s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmb
 sy10.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public
 /lm/lmbx10.pfb><C:/Users/Accetazione/AppData/Local/Programs/MiKTeX/fonts/type1/
@@ -1422,9 +1422,9 @@ AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy9.pfb><C:/Users/Accetaz
 ione/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/A
 ccetazione/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/ms
 am10.pfb>
-Output written on relazione.pdf (41 pages, 5963539 bytes).
+Output written on relazione.pdf (43 pages, 5977637 bytes).
 PDF statistics:
- 851 PDF objects out of 1000 (max. 8388607)
- 239 named destinations out of 1000 (max. 500000)
+ 881 PDF objects out of 1000 (max. 8388607)
+ 258 named destinations out of 1000 (max. 500000)
  89419 words of extra memory for PDF output out of 106986 (max. 10000000)
 
