@@ -782,9 +782,9 @@ La fase compie una rotazione di $180^\circ$, proprio come ci aspetteremmo per un
 
 \noindent A partire dai parametri estratti dal fit ($f_1$, $Q$, $A_{\text{max}}$) e conoscendo la transresistenza $R_{\text{trans}} = \SI{5.0}{\mega\ohm}$, possiamo calcolare i tre parametri circuitali equivalenti del ramo $R_m$, $L_m$ e $C_m$.
 
-Alla frequenza di risonanza $\omega_1$, i termini reattivi si cancellano ($\omega_1 L_m - \frac{1}{\omega_1 C_m} = 0$). L'impedenza del ramo si riduce al solo termine resistivo $Z_m(j\omega_1) = R_m$.
+Alla frequenza di risonanza $f_1$, i termini reattivi si cancellano ($\omega_1 L_m - \frac{1}{\omega_1 C_m} = 0$). L'impedenza del ramo si riduce al solo termine resistivo $Z_m(j\omega_1) = R_m$.
 
-La corrente motrice di picco che entra nel nodo di massa virtuale del TIA è:
+\noindent La corrente motrice di picco che entra nel nodo di massa virtuale del TIA è:
 \begin{equation}
     I_{\text{max}} = \frac{V_{\text{in}}}{R_m}
 \end{equation}
@@ -799,7 +799,7 @@ Di conseguenza, il guadagno di picco $A_{\text{max}}$ è il rapporto tra la tran
 Sostituendo i valori sperimentali, ricaviamo $R_m  = \mathbf{\SI{11.46}{\mega\ohm}}$. Dal fattore di qualità $Q = \frac{\omega_1 L_m}{R_m}$, ricaviamo l'induttanza $L_m$:
 \begin{equation}
     \label{eq:lm_sperimentale}
-    L_m = \frac{Q \cdot R_m}{\omega_1}  = \frac{2991.8 \times \SI{11.457e6}{\ohm}}{2\pi \times (\SI{417665.1}{\hertz})} = \mathbf{\SI{13.06}{\kilo\henry}}
+    L_m = \frac{Q \cdot R_m}{\omega_1}  = \mathbf{\SI{13.06}{\kilo\henry}}
 \end{equation}
 
 \noindent Imponendo la condizione di risonanza $\omega_1^2 = \frac{1}{L_m C_m}$, determiniamo la capacità  $C_m$:
@@ -851,9 +851,9 @@ Allo stesso modo, la pulsazione naturale del ramo risonante $1/\sqrt{L_m C_m}$ �
 \section{Compensazione hardware attiva della capacità parassita}
 \label{sec:compensazione_hardware}
 
-In questo capitolo, presentiamo un circuito per la compensazione della capacità parassita $C_p$, che inietta sul nodo di massa virtuale del TIA una corrente $i_{\text{comp}}(t)$ uguale in modulo e sfasata di $180^\circ$ rispetto alla corrente parassita $i_{p}(t)$. Per quest'analisi, poniamo $V_{DC}=0$ (così possiamo trascurare il ramo RLC e concentrarci solo su quello parassita) ed eccitiamo alla frequenza di risonanza.
+In questo capitolo, presentiamo un circuito per la compensazione della capacità parassita $C_p$: deve iniettare sul nodo di massa virtuale del TIA una corrente uguale in modulo e sfasata di $180^\circ$ rispetto alla corrente parassita. Per quest'analisi, poniamo $V_{\text{DC}}=0$ (così possiamo trascurare il ramo RLC e concentrarci solo su quello parassita) ed eccitiamo alla frequenza di risonanza.
 
-Anticipiamo fin da subito che, per le ragioni che evidenzieremo tra poco nella sezione~\ref{subsec:ruolo_rp_scope}, oltre alla capacità parassita $C_p$ abbiamo ipotizzato la presenza di una resistenza parassita $R_p$ posta in parallelo a $C_p$. Di conseguenza, nello schema del circuito di compensazione riportato in fig.~\ref{fig:schema_comp_hw}, la rete di compensazione collegata al nodo $V^-$ del TIA comprende due componenti:
+Anticipiamo fin da subito che, per le ragioni che evidenzieremo tra poco nella sezione~\ref{subsec:ruolo_rp_scope}, abbiamo ipotizzato la presenza di una resistenza parassita $R_p$ posta in parallelo a $C_p$. Di conseguenza, nello schema del circuito di compensazione riportato in fig.~\ref{fig:schema_comp_hw}, la rete di compensazione collegata al nodo $V^-$ del TIA comprende due componenti:
 \begin{itemize}
     \item $C_c = \SI{10}{\pico\farad}$, che rappresenta la capacità di compensazione (incaricata di cancellare il contributo di $C_p$);
     \item $R_c = \SI{1}{\mega\ohm}$, che rappresenta la resistenza di compensazione posta in parallelo a $C_c$ (incaricata di cancellare il contributo di $R_p$).
@@ -950,12 +950,8 @@ Anticipiamo fin da subito che, per le ragioni che evidenzieremo tra poco nella s
 \label{fig:schema_comp_hw}
 \end{figure}
 
-\noindent Per comprendere il principio di funzionamento del circuito di fig.~\ref{fig:schema_comp_hw}, osserviamo inanzitutto quali sono le tensioni applicate ai capi dei due rami che convergono nel nodo invertente $V^-$ del TIA (che si trova a massa virtuale, $\SI{0}{\volt}$):
-\begin{itemize}
-    \item Ai capi del ramo parassita del MEMS ($C_p \parallel R_p$) è applicata direttamente la tensione d'ingresso $v_{\text{in}}(t)$.
-    \item Ai capi della rete di compensazione ($C_c \parallel R_c$) è invece applicata la tensione $v_{U2}(t)$, ovvero la tensione in uscita dal secondo amplificatore operazionale $U_2$ (poiché la rete $C_c \parallel R_c$ è collegata tra l'uscita di $U_2$ e la medesima massa virtuale $V^-$ del TIA).
-\end{itemize}
-Di conseguenza, affinché la corrente $i_{\text{comp}}(t)$ che scorre in $C_c \parallel R_c$ sia esattamente in opposizione di fase rispetto alla corrente parassita $i_p(t)$ che scorre in $C_p \parallel R_p$, lo sfasamento di $180^\circ$ deve essere verificato all'oscilloscopio tra la tensione d'ingresso $v_{\text{in}}(t)$ (ai capi di $C_p \parallel R_p$) e la tensione in uscita dal secondo amplificatore operazionale $v_{U2}(t)$ (ai capi di $C_c \parallel R_c$). Poiché nella realtà sia il primo operazionale $U_1$ sia il secondo $U_2$ introducono un ritardo di fase alla frequenza di eccitazione in ingresso ($\approx \SI{417.7}{\kilo\hertz}$), è indispensabile introdurre nel primo stadio una rete sfasatrice regolabile che compensi il ritardo complessivo dei due operazionali fino a portare $v_{U2}(t)$ in esatta controfase ($180^\circ$) rispetto a $v_{\text{in}}(t)$.
+
+\noindent Affinché la corrente $i_{\text{comp}}(t)$ che scorre in $C_c \parallel R_c$ sia esattamente in opposizione di fase rispetto alla corrente parassita $i_p(t)$ che scorre in $C_p \parallel R_p$, dobbiamo garantire lo sfasamento di $180^\circ$ tra la tensione d'ingresso $v_{\text{in}}(t)$ (ai capi di $C_p \parallel R_p$) e la tensione in uscita dal secondo amplificatore operazionale $v_{U2}(t)$ (ai capi di $C_c \parallel R_c$). Poiché nella realtà sia il primo operazionale $U_1$ sia il secondo $U_2$ introducono un ritardo di fase alla frequenza di eccitazione in ingresso ($\approx \SI{417.7}{\kilo\hertz}$), è indispensabile introdurre nel primo stadio una rete sfasatrice regolabile che compensi il ritardo complessivo dei due operazionali fino a portare $v_{U2}(t)$ in esatta controfase rispetto a $v_{\text{in}}(t)$.
 
 \vspace{0.3cm}
 
@@ -979,17 +975,17 @@ Passando a $s = j\omega$, il modulo e la fase di $T_1(j\omega)$ sono:
     \angle T_1(j\omega) &= 180^\circ + \arctan\left(\frac{1}{\omega C_\phi R_{\text{in}}}\right) = 180^\circ + \arctan\left(\frac{1}{\omega C_\phi \left(R_{\phi 1} + R_{P\phi 1}\right)}\right)
 \end{align}
 
-\noindent Mentre eccitiamo alla frequenza di risonanza $f_1$, monitoriamo all'oscilloscopio lo sfasamento tra l'ingresso $v_{\text{in}}(t)$ e l'uscita del secondo operazionale $v_{U2}(t)$. Giriamo la vite del trimmer d'ingresso $R_{P\phi 1}$ (con $C_\phi$ scelto in modo che il polo $f_p = \frac{1}{2\pi C_\phi R_{\text{in}}}$ si trovi a frequenza molto più bassa di $f_1$, ossia $\omega_1 C_\phi R_{\text{in}} \gg 1$) per regolare il contributo $\arctan\left(\frac{1}{\omega_1 C_\phi R_{\text{in}}}\right)$ in modo da compensare esattamente il ritardo di fase introdotto dagli operazionali $U_1$ e $U_2$, fino a ottenere l'esatta opposizione di fase ($\Delta\phi = \angle V_{U2} - \angle V_{\text{in}} = 180.0^\circ$) tra il segnale d'ingresso $v_{\text{in}}(t)$ e l'uscita del secondo operazionale $v_{U2}(t)$.
+\noindent Mentre eccitiamo alla frequenza di risonanza $f_1$, monitoriamo all'oscilloscopio lo sfasamento tra l'ingresso $v_{\text{in}}(t)$ e l'uscita del secondo operazionale $v_{U2}(t)$. Giriamo la vite del trimmer d'ingresso $R_{P\phi 1}$ per regolare il contributo $\arctan\left(\frac{1}{\omega_1 C_\phi R_{\text{in}}}\right)$ in modo da compensare esattamente il ritardo di fase introdotto dagli operazionali $U_1$ e $U_2$, fino a ottenere l'esatta opposizione di fase ($\Delta\phi = \angle V_{U2} - \angle V_{\text{in}} = 180.0^\circ$) tra il segnale d'ingresso $v_{\text{in}}(t)$ e l'uscita del secondo operazionale $v_{U2}(t)$.
 
 \vspace{0.3cm}
-\noindent Una volta fissato lo sfasamento di $180^\circ$ tra $v_{\text{in}}(t)$ e $v_{U2}(t)$, agiamo su $R_{P\phi 2}$ per regolare il modulo del guadagno del primo stadio $U_1$ fino a portarlo a guadagno unitario ($|T_1(j\omega_1)| = 1$, così che l'ampiezza di $v_{U1}(t)$ coincida con l'ampiezza di $v_{\text{in}}(t)$). Poiché la resistenza di retroazione $R_{f1} = R_{\phi 2} + R_{P\phi 2}$ non compare nell'espressione della fase \eqref{eq:T1_fase}, vale che:
+\noindent Agiamo ora su $R_{P\phi 2}$ per regolare il modulo del guadagno del primo stadio $U_1$ fino a portarlo a guadagno unitario ($|T_1(j\omega_1)| = 1$, in modo che l'ampiezza di $v_{U1}(t)$ coincida con l'ampiezza di $v_{\text{in}}(t)$). Poiché la resistenza di retroazione $R_{f1} = R_{\phi 2} + R_{P\phi 2}$ non compare nell'espressione della fase \eqref{eq:T1_fase}, vale che:
 \begin{equation}
     \frac{\partial \angle T_1(j\omega)}{\partial R_{P\phi 2}} = 0
 \end{equation}
 Di conseguenza, la regolazione dell'ampiezza tramite $R_{P\phi 2}$ è disaccoppiata dalla fase: è possibile aggiustare il guadagno di $U_1$ senza alterare la condizione di controfase appena raggiunta tra $v_{\text{in}}(t)$ e $v_{U2}(t)$.
 
 \vspace{0.3cm}
-\noindent All'uscita del primo operazionale $U_1$, dove è presente la tensione $v_{U1}(t)$, abbiamo inserito un trimmer $R_A$ usato come partitore di tensione verso massa (schematizzato in fig.~\ref{fig:schema_comp_hw} dalle due resistenze $R_{A1}$ e $R_{A2}$). Indicando con $\alpha \in [0, 1]$ la frazione di partizione impostata dalla posizione del cursore:
+\noindent All'uscita del primo operazionale $U_1$, abbiamo inserito un trimmer $R_A$ usato come partitore di tensione (schematizzato in fig.~\ref{fig:schema_comp_hw} dalle due resistenze $R_{A1}$ e $R_{A2}$). Indicando con $\alpha \in [0, 1]$ la frazione di partizione impostata dalla posizione del cursore:
 \begin{equation}
     \alpha = \frac{R_{A2}}{R_{A1} + R_{A2}} = \frac{R_{A2}}{R_A}
 \end{equation}
@@ -1018,204 +1014,151 @@ Affinché esista una posizione del cursore $\alpha \in (0, 1)$ in grado di bilan
 \subsection{Resistenza parassita \texorpdfstring{$R_p$}{Rp} e dimensionamento di \texorpdfstring{$R_c$}{Rc}}
 \label{subsec:ruolo_rp_scope}
 
-Analizziamo ora perch? nella rete di compensazione di fig.~\ref{fig:schema_comp_hw} abbiamo inserito in parallelo al condensatore $C_c = \SI{10}{\pico\farad}$ anche il resistore di compensazione $R_c = \SI{1}{\mega\ohm}$.
+Analizziamo ora perchè nella rete di compensazione di fig.~\ref{fig:schema_comp_hw} abbiamo inserito in parallelo al condensatore $C_c = \SI{10}{\pico\farad}$ anche il resistore di compensazione $R_c = \SI{1}{\mega\ohm}$.
 
 \vspace{0.3cm}
 
-\noindent Ai capi del parallelo $C_p \parallel R_p$ cade la tensione d'ingresso $v_{\text{in}}(t) = V_{\text{in, pk}} \sin(\omega t)$. La corrente parassita $i_p(t)$ che entra nel nodo di massa virtuale $V^-$ del TIA ? la somma di un contributo capacitivo in quadratura ($\cos\omega t$) e di un contributo resistivo \textbf{in fase} ($\sin\omega t$):
+\noindent Ai capi del parallelo $C_p \parallel R_p$ cade la tensione d'ingresso $v_{\text{in}}(t) = V_{\text{AC}} \sin(\omega t)$. La corrente parassita $i_p(t)$ che entra nel nodo di massa virtuale $V^-$ del TIA è la somma di un contributo capacitivo in quadratura e di un contributo resistivo in fase:
 \begin{equation}
     \label{eq:ip_scomposiz}
-    i_p(t) = C_p \frac{dv_{\text{in}}(t)}{dt} + \frac{v_{\text{in}}(t)}{R_p} = \omega C_p V_{\text{in, pk}} \cos(\omega t) + \frac{V_{\text{in, pk}}}{R_p} \sin(\omega t)
+    i_p(t) = C_p \frac{dv_{\text{in}}(t)}{dt} + \frac{v_{\text{in}}(t)}{R_p} = \omega C_p V_{\text{AC}} \cos(\omega t) + \frac{V_{\text{AC}}}{R_p} \sin(\omega t)
 \end{equation}
-Se utilizziamo il solo condensatore $C_c$ senza il resistore $R_c$, essendo $v_{U2}(t) = -\alpha v_{\text{in}}(t)$, la corrente di compensazione iniettata nel nodo $V^-$ ? puramente in quadratura:
+Se utilizziamo il solo condensatore $C_c$ senza il resistore $R_c$, essendo $v_{U2}(t) = -\alpha v_{\text{in}}(t)$, la corrente di compensazione iniettata nel nodo $V^-$ è puramente in quadratura:
 \begin{equation}
-    i_{Cc}(t) = C_c \frac{dv_{U2}(t)}{dt} = -\alpha C_c \frac{dv_{\text{in}}(t)}{dt} = -\omega \alpha C_c V_{\text{in, pk}} \cos(\omega t)
+    i_{Cc}(t) = C_c \frac{dv_{U2}(t)}{dt} = -\alpha C_c \frac{dv_{\text{in}}(t)}{dt} = -\omega \alpha C_c V_{\text{AC}} \cos(\omega t)
 \end{equation}
 Sommando le correnti al nodo di massa virtuale $V^-$ del TIA ($I_{\text{net}} = I_p + I_{Cc}$) e ruotando il potenziometro $R_A$ fino al punto di bilanciamento capacitivo ($\alpha C_c = C_p$), si ottiene:
 \begin{equation}
     I_{\text{net}}(j\omega) = \left( \frac{1}{R_p} + j\omega C_p \right) V_{\text{in}}(j\omega) - j\omega \alpha C_c V_{\text{in}}(j\omega) = \frac{V_{\text{in}}(j\omega)}{R_p} + j\omega \underbrace{\left( C_p - \alpha C_c \right)}_{= \, 0} V_{\text{in}}(j\omega)
 \end{equation}
-Nel dominio del tempo, ci? significa che il termine in quadratura $\cos(\omega t)$ dovuto a $C_p$ viene completamente cancellato, ma \textbf{rimane scoperta la componente in fase legata a $R_p$, proporzionale a $+\sin(\omega t)$}:
+Nel dominio del tempo, ciò significa che il termine in quadratura $\cos(\omega t)$ dovuto a $C_p$ viene completamente cancellato, ma resta la componente in fase legata a $R_p$, proporzionale a $+\sin(\omega t)$:
 \begin{equation}
-    i_{\text{net}}(t) = \underbrace{\left( \omega C_p - \omega \alpha C_c \right)}_{= \, 0} V_{\text{in, pk}} \cos(\omega t) + \frac{V_{\text{in, pk}}}{R_p} \sin(\omega t) = +\frac{V_{\text{in, pk}}}{R_p} \sin(\omega t)
+    i_{\text{net}}(t) = \underbrace{\left( \omega C_p - \omega \alpha C_c \right)}_{= \, 0} V_{\text{AC}} \cos(\omega t) + \frac{V_{\text{AC}}}{R_p} \sin(\omega t) = \frac{V_{\text{AC}}}{R_p} \sin(\omega t)
 \end{equation}
-Poich? la catena di condizionamento complessiva (formata dal TIA invertente con $-R_f$ e dal secondo stadio invertente con guadagno $-10$) presenta una transresistenza equivalente positiva $R_{\text{trans}} = +10 R_f = \SI{5.0}{\mega\ohm}$, tale corrente residua produce all'uscita $v_{\text{out}}(t) = R_{\text{trans}} \, i_{\text{net}}(t)$ un'onda sinusoidale residua \textbf{in fase} con $v_{\text{in}}(t)$ (a meno del ritardo di fase introdotto dagli operazionali ad alta frequenza):
+Qyesta corrente produce una tensione in uscita pari a
 \begin{equation}
-    v_{\text{out, res}}(t) = R_{\text{trans}} \, i_{\text{net}}(t) = +\frac{R_{\text{trans}}}{R_p} V_{\text{in, pk}} \sin(\omega t)
+    v_{\text{out, R}}(t) = R_{\text{trans}} \, i_{\text{net}}(t) = \frac{R_{\text{trans}}}{R_p} V_{\text{AC}} \sin(\omega t)
 \end{equation}
-Durante la taratura sperimentale a $V_{\text{DC}} = \SI{0}{\volt}$ e $f_{\text{in}} \approx \SI{417.63}{\kilo\hertz}$ ($V_{\text{in, pk}} = \SI{100.0}{\milli\volt}$) con il solo condensatore $C_c = \SI{10}{\pico\farad}$, una volta annullato il contributo capacitivo dominante ($\approx \SI{1.17}{\volt}$), si osserva infatti che l'uscita non si azzera completamente, ma permane un segnale sinusoidale residuo di ampiezza di picco $V_{\text{out, res}} \approx \SI{44.5}{\milli\volt}$, corrispondente a una resistenza parassita equivalente:
+Con il solo condensatore $C_c = \SI{10}{\pico\farad}$, abbiamo osservato che l'uscita non si azzera completamente, ma rimane un segnale sinusoidale residuo di ampiezza di picco $V_{\text{out, res}} \approx \SI{44.5}{\milli\volt}$, corrispondente a una resistenza parassita equivalente:
 \begin{equation}
     \label{eq:stima_rp_mems}
-    R_p = R_{\text{trans}} \frac{V_{\text{in, pk}}}{V_{\text{out, res}}} \approx \SI{5.0}{\mega\ohm} \times \frac{\SI{100.0}{\milli\volt}}{\SI{44.5}{\milli\volt}} \approx \mathbf{\SI{11.2}{\mega\ohm}}
+    R_p = R_{\text{trans}} \frac{V_{\text{AC}}}{V_{\text{out, R}}} = \mathbf{\SI{11.2}{\mega\ohm}}
 \end{equation}
-
-\paragraph{Perch? $R_p$ ? stata trascurata nei capitoli precedenti e diventa rilevante solo ora:}
-? importante chiarire perch? nei Capitoli~\ref{sec:modello_rlc}, \ref{sec:ringdown} e \ref{sec:risposta_in_frequenza} abbiamo modellato il ramo parassita con la sola capacit? $C_p$, introducendo $R_p$ soltanto nella compensazione hardware:
-\begin{itemize}
-    \item \textit{Predominanza di $C_p$ nella risposta non compensata:} alla frequenza di lavoro $f_0 \approx \SI{417.7}{\kilo\hertz}$, la reattanza di $C_p = \SI{0.892}{\pico\farad}$ vale $X_{Cp} = \frac{1}{2\pi f_0 C_p} \approx \SI{427}{\kilo\ohm}$, un valore \textbf{oltre $26\text{ volte}$ inferiore} a $R_p \approx \SI{11.2}{\mega\ohm}$. Di conseguenza, la corrente in quadratura di $C_p$ ($\approx \SI{234}{\nano\ampere}$, che d? $V_{\text{out}, Cp} \approx \SI{1170}{\milli\volt}$) ? enormemente pi? grande di quella in fase di $R_p$ ($\approx \SI{8.9}{\nano\ampere}$, che d? $V_{\text{out}, Rp} \approx \SI{44.5}{\milli\volt}$). Poich? i due contributi sono ortogonali ($90^\circ$), il modulo totale non compensato si somma in quadratura:
+Nei capitolo precedenti abbiamo trascurato questa resistenza $R_p$. Questo perchè alla frequenza di risonanza $f_1$, la reattanza di $C_p = \SI{0.892}{\pico\farad}$ vale $X_{Cp} = \frac{1}{2\pi f_0 C_p}$. La corrente che viene iniettata da $C_p$ sul nodo di massa virtuale del TIA è $\SI{234}{\nano\ampere}$, che dà $V_{\text{out}, Cp} = \SI{1170}{\milli\volt}$; quella di $R_p$ è $\SI{8.9}{\nano\ampere}$, che dà $V_{\text{out}, Rp} = \SI{44.5}{\milli\volt}$; il modulo dell'uscita con entrambi i contributi è:
     \begin{equation}
-        |V_{\text{out, tot}}| = \sqrt{V_{\text{out}, Cp}^2 + V_{\text{out}, Rp}^2} = \sqrt{(\SI{1170}{\milli\volt})^2 + (\SI{44.5}{\milli\volt})^2} = \SI{1170.8}{\milli\volt}
+        |V_{\text{out, tot}}| = \sqrt{V_{\text{out}, C}^2 + V_{\text{out}, R}^2} = \sqrt{(\SI{1170}{\milli\volt})^2 + (\SI{44.5}{\milli\volt})^2} = \SI{1170.8}{\milli\volt}
     \end{equation}
-    In assenza di compensazione hardware, $R_p$ altera il modulo totale per \textbf{meno dello $0.07\%$}, risultando del tutto invisibile sotto la corrente di $C_p$.
-    \item \textit{Ininfluenza nel ring-down e nella compensazione software:} nelle misure di ring-down (Sezione~\ref{sec:ringdown}) l'ingresso viene spento ($v_{\text{in}}(t) = 0$ per $t > 0$), per cui sia $C_p$ sia $R_p$ non sono attraversati da corrente; nella compensazione software (Sezione~\ref{subsec:compensazione_software}), la sottrazione numerica del vettore complesso di fondo $\vec{T}_p = C_{\text{re}} + j C_{\text{im}}$ rimuove automaticamente in un solo passaggio sia la parte immaginaria ($C_p$) sia la parte reale ($R_p$).
-    \item \textit{Emersione di $R_p$ nella compensazione hardware a $V_{\text{DC}} = \SI{0}{\volt}$:} solo quando cerchiamo di azzerare fisicamente il segnale all'oscilloscopio a MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$), una volta cancellato con $C_c$ il contributo in quadratura dominante di $C_p$ da $\SI{1170}{\milli\volt}$, il contributo in fase da $\approx \SI{44.5}{\milli\volt}$ dovuto a $R_p$ rimane scoperto, rendendo necessaria la sua compensazione tramite $R_c$.
-\end{itemize}
+    In assenza di compensazione hardware, $R_p$ altera il modulo per meno dello $0.07\%$.
 
-\paragraph{Dimensionamento del resistore di compensazione $R_c$ e verifica post-compensazione:}
-Per cancellare al nodo $V^-$ anche la corrente in fase $+\frac{v_{\text{in}}(t)}{R_p}$ senza alterare il bilanciamento capacitivo gi? fissato da $\alpha = \frac{C_p}{C_c}$, abbiamo inserito il resistore di compensazione $R_c$ in parallelo a $C_c$ tra l'uscita del secondo operazionale $U_2$ e il nodo $V^-$ del TIA (Fig.~\ref{fig:schema_comp_hw}). Essendo \textbf{ai capi del parallelo $C_c \parallel R_c$ applicata la tensione $v_{U2}(t) = -\alpha v_{\text{in}}(t)$} (in \textbf{controfase}, $180^\circ$, rispetto a $v_{\text{in}}(t)$), il resistore $R_c$ inietta nel nodo $V^-$ una corrente $-\frac{\alpha}{R_c} v_{\text{in}}(t)$ in controfase che si oppone direttamente alla corrente in fase $+\frac{1}{R_p} v_{\text{in}}(t)$ di $R_p$:
+
+\vspace{0.3cm}
+\noindent Per cancellare anche la corrente di $R_p$, abbiamo inserito il resistore di compensazione $R_c$ in parallelo a $C_c$. La corrente totale di compensazione è:
 \begin{equation}
     \label{eq:icomp_completa}
     i_{\text{comp}}(t) = C_c \frac{dv_{U2}(t)}{dt} + \frac{v_{U2}(t)}{R_c} = -\alpha C_c \frac{dv_{\text{in}}(t)}{dt} - \frac{\alpha}{R_c} v_{\text{in}}(t)
-    \;\Longleftrightarrow\;
-    I_{\text{comp}}(j\omega) = -\alpha \left( \frac{1}{R_c} + j\omega C_c \right) V_{\text{in}}(j\omega)
-\end{equation}
-Sommando al nodo $V^-$ del TIA la corrente parassita $I_p(j\omega)$ e la corrente di compensazione $I_{\text{comp}}(j\omega)$, la corrente netta a MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$) risulta:
+\end{equation} 
+Sommando la corrente parassita $I_p(j\omega)$ e la corrente di compensazione $I_{\text{comp}}(j\omega)$, la corrente netta, con il MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$), risulta:
 \begin{equation}
-    I_{\text{net}}(j\omega) = I_p(j\omega) + I_{\text{comp}}(j\omega) = \underbrace{\left( \frac{1}{R_p} - \frac{\alpha}{R_c} \right)}_{\text{parte in fase } (\sin\omega t)} V_{\text{in}}(j\omega) \;+\; j\omega \underbrace{\left( C_p - \alpha C_c \right)}_{\text{parte in quadratura } (\cos\omega t)} V_{\text{in}}(j\omega)
+    I_{\text{net}}(j\omega) = I_p(j\omega) + I_{\text{comp}}(j\omega) = \left( \frac{1}{R_p} - \frac{\alpha}{R_c} \right) V_{\text{in}}(j\omega) + j\omega \left( C_p - \alpha C_c \right) V_{\text{in}}(j\omega)
 \end{equation}
-Affinch? si annullino simultaneamente sia la componente in quadratura sia la componente in fase, devono valere le due condizioni:
+Per annullare sia la componente in quadratura sia la componente in fase, devono valere le due condizioni:
+
 \begin{equation}
     \label{eq:formula_progetto_rp}
     \begin{cases}
-        C_p - \alpha C_c = 0 \implies \alpha = \dfrac{C_p}{C_c} \approx 0.0892 \\[10pt]
+        C_p - \alpha C_c = 0 \implies \alpha = \dfrac{C_p}{C_c} = 0.0892 \\[10pt]
         \dfrac{1}{R_p} - \dfrac{\alpha}{R_c} = 0 \implies R_c = \alpha \, R_p = \dfrac{C_p}{C_c} R_p
     \end{cases}
 \end{equation}
-Sostituendo $\alpha \approx 0.0892$ e $R_p \approx \SI{11.2}{\mega\ohm}$, otteniamo il valore di progetto del resistore di compensazione:
-\begin{equation}
-    R_c = \alpha \, R_p \approx 0.0892 \times \SI{11.2}{\mega\ohm} \approx \mathbf{\SI{1.0}{\mega\ohm}}
-\end{equation}
+\vspace{0.2cm}
+
+\noindent Sostituendo $\alpha = 0.0892$ e $R_p = \SI{11.2}{\mega\ohm}$, otteniamo $R_c = \alpha \, R_p \approx \mathbf{\SI{1.0}{\mega\ohm}}$. In fig.~\ref{fig:scope_161_165_rp} è mostrata l'uscita con il ramo di compensazione attivo.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.78\textwidth]{../Compensazione Hardware/grafici/scope_165_compensato.png}
-\caption{Verifica sperimentale all'oscilloscopio dell'azzeramento del segnale parassita post-compensazione (\texttt{scope\_165}, acquisito a $f_{\text{in}} \approx \SI{417.63}{\kilo\hertz}$, $V_{\text{DC}} = \SI{0}{\volt}$, $V_{\text{in, pk}} = \SI{100.0}{\milli\volt}$) con la rete completa $C_c = \SI{10}{\pico\farad} \parallel R_c = \SI{1}{\mega\ohm}$: sia la componente in quadratura di $C_p$ sia la componente in fase di $R_p$ risultano cancellate, abbattendo il segnale d'uscita $v_{\text{out}}(t)$ al livello del rumore di fondo ($V_{\text{out, pk}} = \SI{2.5}{\milli\volt}$).}
+\caption{Verifica sperimentale all'oscilloscopio dell'azzeramento del segnale parassita post-compensazione.}
 \label{fig:scope_161_165_rp}
 \end{figure}
 
-\noindent Inserendo il resistore commerciale da $R_c = \SI{1}{\mega\ohm}$ in parallelo a $C_c = \SI{10}{\pico\farad}$, abbiamo acquisito la traccia post-compensazione riportata in Fig.~\ref{fig:scope_161_165_rp} (\texttt{scope\_165}), in cui l'uscita residua a $V_{\text{DC}} = \SI{0}{\volt}$ risulta ridotta al solo rumore di fondo dell'oscilloscopio:
-\begin{equation}
-    v_{\text{out, comp}}(t) = +\SI{0.99}{\milli\volt} \sin(\omega t) + \SI{2.29}{\milli\volt} \cos(\omega t) \qquad \left(V_{\text{out, pk}} = \SI{2.50}{\milli\volt}, \;\; V_{\text{out, pp}} = \SI{4.99}{\milli\volt_{pp}}\right)
-\end{equation}
-
-\noindent Quando infine accendiamo la polarizzazione del MEMS ($V_{\text{DC}} = \SI{5.0}{\volt}$), applicando la legge di Kirchhoff delle correnti al nodo invertente $V^-$ del TIA, la corrente netta che fluisce nella resistenza di transimpedenza $R_f = \SI{500}{\kilo\ohm}$ si riduce alla corrente motrice $i_s(t)$ pi? un minimo residuo capacitivo differenziale $\Delta C = C_p - \alpha C_c$:
-\begin{equation}
-    \label{eq:inet_tia}
-    i_{\text{net}}(t) = i_{\text{mems}}(t) + i_{\text{comp}}(t) \approx i_s(t) + \underbrace{\left(C_p - \alpha C_c\right)}_{\Delta C} \frac{dv_{\text{in}}(t)}{dt}
-\end{equation}
-Quando il circuito ? tarato ($\alpha C_c \approx C_p$), la capacit? differenziale residua $\Delta C$ scende a poche unit? di femtofarad ($\Delta C \approx \SI{6}{\femto\farad} - \SI{13}{\femto\farad}$ rispetto agli $\SI{892}{\femto\farad}$ originari), sopprimendo oltre il $98.5\%$ della corrente parassita prima che essa entri nell'amplificatore a transimpedenza.
-
-\subsection{Caratterizzazione della cancellazione capacitiva a MEMS spento (\texorpdfstring{$V_{\text{DC}} = \SI{0}{\volt}$}{Vdc = 0 V})}
+\subsection{Risposta in frequenza con compensazione capacitiva}
 \label{subsec:comp_hw_off}
 
-Per verificare sperimentalmente il funzionamento della sola rete di cancellazione in assenza di moto meccanico su un'ampia finestra spettrale, è stata eseguita una misura spegnendo la tensione di polarizzazione del MEMS ($V_{\text{DC}} = \SI{0}{\volt}$, configurazione \texttt{Off}) ed effettuando uno sweep in frequenza su una banda larga di $\SI{20}{\kilo\hertz}$ ($f_{\text{in}} \in [\SI{407.75}{\kilo\hertz}, \SI{427.75}{\kilo\hertz}]$, 401 punti con passo $\SI{50}{\hertz}$).
+Per verificare sperimentalmente il funzionamento della rete di compensazione, abbiamo effettuato uno sweep in frequenza su una banda da $\SI{407.75}{\kilo\hertz}$ a $\SI{427.75}{\kilo\hertz}$.
 
-Come dimostrato nella Sezione~\ref{subsec:bode_completo}, a $V_{\text{DC}} = \SI{0}{\volt}$ il fattore di trasduzione elettromeccanica è nullo ($\eta = 0 \implies i_s(t) = 0$) e il MEMS si riduce al solo ramo parassita. In Fig.~\ref{fig:bode_hw_off} è riportato il diagramma di Bode misurato in questa condizione.
+Come dimostrato nella sezione~\ref{subsec:bode_completo}, a $V_{\text{DC}} = \SI{0}{\volt}$ il fattore di trasduzione elettromeccanica è nullo e il MEMS si riduce al solo ramo parassita. In fig.~\ref{fig:bode_hw_off} è riportato il diagramma di Bode misurato in questa condizione.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.90\textwidth]{../Compensazione Hardware/grafici/bode_off.png}
-\caption{Funzione di trasferimento sperimentale del sistema con compensazione hardware attiva a MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$) su una banda di $\SI{20}{\kilo\hertz}$. In alto il modulo $|V_{\text{out}}/V_{\text{in}}|$ in $\si{\decibel}$, che evidenzia il profondo notch di cancellazione capacitiva ($-\SI{20.05}{\decibel}$) centrato attorno alla frequenza di lavoro del MEMS; in basso la fase in gradi, caratterizzata dall'inversione di $180^\circ$ nell'attraversamento del punto di bilanciamento.}
+\caption{Funzione di trasferimento sperimentale del sistema con compensazione hardware attiva a MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$).}
 \label{fig:bode_hw_off}
 \end{figure}
 
-\noindent L'analisi fisica di Fig.~\ref{fig:bode_hw_off} fornisce una dimostrazione esemplare del comportamento del circuito:
-\begin{enumerate}
-    \item \textbf{Il notch di cancellazione in modulo:}
-    Lontano dalla frequenza di taratura (agli estremi $\SI{408}{\kilo\hertz}$ e $\SI{427.5}{\kilo\hertz}$), il guadagno vale circa $-\SI{6.0}{\decibel}$ ($V_{\text{out}} \approx \SI{50}{\milli\volt_{pp}}$). Avvicinandosi alla frequenza di risonanza del MEMS ($\approx \SI{417.8}{\kilo\hertz} - \SI{418.5}{\kilo\hertz}$), il modulo sprofonda in un marcato \textbf{minimo di cancellazione (notch)} dove il guadagno scende fino a $\mathbf{-\SI{20.05}{\decibel}}$ ($|V_{\text{out}}/V_{\text{in}}| \approx 0.099$, corrispondente a $V_{\text{out}} \approx \SI{9.9}{\milli\volt_{pp}}$). Rispetto al livello di feedthrough non compensato ($+\SI{21.36}{\decibel}$), al centro del notch si raggiunge un'attenuazione complessiva del disturbo parassita di ben $\mathbf{\SI{41.4}{\decibel}}$ (oltre $117\text{ volte}$ in ampiezza!).
-    \item \textbf{Perché la cancellazione è selettiva in frequenza (forma a V)?}
-    Come ricavato nelle eq.~\eqref{eq:T1_modulo}--\eqref{eq:T1_fase}, lo stadio invertitore/sfasatore $U_1$ contiene la rete passa-alto $C_\phi$-$R_{\text{in}}$, per cui sia il modulo sia lo sfasamento tra $V_{\text{in}}(j\omega)$ e $V_{U2}(j\omega)$ variano dolcemente al variare della frequenza $\omega$. La funzione di trasferimento residua a $V_{\text{DC}} = \SI{0}{\volt}$ è data dalla somma vettoriale tra il ramo parassita alimentato da $V_{\text{in}}(j\omega)$ e il ramo di compensazione alimentato da $V_{U2}(j\omega)$:
-    \begin{equation}
-        T_{\text{off}}(j\omega) = R_{\text{trans}} \left[ \left( \frac{1}{R_p} + j\omega C_p \right) + \frac{V_{U2}(j\omega)}{V_{\text{in}}(j\omega)} \left( \frac{1}{R_c} + j\omega C_c \right) \right]
-    \end{equation}
-    La taratura dei potenziometri $R_{P\phi 1}$ e $R_A$ impone che $\frac{V_{U2}(j\omega)}{V_{\text{in}}(j\omega)} = -\alpha$ (sfasamento esattamente pari a $180^\circ$) alla frequenza operativa del MEMS ($\omega \approx \omega_0$), facendo elidere i due vettori. Man mano che la frequenza di sweep si discosta da $\omega_0$ di diversi kilohertz, lo sfasamento di $V_{U2}(j\omega)$ rispetto a $V_{\text{in}}(j\omega)$ deriva lievemente rispetto al valore ottimo di $180^\circ$, facendo crescere linearmente il modulo del vettore differenza residuo.
-    \item \textbf{Il salto di fase di $180^\circ$:}
-    Nel pannello inferiore di Fig.~\ref{fig:bode_hw_off}, per $f < \SI{418}{\kilo\hertz}$ la fase è piatta e stabile attorno a $-10^\circ$ (dove predomina lievemente uno dei due rami), mentre per $f > \SI{419}{\kilo\hertz}$ la fase si assesta piatta a $+165^\circ$. L'attraversamento del punto di equilibrio inverte il segno del vettore corrente differenziale $\Delta \vec{I}$, producendo l'esatta rotazione di $\approx 180^\circ$ tipica del passaggio per uno zero complesso.
-\end{enumerate}
+\noindent Lontano dalla frequenza di risonanza, il guadagno vale circa $-\SI{6.0}{\decibel}$. Avvicinandosi al centro, il modulo scende fino a circa $\mathbf{-\SI{20}{\decibel}}$. Per quanto riguarda la fase, in prossimità della frequenza di risonanza, c'è la rotazione di $180^\circ$.
 
-\subsection{Risposta in frequenza a MEMS attivo (\texorpdfstring{$V_{\text{DC}} = \SI{5.0}{\volt}$}{Vdc = 5.0 V}) con compensazione hardware}
-\label{subsec:comp_hw_on}
+\vspace{0.2cm}
+\noindent Questo andamento si spiega considerando che la taratura dei trimmer è stata fatta a una singola frequenza fissa, ma il modulo e la fase dello stadio sfasatore $T_1(j\omega)$ (eq.~\eqref{eq:T1_modulo}--\eqref{eq:T1_fase}) e degli operazionali dipendono dalla frequenza. Il fondo della buca non scende a $-\infty\,\si{\decibel}$ ma si appiattisce attorno a $-\SI{20}{\decibel}$ a causa del minimo sbilanciamento residuo. Spostandosi invece verso gli estremi della banda, il guadagno e lo sfasamento della rete $T_1(j\omega)$ variano con $\omega$: le due correnti non sono più perfettamente uguali e opposte, la corrente residua netta $i_{\text{net}} = i_p + i_{\text{comp}}$ cresce e il modulo risale fino a $-\SI{6.0}{\decibel}$. 
 
-Una volta tarato il notch di cancellazione, è stata applicata la tensione di polarizzazione continua $V_{\text{DC}} = \SI{5.0}{\volt}$ per attivare il risonatore MEMS ed è stato eseguito uno sweep ad alta risoluzione ($\Delta f_{\text{step}} = \SI{2}{\hertz}$, 401 punti, $V_{\text{in}} \approx \SI{100}{\milli\volt_{pp}}$) attorno alla risonanza meccanica.
+Spostandosi a destra e sinistra del minimo del modulo, si inverte quale delle due correnti prevale sull'altra (sotto $f_1$ domina leggermente un ramo, sopra $f_1$ domina l'altro). Di conseguenza, la corrente differenziale residua $i_{\text{net}}$ cambia di segno, producendo il salto di fase di $180^\circ$ (con i punti centrali più dispersi perché lì il segnale è quasi nullo e immerso nel rumore).
 
-L'esperimento è stato condotto per due livelli successivi di affinamento della taratura dei potenziometri:
-\begin{itemize}
-    \item \textbf{Configurazione \texttt{Set 1} (Prima taratura):} regolazione iniziale del ponte di compensazione, che riduce la capacità parassita residua a $\Delta C \approx \SI{10.9}{\femto\farad} - \SI{12.8}{\femto\farad}$.
-    \item \textbf{Configurazione \texttt{Set 2} (Taratura fine ottimizzata):} affinamento micrometrico dei potenziometri $R_{P\phi 1}$ e $R_A$, che porta il residuo capacitivo nel fit complesso fino a $\Delta C \approx \SI{5.7}{\femto\farad}$ (con pavimento di bordo a $-\SI{16.36}{\decibel}$).
-\end{itemize}
+\newpage
 
-In Fig.~\ref{fig:bode_hw_set2} è riportato il diagramma di Bode completo (modulo e fase) ottenuto nella configurazione ottimizzata \texttt{Set 2}, mentre in Fig.~\ref{fig:confronto_set1_set2_off} è mostrato il confronto diretto tra \texttt{Set 1}, \texttt{Set 2} e il fondo a MEMS spento (\texttt{Off}).
-
+\noindent Una volta verificato il funzionamento del ramo di compensazione a MEMS spento, abbiamo applicato la tensione di polarizzazione continua $V_{\text{DC}} = \SI{5.0}{\volt}$ per attivare il risonatore MEMS. In fig.~\ref{fig:bode_hw_set2} è riportato il diagramma di Bode di modulo e fase con compensazione attiva.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.90\textwidth]{../Compensazione Hardware/grafici/bode_set2.png}
-\caption{Diagramma di Bode della risposta in frequenza del MEMS con compensazione hardware attiva nella taratura ottimizzata (\texttt{Set 2}, $V_{\text{DC}} = \SI{5.0}{\volt}$). In alto il modulo $|V_{\text{out}}/V_{\text{in}}|$ in $\si{\decibel}$; in basso la fase in gradi, che mostra il completo recupero della transizione di risonanza di $\approx 180^\circ$.}
+\caption{Diagramma di Bode della risposta in frequenza del MEMS con compensazione hardware attiva ($V_{\text{DC}} = \SI{5.0}{\volt}$).}
 \label{fig:bode_hw_set2}
 \end{figure}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.88\textwidth]{../Compensazione Hardware/grafici/confronto_modulo_tutti.png}
-\caption{Confronto del modulo della risposta in frequenza attorno alla risonanza tra la prima taratura hardware (\texttt{Set 1}, in magenta), la seconda taratura ottimizzata (\texttt{Set 2}, in blu) e il livello di fondo puramente elettrico misurato a MEMS spento (\texttt{Off}, $V_{\text{DC}} = \SI{0}{\volt}$, in grigio a $-\SI{20}{\decibel}$).}
-\label{fig:confronto_set1_set2_off}
-\end{figure}
+\noindent Dal fit della risposta compensata via hardware ricaviamo la frequenza di risonanza $f_1 = \SI{417754}{\hertz}$, il fattore di merito $Q = 2261.8$ e il guadagno massimo:
+\begin{equation}
+    A_{\text{max}} = \left| \frac{V_{\text{out}}}{V_{\text{in}}} \right|_{\max} = 0.4629 \quad (-\SI{6.69}{\decibel})
+\end{equation}
+Procedendo esattamente come nella sezione~\ref{subsec:compensazione_software}, a partire da questi parametri e dalla transresistenza $R_{\text{trans}} = \SI{5.0}{\mega\ohm}$ ricaviamo i parametri circuitali equivalenti $R_m$, $L_m$ e $C_m$ stimati con la compensazione hardware:
+\begin{equation}
+    \label{eq:rm_hw}
+    R_m = \frac{R_{\text{trans}}}{A_{\text{max}}} = \mathbf{\SI{10.80}{\mega\ohm}}
+\end{equation}
+Dal fattore di qualità $Q = \frac{\omega_1 L_m}{R_m}$, ricaviamo l'induttanza $L_m$:
+\begin{equation}
+    \label{eq:lm_hw}
+    L_m = \frac{Q \cdot R_m}{\omega_1} = \mathbf{\SI{9.31}{\kilo\henry}}
+\end{equation}
+Imponendo infine la condizione di risonanza $\omega_1^2 = \frac{1}{L_m C_m}$, determiniamo la capacità $C_m$:
+\begin{equation}
+    \label{eq:cm_hw}
+    C_m = \frac{1}{\omega_1^2 L_m} = \mathbf{\SI{15.59}{\atto\farad}}
+\end{equation}
+I valori trovati sono coerenti con quelli estratti tramite compensazione software ($R_m = \SI{11.46}{\mega\ohm}$, $L_m = \SI{13.06}{\kilo\henry}$, $C_m = \SI{11.12}{\atto\farad}$): in particolare $R_m$ coincide entro meno del $6\%$, mentre la  differenza su $L_m$ e $C_m$ è legata al valore di $Q$ che risulta inferiore ($2262$ contro $2992$), probabilmente dovuto al piccolo fondo capacitivo residuo.
 
-\subsubsection{Confronto diretto: senza compensazione vs compensazione hardware e software}
-Per apprezzare visivamente l'efficacia del circuito realizzato, in Fig.~\ref{fig:benchmark_con_senza_hw} è riportato il confronto sulla medesima scala tra la risposta grezza non compensata e la risposta con compensazione hardware attiva (\texttt{Set 2}), mentre in Fig.~\ref{fig:confronto_hw_vs_sw} il modulo lineare ottenuto via hardware è sovrapposto a quello ricavato tramite compensazione software nella Sezione~\ref{subsec:compensazione_software}.
+\vspace{0.3cm}
+\noindent In fig.~\ref{fig:benchmark_con_senza_hw} è riportato il confronto tra la risposta in frequenza non compensata e la risposta con compensazione hardware attiva, mentre in fig.~\ref{fig:confronto_hw_vs_sw} il modulo ottenuto via hardware è sovrapposto a quello ricavato tramite compensazione software nella Sezione~\ref{subsec:compensazione_software}. Poiché le due acquisizioni sono state effettuate in giorni diversi, la frequenza di risonanza ha subito una lieve deriva termica.  di circa $\SI{100}{\hertz}$ ($\SI{417.66}{\kilo\hertz}$ contro $\SI{417.76}{\kilo\hertz}$); per confrontare direttamente la forma delle due campane sullo stesso intervallo di frequenze ($\Delta f \approx \SI{580}{\hertz}$), in fig.~\ref{fig:confronto_hw_vs_sw} la curva software è stata traslata orizzontalmente di $+\SI{100}{\hertz}$ in modo da riallineare i due picchi.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.90\textwidth]{../Compensazione Hardware/grafici/confronto_con_senza_compensazione.png}
-\caption{Benchmark diretto tra la risposta in frequenza grezza non compensata (in grigio, dominata da $C_p \approx \SI{892}{\femto\farad}$) e la risposta con compensazione hardware attiva (\texttt{Set 2}, in verde/viola): il pavimento di feedthrough viene abbattuto di oltre $\SI{36.6}{\decibel}$ ($\approx 68\times$) e la fase viene sbloccata dalla quota fissa di $+68.6^\circ$, recuperando l'intera escursione di $180^\circ$.}
+\caption{Confronto tra la risposta in frequenza non compensata (in grigio, dominata da $C_p \approx \SI{892}{\femto\farad}$) e la risposta con compensazione hardware attiva (in verde/viola).}
 \label{fig:benchmark_con_senza_hw}
 \end{figure}
+
+
+
+
+\newpage
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.86\textwidth]{../Compensazione Hardware/grafici/confronto_hardware_vs_software.png}
-\caption{Confronto in scala lineare $|V_{\text{out}}/V_{\text{in}}|$ tra la risposta ottenuta mediante compensazione software (sottrazione vettoriale numerica a posteriori, in viola) e quella misurata direttamente in tempo reale con il circuito di compensazione hardware attiva (\texttt{Set 2}, in verde).}
+\caption{Confronto tra la risposta in frequenza ottenuta mediante compensazione software (in viola, traslata di $+\SI{100}{\hertz}$ per compensare la deriva termica tra le sessioni di misura) e quella misurata con il circuito di compensazione hardware attiva (in verde).}
 \label{fig:confronto_hw_vs_sw}
 \end{figure}
 
-\begin{table}[htbp]
-\centering
-\small
-\setlength{\tabcolsep}{4.5pt}
-\caption{Confronto quantitativo tra la caratterizzazione senza compensazione, con compensazione software e con compensazione hardware attiva (\texttt{Set 1} e \texttt{Set 2}) a $V_{\text{DC}} = \SI{5.0}{\volt}$.}
-\label{tab:confronto_comp_hw}
-\vspace{0.25cm}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccc}
-\toprule
-\textbf{Parametro fisico} & \textbf{Simbolo} & \textbf{Non comp.} & \textbf{Comp. SW} & \textbf{Comp. HW (\texttt{Set 1})} & \textbf{Comp. HW (\texttt{Set 2})} \\
-\midrule
-Frequenza di risonanza & $f_0$ & $\SI{417.67}{\kilo\hertz}$ & $\SI{417.67}{\kilo\hertz}$ & $\SI{417.77}{\kilo\hertz}$ & $\mathbf{\SI{417.75}{\kilo\hertz}}$ \\
-Guadagno al picco & $G_{\text{pk}}$ & $+\SI{21.53}{\decibel}$ ($11.93$) & $-\SI{7.20}{\decibel}$ ($0.436$) & $-\SI{7.70}{\decibel}$ ($0.412$) & $\mathbf{-\SI{6.69}{\decibel}}$ ($\mathbf{0.463}$) \\
-Livello di fondo ai bordi & $G_{\text{base}}$ & $+\SI{21.36}{\decibel}$ ($11.70$) & $\SI{0}{}$ (ideale) & $-\SI{14.92}{\decibel}$ ($0.179$) & $\mathbf{-\SI{16.36}{\decibel}}$ ($\mathbf{0.152}$) \\
-Contrasto picco/fondo & $\Delta G$ & $+\SI{0.17}{\decibel}$ ($1.02\times$) & -- & $+\SI{7.22}{\decibel}$ ($2.30\times$) & $\mathbf{+\SI{9.67}{\decibel}}$ ($\mathbf{3.05\times}$) \\
-Capacità parassita efficace & $C_{\text{eff}}$ & $\SI{892}{\femto\farad}$ ($C_p$) & $\approx \SI{0}{\femto\farad}$ & $\SI{10.9}{\femto\farad} - \SI{12.8}{\femto\farad}$ & $\mathbf{\SI{5.7}{\femto\farad} - \SI{13.3}{\femto\farad}}$ \\
-Frazione di $C_p$ cancellata & $\%$ & $0\%$ & $100\%$ (num.) & $98.6\%$ & $\mathbf{98.5\% - 99.4\%}$ \\
-Escursione di fase & $\Delta\phi$ & $2.2^\circ$ (bloccata) & $180^\circ$ & $\approx 180^\circ$ & $\mathbf{\approx 180^\circ}$ \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
-\noindent Dall'esame congiunto dei grafici e della Tabella~\ref{tab:confronto_comp_hw} emergono conclusioni di grande rilievo:
-\begin{enumerate}
-    \item \textbf{Soppressione di oltre il $98.5\%$ del feedthrough in tempo reale:}
-    Nella misura non compensata il picco meccanico era una minuscola increspatura di appena $+\SI{0.17}{\decibel}$ sopra un piedistallo di $+\SI{21.36}{\decibel}$. Il circuito hardware abbatte il fondo parassita di circa $\mathbf{\SI{37}{\decibel} - \SI{41}{\decibel}}$, riducendo la capacità parassita residua $\Delta C$ a circa $\SI{6}{\femto\farad} - \SI{13}{\femto\farad}$ e facendo svettare il picco di risonanza con un contrasto netto di $\mathbf{+\SI{9.67}{\decibel}}$ ($> 3\times$ in tensione lineare) direttamente sullo schermo dell'oscilloscopio.
-    \item \textbf{Coerenza tra compensazione hardware e compensazione software:}
-    Come mostrato in Fig.~\ref{fig:confronto_hw_vs_sw}, l'ampiezza massima del picco misurata fisicamente all'uscita del circuito compensato ($0.463$ lineare, corrispondente a $V_{\text{out}} = \SI{46.0}{\milli\volt_{pp}}$ per $V_{\text{in}} = \SI{99.3}{\milli\volt_{pp}}$) coincide entro il $3\% - 5\%$ con il guadagno motrice puro predetto dalla sottrazione vettoriale software ($A_{\text{mot}} \approx 0.44 - 0.48$). Il lieve spostamento orizzontale della frequenza di risonanza ($\SI{417.75}{\kilo\hertz}$ contro $\SI{417.67}{\kilo\hertz}$, pari a $+\SI{85}{\hertz}$, ovvero appena lo $0.02\%$) è interamente imputabile alla naturale deriva termica del modulo di Young del silicio tra sessioni di misura condotte in giorni differenti.
-\end{enumerate}
-
-\subsection{Analisi vettoriale nel piano complesso (Diagrammi di Nyquist / Cerchi di Ammettenza)}
-\label{subsec:piano_complesso_nyquist}
-
-Un modo estremamente potente ed elegante per unificare l'analisi della risposta in frequenza, l'effetto della capacità parassita $C_p$ e l'azione della compensazione (sia software che hardware) consiste nel rappresentare la funzione di trasferimento $T(j\omega) = \mathrm{Re}\{T(j\omega)\} + j\,\mathrm{Im}\{T(j\omega)\}$ come una curva parametrica nel \textbf{piano complesso di Gauss} (diagramma polare o luogo di Nyquist dell'ammettenza riscalata per $R_{\text{trans}}$).
+\noindent Rappresentiamo ora la funzione di trasferimento $T(j\omega) = \mathrm{Re}\{T(j\omega)\} + j\,\mathrm{Im}\{T(j\omega)\}$ nel piano complesso di Gauss.
 
 \subsubsection{Dimostrazione analitica dell'equazione del cerchio di risonanza}
-Consideriamo inizialmente il solo ramo motrice ideale del MEMS allineato in fase ($\phi_m = 0$). In funzione della coordinata adimensionale di disallineamento in frequenza $x(f) = 2Q \frac{f - f_0}{f_0} \in (-\infty, +\infty)$, la funzione di trasferimento motrice si scrive:
+Consideriamo inizialmente il solo ramo motrice ideale del MEMS. In funzione della coordinata  $x(f) = 2Q \frac{f - f_0}{f_0}$, la funzione di trasferimento si scrive:
 \begin{equation}
     T_{\text{mot}}(x) = \frac{A_{\text{mot}}}{1 + j x} = \underbrace{\frac{A_{\text{mot}}}{1 + x^2}}_{u(x) = \mathrm{Re}\{T_{\text{mot}}\}} + j \underbrace{\left(-\frac{A_{\text{mot}} x}{1 + x^2}\right)}_{v(x) = \mathrm{Im}\{T_{\text{mot}}\}}
 \end{equation}
@@ -1232,44 +1175,53 @@ Abbiamo così dimostrato che, al variare della frequenza $f$ da $-\infty$ a $+\i
     \item \textbf{Punti di quadratura a metà potenza ($-3\text{ dB}$, $x = \pm 1 \iff f = f_0 \pm \frac{\Delta f}{2}$):} corrispondono ai due vertici superiore e inferiore del diametro trasversale, di coordinate $(A_{\text{mot}}/2, \pm A_{\text{mot}}/2)$ e sfasamento $\mp 45^\circ$.
 \end{itemize}
 
-\paragraph{Effetto geometrico di $\phi_m$ e della capacità parassita $C_p$:}
-Quando includiamo lo sfasamento elettronico della catena di lettura $\phi_m$ e il termine di feedthrough parassita $\vec{T}_{\text{feed}} = C_{\text{re}} + j C_{\text{im}} \approx j\omega_0 C_p R_{\text{trans}}$, la funzione di trasferimento complessiva:
+\paragraph{Effetto geometrico di $\phi_m$, di $C_p$ e di $R_p$ nel piano complesso:}
+Quando includiamo lo sfasamento elettronico della catena di lettura $\phi_m$ e il ramo parassita completo $C_p \parallel R_p$, il vettore di feedthrough vale:
+\begin{equation}
+    \vec{T}_{\text{feed}} = R_{\text{trans}} \left( \frac{1}{R_p} + j\omega_0 C_p \right) e^{j\phi_m} = C_{\text{re}} + j C_{\text{im}}
+\end{equation}
+Nel sistema di riferimento del MEMS ($\phi_m = 0$), i due elementi parassiti agiscono lungo direzioni ortogonali del piano di Gauss:
+\begin{itemize}
+    \item La \textbf{resistenza parassita $R_p = \SI{11.2}{\mega\ohm}$} (corrente in fase) produce una traslazione orizzontale lungo l'\textbf{asse reale} pari a $\frac{R_{\text{trans}}}{R_p} \approx \mathbf{0.445}$;
+    \item La \textbf{capacità parassita $C_p = \SI{0.892}{\pico\farad}$} (corrente in quadratura a $+90^\circ$) produce una grande traslazione verticale lungo l'\textbf{asse immaginario} pari a $\omega_0 C_p R_{\text{trans}} \approx \mathbf{11.70}$.
+\end{itemize}
+La funzione di trasferimento complessiva:
 \begin{equation}
     \label{eq:cerchio_traslato_complesso}
     T(f) = \vec{T}_{\text{feed}} + \frac{A_{\text{mot}} e^{j\phi_m}}{1 + j x(f)}
 \end{equation}
-descrive \textbf{la medesima circonferenza di diametro $A_{\text{mot}}$}, ma sottoposta a due trasformazioni rigide elementari nel piano di Gauss:
+descrive quindi \textbf{la medesima circonferenza di diametro $A_{\text{mot}}$}, sottoposta a due trasformazioni rigide nel piano di Gauss:
 \begin{enumerate}
-    \item Una \textbf{rotazione rigida} di un angolo $\phi_m \approx -22^\circ$ attorno al punto di ancoraggio;
-    \item Una \textbf{traslazione rigida} dell'intera circonferenza governata dal vettore di feedthrough $\vec{T}_{\text{feed}} = (C_{\text{re}}, C_{\text{im}})$, che sposta il centro geometrico del cerchio nel punto:
+    \item Una \textbf{rotazione rigida} oraria di un angolo $\phi_m \approx -21.4^\circ$ (dovuta al ritardo di fase del TIA e dello stadio invertente a $\SI{418}{\kilo\hertz}$), che ruota anche il vettore parassita portandolo da $+90^\circ$ a $+68.6^\circ$, ossia in $\vec{T}_{\text{feed}} = (4.24, 10.90)$;
+    \item Una \textbf{traslazione rigida} dell'intera circonferenza governata dal vettore $\vec{T}_{\text{feed}} = (C_{\text{re}}, C_{\text{im}})$, che sposta il centro geometrico del cerchio nel punto:
     \begin{equation}
         \vec{C}_{\text{centro}} = \vec{T}_{\text{feed}} + \frac{1}{2} A_{\text{mot}} e^{j\phi_m}
     \end{equation}
 \end{enumerate}
 
 \subsubsection{Confronto sperimentale dei cerchi di Nyquist: prima e dopo la compensazione}
-Per visualizzare questo comportamento direttamente sui dati di laboratorio, è stato sviluppato uno script dedicato (\texttt{Compensazione Hardware/analizza\_piano\_complesso.py}) che esegue un fit vettoriale a proiezione di variabili nel piano complesso e traccia i luoghi di Nyquist sperimentali e teorici.
+Per visualizzare questo comportamento direttamente sui dati di laboratorio, è stato sviluppato uno script dedicato (\texttt{Compensazione Hardware/analizza\_piano\_complesso.py}) che esegue il fit vettoriale nel piano complesso e traccia i luoghi di Nyquist sperimentali e teorici.
 
-In Fig.~\ref{fig:cerchio_nyquist_globale} è presentato il confronto tra la vista globale del piano complesso (pannello sinistro) e lo zoom attorno all'origine $(0,0)$ per le configurazioni compensate (pannello destro).
+In Fig.~\ref{fig:cerchio_nyquist_globale} è presentato il confronto tra la vista globale del piano complesso (pannello sinistro) e lo zoom attorno all'origine $(0,0)$ per la compensazione software e la compensazione hardware attiva (pannello destro).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{../Compensazione Hardware/grafici/cerchio_nyquist_confronto_globale.png}
-\caption{Analisi nel piano complesso $\mathrm{Re}\{T(j\omega)\}$ vs $\mathrm{Im}\{T(j\omega)\}$. A sinistra: vista globale che mostra come il vettore parassita $\vec{T}_{\text{feed}}$ ($|\vec{T}_{\text{feed}}| \approx 11.70$, $C_p \approx \SI{0.89}{\pico\farad}$) trasli il piccolo cerchio di risonanza motrice (diametro $A_{\text{mot}} \approx 0.44$) a grande distanza dall'origine $(0,0)$. A destra: zoom sull'origine che mostra il ritorno della circonferenza di risonanza sull'origine grazie alla compensazione software (tratteggio verde) e alla compensazione hardware attiva (\texttt{Set 1} in magenta e \texttt{Set 2} in blu).}
+\caption{Analisi nel piano complesso $\mathrm{Re}\{T(j\omega)\}$ vs $\mathrm{Im}\{T(j\omega)\}$. A sinistra: vista globale che mostra come il vettore parassita $\vec{T}_{\text{feed}}$ ($|\vec{T}_{\text{feed}}| \approx 11.70$) trasli il piccolo cerchio di risonanza motrice (diametro $A_{\text{mot}} \approx 0.44$) a grande distanza dall'origine $(0,0)$. A destra: zoom sull'origine che mostra il ritorno della circonferenza di risonanza sull'origine grazie alla compensazione software (tratteggio verde) e alla compensazione hardware attiva (in blu).}
 \label{fig:cerchio_nyquist_globale}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{../Compensazione Hardware/grafici/cerchio_nyquist_dettaglio_fano.png}
-\caption{Interpretazione geometrica vettoriale nel piano complesso. A sinistra: zoom sul cerchio non compensato attorno a $\vec{T}_{\text{feed}} = (4.27, 10.90)$; l'asse radiale uscente dall'origine $(0,0)$ interseca la circonferenza nel punto di massima distanza dall'origine (risonanza costruttiva, $\blacktriangle$ verde a $\SI{21.53}{\decibel}$) e nel punto di minima distanza (antirisonanza distruttiva di Fano, $\blacktriangledown$ rosso a $\SI{21.19}{\decibel}$), distinti dalla risonanza meccanica pura $f_0$ ($\blacklozenge$ arancione). A destra: cerchio ottenuto con compensazione hardware attiva (\texttt{Set 2}), in cui il feedthrough residuo ($\blacksquare$ nero, $\Delta C \approx \SI{5.7}{\femto\farad}$) cade vicinissimo all'origine $(0,0)$, restituendo al vettore $\vec{T}(f)$ (freccia arancione) il pieno contrasto d'ampiezza e la rotazione di fase di $\approx 180^\circ$.}
+\caption{Interpretazione geometrica vettoriale nel piano complesso. A sinistra: zoom sul cerchio non compensato attorno a $\vec{T}_{\text{feed}} = (4.24, 10.90)$; l'asse radiale uscente dall'origine $(0,0)$ interseca la circonferenza nel punto di massima distanza dall'origine (risonanza costruttiva, $\blacktriangle$ verde a $\SI{21.53}{\decibel}$) e nel punto di minima distanza (antirisonanza distruttiva di Fano, $\blacktriangledown$ rosso a $\SI{21.19}{\decibel}$), distinti dalla risonanza meccanica pura $f_0$ ($\blacklozenge$ arancione). A destra: cerchio ottenuto con compensazione hardware attiva, in cui il feedthrough residuo ($\blacksquare$ nero, $\Delta C \approx \SI{5.7}{\femto\farad}$) cade vicinissimo all'origine $(0,0)$, restituendo al vettore $\vec{T}(f)$ (freccia arancione) il pieno contrasto d'ampiezza e la rotazione di fase di $\approx 180^\circ$.}
 \label{fig:cerchio_nyquist_fano}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.78\textwidth]{../Compensazione Hardware/grafici/nyquist_set2_frequenza.png}
-\caption{Luogo di Nyquist sperimentale nella configurazione compensata hardware ottimizzata (\texttt{Set 2}), mappato cromaticamente in funzione della frequenza forzante $f_{\text{in}} \in [\SI{417.54}{\kilo\hertz}, \SI{418.10}{\kilo\hertz}]$ (con passo costante $\Delta f_{\text{step}} = \SI{2}{\hertz}$). Si noti la rapida spaziatura angolare dei punti lungo l'arco destro nell'intorno della risonanza $f_0 = \SI{417.75}{\kilo\hertz}$, indice dell'elevato fattore di merito $Q$.}
+\caption{Luogo di Nyquist sperimentale con compensazione hardware attiva, mappato cromaticamente in funzione della frequenza forzante $f_{\text{in}} \in [\SI{417.54}{\kilo\hertz}, \SI{418.10}{\kilo\hertz}]$ (con passo costante $\Delta f_{\text{step}} = \SI{2}{\hertz}$). Si noti la rapida spaziatura angolare dei punti lungo l'arco destro nell'intorno della risonanza $f_0 = \SI{417.75}{\kilo\hertz}$, indice dell'elevato fattore di merito $Q$.}
 \label{fig:nyquist_set2_freq}
 \end{figure}
 
@@ -1288,11 +1240,10 @@ In Fig.~\ref{fig:cerchio_nyquist_globale} è presentato il confronto tra la vist
         \Delta\phi_{\max} = 2 \arcsin\left(\frac{R_{\text{cerchio}}}{|\vec{C}_{\text{centro}}|}\right) \approx 2 \arcsin\left(\frac{0.218}{11.70}\right) \approx \mathbf{2.14^\circ}
     \end{equation}
     in perfetto accordo con l'escursione di fase di $\approx 2.2^\circ$ attorno a $+68.6^\circ$ misurata nel diagramma di Bode di Fig.~\ref{fig:bode_completo}!
-    \item \textbf{L'effetto geometrico della compensazione hardware attiva (\texttt{Set 1} e \texttt{Set 2}):}
-    Come mostrato nel pannello destro di Fig.~\ref{fig:cerchio_nyquist_globale} e Fig.~\ref{fig:cerchio_nyquist_fano}, l'iniezione della corrente analogica $i_{\text{comp}}(t)$ cancella il vettore $\vec{T}_{\text{feed}}$, riportando il punto di accumulazione fuori-risonanza ($\blacksquare$ nero) a ridosso dell'origine $(0,0)$ ($|\vec{T}_{\text{feed, res}}| \approx 0.074$, pari a $\Delta C \approx \SI{5.7}{\femto\farad}$ per \texttt{Set 2}). Con la circonferenza ora ancorata all'origine:
+    \item \textbf{Confronto tra compensazione software e hardware nel piano complesso e ruolo decisivo di $R_p$:}
     \begin{itemize}
-        \item La distanza dall'origine passa da un valore quasi nullo fuori risonanza fino all'intero diametro $A_{\text{mot}} \approx 0.46 - 0.50$ a $f = f_0$ (freccia arancione in Fig.~\ref{fig:cerchio_nyquist_fano}), eliminando l'antirisonanza e massimizzando il contrasto;
-        \item Il raggio vettore uscente dall'origine $(0,0)$ spazza un angolo di quasi $180^\circ$ mentre il punto percorre la circonferenza, restituendo per intero la transizione di fase del risonatore meccanico.
+        \item Nella \textbf{compensazione software}, sottraendo numericamente l'intero vettore complesso di fondo fuori risonanza $\vec{T}_{\text{feed}} = C_{\text{re}} + j C_{\text{im}}$, si rimuovono automaticamente in un colpo solo \textbf{sia l'offset immaginario che l'offset reale}, cancellando quindi matematicamente sia il contributo di $C_p$ sia quello di $R_p$ e riportando il cerchio tratteggiato verde esattamente sull'origine $(0,0)$.
+        \item Nella \textbf{compensazione hardware}, il piano complesso spiega perché l'aggiunta del resistore $R_c = \SI{1}{\mega\ohm}$ (per compensare $R_p = \SI{11.2}{\mega\ohm}$) sia altrettanto fondamentale del condensatore $C_c = \SI{10}{\pico\farad}$: finché $C_p$ non è compensata ($|\vec{T}_{Cp}| \approx 11.70$), il contributo ortogonale di $R_p$ ($\frac{R_{\text{trans}}}{R_p} \approx 0.445$) è invisibile sul modulo totale ($\sqrt{11.70^2 + 0.445^2} = 11.708$, meno dello $0.07\%$). Tuttavia, \textbf{una volta cancellato il vettore di $C_p$ tramite $C_c$}, lo spostamento residuo dovuto a $R_p$ ($\approx 0.445$) ha la \textbf{stessa identica dimensione dell'intero diametro del cerchio di risonanza del MEMS ($A_{\text{mot}} \approx 0.44$)}! Senza $R_c$, il cerchio nel piano di Gauss resterebbe traslato di un intero diametro rispetto all'origine $(0,0)$. Grazie alla rete completa $C_c \parallel R_c$, entrambi i contributi vengono annullati e il punto di accumulazione fuori-risonanza ($\blacksquare$ nero in Fig.~\ref{fig:cerchio_nyquist_fano}) cade a ridosso dell'origine ($|\vec{T}_{\text{feed, res}}| \approx 0.074$, pari a $\Delta C \approx \SI{5.7}{\femto\farad}$), restituendo l'intero contrasto d'ampiezza e la rotazione di fase di $180^\circ$.
     \end{itemize}
     \item \textbf{Distribuzione di velocità lungo il cerchio (Fig.~\ref{fig:nyquist_set2_freq}):}
     Infine, la mappa cromatica di Fig.~\ref{fig:nyquist_set2_freq} evidenzia la dinamica spettrale lungo il cerchio di Nyquist: poiché i campioni sono acquisiti a passo di frequenza costante ($\Delta f_{\text{step}} = \SI{2}{\hertz}$), i punti si accalcano densamente vicino all'origine nelle code fuori banda ($f < \SI{417.60}{\kilo\hertz}$ in viola scuro e $f > \SI{417.95}{\kilo\hertz}$ in giallo-verde), mentre compiono balzi angolari ampi lungo l'arco destro tra $\SI{417.70}{\kilo\hertz}$ e $\SI{417.80}{\kilo\hertz}$ (in corrispondenza dei due punti a metà potenza a $-3\text{ dB}$, separati da una banda $\Delta f = f_0 / Q \approx \SI{218}{\hertz}$).

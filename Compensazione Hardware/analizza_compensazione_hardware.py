@@ -467,7 +467,7 @@ if has_uncomp:
     ax1.plot(data_uncomp['f_khz'][m_unc], data_uncomp['gain_db'][m_unc], 'o', color='#868e96',
              alpha=0.45, markersize=2.6, label='Non compensato (misura reale, dominata da Cp)')
     ax1.plot(data_2['f_khz'], data_2['gain_db'], 'o', color='#2b8a3e',
-             alpha=0.45, markersize=2.8, label=r'Compensazione hardware (Set 2, $\Delta C \approx 12.9$ fF)')
+             alpha=0.45, markersize=2.8, label=r'Compensazione hardware attiva')
     ax1.plot(fit_res_2['f_dense_khz'], fit_res_2['g_dense_db'], color='#2b8a3e', linewidth=2.0, label='Fit risonanza motrice')
     
     # Freccia verticale di abbattimento feedthrough
@@ -504,23 +504,69 @@ if has_uncomp:
     print(f"[OK] Grafico salvato: {p_bench}")
 
 # -----------------------------------------------------------------------------
-# GRAFICO 7: Confronto tra compensazione Hardware e Software
+# GRAFICO 7: Confronto tra compensazione Hardware e Software (allineati in frequenza)
 # -----------------------------------------------------------------------------
 if has_uncomp:
     fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
     
-    T_raw = data_uncomp['gain_lin'] * np.exp(1j * np.deg2rad(data_uncomp['phase_wrap']))
-    C_feed_raw = 4.27 + 1j * 10.90
-    T_comp_soft = T_raw - C_feed_raw
+    # Consideriamo la finestra pulita della misura non compensata (f <= 418.0 kHz, passo 2 Hz)
+    m_sw_clean = data_uncomp['f_khz'] <= 418.000
+    f_sw_khz = data_uncomp['f_khz'][m_sw_clean]
+    f_sw_hz  = data_uncomp['f_hz'][m_sw_clean]
+    
+    T_raw = data_uncomp['gain_lin'][m_sw_clean] * np.exp(1j * np.deg2rad(data_uncomp['phase_wrap'][m_sw_clean]))
+    
+    # Fit complesso esatto (come in Sezione 8, analizza_risposta_in_frequenza.py)
+    def model_ri_sw(f_arr, C_re, C_im, A_mot, f0, Q, phi_m):
+        x = 2.0 * Q * (f_arr - f0) / f0
+        T = (C_re + 1j * C_im) + (A_mot * np.exp(1j * phi_m)) / (1.0 + 1j * x)
+        return np.concatenate([np.real(T), np.imag(T)])
+    
+    y_meas_sw = np.concatenate([np.real(T_raw), np.imag(T_raw)])
+    popt_sw_c, _ = curve_fit(model_ri_sw, f_sw_hz, y_meas_sw, p0=[4.27, 10.90, 0.46, 417640.0, 3000.0, -0.4], maxfev=10000)
+    C_re_sw, C_im_sw, A_mot_sw, f0_sw_fit, Q_sw_fit, phi_m_sw = popt_sw_c
+    
+    T_comp_soft = T_raw - (C_re_sw + 1j * C_im_sw)
     gain_comp_soft_lin = np.abs(T_comp_soft)
     
-    m_unc = (data_uncomp['f_khz'] >= data_2['f_khz'][0]) & (data_uncomp['f_khz'] <= data_2['f_khz'][-1])
+    # Centro del picco della misura compensata hardware (Set 2) e software
+    f0_hw_pk = fit_res_2['f_dense'][np.argmax(np.abs(fit_res_2['T_dense']))]
+    f0_sw_pk = f0_sw_fit
     
-    ax.plot(data_uncomp['f_khz'][m_unc], gain_comp_soft_lin[m_unc], 'o', color='#7048e8',
-            alpha=0.45, markersize=2.8, label=r'Compensazione software (sottrazione vettoriale di $C_p$)')
-    ax.plot(data_2['f_khz'], data_2['gain_lin'], 'o', color='#2b8a3e',
-            alpha=0.55, markersize=2.8, label=r'Compensazione hardware reale (Set 2)')
-    ax.plot(fit_res_2['f_dense_khz'], np.abs(fit_res_2['T_dense']), color='#2b8a3e',
+    # Traslazione rigida in frequenza per compensare la deriva termica tra i due giorni di misura
+    delta_f_hz  = f0_hw_pk - f0_sw_pk
+    delta_f_khz = delta_f_hz / 1e3
+    f_sw_shifted_khz = f_sw_khz + delta_f_khz
+    
+    f_sw_dense_hz = np.linspace(f_sw_hz[0], f_sw_hz[-1], 1000)
+    x_sw_dense = 2.0 * Q_sw_fit * (f_sw_dense_hz - f0_sw_fit) / f0_sw_fit
+    g_sw_dense_lin = A_mot_sw / np.sqrt(1.0 + x_sw_dense**2)
+    f_sw_dense_shifted_khz = (f_sw_dense_hz + delta_f_hz) / 1e3
+    
+    # Usiamo tutti i punti del modulo di Set 2 nell'intervallo comune (stesso delta di frequenza)
+    f_hw_all_khz = data_2['f_all_khz']
+    g_hw_all_lin = data_2['gain_all_lin']
+    
+    f_win_min = max(f_sw_shifted_khz[0], f_hw_all_khz[0])
+    f_win_max = min(f_sw_shifted_khz[-1], 418.100)
+    
+    m_sw_win = (f_sw_shifted_khz >= f_win_min) & (f_sw_shifted_khz <= f_win_max)
+    m_hw_win = (f_hw_all_khz >= f_win_min) & (f_hw_all_khz <= f_win_max)
+    
+    # Griglia densa hardware estesa su tutto l'intervallo comune
+    f_hw_dense_hz = np.linspace(f_win_min * 1e3, f_win_max * 1e3, 1000)
+    C_re_hw, C_im_hw, A_mot_hw, f0_hw_fit, Q_hw_fit, phi_m_hw = fit_res_2['popt']
+    x_hw_dense = 2.0 * Q_hw_fit * (f_hw_dense_hz - f0_hw_fit) / f0_hw_fit
+    T_hw_dense = (C_re_hw + 1j * C_im_hw) + (A_mot_hw * np.exp(1j * phi_m_hw)) / (1.0 + 1j * x_hw_dense)
+    
+    ax.plot(f_sw_shifted_khz[m_sw_win], gain_comp_soft_lin[m_sw_win], 'o', color='#7048e8',
+            alpha=0.42, markersize=2.8,
+            label=rf'Compensazione software (traslata di $+{delta_f_hz:.0f}$ Hz)')
+    ax.plot(f_sw_dense_shifted_khz, g_sw_dense_lin, '--', color='#7048e8',
+            linewidth=1.9, label='Fit risonanza software')
+    ax.plot(f_hw_all_khz[m_hw_win], g_hw_all_lin[m_hw_win], 'o', color='#2b8a3e',
+            alpha=0.50, markersize=2.8, label=r'Compensazione hardware reale')
+    ax.plot(f_hw_dense_hz / 1e3, np.abs(T_hw_dense), color='#2b8a3e',
             linewidth=2.0, label='Fit risonanza hardware')
     
     ax.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
@@ -529,13 +575,13 @@ if has_uncomp:
     ax.grid(True)
     ax.legend(loc='upper right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
     ax.ticklabel_format(useOffset=False, style='plain')
-    ax.set_xlim(data_2['f_khz'][0], data_2['f_khz'][-1])
+    ax.set_xlim(f_win_min, f_win_max)
     
     plt.tight_layout()
     p_hw_sw = os.path.join(OUT_DIR, 'confronto_hardware_vs_software.png')
     plt.savefig(p_hw_sw)
     plt.close()
-    print(f"[OK] Grafico salvato: {p_hw_sw}")
+    print(f"[OK] Grafico salvato: {p_hw_sw} (shift applicato: +{delta_f_hz:.1f} Hz)")
 
 # -----------------------------------------------------------------------------
 # GRAFICO 8: Traccia temporale oscilloscopio post-compensazione (scope_165)

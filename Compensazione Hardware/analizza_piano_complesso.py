@@ -222,9 +222,9 @@ ax1.plot(np.real(T_u_meas), np.imag(T_u_meas), 'o', color='#868e96', alpha=0.45,
          label='Misura non compensata (con $C_p$)')
 ax1.plot(np.real(fit_u['T_circle']), np.imag(fit_u['T_circle']), '-', color='#343a40', lw=1.8)
 
-# Cerchio compensato HW Set 2 (vicino all'origine)
+# Cerchio compensato HW (vicino all'origine)
 ax1.plot(np.real(data_2['T_meas']), np.imag(data_2['T_meas']), 'o', color='#1971c2', alpha=0.45, markersize=2.5,
-         label='Compensazione hardware (Set 2)')
+         label='Compensazione hardware')
 ax1.plot(np.real(fit_2['T_circle']), np.imag(fit_2['T_circle']), '-', color='#1864ab', lw=1.8)
 
 # Cerchio compensato SW (sull'origine)
@@ -232,7 +232,7 @@ ax1.plot(np.real(T_sw_circle), np.imag(T_sw_circle), '--', color='#2b8a3e', lw=1
          label='Compensazione software ($T - T_{feed}$)')
 
 ax1.plot(0, 0, 'k+', markersize=8, markeredgewidth=1.5)
-ax1.annotate('Cerchio motrice\ntraslato da $C_p$\n(diametro $\\approx 0.44$)',
+ax1.annotate(r'Cerchio motrice' + '\n' + r'traslato da $C_p \,/\!/\, R_p$' + '\n' + r'(diametro $\approx 0.44$)',
              xy=(C_re_u + 0.05, C_im_u - 0.05), xytext=(-2.8, 9.2),
              arrowprops=dict(arrowstyle='->', color='#495057', lw=1.2),
              fontsize=9.0, bbox=dict(boxstyle='round,pad=0.3', facecolor='#f8f9fa', edgecolor='#ced4da'))
@@ -244,7 +244,7 @@ ax1.annotate('Cerchio riportato\nsull\'origine (0, 0)\ncon compensazione',
 
 ax1.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax1.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
-ax1.set_title('Vista globale nel piano complesso: effetto di $C_p$', pad=8)
+ax1.set_title(r'Vista globale nel piano complesso: effetto di $C_p \,/\!/\, R_p$', pad=8)
 ax1.set_aspect('equal', adjustable='box')
 ax1.set_xlim(-3.5, 10.5)
 ax1.set_ylim(-2.4, 12.2)
@@ -256,24 +256,18 @@ ax2.axhline(0, color='#adb5bd', lw=1.1, zorder=1)
 ax2.axvline(0, color='#adb5bd', lw=1.1, zorder=1)
 
 # Software compensated
-ax2.plot(np.real(T_sw_meas), np.imag(T_sw_meas), 'o', color='#2b8a3e', alpha=0.30, markersize=2.8,
+ax2.plot(np.real(T_sw_meas), np.imag(T_sw_meas), 'o', color='#2b8a3e', alpha=0.35, markersize=2.8,
          label='Punti comp. software')
 ax2.plot(np.real(T_sw_circle), np.imag(T_sw_circle), '--', color='#2b8a3e', lw=2.0,
          label=rf'Cerchio comp. software ($A_{{mot}}={fit_u["A_mot"]:.2f}$)')
 
-# Hardware Set 1
-ax2.plot(np.real(data_1['T_meas']), np.imag(data_1['T_meas']), 'o', color='#d6336c', alpha=0.30, markersize=2.8,
-         label='Punti comp. HW (Set 1)')
-ax2.plot(np.real(fit_1['T_circle']), np.imag(fit_1['T_circle']), '-', color='#c2255c', lw=1.8,
-         label=rf'Cerchio HW Set 1 ($\Delta C \approx 10.9$ fF)')
-
-# Hardware Set 2
+# Hardware (ottimizzato)
 ax2.plot(np.real(data_2['T_meas']), np.imag(data_2['T_meas']), 'o', color='#1971c2', alpha=0.45, markersize=3.0,
-         label='Punti comp. HW (Set 2)')
+         label='Punti comp. hardware')
 ax2.plot(np.real(fit_2['T_circle']), np.imag(fit_2['T_circle']), '-', color='#1864ab', lw=2.2,
-         label=rf'Cerchio HW Set 2 ($\Delta C \approx 5.7$ fF)')
+         label=rf'Cerchio comp. hardware ($\Delta C \approx 5.7$ fF)')
 
-# Evidenziazione risonanza f0 su Set 2 (x = 0 -> T = C_feed + B_mot)
+# Evidenziazione risonanza f0 (x = 0 -> T = C_feed + B_mot)
 T_res_2 = fit_2['C_feed'] + fit_2['B_mot']
 ax2.plot(np.real(T_res_2), np.imag(T_res_2), 'D', color='#e8590c', markersize=6.5, zorder=5,
          label=rf'Risonanza $f_0 = {fit_2["f0"]/1e3:.2f}$ kHz')
@@ -281,12 +275,12 @@ ax2.plot(0, 0, 'k+', markersize=9, markeredgewidth=1.8)
 
 ax2.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax2.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
-ax2.set_title('Zoom sull\'origine: cerchi di ammettenza compensati', pad=8)
+ax2.set_title('Zoom sull\'origine: compensazione software vs hardware', pad=8)
 ax2.set_aspect('equal', adjustable='box')
-ax2.set_xlim(-0.24, 0.58)
-ax2.set_ylim(-0.44, 0.40)
+ax2.set_xlim(-0.20, 0.58)
+ax2.set_ylim(-0.44, 0.34)
 ax2.grid(True)
-ax2.legend(loc='upper right', frameon=True, facecolor='white', framealpha=0.94, edgecolor='#ced4da', fontsize=8.4)
+ax2.legend(loc='upper right', frameon=True, facecolor='white', framealpha=0.94, edgecolor='#ced4da', fontsize=8.6)
 
 plt.tight_layout()
 p_fig1 = os.path.join(OUT_DIR, 'cerchio_nyquist_confronto_globale.png')
@@ -347,14 +341,14 @@ ax1.set_ylim(10.42, 11.22)
 ax1.grid(True)
 ax1.legend(loc='lower right', frameon=True, facecolor='white', framealpha=0.94, edgecolor='#ced4da', fontsize=8.1)
 
-# --- Pannello DX: Luogo di Nyquist compensato HW (Set 2) con vettori di fase ---
+# --- Pannello DX: Luogo di Nyquist compensato HW con vettori di fase ---
 ax2.axhline(0, color='#868e96', lw=1.2, zorder=1)
 ax2.axvline(0, color='#868e96', lw=1.2, zorder=1)
 
 ax2.plot(np.real(data_2['T_meas']), np.imag(data_2['T_meas']), 'o', color='#1971c2', alpha=0.40, markersize=3.2,
-         label='Punti sperimentali Set 2')
+         label='Punti sperimentali comp. hardware')
 ax2.plot(np.real(fit_2['T_circle']), np.imag(fit_2['T_circle']), '-', color='#1864ab', lw=2.2,
-         label='Cerchio teorico Set 2')
+         label='Cerchio teorico comp. hardware')
 
 # Punto di fondo residuo C_feed_res e punto di picco f0
 Cf2_re, Cf2_im = np.real(fit_2['C_feed']), np.imag(fit_2['C_feed'])
@@ -379,7 +373,7 @@ ax2.plot(0, 0, 'k+', markersize=10, markeredgewidth=2.0, label='Origine $(0, 0)$
 
 ax2.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax2.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
-ax2.set_title('Cerchio con compensazione hardware attiva (Set 2)', pad=8)
+ax2.set_title('Cerchio con compensazione hardware attiva', pad=8)
 ax2.set_aspect('equal', adjustable='box')
 ax2.set_xlim(-0.24, 0.58)
 ax2.set_ylim(-0.44, 0.38)
@@ -430,7 +424,7 @@ ax.plot(0, 0, 'k+', markersize=10, markeredgewidth=2.0, label='Origine $(0, 0)$'
 
 ax.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
-ax.set_title('Evoluzione in frequenza sul cerchio di Nyquist (Set 2)', pad=9)
+ax.set_title('Evoluzione in frequenza sul cerchio di Nyquist (compensazione hardware)', pad=9)
 ax.set_aspect('equal', adjustable='box')
 ax.set_xlim(-0.26, 0.60)
 ax.set_ylim(-0.46, 0.30)
