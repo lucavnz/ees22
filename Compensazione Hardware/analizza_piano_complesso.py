@@ -213,26 +213,22 @@ C_im_u = np.imag(fit_u['C_feed'])
 ax1.annotate('', xy=(C_re_u, C_im_u), xytext=(0, 0),
              arrowprops=dict(arrowstyle='->', color='#e03131', lw=2.0, ls='--'), zorder=3)
 ax1.text(2.4, 5.3,
-         rf'Vettore parassita $\vec{{T}}_{{feed}}$' + '\n' + rf'$|\vec{{T}}_{{feed}}| \approx {np.abs(fit_u["C_feed"]):.2f}$ ($C_p \approx 0.89$ pF)' + '\n' + r'$\angle \vec{T}_{feed} \approx +68.6^\circ$',
+         rf'Contributo parassita $T_p$' + '\n' + rf'$|T_p| = {np.abs(fit_u["C_feed"]):.2f}$ ($C_p = 0.89$ pF)' + '\n' + r'$\angle T_p = +68.6^\circ$',
          color='#c92a2a', fontsize=9.2,
          bbox=dict(boxstyle='round,pad=0.35', facecolor='white', edgecolor='#ffa8a8', alpha=0.94))
 
 # Cerchio non compensato (lontano dall'origine)
 ax1.plot(np.real(T_u_meas), np.imag(T_u_meas), 'o', color='#868e96', alpha=0.45, markersize=2.5,
-         label='Misura non compensata (con $C_p$)')
+         label='Punti sperimentali non compensati')
 ax1.plot(np.real(fit_u['T_circle']), np.imag(fit_u['T_circle']), '-', color='#343a40', lw=1.8)
 
 # Cerchio compensato HW (vicino all'origine)
 ax1.plot(np.real(data_2['T_meas']), np.imag(data_2['T_meas']), 'o', color='#1971c2', alpha=0.45, markersize=2.5,
-         label='Compensazione hardware')
+         label='Punti sperimentali compensati hardware')
 ax1.plot(np.real(fit_2['T_circle']), np.imag(fit_2['T_circle']), '-', color='#1864ab', lw=1.8)
 
-# Cerchio compensato SW (sull'origine)
-ax1.plot(np.real(T_sw_circle), np.imag(T_sw_circle), '--', color='#2b8a3e', lw=1.6,
-         label='Compensazione software ($T - T_{feed}$)')
-
 ax1.plot(0, 0, 'k+', markersize=8, markeredgewidth=1.5)
-ax1.annotate(r'Cerchio motrice' + '\n' + r'traslato da $C_p \,/\!/\, R_p$' + '\n' + r'(diametro $\approx 0.44$)',
+ax1.annotate(r'Cerchio motrice' + '\n' + r'traslato da $C_p \,/\!/\, R_p$',
              xy=(C_re_u + 0.05, C_im_u - 0.05), xytext=(-2.8, 9.2),
              arrowprops=dict(arrowstyle='->', color='#495057', lw=1.2),
              fontsize=9.0, bbox=dict(boxstyle='round,pad=0.3', facecolor='#f8f9fa', edgecolor='#ced4da'))
@@ -244,7 +240,7 @@ ax1.annotate('Cerchio riportato\nsull\'origine (0, 0)\ncon compensazione',
 
 ax1.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax1.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
-ax1.set_title(r'Vista globale nel piano complesso: effetto di $C_p \,/\!/\, R_p$', pad=8)
+ax1.set_title('Cerchio senza compensazione vs con compensazione', pad=8)
 ax1.set_aspect('equal', adjustable='box')
 ax1.set_xlim(-3.5, 10.5)
 ax1.set_ylim(-2.4, 12.2)
@@ -259,23 +255,23 @@ ax2.axvline(0, color='#adb5bd', lw=1.1, zorder=1)
 ax2.plot(np.real(T_sw_meas), np.imag(T_sw_meas), 'o', color='#2b8a3e', alpha=0.35, markersize=2.8,
          label='Punti comp. software')
 ax2.plot(np.real(T_sw_circle), np.imag(T_sw_circle), '--', color='#2b8a3e', lw=2.0,
-         label=rf'Cerchio comp. software ($A_{{mot}}={fit_u["A_mot"]:.2f}$)')
+         label='Cerchio comp. software')
 
 # Hardware (ottimizzato)
 ax2.plot(np.real(data_2['T_meas']), np.imag(data_2['T_meas']), 'o', color='#1971c2', alpha=0.45, markersize=3.0,
          label='Punti comp. hardware')
 ax2.plot(np.real(fit_2['T_circle']), np.imag(fit_2['T_circle']), '-', color='#1864ab', lw=2.2,
-         label=rf'Cerchio comp. hardware ($\Delta C \approx 5.7$ fF)')
+         label='Cerchio comp. hardware')
 
 # Evidenziazione risonanza f0 (x = 0 -> T = C_feed + B_mot)
 T_res_2 = fit_2['C_feed'] + fit_2['B_mot']
 ax2.plot(np.real(T_res_2), np.imag(T_res_2), 'D', color='#e8590c', markersize=6.5, zorder=5,
-         label=rf'Risonanza $f_0 = {fit_2["f0"]/1e3:.2f}$ kHz')
+         label=rf'Risonanza $f_1 = {fit_2["f0"]/1e3:.2f}$ kHz')
 ax2.plot(0, 0, 'k+', markersize=9, markeredgewidth=1.8)
 
 ax2.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax2.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
-ax2.set_title('Zoom sull\'origine: compensazione software vs hardware', pad=8)
+ax2.set_title('Cerchio con compensazione hardware vs software', pad=8)
 ax2.set_aspect('equal', adjustable='box')
 ax2.set_xlim(-0.20, 0.58)
 ax2.set_ylim(-0.44, 0.34)
@@ -297,12 +293,12 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.4, 5.8), dpi=300)
 ax1.plot(np.real(T_u_meas), np.imag(T_u_meas), 'o', color='#868e96', alpha=0.45, markersize=3.2,
          label='Punti sperimentali non compensati')
 ax1.plot(np.real(fit_u['T_circle']), np.imag(fit_u['T_circle']), '-', color='#1971c2', lw=2.2,
-         label='Cerchio teorico RLC + $C_p$')
+         label='Cerchio non compensato')
 
 # Punti notevoli sul cerchio non compensato:
 # 1. Centro del fondo parassita C_feed (f lontano da f0)
-ax1.plot(C_re_u, C_im_u, 's', color='#343a40', markersize=6.5, zorder=5,
-         label=r'Fondo parassita $\vec{T}_{feed}$ ($f \neq f_0$)')
+# (fondo parassita omesso)
+
 
 # 2. Punto di massima e minima distanza dall'origine
 dist_u = np.abs(fit_u['T_circle'])
@@ -313,18 +309,18 @@ T_min_u = fit_u['T_circle'][idx_min_u]
 T_f0_u  = fit_u['C_feed'] + fit_u['B_mot']
 
 ax1.plot(np.real(T_max_u), np.imag(T_max_u), '^', color='#2b8a3e', markersize=7.5, zorder=6,
-         label=r'Max $|T|$ (risonanza costruttiva, $21.53$ dB)')
+         label=r'Max $|T|$ ($21.53$ dB)')
 ax1.plot(np.real(T_min_u), np.imag(T_min_u), 'v', color='#e03131', markersize=7.5, zorder=6,
-         label=r'Min $|T|$ (antirisonanza distruttiva, $21.19$ dB)')
+         label=r'Min $|T|$ (antirisonanza, $21.19$ dB)')
 ax1.plot(np.real(T_f0_u), np.imag(T_f0_u), 'D', color='#e8590c', markersize=6.5, zorder=6,
-         label=r'Risonanza meccanica pura $f_0$')
+         label=r'Risonanza meccanica $f_1$')
 
 # Direzione radiale dall'origine (0,0) passante per il centro del cerchio (unisce Min |T| e Max |T|)
 u_rad = fit_u['C_center'] / np.abs(fit_u['C_center'])
 p_start = fit_u['C_center'] - 0.36 * u_rad
 p_end   = fit_u['C_center'] + 0.36 * u_rad
 ax1.plot([np.real(p_start), np.real(p_end)], [np.imag(p_start), np.imag(p_end)],
-         ':', color='#495057', lw=1.5, label='Asse radiale da $(0,0)$ (congiunge Min e Max)')
+         ':', color='#495057', lw=1.5, label='Asse radiale da $(0,0)$ (congiunge min e max)')
 
 ax1.annotate('Senso orario\nal crescere di $f_{in}$',
              xy=(np.real(T_f0_u) + 0.01, np.imag(T_f0_u) + 0.02),
@@ -334,7 +330,7 @@ ax1.annotate('Senso orario\nal crescere di $f_{in}$',
 
 ax1.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax1.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
-ax1.set_title('Cerchio non compensato: origine geometrica del profilo Fano', pad=8)
+ax1.set_title("Cerchio non compensato: origine dell'antirisonanza", pad=8)
 ax1.set_aspect('equal', adjustable='box')
 ax1.set_xlim(4.06, 4.86)
 ax1.set_ylim(10.42, 11.22)
@@ -348,26 +344,13 @@ ax2.axvline(0, color='#868e96', lw=1.2, zorder=1)
 ax2.plot(np.real(data_2['T_meas']), np.imag(data_2['T_meas']), 'o', color='#1971c2', alpha=0.40, markersize=3.2,
          label='Punti sperimentali comp. hardware')
 ax2.plot(np.real(fit_2['T_circle']), np.imag(fit_2['T_circle']), '-', color='#1864ab', lw=2.2,
-         label='Cerchio teorico comp. hardware')
-
-# Punto di fondo residuo C_feed_res e punto di picco f0
-Cf2_re, Cf2_im = np.real(fit_2['C_feed']), np.imag(fit_2['C_feed'])
-ax2.plot(Cf2_re, Cf2_im, 's', color='#343a40', markersize=6.5, zorder=5,
-         label=rf'Feedthrough residuo ($\Delta C \approx {np.abs(fit_2["C_feed"])/(2*np.pi*fit_2["f0"]*R_trans)*1e15:.1f}$ fF)')
+         label='Cerchio comp. hardware')
 
 # Vettore dall'origine al picco di risonanza
 ax2.annotate('', xy=(np.real(T_res_2), np.imag(T_res_2)), xytext=(0, 0),
              arrowprops=dict(arrowstyle='->', color='#e8590c', lw=2.0), zorder=5)
 ax2.plot(np.real(T_res_2), np.imag(T_res_2), 'D', color='#e8590c', markersize=6.5, zorder=6,
-         label=rf'Picco a $f_0 = {fit_2["f0"]/1e3:.2f}$ kHz ($|T| \approx 0.46$)')
-
-# Punti a -3 dB (x = -1 e x = +1)
-T_m3db_low  = fit_2['C_feed'] + fit_2['B_mot'] / (1.0 - 1j)
-T_m3db_high = fit_2['C_feed'] + fit_2['B_mot'] / (1.0 + 1j)
-ax2.plot([np.real(T_m3db_low), np.real(T_m3db_high)],
-         [np.imag(T_m3db_low), np.imag(T_m3db_high)],
-         'o--', color='#2b8a3e', markersize=5.5, lw=1.3,
-         label=r'Punti a metà potenza ($f_0 \pm \Delta f / 2$)')
+         label=rf'Picco a $f_1 = {fit_2["f0"]/1e3:.2f}$ kHz ($|T| = 0.46$)')
 
 ax2.plot(0, 0, 'k+', markersize=10, markeredgewidth=2.0, label='Origine $(0, 0)$')
 
@@ -395,11 +378,11 @@ ax.axhline(0, color='#868e96', lw=1.2, zorder=1)
 ax.axvline(0, color='#868e96', lw=1.2, zorder=1)
 
 ax.plot(np.real(fit_2['T_circle']), np.imag(fit_2['T_circle']), '-', color='#343a40', lw=1.6, alpha=0.75,
-        label='Circonferenza di fit teorico', zorder=2)
+        label='Cerchio compensato', zorder=2)
 
 sc = ax.scatter(np.real(data_2['T_meas']), np.imag(data_2['T_meas']),
                 c=data_2['f_khz'], cmap='viridis', s=24, alpha=0.88, edgecolors='none', zorder=3,
-                label=r'Campioni sperimentali ($\Delta f_{step} = 2$ Hz)')
+                label='Punti sperimentali comp. hardware')
 
 cbar = plt.colorbar(sc, ax=ax, pad=0.03)
 cbar.set_label(r'Frequenza di eccitazione $f_{in}$ [kHz]')
@@ -424,7 +407,7 @@ ax.plot(0, 0, 'k+', markersize=10, markeredgewidth=2.0, label='Origine $(0, 0)$'
 
 ax.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
-ax.set_title('Evoluzione in frequenza sul cerchio di Nyquist (compensazione hardware)', pad=9)
+ax.set_title('Evoluzione in frequenza sul cerchio di Nyquist con compensazione hardware', pad=9)
 ax.set_aspect('equal', adjustable='box')
 ax.set_xlim(-0.26, 0.60)
 ax.set_ylim(-0.46, 0.30)

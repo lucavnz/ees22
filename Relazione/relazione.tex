@@ -790,7 +790,7 @@ Alla frequenza di risonanza $f_1$, i termini reattivi si cancellano ($\omega_1 L
 \end{equation}
 La tensione in uscita dallo stadio di condizionamento è legata a questa corrente da:
 \begin{equation}
-    V_{\text{out, max}} = R_{\text{trans}} \cdot I_{\text{mot}} = \frac{R_{\text{trans}}}{R_m} V_{\text{in}}
+    V_{\text{out, max}} = R_{\text{trans}} \cdot I_{\text{max}} = \frac{R_{\text{trans}}}{R_m} V_{\text{in}}
 \end{equation}
 Di conseguenza, il guadagno di picco $A_{\text{max}}$ è il rapporto tra la transresistenza del circuito e la resistenza del risonatore:
 \begin{equation}
@@ -1134,7 +1134,7 @@ Imponendo infine la condizione di risonanza $\omega_1^2 = \frac{1}{L_m C_m}$, de
 I valori trovati sono coerenti con quelli estratti tramite compensazione software ($R_m = \SI{11.46}{\mega\ohm}$, $L_m = \SI{13.06}{\kilo\henry}$, $C_m = \SI{11.12}{\atto\farad}$): in particolare $R_m$ coincide entro meno del $6\%$, mentre la  differenza su $L_m$ e $C_m$ è legata al valore di $Q$ che risulta inferiore ($2262$ contro $2992$), probabilmente dovuto al piccolo fondo capacitivo residuo.
 
 \vspace{0.3cm}
-\noindent In fig.~\ref{fig:benchmark_con_senza_hw} è riportato il confronto tra la risposta in frequenza non compensata e la risposta con compensazione hardware attiva, mentre in fig.~\ref{fig:confronto_hw_vs_sw} il modulo ottenuto via hardware è sovrapposto a quello ricavato tramite compensazione software nella Sezione~\ref{subsec:compensazione_software}. Poiché le due acquisizioni sono state effettuate in giorni diversi, la frequenza di risonanza ha subito una lieve deriva termica.  di circa $\SI{100}{\hertz}$ ($\SI{417.66}{\kilo\hertz}$ contro $\SI{417.76}{\kilo\hertz}$); per confrontare direttamente la forma delle due campane sullo stesso intervallo di frequenze ($\Delta f \approx \SI{580}{\hertz}$), in fig.~\ref{fig:confronto_hw_vs_sw} la curva software è stata traslata orizzontalmente di $+\SI{100}{\hertz}$ in modo da riallineare i due picchi.
+\noindent In fig.~\ref{fig:benchmark_con_senza_hw} è riportato il confronto tra la risposta in frequenza non compensata e la risposta con compensazione hardware attiva, mentre in fig.~\ref{fig:confronto_hw_vs_sw} il modulo ottenuto via hardware è sovrapposto a quello ricavato tramite compensazione software nella Sezione~\ref{subsec:compensazione_software}. Poiché le due acquisizioni sono state effettuate in giorni diversi, la frequenza di risonanza ha subito una lieve deriva termica.  di circa $\SI{100}{\hertz}$ ($\SI{417.66}{\kilo\hertz}$ contro $\SI{417.76}{\kilo\hertz}$); per confrontare direttamente la forma delle due campane sullo stesso intervallo di frequenze, in fig.~\ref{fig:confronto_hw_vs_sw} la curva software è stata traslata orizzontalmente di $+\SI{100}{\hertz}$ in modo da riallineare i due picchi.
 
 \begin{figure}[htbp]
 \centering
@@ -1155,101 +1155,72 @@ I valori trovati sono coerenti con quelli estratti tramite compensazione softwar
 \label{fig:confronto_hw_vs_sw}
 \end{figure}
 
-\noindent Rappresentiamo ora la funzione di trasferimento $T(j\omega) = \mathrm{Re}\{T(j\omega)\} + j\,\mathrm{Im}\{T(j\omega)\}$ nel piano complesso di Gauss.
-
-\subsubsection{Dimostrazione analitica dell'equazione del cerchio di risonanza}
-Consideriamo inizialmente il solo ramo motrice ideale del MEMS. In funzione della coordinata  $x(f) = 2Q \frac{f - f_0}{f_0}$, la funzione di trasferimento si scrive:
+\noindent Rappresentiamo ora la funzione di trasferimento $T(j\omega) = \mathrm{Re}\{T(j\omega)\} + j\,\mathrm{Im}\{T(j\omega)\}$ nel piano complesso di Gauss. 
+Consideriamo inizialmente il solo ramo RLC del MEMS (senza parassiti). Definiamo la variabile $x(f)$, già introdotta per descrivere il profilo lorentziano in eq.~\eqref{eq:lorentziana_ampiezza}:
 \begin{equation}
-    T_{\text{mot}}(x) = \frac{A_{\text{mot}}}{1 + j x} = \underbrace{\frac{A_{\text{mot}}}{1 + x^2}}_{u(x) = \mathrm{Re}\{T_{\text{mot}}\}} + j \underbrace{\left(-\frac{A_{\text{mot}} x}{1 + x^2}\right)}_{v(x) = \mathrm{Im}\{T_{\text{mot}}\}}
+    \label{eq:coordinata_x_lorentz}
+    x(f) = \frac{2(f - f_0)}{\Delta f} = 2Q \frac{f - f_0}{f_0}
 \end{equation}
-Calcoliamo la distanza quadratica nel piano $(u, v)$ rispetto al punto di coordinate $(A_{\text{mot}}/2, 0)$:
+La funzione di trasferimento $T_m(x)$ (ideale, senza considerare lo sfasamento introdotto dallo stadio di condizionamento) si scrive come:
+\begin{equation}
+    T_m(x) = \frac{A_m}{1 + j x}
+\end{equation}
+Separando la parte reale $u(x)$ e la parte immaginaria $v(x)$ di $T_m(x)$:
+\begin{equation}
+    T_m(x) = \frac{A_m(1 - jx)}{1 + x^2} = \underbrace{\frac{A_m}{1 + x^2}}_{u(x) = \mathrm{Re}\{T_m\}} + j \underbrace{\left(-\frac{A_m x}{1 + x^2}\right)}_{v(x) = \mathrm{Im}\{T_m\}}
+\end{equation}
+Calcoliamo la distanza quadratica nel piano $(u, v)$ rispetto al punto di coordinate $(A_m/2, 0)$:
 \begin{align}
-    \left(u(x) - \frac{A_{\text{mot}}}{2}\right)^2 + v^2(x) &= \left(\frac{A_{\text{mot}}}{1 + x^2} - \frac{A_{\text{mot}}}{2}\right)^2 + \left(-\frac{A_{\text{mot}} x}{1 + x^2}\right)^2 \nonumber \\
-    &= \frac{A_{\text{mot}}^2}{4} \frac{(1 - x^2)^2 + 4x^2}{(1 + x^2)^2} = \frac{A_{\text{mot}}^2}{4} \frac{(1 + x^2)^2}{(1 + x^2)^2} = \left(\frac{A_{\text{mot}}}{2}\right)^2
+    \left(u(x) - \frac{A_m}{2}\right)^2 + v^2(x) &= \left(\frac{A_m}{1 + x^2} - \frac{A_m}{2}\right)^2 + \left(-\frac{A_m x}{1 + x^2}\right)^2 \nonumber \\
+    &= \frac{A_m^2}{4} \frac{(1 - x^2)^2 + 4x^2}{(1 + x^2)^2} = \frac{A_m^2}{4} \frac{(1 + x^2)^2}{(1 + x^2)^2} = \left(\frac{A_m}{2}\right)^2
 \end{align}
-Abbiamo così dimostrato che, al variare della frequenza $f$ da $-\infty$ a $+\infty$, il fasore della risposta motrice traccia nel piano complesso una \textbf{circonferenza esatta} (\textit{cerchio di Nyquist o di ammettenza di Kennedy-Pancu}), caratterizzata dalle seguenti proprietà geometriche:
-\begin{itemize}
-    \item \textbf{Diametro della circonferenza:} è esattamente pari al guadagno motrice di picco $D = A_{\text{mot}} = \frac{R_{\text{trans}}}{R_m}$ (raggio $R_{\text{cerchio}} = A_{\text{mot}}/2$), ed è dunque inversamente proporzionale allo smorzamento meccanico del MEMS;
-    \item \textbf{Passaggio per l'origine $(0,0)$:} lontano dalla risonanza ($f \ll f_0$ ovvero $x \to -\infty$, e $f \gg f_0$ ovvero $x \to +\infty$), il punto si chiude sull'origine $(0,0)$ tangenzialmente all'asse immaginario (fase $+90^\circ$ sotto-risonanza e $-90^\circ$ sopra-risonanza);
-    \item \textbf{Vertice di risonanza ($f = f_0 \iff x = 0$):} il fasore si trova nel punto diametralmente opposto all'origine, $(u, v) = (A_{\text{mot}}, 0)$, dove il modulo è massimo e la velocità angolare di scorrimento lungo l'arco rispetto alla frequenza $\left|\frac{d\theta}{df}\right|_{f_0} = \frac{4Q}{f_0}$ raggiunge il suo valore massimo;
-    \item \textbf{Punti di quadratura a metà potenza ($-3\text{ dB}$, $x = \pm 1 \iff f = f_0 \pm \frac{\Delta f}{2}$):} corrispondono ai due vertici superiore e inferiore del diametro trasversale, di coordinate $(A_{\text{mot}}/2, \pm A_{\text{mot}}/2)$ e sfasamento $\mp 45^\circ$.
-\end{itemize}
-
-\paragraph{Effetto geometrico di $\phi_m$, di $C_p$ e di $R_p$ nel piano complesso:}
-Quando includiamo lo sfasamento elettronico della catena di lettura $\phi_m$ e il ramo parassita completo $C_p \parallel R_p$, il vettore di feedthrough vale:
+Al variare della frequenza, il fasore $T_m(x)$ traccia nel piano complesso una circonferenza di raggio $R_{\text{cerchio}} = A_m/2$, centrata in $(A_m/2, 0)$. Quando includiamo il ramo parassita ($C_p \parallel R_p$) e lo sfasamento $\phi_m$ introdotto dalla catena elettronica di lettura, il contributo parassita $T_p$ all'uscita vale:
 \begin{equation}
-    \vec{T}_{\text{feed}} = R_{\text{trans}} \left( \frac{1}{R_p} + j\omega_0 C_p \right) e^{j\phi_m} = C_{\text{re}} + j C_{\text{im}}
+    T_p = R_{\text{trans}} \left( \frac{1}{R_p} + j\omega_0 C_p \right) e^{j\phi_m} = P_{\text{re}} + j P_{\text{im}}
 \end{equation}
-Nel sistema di riferimento del MEMS ($\phi_m = 0$), i due elementi parassiti agiscono lungo direzioni ortogonali del piano di Gauss:
-\begin{itemize}
-    \item La \textbf{resistenza parassita $R_p = \SI{11.2}{\mega\ohm}$} (corrente in fase) produce una traslazione orizzontale lungo l'\textbf{asse reale} pari a $\frac{R_{\text{trans}}}{R_p} \approx \mathbf{0.445}$;
-    \item La \textbf{capacità parassita $C_p = \SI{0.892}{\pico\farad}$} (corrente in quadratura a $+90^\circ$) produce una grande traslazione verticale lungo l'\textbf{asse immaginario} pari a $\omega_0 C_p R_{\text{trans}} \approx \mathbf{11.70}$.
-\end{itemize}
-La funzione di trasferimento complessiva:
+dove $P_{\text{re}} = \mathrm{Re}\{T_p\}$ e $P_{\text{im}} = \mathrm{Im}\{T_p\}$ indicano rispettivamente la parte reale e la parte immaginaria del termine parassita $T_p$ nel piano di Gauss.
+La funzione di trasferimento complessiva misurata all'uscita:
 \begin{equation}
     \label{eq:cerchio_traslato_complesso}
-    T(f) = \vec{T}_{\text{feed}} + \frac{A_{\text{mot}} e^{j\phi_m}}{1 + j x(f)}
+    T(f) = T_p + T_m(f) e^{j\phi_m} = T_p + \frac{A_m e^{j\phi_m}}{1 + j x(f)}
 \end{equation}
-descrive quindi \textbf{la medesima circonferenza di diametro $A_{\text{mot}}$}, sottoposta a due trasformazioni rigide nel piano di Gauss:
-\begin{enumerate}
-    \item Una \textbf{rotazione rigida} oraria di un angolo $\phi_m \approx -21.4^\circ$ (dovuta al ritardo di fase del TIA e dello stadio invertente a $\SI{418}{\kilo\hertz}$), che ruota anche il vettore parassita portandolo da $+90^\circ$ a $+68.6^\circ$, ossia in $\vec{T}_{\text{feed}} = (4.24, 10.90)$;
-    \item Una \textbf{traslazione rigida} dell'intera circonferenza governata dal vettore $\vec{T}_{\text{feed}} = (C_{\text{re}}, C_{\text{im}})$, che sposta il centro geometrico del cerchio nel punto:
-    \begin{equation}
-        \vec{C}_{\text{centro}} = \vec{T}_{\text{feed}} + \frac{1}{2} A_{\text{mot}} e^{j\phi_m}
-    \end{equation}
-\end{enumerate}
+descrive quindi una circonferenza sottoposta a due trasformazioni geometriche nel piano di Gauss: una rotazione di un angolo $\phi_m \approx -21.4^\circ$ (dovuta al ritardo di fase del TIA e dello stadio invertente), e una traslazione.
+\vspace{0.3cm}
 
-\subsubsection{Confronto sperimentale dei cerchi di Nyquist: prima e dopo la compensazione}
-Per visualizzare questo comportamento direttamente sui dati di laboratorio, è stato sviluppato uno script dedicato (\texttt{Compensazione Hardware/analizza\_piano\_complesso.py}) che esegue il fit vettoriale nel piano complesso e traccia i luoghi di Nyquist sperimentali e teorici.
-
-In Fig.~\ref{fig:cerchio_nyquist_globale} è presentato il confronto tra la vista globale del piano complesso (pannello sinistro) e lo zoom attorno all'origine $(0,0)$ per la compensazione software e la compensazione hardware attiva (pannello destro).
+\noindent Per visualizzare questo comportamento direttamente sui dati di laboratorio, abbiamo sviluppato uno script dedicato che esegue il fit nel piano complesso e traccia i luoghi di Nyquist sperimentali e teorici. Nelle fig.~\ref{fig:cerchio_nyquist_globale} e \ref{fig:cerchio_nyquist_fano} abbiamo presentato i piani complessi con e senza compensazione, che ci permettono di comprendere tutti i fenomeni osservati nei diagrammi di Bode (risonanza, antirisonanza ecc...)
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{../Compensazione Hardware/grafici/cerchio_nyquist_confronto_globale.png}
-\caption{Analisi nel piano complesso $\mathrm{Re}\{T(j\omega)\}$ vs $\mathrm{Im}\{T(j\omega)\}$. A sinistra: vista globale che mostra come il vettore parassita $\vec{T}_{\text{feed}}$ ($|\vec{T}_{\text{feed}}| \approx 11.70$) trasli il piccolo cerchio di risonanza motrice (diametro $A_{\text{mot}} \approx 0.44$) a grande distanza dall'origine $(0,0)$. A destra: zoom sull'origine che mostra il ritorno della circonferenza di risonanza sull'origine grazie alla compensazione software (tratteggio verde) e alla compensazione hardware attiva (in blu).}
+\caption{Rappresentazione nel piano complesso di $\mathrm{Re}\{T(j\omega)\}$ vs $\mathrm{Im}\{T(j\omega)\}$ con e senza compensazione.}
 \label{fig:cerchio_nyquist_globale}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{../Compensazione Hardware/grafici/cerchio_nyquist_dettaglio_fano.png}
-\caption{Interpretazione geometrica vettoriale nel piano complesso. A sinistra: zoom sul cerchio non compensato attorno a $\vec{T}_{\text{feed}} = (4.24, 10.90)$; l'asse radiale uscente dall'origine $(0,0)$ interseca la circonferenza nel punto di massima distanza dall'origine (risonanza costruttiva, $\blacktriangle$ verde a $\SI{21.53}{\decibel}$) e nel punto di minima distanza (antirisonanza distruttiva di Fano, $\blacktriangledown$ rosso a $\SI{21.19}{\decibel}$), distinti dalla risonanza meccanica pura $f_0$ ($\blacklozenge$ arancione). A destra: cerchio ottenuto con compensazione hardware attiva, in cui il feedthrough residuo ($\blacksquare$ nero, $\Delta C \approx \SI{5.7}{\femto\farad}$) cade vicinissimo all'origine $(0,0)$, restituendo al vettore $\vec{T}(f)$ (freccia arancione) il pieno contrasto d'ampiezza e la rotazione di fase di $\approx 180^\circ$.}
+\caption{Analisi geometrica di $\mathrm{Re}\{T(j\omega)\}$ vs $\mathrm{Im}\{T(j\omega)\}$ con e senza compensazione.}
 \label{fig:cerchio_nyquist_fano}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.78\textwidth]{../Compensazione Hardware/grafici/nyquist_set2_frequenza.png}
-\caption{Luogo di Nyquist sperimentale con compensazione hardware attiva, mappato cromaticamente in funzione della frequenza forzante $f_{\text{in}} \in [\SI{417.54}{\kilo\hertz}, \SI{418.10}{\kilo\hertz}]$ (con passo costante $\Delta f_{\text{step}} = \SI{2}{\hertz}$). Si noti la rapida spaziatura angolare dei punti lungo l'arco destro nell'intorno della risonanza $f_0 = \SI{417.75}{\kilo\hertz}$, indice dell'elevato fattore di merito $Q$.}
+\caption{Rappresentazione nel piano complesso di $\mathrm{Re}\{T(j\omega)\}$ vs $\mathrm{Im}\{T(j\omega)\}$ con e senza compensazione, con mappatura cromatica in funzione della frequenza forzante $f_{\text{in}} \in [\SI{417.54}{\kilo\hertz}, \SI{418.10}{\kilo\hertz}]$}
 \label{fig:nyquist_set2_freq}
 \end{figure}
+    \noindent Nel pannello sinistro di fig.~\ref{fig:cerchio_nyquist_globale}, la circonferenza, vista dall'origine $(0,0)$, è sottesa da un cono angolare di $2.14^\circ$, in perfetto accordo con l'escursione di fase misurata nel diagramma di Bode di fig.~\ref{fig:bode_completo}.
 
-\noindent Le figure~\ref{fig:cerchio_nyquist_globale}, \ref{fig:cerchio_nyquist_fano} e \ref{fig:nyquist_set2_freq} forniscono una chiave di lettura geometrica immediata di tutti i fenomeni osservati nei diagrammi di Bode:
-\begin{enumerate}
-    \item \textbf{Perché senza compensazione si formano una risonanza e un'antirisonanza (Profilo di Fano) traslate rispetto a $f_0$?}
-    Osservando il pannello sinistro di Fig.~\ref{fig:cerchio_nyquist_fano}, il modulo misurato $|T(f)|$ corrisponde geometricamente alla \textbf{distanza euclidea dall'origine $(0,0)$} di un punto che percorre la circonferenza in senso orario al crescere di $f_{\text{in}}$.
-    Tracciando la retta radiale che congiunge l'origine $(0,0)$ con il centro della circonferenza $\vec{C}_{\text{centro}}$ (linea punteggiata grigia), la geometria elementare ci dice che:
-    \begin{itemize}
-        \item Il punto della circonferenza a \textbf{distanza massima dall'origine} ($|\vec{C}_{\text{centro}}| + R_{\text{cerchio}}$, triangolo verde $\blacktriangle$) viene raggiunto \textit{prima} della risonanza meccanica pura $f_0$ (rombo arancione $\blacklozenge$): questo è il picco di risonanza apparente ($\SI{21.53}{\decibel}$ a $\SI{417.59}{\kilo\hertz}$), dove $\vec{T}_{\text{mot}}$ è allineato positivamente lungo la direzione radiale di $\vec{T}_{\text{feed}}$ (interferenza costruttiva).
-        \item Proseguendo lungo il cerchio oltre $f_0$, il fasore attraversa il punto a \textbf{distanza minima dall'origine} ($|\vec{C}_{\text{centro}}| - R_{\text{cerchio}}$, triangolo rosso $\blacktriangledown$): questo è il minimo di antirisonanza ($\SI{21.19}{\decibel}$ a $\SI{417.73}{\kilo\hertz}$), dove $\vec{T}_{\text{mot}}$ punta in verso opposto alla direzione radiale (interferenza distruttiva).
-    \end{itemize}
-    \item \textbf{Perché senza compensazione la fase oscilla di soli $2.2^\circ$ invece di ruotare di $180^\circ$?}
-    Nel pannello sinistro di Fig.~\ref{fig:cerchio_nyquist_globale}, poiché la circonferenza di raggio $R_{\text{cerchio}} \approx 0.22$ si trova a una distanza $|\vec{C}_{\text{centro}}| \approx 11.7$ dall'origine $(0,0)$, essa non racchiude né tocca l'origine: vista dall'origine $(0,0)$, l'intera circonferenza è sottesa da un cono angolare strettissimo di semi-apertura:
-    \begin{equation}
-        \Delta\phi_{\max} = 2 \arcsin\left(\frac{R_{\text{cerchio}}}{|\vec{C}_{\text{centro}}|}\right) \approx 2 \arcsin\left(\frac{0.218}{11.70}\right) \approx \mathbf{2.14^\circ}
-    \end{equation}
-    in perfetto accordo con l'escursione di fase di $\approx 2.2^\circ$ attorno a $+68.6^\circ$ misurata nel diagramma di Bode di Fig.~\ref{fig:bode_completo}!
-    \item \textbf{Confronto tra compensazione software e hardware nel piano complesso e ruolo decisivo di $R_p$:}
-    \begin{itemize}
-        \item Nella \textbf{compensazione software}, sottraendo numericamente l'intero vettore complesso di fondo fuori risonanza $\vec{T}_{\text{feed}} = C_{\text{re}} + j C_{\text{im}}$, si rimuovono automaticamente in un colpo solo \textbf{sia l'offset immaginario che l'offset reale}, cancellando quindi matematicamente sia il contributo di $C_p$ sia quello di $R_p$ e riportando il cerchio tratteggiato verde esattamente sull'origine $(0,0)$.
-        \item Nella \textbf{compensazione hardware}, il piano complesso spiega perché l'aggiunta del resistore $R_c = \SI{1}{\mega\ohm}$ (per compensare $R_p = \SI{11.2}{\mega\ohm}$) sia altrettanto fondamentale del condensatore $C_c = \SI{10}{\pico\farad}$: finché $C_p$ non è compensata ($|\vec{T}_{Cp}| \approx 11.70$), il contributo ortogonale di $R_p$ ($\frac{R_{\text{trans}}}{R_p} \approx 0.445$) è invisibile sul modulo totale ($\sqrt{11.70^2 + 0.445^2} = 11.708$, meno dello $0.07\%$). Tuttavia, \textbf{una volta cancellato il vettore di $C_p$ tramite $C_c$}, lo spostamento residuo dovuto a $R_p$ ($\approx 0.445$) ha la \textbf{stessa identica dimensione dell'intero diametro del cerchio di risonanza del MEMS ($A_{\text{mot}} \approx 0.44$)}! Senza $R_c$, il cerchio nel piano di Gauss resterebbe traslato di un intero diametro rispetto all'origine $(0,0)$. Grazie alla rete completa $C_c \parallel R_c$, entrambi i contributi vengono annullati e il punto di accumulazione fuori-risonanza ($\blacksquare$ nero in Fig.~\ref{fig:cerchio_nyquist_fano}) cade a ridosso dell'origine ($|\vec{T}_{\text{feed, res}}| \approx 0.074$, pari a $\Delta C \approx \SI{5.7}{\femto\farad}$), restituendo l'intero contrasto d'ampiezza e la rotazione di fase di $180^\circ$.
-    \end{itemize}
-    \item \textbf{Distribuzione di velocità lungo il cerchio (Fig.~\ref{fig:nyquist_set2_freq}):}
-    Infine, la mappa cromatica di Fig.~\ref{fig:nyquist_set2_freq} evidenzia la dinamica spettrale lungo il cerchio di Nyquist: poiché i campioni sono acquisiti a passo di frequenza costante ($\Delta f_{\text{step}} = \SI{2}{\hertz}$), i punti si accalcano densamente vicino all'origine nelle code fuori banda ($f < \SI{417.60}{\kilo\hertz}$ in viola scuro e $f > \SI{417.95}{\kilo\hertz}$ in giallo-verde), mentre compiono balzi angolari ampi lungo l'arco destro tra $\SI{417.70}{\kilo\hertz}$ e $\SI{417.80}{\kilo\hertz}$ (in corrispondenza dei due punti a metà potenza a $-3\text{ dB}$, separati da una banda $\Delta f = f_0 / Q \approx \SI{218}{\hertz}$).
-\end{enumerate}
+    \vspace{0.3cm}
+\noindent Osservando il pannello sinistro di fig.~\ref{fig:cerchio_nyquist_fano}, il modulo $|T(f)|$ corrisponde geometricamente alla distanza euclidea di un punto dall'origine $(0,0)$.
 
-\noindent In conclusione, l'integrazione tra il circuito di compensazione hardware attiva e l'analisi vettoriale nel piano complesso dimostra come una rete analogica accuratamente tarata (con condensatore fisso $C_c = \SI{10}{\pico\farad}$, resistore fisso $R_c = \SI{1}{\mega\ohm}$, partitore potenziometrico disaccoppiato da buffer e stadio sfasatore a regolazione ortogonale) permetta di neutralizzare alla radice una capacità parassita quasi trenta volte superiore al segnale utile, rendendo direttamente osservabile in tempo reale la pura risposta elettromeccanica del micro-risonatore in silicio.
+    Tracciando la retta che congiunge l'origine $(0,0)$ con il centro della circonferenza $P_{\text{centro}}$ (linea punteggiata grigia), individuiamo: il punto della circonferenza a distanza massima dall'origine ($|P_{\text{centro}}| + R_{\text{cerchio}}$, triangolo verde $\blacktriangle$) viene raggiunto prima della risonanza $f_1$ (rombo arancione $\blacklozenge$), ossia il picco in modulo del grafico di fig.~\ref{fig:bode_completo}; proseguendo lungo il cerchio oltre $f_1$, il fasore attraversa il punto a distanza minima dall'origine ($|P_{\text{centro}}| - R_{\text{cerchio}}$, triangolo rosso $\blacktriangledown$): questo è il minimo di antirisonanza.
+
+    
+    \vspace{0.3cm}
+    
+ \noindent La fig.~\ref{fig:nyquist_set2_freq} evidenzia la dinamica spettrale lungo il cerchio di Nyquist.
+
 
 % =============================================================================
 % SEZIONE 10: CARATTERIZZAZIONE IN REGIME DI GRANDE SEGNALE E DERIVA NON LINEARE
