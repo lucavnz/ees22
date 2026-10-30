@@ -290,9 +290,9 @@ print(f"[OK] Salvato: {p_fig1}")
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.4, 5.8), dpi=300)
 
 # --- Pannello SX: Zoom sul cerchio NON compensato (origine geometrica di risonanza/antirisonanza) ---
-ax1.plot(np.real(T_u_meas), np.imag(T_u_meas), 'o', color='#868e96', alpha=0.45, markersize=3.2,
+ax1.plot(np.real(T_u_meas), np.imag(T_u_meas), 'o', color='#1971c2', alpha=0.40, markersize=3.2,
          label='Punti sperimentali non compensati')
-ax1.plot(np.real(fit_u['T_circle']), np.imag(fit_u['T_circle']), '-', color='#1971c2', lw=2.2,
+ax1.plot(np.real(fit_u['T_circle']), np.imag(fit_u['T_circle']), '-', color='#1864ab', lw=2.2,
          label='Cerchio non compensato')
 
 # Punti notevoli sul cerchio non compensato:
@@ -321,12 +321,6 @@ p_start = fit_u['C_center'] - 0.36 * u_rad
 p_end   = fit_u['C_center'] + 0.36 * u_rad
 ax1.plot([np.real(p_start), np.real(p_end)], [np.imag(p_start), np.imag(p_end)],
          ':', color='#495057', lw=1.5, label='Asse radiale da $(0,0)$ (congiunge min e max)')
-
-ax1.annotate('Senso orario\nal crescere di $f_{in}$',
-             xy=(np.real(T_f0_u) + 0.01, np.imag(T_f0_u) + 0.02),
-             xytext=(4.56, 11.02),
-             arrowprops=dict(arrowstyle='->', color='#e8590c', lw=1.4),
-             fontsize=8.8, bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='#ffc078'))
 
 ax1.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax1.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
