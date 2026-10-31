@@ -1,25 +1,26 @@
 \babel@toc {italian}{}\relax 
 \babel@toc {italian}{}\relax 
-\contentsline {section}{\numberline {1}Struttura e principi di funzionamento del MEMS}{2}{section.1}%
-\contentsline {section}{\numberline {2}Equazione del moto}{3}{section.2}%
-\contentsline {section}{\numberline {3}Forze elettrostatiche}{4}{section.3}%
-\contentsline {section}{\numberline {4}Segnale di corrente dal MEMS}{6}{section.4}%
-\contentsline {section}{\numberline {5}Modello elettrico equivalente RLC}{6}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Capacità parassita in parallelo}{8}{subsection.5.1}%
-\contentsline {section}{\numberline {6}Circuito di condizionamento}{8}{section.6}%
-\contentsline {section}{\numberline {7}Caratterizzazione sperimentale della risposta libera (ringdown)}{9}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Risposta in ampiezza del risonatore ($A_0$ vs $f_{\text {in}}$)}{10}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Frequenza di oscillazione libera durante il ring-down ($f_1$ vs $f_{\text {in}}$)}{12}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Costante di tempo di decadimento $\tau $ e stima del fattore di merito $Q$}{12}{subsection.7.3}%
-\contentsline {section}{\numberline {8}Caratterizzazione sperimentale della risposta in frequenza}{14}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Setup sperimentale e principio della misura}{14}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Risposta in frequenza completa e fit del modello RLC + $C_p$}{15}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Compensazione software di $C_p$ e isolamento del picco motrice}{16}{subsection.8.3}%
-\contentsline {section}{\numberline {9}Compensazione hardware attiva della capacità parassita}{19}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Resistenza parassita $R_p$ e dimensionamento di $R_c$}{21}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Risposta in frequenza con compensazione capacitiva}{23}{subsection.9.2}%
-\contentsline {section}{\numberline {10}Caratterizzazione in regime di grande segnale: compressione di ampiezza e deriva non lineare di frequenza}{29}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Evoluzione temporale della frequenza istantanea durante il ring-down ($f_1(t)$)}{31}{subsection.10.1}%
+\contentsline {section}{\numberline {1}Struttura e principi di funzionamento del MEMS}{3}{section.1}%
+\contentsline {section}{\numberline {2}Equazione del moto}{4}{section.2}%
+\contentsline {section}{\numberline {3}Forze elettrostatiche}{5}{section.3}%
+\contentsline {section}{\numberline {4}Segnale di corrente dal MEMS}{7}{section.4}%
+\contentsline {section}{\numberline {5}Modello elettrico equivalente RLC}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Capacità parassita in parallelo}{9}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Circuito di condizionamento}{9}{section.6}%
+\contentsline {section}{\numberline {7}Caratterizzazione sperimentale della risposta libera (ringdown)}{10}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Risposta in ampiezza del risonatore ($A_0$ vs $f_{\text {in}}$)}{11}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Frequenza di oscillazione libera durante il ring-down ($f_1$ vs $f_{\text {in}}$)}{13}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Costante di tempo di decadimento $\tau $ e stima del fattore di merito $Q$}{13}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Caratterizzazione sperimentale della risposta in frequenza}{15}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Setup sperimentale e principio della misura}{15}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Risposta in frequenza completa e fit del modello RLC + $C_p$}{16}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Compensazione software di $C_p$ e isolamento del picco motrice}{17}{subsection.8.3}%
+\contentsline {section}{\numberline {9}Compensazione hardware attiva della capacità parassita}{20}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Resistenza parassita $R_p$ e dimensionamento di $R_c$}{22}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Risposta in frequenza con compensazione capacitiva}{24}{subsection.9.2}%
+\contentsline {section}{\numberline {10}Caratterizzazione in regime di grande segnale: compressione di ampiezza e deriva non lineare di frequenza}{30}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Variazione della frequenza di risonanza con l'ampiezza di oscillazione}{30}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Evoluzione temporale della frequenza di risonanza durante il ringdown}{32}{subsection.10.2}%
 \contentsline {section}{\numberline {11}Distorsione armonica di secondo ordine e accoppiamento con il secondo modo flessionale}{34}{section.11}%
 \contentsline {subsection}{\numberline {11.1}Origine fisica della componente a frequenza doppia ($f_2 = 2 f_1$) e risonanza interna 1:2}{34}{subsection.11.1}%
 \contentsline {paragraph}{Meccanismo di generazione quadratica del secondo modo:}{34}{section*.2}%

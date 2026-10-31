@@ -1106,7 +1106,7 @@ Spostandosi a destra e sinistra del minimo del modulo, si inverte quale delle du
 
 \newpage
 
-\noindent Una volta verificato il funzionamento del ramo di compensazione a MEMS spento, abbiamo applicato la tensione di polarizzazione continua $V_{\text{DC}} = \SI{5.0}{\volt}$ per attivare il risonatore MEMS. In fig.~\ref{fig:bode_hw_set2} è riportato il diagramma di Bode di modulo e fase con compensazione attiva.
+\noindent Una volta verificato il funzionamento del ramo di compensazione a MEMS spento, abbiamo applicato la tensione di polarizzazione continua $V_{\text{DC}} = \SI{5.0}{\volt}$ per attivare il risonatore. In fig.~\ref{fig:bode_hw_set2} è riportato il diagramma di Bode di modulo e fase con compensazione attiva.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.90\textwidth]{../Compensazione Hardware/grafici/bode_set2.png}
@@ -1180,7 +1180,7 @@ Al variare della frequenza, il fasore $T_m(x)$ traccia nel piano complesso una c
 \begin{equation}
     T_p = R_{\text{trans}} \left( \frac{1}{R_p} + j\omega_0 C_p \right) e^{j\phi_m} = P_{\text{re}} + j P_{\text{im}}
 \end{equation}
-dove $P_{\text{re}} = \mathrm{Re}\{T_p\}$ e $P_{\text{im}} = \mathrm{Im}\{T_p\}$ indicano rispettivamente la parte reale e la parte immaginaria del termine parassita $T_p$ nel piano di Gauss.
+dove $P_{\text{re}} = \mathrm{Re}\{T_p\}$ e $P_{\text{im}} = \mathrm{Im}\{T_p\}$ rappresentano la parte reale e la parte immaginaria del termine parassita $T_p$ nel piano di Gauss.
 La funzione di trasferimento complessiva misurata all'uscita:
 \begin{equation}
     \label{eq:cerchio_traslato_complesso}
@@ -1208,7 +1208,7 @@ descrive quindi una circonferenza sottoposta a due trasformazioni geometriche: u
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.78\textwidth]{../Compensazione Hardware/grafici/nyquist_set2_frequenza.png}
-\caption{Rappresentazione nel piano complesso di $\mathrm{Re}\{T(j\omega)\}$ vs $\mathrm{Im}\{T(j\omega)\}$ con e senza compensazione, con mappatura cromatica in funzione della frequenza forzante $f_{\text{in}} \in [\SI{417.54}{\kilo\hertz}, \SI{418.10}{\kilo\hertz}]$}
+\caption{Rappresentazione nel piano complesso di $\mathrm{Re}\{T(j\omega)\}$ vs $\mathrm{Im}\{T(j\omega)\}$ con e senza compensazione, con mappatura cromatica in funzione della frequenza forzante $f_{\text{in}}$}
 \label{fig:nyquist_set2_freq}
 \end{figure}
     \noindent Nel pannello sinistro di fig.~\ref{fig:cerchio_nyquist_globale}, la circonferenza, vista dall'origine $(0,0)$, è sottesa da un cono angolare di $2.14^\circ$, in perfetto accordo con l'escursione di fase misurata nel diagramma di Bode di fig.~\ref{fig:bode_completo}.
@@ -1231,10 +1231,12 @@ descrive quindi una circonferenza sottoposta a due trasformazioni geometriche: u
 \section{Caratterizzazione in regime di grande segnale: compressione di ampiezza e deriva non lineare di frequenza}
 \label{sec:regime_non_lineare}
 
-Nelle Sezioni~\ref{sec:ringdown}, \ref{sec:risposta_in_frequenza} e \ref{sec:compensazione_hardware} il risonatore MEMS è stato caratterizzato mantenendo l'ampiezza del segnale forzante entro i $\SI{200}{\milli\volt_{pp}}$, in regime di piccolo segnale. In questa sezione abbiamo sperimentato cosa accade quando la tensione di eccitazione $v_{\text{in}}$ viene incrementata progressivamente fino a $\SI{2.0}{\volt_{pp}}$. Quando l'ampiezza di oscillazione $x(t)$ non è più trascurabile rispetto alle dimensioni della struttura e del gap, le forze elastiche del silicio e le forze elettrostatiche esercitate dagli elettrodi manifestano dipendenze non lineari con lo spostamento.
+Nelle sezioni precedenti abbiamo caratterizzato il MEMS mantenendo l'ampiezza del segnale forzante entro i $\SI{100}{\milli\volt_{pp}}$, in regime di piccolo segnale. In questa sezione abbiamo sperimentato cosa accade quando la tensione di eccitazione $v_{\text{in}}$ viene incrementata progressivamente fino a $\SI{2.0}{\volt_{pp}}$: le forze elastiche ed elettrostatiche manifestano dipendenze non lineari con lo spostamento.
 
-\vspace{0.3cm}
-\noindent In regime di piccole deflessioni, la forza di richiamo elastica segue la legge lineare di Hooke $F_{\text{m}}(x) = k_m x$. All'aumentare dello spostamento $x(t)$, se sviluppiamo la forza elastica in serie di Taylor attorno alla posizione di riposo $x = 0$:
+\subsection{Variazione della frequenza di risonanza con l'ampiezza di oscillazione}
+\label{subsec:variazione_frequenza_ampiezza}
+
+In regime di piccolo segnale, la forza di richiamo elastica segue la legge lineare di Hooke $F_{\text{m}}(x) = k_m x$. All'aumentare dello spostamento $x(t)$, se sviluppiamo la forza elastica in serie di Taylor attorno alla posizione di riposo $x = 0$:
 \begin{equation}
         F_{\text{m}}(x) = k_m x + k_{m2} x^2 + k_{m3} x^3
 \end{equation}
@@ -1248,7 +1250,7 @@ compaiono coefficienti di rigidezza meccanica non lineari.
 Prima dello spegnimento del gate ($t < 0$), il generatore è attivo e il termine $F_{\text{drive}}$ rappresenta la forzante che mette in vibrazione la trave fino a portarla a un'ampiezza di oscillazione meccanica di regime $X_0$. Dopo lo spegnimento del gate ($t > 0$, durante il ringdown), il generatore viene staccato ($v_{\text{in}}(t) = 0$) e quindi $F_{\text{drive}}(t) = 0$. La componente $F_{\text{DC}}(x) = \frac{1}{2} \frac{\partial C_d(x)}{\partial x} V_{\text{DC}}^2$ rimane invece sempre presente in entrambe le fasi, poiché la tensione continua $V_{\text{DC}} = \SI{5.0}{\volt}$ resta applicata alla trave.
 
 \vspace{0.3cm}
-\noindent In regime di grandi oscillazioni, la derivata della capacità rispetto allo spostamento $\frac{\partial C_d(x)}{\partial x}$ non si ferma al primo ordine. Fino al terzo ordine vale (attorno alla posizione $x=0$):
+\noindent In regime di grandi oscillazioni, la derivata della capacità rispetto allo spostamento $\frac{\partial C_d(x)}{\partial x}$ non si ferma al primo ordine. Fino al terzo ordine vale:
 \begin{equation}
     \frac{\partial C_d(x)}{\partial x} = \left. \frac{\partial C_d}{\partial x} \right|_0 + \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 x + \frac{1}{2} \left. \frac{\partial^3 C_d}{\partial x^3} \right|_0 x^2 + \frac{1}{6} \left. \frac{\partial^4 C_d}{\partial x^4} \right|_0 x^3
 \end{equation}
@@ -1279,11 +1281,11 @@ dove $\omega_{01} = \sqrt{\frac{k_m}{m_{\text{eff}}}}$ è la pulsazione di rison
 \begin{equation}
     v_{\text{out}}(t) = R_{\text{trans}} \, \eta \, \dot{x}(t)
 \end{equation}
-Se consideriamo all'istante iniziale del ringdown ($t = 0$) un'oscillazione sinusoidale della trave di ampiezza meccanica $X_0$, ossia $x(t) = X_0 \cos(\omega_1 t)$, derivando rispetto al tempo otteniamo la velocità $\dot{x}(t) = -\omega_1 X_0 \sin(\omega_1 t)$ e sostituendola nell'espressione di $v_{\text{out}}(t)$ otteniamo:
+Se consideriamo all'istante iniziale del ringdown ($t = 0$) un'oscillazione sinusoidale della trave di ampiezza $X_0$, ovvero $x(t) = X_0 \cos(\omega_1 t)$, derivando rispetto al tempo otteniamo la velocità $\dot{x}(t) = -\omega_1 X_0 \sin(\omega_1 t)$ e sostituendola nell'espressione di $v_{\text{out}}(t)$ otteniamo:
 \begin{equation}
     v_{\text{out}}(t) = - \underbrace{\left( R_{\text{trans}} \, \eta \, \omega_1 \, X_0 \right)}_{A_0} \sin(\omega_1 t)
 \end{equation}
-L'ampiezza iniziale del ringdown $A_0$ (e, più in generale, l'ampiezza istantanea $A(t) = A_0 e^{-t/\tau}$ durante il decadimento) è quindi direttamente proporzionale all'ampiezza dello spostamento meccanico $X_0$:
+L'ampiezza iniziale del ringdown $A_0$ è quindi direttamente proporzionale all'ampiezza dello spostamento $X_0$:
 \begin{equation}
     \label{eq:legame_ampiezza_x_A}
     A_0 = R_{\text{trans}} \, \eta \, \omega_1 \, X_0 \iff X_0 = \frac{A_0}{R_{\text{trans}} \eta \omega_1}
@@ -1301,52 +1303,52 @@ dove $f_1$ è la frequenza di risonanza di piccolo segnale e $\beta$ è il coeff
 \newpage
 
 
-\noindent Abbiamo fatto una prova sperimentale: abbiamo mantenuto fissa la tensione continua $V_{\text{DC}} = \SI{5.0}{\volt}$ e la frequenza del generatore centrata sulla risonanza di piccolo segnale ($f_{\text{in}} = f_1$), e abbiamo plottato l'ampiezza iniziale del ringdown $A_0$ in funzione della tensione di ingresso $V_{\text{in}}$, in fig.~\ref{fig:ampiezza_compressione_nl}.
+\noindent Abbiamo fatto una prova sperimentale: abbiamo mantenuto fissa la tensione continua $V_{\text{DC}} = \SI{5.0}{\volt}$ e la frequenza del generatore centrata sulla risonanza di piccolo segnale ($f_{\text{in}} = f_1$), e abbiamo plottato l'ampiezza iniziale del ringdown $A_0$ in funzione della tensione di ingresso $v_{\text{in}}$, in fig.~\ref{fig:ampiezza_compressione_nl}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.86\textwidth]{../Duffing/duffing_ampiezza_compressione.png}
-\caption{Ampiezza iniziale del ringdown $A_0$ in funzione della tensione di ingresso $V_{\text{in}}$ a $V_{\text{DC}} = \SI{5.0}{\volt}$. La retta continua blu mostra l'andamento lineare di piccolo segnale calcolato sui primi punti ($V_{\text{in}} \le \SI{280}{\milli\volt_{pp}}$).}
+\caption{Ampiezza iniziale del ringdown $A_0$ in funzione della tensione di ingresso $v_{\text{in}}$ a $V_{\text{DC}} = \SI{5.0}{\volt}$. La retta continua blu mostra l'andamento lineare di piccolo segnale calcolato sui primi punti ($v_{\text{in}} \le \SI{280}{\milli\volt_{pp}}$).}
 \label{fig:ampiezza_compressione_nl}
 \end{figure}
 
-\noindent Guardando la fig.~\ref{fig:ampiezza_compressione_nl}, si vede che finché la tensione di ingresso è bassa ($V_{\text{in}} \le \SI{280}{\milli\volt_{pp}}$), l'ampiezza di oscillazione $A_0$ è piccola e il termine $\beta A_0^2$ nell'eq.~\eqref{eq:backbone_legge} è trascurabile: la frequenza di risonanza del MEMS rimane pari a $f_1$ e l'ampiezza $A_0$ cresce linearmente con $V_{\text{in}}$ seguendo la retta blu (fit lineare dei primi 6 punti sperimentali).
+\noindent Guardando la fig.~\ref{fig:ampiezza_compressione_nl}, si vede che finché la tensione di ingresso è bassa ($v_{\text{in}} \le \SI{280}{\milli\volt_{pp}}$), l'ampiezza di oscillazione $A_0$ è piccola e il termine $\beta A_0^2$ nell'eq.~\eqref{eq:backbone_legge} è trascurabile: la frequenza di risonanza del MEMS rimane pari a $f_1$ e l'ampiezza $A_0$ cresce linearmente con $v_{\text{in}}$ seguendo la retta blu (fit lineare dei primi 6 punti sperimentali).
 
 \vspace{0.3cm}
-\noindent Quando invece superiamo i $\SI{300}{\milli\volt_{pp}}$, l'ampiezza $A_0$ continua ad aumentare al crescere di $V_{\text{in}}$, ma con una pendenza sempre minore rispetto alla retta lineare: a $V_{\text{in}} = \SI{500}{\milli\volt_{pp}}$ raggiunge $\SI{49.97}{\milli\volt}$ invece dei $\SI{67.20}{\milli\volt}$ della retta ($-25.6\%$), a $\SI{1000}{\milli\volt_{pp}}$ arriva a $\SI{78.14}{\milli\volt}$ invece di $\SI{134.40}{\milli\volt}$ ($-41.9\%$), e a $\SI{2000}{\milli\volt_{pp}}$ arriva a $\SI{100.73}{\milli\volt}$ invece di $\SI{268.80}{\milli\volt}$ ($-62.5\%$). Infatti, man mano che $A_0$ cresce, il termine $\beta A_0^2$ diventa sempre più grande e allontana sempre di più la frequenza di risonanza del MEMS $f_1'(A_0)$ dalla frequenza di ingresso $f_{\text{in}} = f_1$; poiché la campana di risonanza del MEMS è molto stretta ($\Delta f \approx \SI{137}{\hertz}$), questo progressivo disallineamento in frequenza frena la crescita di $A_0$, facendola salire in modo sempre più lento rispetto alla retta di piccolo segnale.
+\noindent Quando invece superiamo i $\SI{300}{\milli\volt_{pp}}$, l'ampiezza $A_0$ continua ad aumentare al crescere di $v_{\text{in}}$, ma con una pendenza sempre minore rispetto alla retta lineare: a $v_{\text{in}} = \SI{500}{\milli\volt_{pp}}$ raggiunge $\SI{49.97}{\milli\volt}$ invece dei $\SI{67.20}{\milli\volt}$ della retta ($-25.6\%$), a $\SI{1000}{\milli\volt_{pp}}$ arriva a $\SI{78.14}{\milli\volt}$ invece di $\SI{134.40}{\milli\volt}$ ($-41.9\%$), e a $\SI{2000}{\milli\volt_{pp}}$ arriva a $\SI{100.73}{\milli\volt}$ invece di $\SI{268.80}{\milli\volt}$ ($-62.5\%$). Infatti, man mano che $A_0$ cresce, il termine $\beta A_0^2$ diventa sempre più grande e allontana sempre di più la frequenza di risonanza del MEMS $f_1'(A_0)$ dalla frequenza di ingresso $f_{\text{in}} = f_1$; poiché la campana di risonanza del MEMS è molto stretta ($\Delta f \approx \SI{137}{\hertz}$), questa deriva in frequenza frena la crescita di $A_0$, facendola salire in modo sempre più lento rispetto alla retta di piccolo segnale.
 
-\subsection{Evoluzione temporale della frequenza istantanea durante il ring-down (\texorpdfstring{$f_1(t)$}{f1(t)})}
+\subsection{Evoluzione temporale della frequenza di risonanza durante il ringdown}
 \label{subsec:chirp_frequenza_ringdown}
 
-La verifica sperimentale diretta del legame tra ampiezza di oscillazione e frequenza propria di risonanza $f_1(A) = f_0 - |\beta| A^2$ si ottiene analizzando l'evoluzione temporale della frequenza istantanea $f_1(t)$ all'interno di un singolo transitorio di ringdown successivo allo spegnimento del gate ($t > 0$).
-
-Durante il decadimento libero post-spegnimento ($v_{\text{in}}(t) = 0$), l'ampiezza dell'oscillazione meccanica si smorza esponenzialmente nel tempo con costante caratteristica $\tau$:
+Nella sezione~\ref{subsec:variazione_frequenza_ampiezza} abbiamo visto che la riduzione di pendenza dell'ampiezza $A_0$ ad alte tensioni di ingresso è dovuta al fatto che la frequenza di risonanza varia con il quadrato dell'ampiezza. In questa sezione, abbiamo analizzato come evolve nel tempo la frequenza di risonanza di grande segnale $f_1'(t)$ dopo che abbiamo staccato il gate. Durante il ringdown ($v_{\text{in}}(t) = 0$), l'ampiezza dell'oscillazione non rimane fissa al valore iniziale $A_0$, ma si smorza esponenzialmente nel tempo con costante di tempo $\tau$:
 \begin{equation}
     A(t) = A_0 \, e^{-t/\tau}
 \end{equation}
-Sostituendo la legge di decadimento dell'ampiezza $A(t)$ all'interno della relazione \eqref{eq:backbone_legge}, otteniamo la legge analitica che descrive l'evoluzione temporale della frequenza istantanea di oscillazione libera $f_1(t)$:
+Se sostituiamo l'ampiezza istantanea $A(t)$ al posto di $A_0$ nell'eq.~\eqref{eq:backbone_legge}, otteniamo un'equazione che ci dice come varia nel tempo la frequenza di risonanza $f_1'(t)$ durante il decadimento:
 \begin{equation}
     \label{eq:chirp_esponenziale}
-    f_1(t) = f_0 - |\beta| \left( A_0 \, e^{-t/\tau} \right)^2 = f_0 - \Delta f_0 \, e^{-2t/\tau} = f_0 - \Delta f_0 \, e^{-t/\tau_f}
+    f_1'(t) = f_1 + \beta \left( A_0 \, e^{-t/\tau} \right)^2 = f_1 + \beta A_0^2 \, e^{-2t/\tau} = f_1 + \Delta f_0 \, e^{-t/\tau_f}
 \end{equation}
-dove $f_0$ è la frequenza naturale lineare asintotica (raggiunta per $t \gg \tau_f$, quando l'ampiezza residua $A(t) \to 0$ ritorna nel regime di piccolo segnale), $\Delta f_0 = |\beta| A_0^2 \ge 0$ è l'abbassamento iniziale di frequenza all'istante $t = 0$, e $\tau_f \approx \frac{\tau}{2}$ è la costante di tempo di rilassamento della frequenza. Poiché lo spostamento di frequenza dipende dal quadrato dell'ampiezza $A^2(t)$, la frequenza recupera il proprio valore lineare a una velocità doppia rispetto al decadimento dell'inviluppo di tensione ($\tau_f \approx \SI{1.05}{\milli\second} - \SI{1.15}{\milli\second}$ a fronte di $\tau \approx \SI{2.30}{\milli\second}$).
+dove $f_1$ è la frequenza di risonanza di piccolo segnale, $\Delta f_0 = \beta A_0^2$ è lo spostamento iniziale di frequenza all'istante $t = 0$ e $\tau_f = \tau / 2$. 
 
 \vspace{0.3cm}
-\noindent Per misurare variazioni di frequenza dell'ordine di poche decine di hertz su una portante di $\SI{417.8}{\kilo\hertz}$ nell'arco di $\SI{3.5}{\milli\second}$ senza amplificare il rumore ad alta frequenza, abbiamo calcolato la fase srotolata dell'inviluppo analitico di Hilbert $\phi(t) = \mathrm{unwrap}\left(\angle z(t)\right)$ ed eseguito un fit lineare su una finestra mobile di larghezza $W = \SI{0.75}{\milli\second}$ (con passo di avanzamento di $\SI{60}{\micro\second}$ per $t_c \in [\SI{0.42}{\milli\second}, \SI{3.75}{\milli\second}]$). Dalla pendenza $\phi(t) \approx 2\pi f_1(t_c)\, t + \phi_0$ in ciascuna finestra abbiamo ricavato la stima di $f_1(t_c)$ per quattro livelli di eccitazione ($V_{\text{in}} = \SI{200}{\milli\volt_{pp}}$, $\SI{500}{\milli\volt_{pp}}$, $\SI{1000}{\milli\volt_{pp}}$ e $\SI{2000}{\milli\volt_{pp}}$), eseguendo infine il fit del modello esponenziale \eqref{eq:chirp_esponenziale} con frequenza asintotica comune $f_0$.
+\noindent Abbiamo realizzato uno script che calcola la frequenza di risonanza, a partire dalla fase istantanea (come già visto nella sezione~\ref{subsec:frequenza_ringdown}), su una finestra mobile di larghezza $W = \SI{0.75}{\milli\second}$ che scorre lungo il ringdown per quattro livelli di eccitazione ($v_{\text{in}} = \SI{200}{\milli\volt_{pp}}$, $\SI{500}{\milli\volt_{pp}}$, $\SI{1000}{\milli\volt_{pp}}$ e $\SI{2000}{\milli\volt_{pp}}$), ed esegue il fit dei punti ottenuti con l'eq.~\eqref{eq:chirp_esponenziale}.
 
-In fig.~\ref{fig:frequenza_tempo_nl} è riportato il grafico dell'evoluzione temporale della frequenza di risonanza $f_1(t)$ al variare della tensione di eccitazione $V_{\text{in}}$.
+\vspace{0.3cm}
+
+\noindent In fig.~\ref{fig:frequenza_tempo_nl} è riportato il grafico dell'evoluzione temporale della frequenza di risonanza $f_1'(t)$ al variare dell'ampiezza picco picco della tensione d'ingresso $v_{\text{in}}$.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.88\textwidth]{../Duffing/duffing_backbone_e_chirp.png}
-\caption{Evoluzione temporale della frequenza istantanea di risonanza $f_1(t)$ durante il ring-down (in funzione del tempo trascorso dal taglio del Gate) per quattro tensioni di eccitazione: $V_{\text{in}} = \SI{200}{\milli\volt}$ (cerchi verdi), $\SI{500}{\milli\volt}$ (quadrati ambra), $\SI{1000}{\milli\volt}$ (triangoli arancio scuro) e $\SI{2000}{\milli\volt}$ (rombi rossi). Le curve continue rappresentano il fit congiunto del modello teorico di rilassamento esponenziale $f_1(t) = f_0 - \Delta f_0 e^{-t/\tau_f}$ convergente alla frequenza lineare comune $f_0 \approx \SI{417787}{\hertz}$.}
+\caption{Evoluzione temporale della frequenza di risonanza $f_1'(t)$ durante il ringdown (in funzione del tempo trascorso dal taglio del gate) per quattro tensioni di ingresso: $v_{\text{in}} = \SI{200}{\milli\volt_{pp}}$ (in verde), $\SI{500}{\milli\volt_{pp}}$ (in giallo), $\SI{1000}{\milli\volt_{pp}}$ (in arancio) e $\SI{2000}{\milli\volt_{pp}}$ (in rosso). Le curve continue rappresentano il fit del modello esponenziale $f_1'(t) = f_1 + \Delta f_0 e^{-t/\tau_f}$.}
 \label{fig:frequenza_tempo_nl}
 \end{figure}
 
-\noindent Dall'andamento di fig.~\ref{fig:frequenza_tempo_nl} osserviamo che per $V_{\text{in}} = \SI{200}{\milli\volt_{pp}}$ ($A_0 = \SI{27.57}{\milli\volt}$, curva verde), i punti sperimentali si dispongono attorno a una retta orizzontale costante per tutto il decadimento, al valore $f_0 \approx \SI{417787}{\hertz}$, poiché lo spostamento della trave è sufficientemente piccolo da rendere trascurabile il termine $|\beta|A^2$.
+\noindent Per $v_{\text{in}} = \SI{200}{\milli\volt_{pp}}$ ($A_0 = \SI{27.57}{\milli\volt}$, curva verde), i punti sperimentali si dispongono attorno a una retta orizzontale, al valore $f_1 = \SI{417787}{\hertz}$, poiché lo spostamento della trave è piccolo e il termine $\beta A^2(t)$ è trascurabile.
 
 \vspace{0.3cm}
-\noindent All'aumentare della tensione di eccitazione, la frequenza iniziale misurata subito dopo il taglio del gate ($t = \SI{0.42}{\milli\second}$) subisce uno spostamento negativo sempre più marcato: per $V_{\text{in}} = \SI{500}{\milli\volt_{pp}}$ (curva ambra) parte da $f_1(\SI{0.42}{\milli\second}) \approx \SI{417762}{\hertz}$ ($-\SI{25}{\hertz}$ rispetto a $f_0$) e risale gradualmente con costante di tempo $\tau_f \approx \SI{1.05}{\milli\second}$; per $V_{\text{in}} = \SI{1000}{\milli\volt_{pp}}$ (curva arancio scuro) parte da $\SI{417720}{\hertz}$ ($-\SI{67}{\hertz}$ rispetto a $f_0$); infine, per $V_{\text{in}} = \SI{2000}{\milli\volt_{pp}}$ (curva rossa), nei primi istanti del decadimento ($A_0 \approx \SI{100.7}{\milli\volt}$) la frequenza propria scende fino a $\SI{417676}{\hertz}$, ovvero $\SI{111}{\hertz}$ al di sotto della frequenza lineare. Man mano che il tempo scorre e l'energia meccanica viene dissipata ($t > \SI{3.0}{\milli\second} - \SI{3.5}{\milli\second}$), l'ampiezza residua $A(t)$ scende al di sotto dei $\SI{15}{\milli\volt} - \SI{20}{\milli\volt}$ rientrando nel regime di piccolo segnale, e tutte e quattro le curve convergono asintoticamente allo stesso valore lineare $f_0 \approx \SI{417787}{\hertz}$.
+\noindent All'aumentare della tensione di ingresso, si vede che la frequenza misurata nei primi istanti del ringdown (quando l'ampiezza è massima) è più bassa rispetto a $f_1$ ($\beta < 0$).
 
 % =============================================================================
 % SEZIONE 11: DISTORSIONE ARMONICA E ACCOPPIAMENTO CON IL SECONDO MODO (1:2)
