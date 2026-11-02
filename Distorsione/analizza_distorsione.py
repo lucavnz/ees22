@@ -15,26 +15,27 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 # -----------------------------------------------------------------------------
-# 1. Configurazione e Mappatura Scope -> Vac
+# 1. Configurazione e Mappatura Scope -> Vac Reale
 # -----------------------------------------------------------------------------
-# Mappatura delle tensioni nominali di eccitazione Vac [mVpp]
+# Generatore RF calibrato su 50 Ohm connesso a carico High-Z del MEMS:
+# Vac_reale [mVpp] = 2 * Vac_nominale (verificato su CH3 dell'oscilloscopio)
 SCOPE_VAC_MAP = {
-    175: 20.0,
-    176: 40.0,
-    177: 60.0,
-    178: 80.0,
-    174: 100.0,
-    179: 120.0,
-    180: 140.0,
-    181: 160.0,
-    182: 180.0,
-    183: 200.0,
-    184: 300.0,
-    185: 400.0,
-    186: 500.0,
-    187: 600.0,
-    188: 700.0,
-    189: 800.0
+    175: 40.0,
+    176: 80.0,
+    177: 120.0,
+    178: 160.0,
+    174: 200.0,
+    179: 240.0,
+    180: 280.0,
+    181: 320.0,
+    182: 360.0,
+    183: 400.0,
+    184: 600.0,
+    185: 800.0,
+    186: 1000.0,
+    187: 1200.0,
+    188: 1400.0,
+    189: 1600.0
 }
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -198,26 +199,26 @@ def main():
     # -------------------------------------------------------------------------
     # FIT FISICI TEORICI RIGOROSI
     # -------------------------------------------------------------------------
-    # 1. Fondamentale (p1): regime lineare a piccolo segnale (Vac <= 200 mV)
+    # 1. Fondamentale (p1): regime lineare a piccolo segnale (Vac <= 200 mVpp)
     # Modello: p1 = k1 * Vac (senza intercetta fittizia)
     mask_lin = vac_arr <= 200.0
     k1 = np.sum(vac_arr[mask_lin] * p1_rig_arr[mask_lin]) / np.sum(vac_arr[mask_lin]**2)
 
     # 2. Seconda armonica (p2): legge quadratica da forza elettrostatica / risonanza 1:2
-    # Modello: p2 = k2 * Vac^2 (escludendo il noise floor < 50 mV)
-    mask_quad = (vac_arr >= 60.0) & (vac_arr <= 500.0)
+    # Modello: p2 = k2 * Vac^2 (escludendo il noise floor < 100 mVpp)
+    mask_quad = (vac_arr >= 120.0) & (vac_arr <= 1000.0)
     k2 = np.sum((vac_arr[mask_quad]**2) * p2_rig_arr[mask_quad]) / np.sum(vac_arr[mask_quad]**4)
 
-    # 3. Rapporto di distorsione HD2 = p2 / p1 = (k2 / k1) * Vac
-    # Legge lineare teorica: HD2 [%] = k_hd2 * Vac
-    k_hd2 = (k2 / k1) * 100.0  # % per mVpp
+    # 3. Rapporto di distorsione HD2 = p2 / p1: fit lineare diretto fino a 1000 mVpp
+    mask_hd2 = vac_arr <= 1000.0
+    k_hd2 = np.sum(vac_arr[mask_hd2] * hd2_rig_arr[mask_hd2]) / np.sum(vac_arr[mask_hd2]**2)
 
     print("\nParametri fisici identificati:")
     print(f"  Guadagno fondamentale lineare (piccolo segnale): k1 = {k1:.5f} mV/mVpp")
     print(f"  Coefficiente armonico quadratico (1:2 coupling): k2 = {k2:.5e} mV/(mVpp)^2")
     print(f"  Pendenza teorica distorsione armonica HD2:      k_hd2 = {k_hd2:.5f} % / mVpp")
 
-    v_dense = np.linspace(0, 850, 200)
+    v_dense = np.linspace(0, 1700, 200)
 
     # -------------------------------------------------------------------------
     # GRAFICO 1: distorsione_armoniche_vs_vac.png
@@ -233,14 +234,14 @@ def main():
 
     # Solo punti sperimentali (senza linea spezzata di congiunzione)
     ax1.plot(vac_arr, p1_rig_arr, marker='o', markersize=6.5, linestyle='None',
-             color='#1f77b4', label=r'Dati $p_1$ (Primo modo / $f_1 \approx 417.8$ kHz)')
+             color='#1f77b4', label=r'Dati $p_1$ (Primo modo / $f_1 = 417.8$ kHz)')
     ax1.plot(vac_arr, p2_rig_arr, marker='s', markersize=6.0, linestyle='None',
-             color='#c0392b', label=r'Dati $p_2$ (Secondo modo / $f_2 \approx 835.6$ kHz)')
+             color='#c0392b', label=r'Dati $p_2$ (Secondo modo / $f_2 = 835.6$ kHz)')
 
-    ax1.set_title('Ampiezze armoniche MEMS vs tensione di eccitazione', pad=12)
+    ax1.set_title(r'Ampiezze $p_1$ e $p_2$ vs tensione di eccitazione', pad=12)
     ax1.set_xlabel(r'Ampiezza eccitazione $V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
     ax1.set_ylabel(r'Ampiezza componente in frequenza [mV]')
-    ax1.set_xlim(0, 850)
+    ax1.set_xlim(0, 1700)
     ax1.set_ylim(0, 32)
     ax1.grid(True, linestyle=':', alpha=0.55, color='#c0c0c0')
     ax1.legend(loc='upper left', frameon=True, facecolor='white', framealpha=0.9)
@@ -269,7 +270,7 @@ def main():
     ax2.set_title(r'Distorsione secondo modo ($p_2 / p_1$) vs ampiezza $V_{\mathrm{ac}}$', pad=12)
     ax2.set_xlabel(r'Ampiezza eccitazione $V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
     ax2.set_ylabel(r'Distorsione secondo modo $p_2 / p_1$ [%]')
-    ax2.set_xlim(0, 850)
+    ax2.set_xlim(0, 1700)
     ax2.set_ylim(0, 15)
     ax2.grid(True, linestyle=':', alpha=0.55, color='#c0c0c0')
     ax2.legend(loc='upper left', frameon=True, facecolor='white', framealpha=0.9)
@@ -294,7 +295,7 @@ def main():
     ax3a.set_title('Confronto ampiezze spettrali $p_1$ e $p_2$', pad=10)
     ax3a.set_xlabel(r'$V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
     ax3a.set_ylabel('Ampiezza [mV]')
-    ax3a.set_xlim(0, 850)
+    ax3a.set_xlim(0, 1700)
     ax3a.grid(True, linestyle=':', alpha=0.55, color='#c0c0c0')
     ax3a.legend(loc='upper left', frameon=True, facecolor='white', framealpha=0.9)
 
@@ -304,7 +305,7 @@ def main():
     ax3b.set_title('Confronto distorsione 2° modo ($p_2 / p_1$)', pad=10)
     ax3b.set_xlabel(r'$V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
     ax3b.set_ylabel(r'Distorsione secondo modo $p_2 / p_1$ [%]')
-    ax3b.set_xlim(0, 850)
+    ax3b.set_xlim(0, 1700)
     ax3b.set_ylim(0, 15)
     ax3b.grid(True, linestyle=':', alpha=0.55, color='#c0c0c0')
     ax3b.legend(loc='upper left', frameon=True, facecolor='white', framealpha=0.9)

@@ -337,18 +337,18 @@ def run_analysis():
 
     # Fit sperimentale
     ax1.plot(v2_dense, f2_pred_dense / 1e10, '-', color='#d62828', linewidth=2.0,
-             label=rf'Fit lineare sperimentale ($\alpha = {alpha_exp/1e6:.3f}\times 10^6\ \mathrm{{Hz^2/V^2}}$, $R^2 = {r_squared:.4f}$)', zorder=3)
+             label=rf'Fit lineare sperimentale ($\gamma = {alpha_exp/1e6:.3f}\times 10^6\ \mathrm{{Hz^2/V^2}}$, $R^2 = {r_squared:.4f}$)', zorder=3)
 
     # Modello teorico
     ax1.plot(v2_dense, f2_th_dense / 1e10, '--', color='#2b2d42', linewidth=1.7, alpha=0.85,
-             label=rf'Modello teorico Frangi ($\alpha = {alpha_th/1e6:.3f}\times 10^6\ \mathrm{{Hz^2/V^2}}$)', zorder=2)
+             label=rf'Modello teorico Frangi ($\gamma = {alpha_th/1e6:.3f}\times 10^6\ \mathrm{{Hz^2/V^2}}$)', zorder=2)
 
     ax1.set_xlabel(r'$V_{\mathrm{DC}}^2\ [\mathrm{V}^2]$', labelpad=6)
     ax1.set_ylabel(r'$f_1^2\ [\times 10^{10}\ \mathrm{Hz}^2]$', labelpad=6)
     ax1.set_title(r'Variazione di $f_1^2$ vs $V_{\mathrm{DC}}^2$', pad=12)
     ax1.grid(True, linestyle='--', alpha=0.35)
 
-    legend_title = r"$f_1^2(V_{\mathrm{DC}}) = f_{01}^2 - \alpha V_{\mathrm{DC}}^2$"
+    legend_title = r"$f_1^2(V_{\mathrm{DC}}) = f_{01}^2 - \gamma V_{\mathrm{DC}}^2$"
     ax1.legend(loc='lower left', frameon=True, framealpha=0.95, facecolor='white',
                edgecolor='#cccccc', title=legend_title, title_fontsize=11, fontsize=10,
                alignment='left')

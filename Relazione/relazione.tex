@@ -1216,7 +1216,7 @@ descrive quindi una circonferenza sottoposta a due trasformazioni geometriche: u
     \vspace{0.3cm}
 \noindent Osservando il pannello sinistro di fig.~\ref{fig:cerchio_nyquist_fano}, il modulo $|T(f)|$ corrisponde geometricamente alla distanza euclidea di un punto dall'origine $(0,0)$.
 
-    Tracciando la retta che congiunge l'origine $(0,0)$ con il centro della circonferenza $P_{\text{centro}}$ (linea punteggiata grigia), individuiamo: il punto della circonferenza a distanza massima dall'origine ($|P_{\text{centro}}| + R_{\text{cerchio}}$, triangolo verde $\blacktriangle$) viene raggiunto prima della risonanza $f_1$ (rombo arancione $\blacklozenge$), ossia il picco in modulo del grafico di fig.~\ref{fig:bode_completo}; proseguendo lungo il cerchio oltre $f_1$, il fasore attraversa il punto a distanza minima dall'origine ($|P_{\text{centro}}| - R_{\text{cerchio}}$, triangolo rosso $\blacktriangledown$): questo è il minimo di antirisonanza.
+    Tracciando la retta che congiunge l'origine $(0,0)$ con il centro della circonferenza $P_{\text{centro}}$ (linea punteggiata grigia), individuiamo: il punto della circonferenza a distanza massima dall'origine ($|P_{\text{centro}}| + R_{\text{cerchio}}$, triangolo verde $\blacktriangle$) viene raggiunto prima della risonanza $f_1$ (rombo arancio $\blacklozenge$), ossia il picco in modulo del grafico di fig.~\ref{fig:bode_completo}; proseguendo lungo il cerchio oltre $f_1$, il fasore attraversa il punto a distanza minima dall'origine ($|P_{\text{centro}}| - R_{\text{cerchio}}$, triangolo rosso $\blacktriangledown$): questo è il minimo di antirisonanza.
 
     
     \vspace{0.3cm}
@@ -1228,10 +1228,10 @@ descrive quindi una circonferenza sottoposta a due trasformazioni geometriche: u
 % SEZIONE 10: CARATTERIZZAZIONE IN REGIME DI GRANDE SEGNALE E DERIVA NON LINEARE
 % =============================================================================
 \newpage
-\section{Caratterizzazione in regime di grande segnale: compressione di ampiezza e deriva non lineare di frequenza}
+\section{Caratterizzazione in regime di grande segnale}
 \label{sec:regime_non_lineare}
 
-Nelle sezioni precedenti abbiamo caratterizzato il MEMS mantenendo l'ampiezza del segnale forzante entro i $\SI{100}{\milli\volt_{pp}}$, in regime di piccolo segnale. In questa sezione abbiamo sperimentato cosa accade quando la tensione di eccitazione $v_{\text{in}}$ viene incrementata progressivamente fino a $\SI{2.0}{\volt_{pp}}$: le forze elastiche ed elettrostatiche manifestano dipendenze non lineari con lo spostamento.
+Nelle sezioni precedenti abbiamo caratterizzato il MEMS in regime di piccolo segnale, mantenendo bassa l'ampiezza picco-picco $V_{\text{ac}}$ della tensione di ingresso $v_{\text{in}}(t)$. In questa sezione abbiamo sperimentato cosa accade quando l'ampiezza di eccitazione $V_{\text{ac}}$ viene incrementata progressivamente fino a $\SI{2.0}{\volt_{pp}}$: le forze elastiche ed elettrostatiche manifestano dipendenze non lineari con lo spostamento.
 
 \subsection{Variazione della frequenza di risonanza con l'ampiezza di oscillazione}
 \label{subsec:variazione_frequenza_ampiezza}
@@ -1303,19 +1303,19 @@ dove $f_1$ è la frequenza di risonanza di piccolo segnale e $\beta$ è il coeff
 \newpage
 
 
-\noindent Abbiamo fatto una prova sperimentale: abbiamo mantenuto fissa la tensione continua $V_{\text{DC}} = \SI{5.0}{\volt}$ e la frequenza del generatore centrata sulla risonanza di piccolo segnale ($f_{\text{in}} = f_1$), e abbiamo plottato l'ampiezza iniziale del ringdown $A_0$ in funzione della tensione di ingresso $v_{\text{in}}$, in fig.~\ref{fig:ampiezza_compressione_nl}.
+\noindent Abbiamo fatto una prova sperimentale: abbiamo mantenuto fissa la tensione continua $V_{\text{DC}} = \SI{5.0}{\volt}$ e la frequenza del generatore centrata sulla risonanza di piccolo segnale ($f_{\text{in}} = f_1$), e abbiamo plottato l'ampiezza iniziale del ringdown $A_0$ in funzione dell'ampiezza di eccitazione $V_{\text{ac}}$, in fig.~\ref{fig:ampiezza_compressione_nl}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.86\textwidth]{../Duffing/duffing_ampiezza_compressione.png}
-\caption{Ampiezza iniziale del ringdown $A_0$ in funzione della tensione di ingresso $v_{\text{in}}$ a $V_{\text{DC}} = \SI{5.0}{\volt}$. La retta continua blu mostra l'andamento lineare di piccolo segnale calcolato sui primi punti ($v_{\text{in}} \le \SI{280}{\milli\volt_{pp}}$).}
+\caption{Ampiezza iniziale del ringdown $A_0$ in funzione dell'ampiezza di eccitazione $V_{\text{ac}}$ a $V_{\text{DC}} = \SI{5.0}{\volt}$. La retta continua blu mostra l'andamento lineare di piccolo segnale calcolato sui primi punti ($V_{\text{ac}} \le \SI{280}{\milli\volt_{pp}}$).}
 \label{fig:ampiezza_compressione_nl}
 \end{figure}
 
-\noindent Guardando la fig.~\ref{fig:ampiezza_compressione_nl}, si vede che finché la tensione di ingresso è bassa ($v_{\text{in}} \le \SI{280}{\milli\volt_{pp}}$), l'ampiezza di oscillazione $A_0$ è piccola e il termine $\beta A_0^2$ nell'eq.~\eqref{eq:backbone_legge} è trascurabile: la frequenza di risonanza del MEMS rimane pari a $f_1$ e l'ampiezza $A_0$ cresce linearmente con $v_{\text{in}}$ seguendo la retta blu (fit lineare dei primi 6 punti sperimentali).
+\noindent Guardando la fig.~\ref{fig:ampiezza_compressione_nl}, si vede che finché l'ampiezza di eccitazione è bassa ($V_{\text{ac}} \le \SI{280}{\milli\volt_{pp}}$), l'ampiezza di oscillazione $A_0$ è piccola e il termine $\beta A_0^2$ nell'eq.~\eqref{eq:backbone_legge} è trascurabile: la frequenza di risonanza del MEMS rimane pari a $f_1$ e l'ampiezza $A_0$ cresce linearmente con $V_{\text{ac}}$ seguendo la retta blu (fit lineare dei primi 6 punti sperimentali).
 
 \vspace{0.3cm}
-\noindent Quando invece superiamo i $\SI{300}{\milli\volt_{pp}}$, l'ampiezza $A_0$ continua ad aumentare al crescere di $v_{\text{in}}$, ma con una pendenza sempre minore rispetto alla retta lineare: a $v_{\text{in}} = \SI{500}{\milli\volt_{pp}}$ raggiunge $\SI{49.97}{\milli\volt}$ invece dei $\SI{67.20}{\milli\volt}$ della retta ($-25.6\%$), a $\SI{1000}{\milli\volt_{pp}}$ arriva a $\SI{78.14}{\milli\volt}$ invece di $\SI{134.40}{\milli\volt}$ ($-41.9\%$), e a $\SI{2000}{\milli\volt_{pp}}$ arriva a $\SI{100.73}{\milli\volt}$ invece di $\SI{268.80}{\milli\volt}$ ($-62.5\%$). Infatti, man mano che $A_0$ cresce, il termine $\beta A_0^2$ diventa sempre più grande e allontana sempre di più la frequenza di risonanza del MEMS $f_1'(A_0)$ dalla frequenza di ingresso $f_{\text{in}} = f_1$; poiché la campana di risonanza del MEMS è molto stretta ($\Delta f \approx \SI{137}{\hertz}$), questa deriva in frequenza frena la crescita di $A_0$, facendola salire in modo sempre più lento rispetto alla retta di piccolo segnale.
+\noindent Quando invece superiamo i $\SI{300}{\milli\volt_{pp}}$, l'ampiezza $A_0$ continua ad aumentare al crescere di $V_{\text{ac}}$, ma con una pendenza sempre minore rispetto alla retta lineare: a $V_{\text{ac}} = \SI{500}{\milli\volt_{pp}}$ raggiunge $\SI{49.97}{\milli\volt}$ invece dei $\SI{67.20}{\milli\volt}$ della retta ($-25.6\%$), a $\SI{1000}{\milli\volt_{pp}}$ arriva a $\SI{78.14}{\milli\volt}$ invece di $\SI{134.40}{\milli\volt}$ ($-41.9\%$), e a $\SI{2000}{\milli\volt_{pp}}$ arriva a $\SI{100.73}{\milli\volt}$ invece di $\SI{268.80}{\milli\volt}$ ($-62.5\%$). Infatti, man mano che $A_0$ cresce, il termine $\beta A_0^2$ diventa sempre più grande e allontana sempre di più la frequenza di risonanza del MEMS $f_1'(A_0)$ dalla frequenza di ingresso $f_{\text{in}} = f_1$; poiché la campana di risonanza del MEMS è molto stretta ($\Delta f \approx \SI{137}{\hertz}$), questa deriva in frequenza frena la crescita di $A_0$, facendola salire in modo sempre più lento rispetto alla retta di piccolo segnale.
 
 \subsection{Evoluzione temporale della frequenza di risonanza durante il ringdown}
 \label{subsec:chirp_frequenza_ringdown}
@@ -1332,182 +1332,201 @@ Se sostituiamo l'ampiezza istantanea $A(t)$ al posto di $A_0$ nell'eq.~\eqref{eq
 dove $f_1$ è la frequenza di risonanza di piccolo segnale, $\Delta f_0 = \beta A_0^2$ è lo spostamento iniziale di frequenza all'istante $t = 0$ e $\tau_f = \tau / 2$. 
 
 \vspace{0.3cm}
-\noindent Abbiamo realizzato uno script che calcola la frequenza di risonanza, a partire dalla fase istantanea (come già visto nella sezione~\ref{subsec:frequenza_ringdown}), su una finestra mobile di larghezza $W = \SI{0.75}{\milli\second}$ che scorre lungo il ringdown per quattro livelli di eccitazione ($v_{\text{in}} = \SI{200}{\milli\volt_{pp}}$, $\SI{500}{\milli\volt_{pp}}$, $\SI{1000}{\milli\volt_{pp}}$ e $\SI{2000}{\milli\volt_{pp}}$), ed esegue il fit dei punti ottenuti con l'eq.~\eqref{eq:chirp_esponenziale}.
+\noindent Abbiamo realizzato uno script che calcola la frequenza di risonanza, a partire dalla fase istantanea (come già visto nella sezione~\ref{subsec:frequenza_ringdown}), su una finestra mobile di larghezza $W = \SI{0.75}{\milli\second}$ che scorre lungo il ringdown per quattro livelli di eccitazione ($V_{\text{ac}} = \SI{200}{\milli\volt_{pp}}$, $\SI{500}{\milli\volt_{pp}}$, $\SI{1000}{\milli\volt_{pp}}$ e $\SI{2000}{\milli\volt_{pp}}$), ed esegue il fit dei punti ottenuti con l'eq.~\eqref{eq:chirp_esponenziale}.
 
 \vspace{0.3cm}
 
-\noindent In fig.~\ref{fig:frequenza_tempo_nl} è riportato il grafico dell'evoluzione temporale della frequenza di risonanza $f_1'(t)$ al variare dell'ampiezza picco picco della tensione d'ingresso $v_{\text{in}}$.
+\noindent In fig.~\ref{fig:frequenza_tempo_nl} è riportato il grafico dell'evoluzione temporale della frequenza di risonanza $f_1'(t)$ al variare dell'ampiezza picco-picco $V_{\text{ac}}$ della tensione d'ingresso.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.88\textwidth]{../Duffing/duffing_backbone_e_chirp.png}
-\caption{Evoluzione temporale della frequenza di risonanza $f_1'(t)$ durante il ringdown (in funzione del tempo trascorso dal taglio del gate) per quattro tensioni di ingresso: $v_{\text{in}} = \SI{200}{\milli\volt_{pp}}$ (in verde), $\SI{500}{\milli\volt_{pp}}$ (in giallo), $\SI{1000}{\milli\volt_{pp}}$ (in arancio) e $\SI{2000}{\milli\volt_{pp}}$ (in rosso). Le curve continue rappresentano il fit del modello esponenziale $f_1'(t) = f_1 + \Delta f_0 e^{-t/\tau_f}$.}
+\caption{Evoluzione temporale della frequenza di risonanza $f_1'(t)$ durante il ringdown (in funzione del tempo trascorso dal taglio del gate) per quattro ampiezze di eccitazione: $V_{\text{ac}} = \SI{200}{\milli\volt_{pp}}$ (in verde), $\SI{500}{\milli\volt_{pp}}$ (in giallo), $\SI{1000}{\milli\volt_{pp}}$ (in arancio) e $\SI{2000}{\milli\volt_{pp}}$ (in rosso). Le curve continue rappresentano il fit del modello esponenziale $f_1'(t) = f_1 + \Delta f_0 e^{-t/\tau_f}$.}
 \label{fig:frequenza_tempo_nl}
 \end{figure}
 
-\noindent Per $v_{\text{in}} = \SI{200}{\milli\volt_{pp}}$ ($A_0 = \SI{27.57}{\milli\volt}$, curva verde), i punti sperimentali si dispongono attorno a una retta orizzontale, al valore $f_1 = \SI{417787}{\hertz}$, poiché lo spostamento della trave è piccolo e il termine $\beta A^2(t)$ è trascurabile.
+\noindent Per $V_{\text{ac}} = \SI{200}{\milli\volt_{pp}}$ ($A_0 = \SI{27.57}{\milli\volt}$, curva verde), i punti sperimentali si dispongono attorno a una retta orizzontale, al valore $f_1 = \SI{417787}{\hertz}$, poiché lo spostamento della trave è piccolo e il termine $\beta A^2(t)$ è trascurabile.
 
 \vspace{0.3cm}
-\noindent All'aumentare della tensione di ingresso, si vede che la frequenza misurata nei primi istanti del ringdown (quando l'ampiezza è massima) è più bassa rispetto a $f_1$ ($\beta < 0$).
+\noindent All'aumentare di $V_{\text{ac}}$, si vede che la frequenza misurata nei primi istanti del ringdown (quando l'ampiezza è massima) è più bassa rispetto a $f_1$ ($\beta < 0$).
 
 % =============================================================================
 % SEZIONE 11: DISTORSIONE ARMONICA E ACCOPPIAMENTO CON IL SECONDO MODO (1:2)
 % =============================================================================
 \newpage
-\section{Distorsione armonica di secondo ordine e accoppiamento con il secondo modo flessionale}
+\section{Risonanza interna 1:2}
 \label{sec:distorsione_armonica}
 
-Nella Sezione~\ref{sec:regime_non_lineare} abbiamo esaminato gli effetti delle non-linearità meccaniche ed elettrostatiche sulla frequenza e sull'ampiezza della componente fondamentale di oscillazione ($f_1 \approx \SI{417.8}{\kilo\hertz}$). In questa sezione estendiamo l'analisi al dominio spettrale in regime forzato permanente, studiando la generazione della \textbf{componente di seconda armonica} a frequenza doppia ($f_2 = 2 f_1 \approx \SI{835.6}{\kilo\hertz}$) e il suo legame con il \textbf{secondo modo flessionale} della trave ad arco ($f_{02} \approx \SI{834.15}{\kilo\hertz}$).
+Come mostrato nel paper di Frangi~\cite{frangi2023}, il risonatore MEMS è stato progettato in modo che la frequenza di risonanza del primo modo $f_1$ e quella del secondo modo $f_2$ si trovino in un rapporto $1:2$ ($f_2 = 2 f_1$). Quando stimoliamo il MEMS alla frequenza del primo modo $f_1$, stiamo in realtà eccitando anche il secondo modo a frequenza doppia. Questo fenomeno prende il nome di risonanza interna 1:2.
 
-\subsection{Origine fisica della componente a frequenza doppia (\texorpdfstring{$f_2 = 2 f_1$}{f2 = 2 f1}) e risonanza interna 1:2}
-\label{subsec:origine_distorsione_12}
-
-Come descritto nella Sezione~1 e formalizzato da Gobat, Zega, Frangi et al.~\cite{frangi2023}, la geometria ad arco della microtrave è stata specificamente progettata affinché la frequenza naturale del primo modo flessionale simmetrico ($f_{01} \approx \SI{416.66}{\kilo\hertz}$ da analisi FEM) e quella del secondo modo flessionale nel piano ($f_{02} \approx \SI{834.15}{\kilo\hertz}$, sesto autovalore globale della struttura) si trovino in un rapporto prossimo a $1:2$ ($\omega_{02} \approx 2\omega_{01}$).
-
-Quando il risonatore viene pilotato all'elettrodo di drive con una tensione sinusoidale pura $v_{\text{in}}(t) = V_{\text{AC}}\sin(\omega_1 t)$ di ampiezza picco-picco $V_{\text{ac}} = 2 V_{\text{AC}}$ centrata sulla risonanza del primo modo ($\omega_1 \approx \omega_{01}$), il sistema di equazioni differenziali accoppiate del modello a ordine ridotto (eq.~19--20 a pag.~23 di~\cite{frangi2023}) si scrive:
+\vspace{0.3cm}
+\noindent Per vedere come nasce questo fenomeno, indichiamo con $x_1(t)$ lo spostamento del primo modo (che nei capitoli precedenti abbiamo chiamato semplicemente $x(t)$ senza pedice) e con $x_2(t)$ lo spostamento del secondo modo. Come riportato nel paper~\cite{frangi2023}, le equazioni del moto dei due modi sono accoppiate;
 \begin{align}
     \label{eq:rom_accoppiato_modo1}
-    \ddot{q}_1 + \frac{\omega_{01}}{Q_1}\dot{q}_1 + k_1 q_1 + k_3 q_1 q_2 &= f_1 \sin(\omega_1 t) \\[4pt]
+    \ddot{x}_1(t) + \frac{\omega_{01}}{Q_1}\dot{x}_1(t) + \omega_1^2 x_1(t) + \alpha_{12} \, x_1(t) x_2(t) &= \frac{\eta}{m_{\text{eff}}} v_{\text{in}}(t) \\[4pt]
     \label{eq:rom_accoppiato_modo2}
-    \ddot{q}_2 + \frac{\omega_{02}}{Q_2}\dot{q}_2 + k_2 q_2 + k_4 q_1^2 &= 0
+    \ddot{x}_2(t) + \frac{\omega_{02}}{Q_2}\dot{x}_2(t) + \omega_2^2 x_2(t) + \alpha_{21} \, x_1^2(t) &= 0
 \end{align}
-dove $q_1(t)$ e $q_2(t)$ sono le coordinate modali del primo e del secondo modo flessionale, $k_1 = \omega_1^2$, $k_2 = \omega_2^2$ sono le rigidezze lineari efficaci (comprensive del termine di \textit{spring softening} elettrostatico a $V_{\text{DC}} = \SI{5.0}{\volt}$), $f_1 = 2 V_{\text{DC}} V_{\text{AC}} c_{0,DA}^{(1)}$ è l'ampiezza della forzante sul primo modo, e i coefficienti di accoppiamento non lineare quadratico valgono (dalle Tabelle~1 e 2 di~\cite{frangi2023} per $V_{\text{T}} = \SI{0}{\volt}$):
+dove $\omega_1$ e $\omega_2$ sono le pulsazioni di risonanza dei due modi alla tensione di polarizzazione $V_{\text{DC}} = \SI{5.0}{\volt}$, $Q_1$ e $Q_2$ sono i fattori di merito, mentre $\alpha_{12}$ e $\alpha_{21}$ sono i coefficienti di accoppiamento tra i due modi.
+
+\vspace{0.3cm}
+\noindent Come già visto nella sezione~\ref{subsec:variazione_frequenza_ampiezza}, quando la trave oscilla alla pulsazione $\omega_1$ con ampiezza $X_0$, lo spostamento del primo modo è dato da:
 \begin{equation}
-    k_3 = c_4^{(1)} - c_{4,DD}^{(1)} V_{\text{DC}}^2, \qquad
-    k_4 = c_3^{(2)} - c_{3,DD}^{(2)} V_{\text{DC}}^2
+    x_1(t) = X_0 \cos(\omega_1 t)
 \end{equation}
-con $c_3^{(2)} = -\SI{5.52e-2}{\micro\second^{-2}}$ (derivante dalla curvatura iniziale dell'arco) e $c_{3,DD}^{(2)} = -\SI{0.51}{\micro\newton\,\micro\meter/(\volt^2\,\pico\farad)}$ (derivante dalla non-linearità elettrostatica).
+Guardando l'eq.~\eqref{eq:rom_accoppiato_modo2} del secondo modo, compare il termine $-\alpha_{21} x_1^2(t)$. Sviluppiamo il quadrato di $x_1(t)$ tramite la formula di duplicazione del coseno:
+\begin{equation}
+    -\alpha_{21} x_1^2(t) = -\alpha_{21} X_0^2 \cos^2(\omega_1 t) = -\frac{1}{2} \alpha_{21} X_0^2 - \frac{1}{2} \alpha_{21} X_0^2 \cos(2\omega_1 t)
+\end{equation}
+Oltre ad una componente continua, la vibrazione del primo modo genera una forza sinusoidale a frequenza doppia, la cui ampiezza varia con $X_0^2$. Portando infatti questo termine al secondo membro dell'eq.~\eqref{eq:rom_accoppiato_modo2} (e trascurando la componente continua), l'equazione del secondo modo diventa:
+\begin{equation}
+    \ddot{x}_2(t) + \frac{\omega_{02}}{Q_2}\dot{x}_2(t) + \omega_2^2 x_2(t) = -\frac{1}{2} \alpha_{21} X_0^2 \cos(2\omega_1 t)
+\end{equation}
+Passando nel dominio dei fasori a $2\omega_1$, il modulo dello spostamento del secondo modo $X_2$ vale:
+\begin{equation}
+    \label{eq:modulo_X2}
+    X_2 = \frac{\frac{1}{2}|\alpha_{21}| X_0^2}{\sqrt{\left(\omega_2^2 - (2\omega_1)^2\right)^2 + \left(\frac{\omega_{02} \cdot 2\omega_1}{Q_2}\right)^2}} \propto X_0^2
+\end{equation}
+ed è quindi direttamente proporzionale a $X_0^2$.
 
-\paragraph{Meccanismo di generazione quadratica del secondo modo:}
-Analizziamo passo-passo come l'eccitazione a frequenza $\omega_1$ generi la risposta a frequenza doppia $2\omega_1$:
-\begin{enumerate}
-    \item \textbf{Risposta lineare del primo modo ($p_1 \propto V_{\text{ac}}$):}
-    In regime di piccolo e medio segnale, la coordinata del primo modo risponde alla forzante risonante con un'oscillazione armonica alla frequenza fondamentale $\omega_1$:
-    \begin{equation}
-        q_1(t) = Q_1 \cos(\omega_1 t + \phi_1), \qquad \text{con } Q_1 \propto V_{\text{ac}}
-    \end{equation}
-    \item \textbf{Forzante interna quadratica sul secondo modo ($q_1^2(t)$):}
-    Nell'equazione \eqref{eq:rom_accoppiato_modo2} del secondo modo non è presente alcuna forzante elettrica diretta a frequenza $\omega_1$, ma compare il termine di accoppiamento quadratico $-k_4 q_1^2(t)$. Sviluppando il quadrato di $q_1(t)$ mediante le formule di duplicazione del coseno:
-    \begin{equation}
-        -k_4 q_1^2(t) = -k_4 Q_1^2 \cos^2(\omega_1 t + \phi_1) = -\frac{1}{2} k_4 Q_1^2 - \frac{1}{2} k_4 Q_1^2 \cos(2\omega_1 t + 2\phi_1)
-    \end{equation}
-    si osserva che la vibrazione del primo modo agisce come una \textbf{sorgente di eccitazione interna a frequenza esattamente doppia} $\omega_2 = 2\omega_1 \approx 2\pi \times \SI{835.6}{\kilo\hertz}$, la cui ampiezza di spinta scala con il \textbf{quadrato} dell'ampiezza del primo modo ($Q_1^2 \propto V_{\text{ac}}^2$). Poiché la frequenza $2\omega_1 \approx \SI{835.6}{\kilo\hertz}$ cade nelle immediate vicinanze della risonanza propria del secondo modo flessionale ($f_{02} \approx \SI{834.15}{\kilo\hertz}$), tale termine quadratico eccita selettivamente il secondo modo con ampiezza:
-    \begin{equation}
-        Q_2 = \frac{\frac{1}{2}|k_4| Q_1^2}{\sqrt{\left(\omega_2^2 - (2\omega_1)^2\right)^2 + \left(\frac{\omega_{02} \cdot 2\omega_1}{Q_2}\right)^2}} \propto Q_1^2 \propto V_{\text{ac}}^2
-    \end{equation}
-    \item \textbf{Contributi quadratici concorrenti (auto-distorsione del primo modo e lettura capacitiva):}
-    Alla risposta meccanica del secondo modo $q_2(t)$ si sommano in modo coerente alla medesima frequenza $2\omega_1$ anche la componente di seconda armonica di $q_1(t)$ generata dalla rigidezza quadratica $\alpha_2 q_1^2$ nell'eq.~\eqref{eq:oscillatore_non_lineare} e il termine quadratico della corrente di lettura (eq.~15 di~\cite{frangi2023}):
-    \begin{equation}
-        i_m(t) = V_{\text{DC}} \left[ f_{DA}^{(1)}(q_1, q_2)\,\dot{q}_1 + f_{DA}^{(2)}(q_1, q_2)\,\dot{q}_2 \right]
-    \end{equation}
-    in cui sia il termine lineare del secondo modo $c_{0,DA}^{(2)} \dot{q}_2(t)$ sia il termine misto del primo modo $c_{1,DA}^{(1)} q_1(t)\dot{q}_1(t) = -\frac{1}{2}\omega_1 c_{1,DA}^{(1)} Q_1^2 \sin(2\omega_1 t)$ oscillano a $2\omega_1$ con ampiezza rigorosamente proporzionale a $V_{\text{ac}}^2$.
-\end{enumerate}
-
-\paragraph{Leggi teoriche di scala per le ampiezze spettrali $p_1$, $p_2$ e per la distorsione $p_2 / p_1$:}
-Indicando con $p_1$ l'ampiezza della riga spettrale di tensione in uscita alla frequenza fondamentale $f_1 \approx \SI{417.8}{\kilo\hertz}$ e con $p_2$ l'ampiezza della riga spettrale a frequenza doppia $f_2 = 2 f_1 \approx \SI{835.6}{\kilo\hertz}$, il modello teorico predice le tre relazioni fondamentali:
+\vspace{0.3cm}
+\noindent Cerchiamo ora di legare gli spostamenti dei due modi $x_1(t)$ e $x_2(t)$ alla tensione $v_{\text{out}}(t)$. Ricordiamo che in queste misure abbiamo collegato il circuito di compensazione hardware della sezione~\ref{sec:compensazione_hardware} per cancellare la corrente della capacità parassita $C_p$. Di conseguenza, nel nodo del TIA entra solo la corrente del MEMS $i_m(t) = \eta \, \dot{x}(t)$ e la tensione all'uscita dello stadio invertente vale:
+\begin{equation}
+    v_{\text{out}}(t) = R_{\text{trans}} \, \eta \, \dot{x}(t)
+\end{equation}
+Dunque, $v_{\text{out}}(t)$ è direttamente proporzionale alla velocità della trave. Questo significa che nello spettro di $v_{\text{out}}(t)$ osserveremo una componente alla frequenza fondamentale $f_1$ (dovuta a $\dot{x}_1(t)$), la cui ampiezza in tensione $p_1$ è proporzionale a $X_0$, e una componente a frequenza doppia $f_2 = 2 f_1$ (dovuta a $\dot{x}_2(t)$), la cui ampiezza in tensione $p_2$ è proporzionale a $X_2$ e quindi, per l'eq.~\eqref{eq:modulo_X2}, a $X_0^2$:
+\begin{equation}
+    p_1 \propto X_0, \qquad p_2 \propto X_2 \propto X_0^2
+\end{equation}
+Come abbiamo visto nella sezione~\ref{sec:regime_non_lineare} (in fig.~\ref{fig:ampiezza_compressione_nl}), finché la tensione di ingresso resta nel regime di piccolo segnale, l'ampiezza di oscillazione $X_0$ cresce linearmente con l'ampiezza picco-picco di $v_{\text{in}}$, ovvero $V_{\text{ac}}$ ($X_0 \propto V_{\text{ac}}$). Sostituendo $X_0 \propto V_{\text{ac}}$ nelle due relazioni precedenti, otteniamo come variano i due picchi $p_1$ e $p_2$ al crescere della tensione di ingresso $V_{\text{ac}}$:
 \begin{align}
     \label{eq:legge_p1_lineare}
-    p_1(V_{\text{ac}}) &= k_1 \, V_{\text{ac}} && \text{(legge lineare del } 1^\circ \text{ modo)} \\[4pt]
+    p_1(V_{\text{ac}}) &= a_1 \, V_{\text{ac}} \\[4pt]
     \label{eq:legge_p2_quadratica}
-    p_2(V_{\text{ac}}) &= k_2 \, V_{\text{ac}}^2 && \text{(legge quadratica del } 2^\circ \text{ modo)} \\[4pt]
-    \label{eq:legge_hd2_lineare}
-    \text{HD}_2(V_{\text{ac}}) &= \frac{p_2(V_{\text{ac}})}{p_1(V_{\text{ac}})} = \frac{k_2 \, V_{\text{ac}}^2}{k_1 \, V_{\text{ac}}} = \left(\frac{k_2}{k_1}\right) V_{\text{ac}} = k_{\text{hd2}} \, V_{\text{ac}} && \text{(crescita lineare del rapporto } p_2/p_1\text{)}
+    p_2(V_{\text{ac}}) &= a_2 \, V_{\text{ac}}^2
 \end{align}
+dove $a_1$ e $a_2$ sono i coefficienti di proporzionalità. Quindi se calcoliamo il rapporto $p_2 / p_1$ per valutare quanto pesa la componente di secondo modo rispetto alla fondamentale, otteniamo una retta che cresce linearmente con $V_{\text{ac}}$:
+\begin{equation}
+    \label{eq:legge_hd2_lineare}
+    \frac{p_2(V_{\text{ac}})}{p_1(V_{\text{ac}})} = \frac{a_2 \, V_{\text{ac}}^2}{a_1 \, V_{\text{ac}}} = \left(\frac{a_2}{a_1}\right) V_{\text{ac}} = a_{\text{hd2}} \, V_{\text{ac}}
+\end{equation}
 
-\subsection{Setup di misura e metodologia di analisi spettrale ad alta accuratezza}
-\label{subsec:setup_metodologia_distorsione}
+\noindent Per verificare sperimentalmente le relazioni~\eqref{eq:legge_p1_lineare}, \eqref{eq:legge_p2_quadratica} e \eqref{eq:legge_hd2_lineare}, abbiamo fissato il MEMS a $V_{\text{DC}} = \SI{5.0}{\volt}$ ed eccitato il dispositivo con una forzante sinusoidale a frequenza $f_{\text{in}} = f_1$, facendo variare l'ampiezza di eccitazione $V_{\text{ac}}$ da $\SI{40}{\milli\volt_{pp}}$ fino a $\SI{1600}{\milli\volt_{pp}}$. Tramite uno script apposito, abbiamo calcolato la FFT della tensione di uscita $v_{\text{out}}(t)$ ed estratto le ampiezze dei picchi $p_1$ (a $f_1 = \SI{417.8}{\kilo\hertz}$) e $p_2$ (a $f_2 = \SI{835.6}{\kilo\hertz}$).
 
-Per verificare sperimentalmente le leggi di scala \eqref{eq:legge_p1_lineare}--\eqref{eq:legge_hd2_lineare}, il risonatore MEMS (polarizzato a $V_{\text{DC}} = \SI{5.0}{\volt}$ e collegato al circuito di compensazione hardware attiva) è stato eccitato in regime sinusoidale continuo alla frequenza di risonanza del primo modo ($f_1 \approx \SI{417.81}{\kilo\hertz}$), acquisendo all'oscilloscopio 16 tracce temporali (\texttt{scope\_174} -- \texttt{scope\_189}, ciascuna di $N = 16000$ campioni) al variare dell'ampiezza di eccitazione nominale:
-\begin{equation*}
-    V_{\text{ac}} \in \{20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 300, 400, 500, 600, 700, 800\}\,\si{\milli\volt_{pp}}
-\end{equation*}
 
-\paragraph{Eliminazione dello \textit{scalloping loss} (effetto \textit{picket-fence}) tramite finestra di Hann e Zero-Padding $64\times$:}
-Un'analisi FFT elementare eseguita su una finestra rettangolare di $N = 16000$ campioni senza sovra-campionamento in frequenza presenta una spaziatura discreta tra i bin spettrali di circa $\Delta f_{\text{bin}} = F_s / N \approx \SI{1}{\kilo\hertz}$. Poiché le righe spettrali a $f_1 \approx \SI{417.81}{\kilo\hertz}$ e $f_2 \approx \SI{835.62}{\kilo\hertz}$ sono puramente monocromatiche ma non cadono quasi mai su un multiplo intero di $\Delta f_{\text{bin}}$, il campionamento discreto dello spettro cade tra due bin adiacenti (\textit{picket-fence effect}), producendo una grave sottostima dell'ampiezza dei picchi (\textit{scalloping loss} fino al $20\% - 25\%$) e una dispersione erratica della distorsione misurata.
+\noindent In fig.~\ref{fig:distorsione_armoniche_vac} è riportato il grafico delle ampiezze $p_1$ (punti blu) e $p_2$ (quadrati rossi) misurate all'uscita in funzione della tensione di ingresso $V_{\text{ac}}$, insieme alle curve dei due fit, lineare e quadratico, mentre in fig.~\ref{fig:distorsione_hd2_rapporto} è riportato l'andamento del rapporto percentuale $p_2 / p_1$ al variare di $V_{\text{ac}}$.
 
-Per estrarre le vere ampiezze fisiche $p_1$ e $p_2$ con precisione metrologica (script \texttt{Distorsione/analizza\_distorsione.py}), a ciascuna traccia è stata applicata la seguente pipeline spettrale:
-\begin{enumerate}
-    \item \textbf{Rimozione della componente continua (DC):} sottrazione del valor medio $\bar{v}_{\text{out}}$ per eliminare il lobo a frequenza zero;
-    \item \textbf{Finestratura di Hann con compensazione del guadagno coerente:} moltiplicazione del segnale per la finestra di Hann $w[n] = \frac{1}{2}\left[1 - \cos\left(\frac{2\pi n}{N-1}\right)\right]$ (che abbatte i lobi secondari di \textit{spectral leakage} a oltre $-\SI{31.5}{\decibel}$) e normalizzazione dell'ampiezza spettrale per il guadagno coerente esatto $G_{\text{coh}} = \frac{1}{N}\sum_{n=0}^{N-1} w[n] = 0.5$;
-    \item \textbf{Zero-Padding a $64\times$ ($N_{\text{pad}} = 64 N = 1\,024\,000$ punti):} aggiunta di zeri in coda prima del calcolo della FFT, che interpola in modo esatto la Trasformata di Fourier a Tempo Discreto (DTFT) su una griglia finissima con passo $\Delta f_{\text{pad}} = \Delta f_{\text{bin}} / 64 \approx \SI{15}{\hertz}$, permettendo di centrare il vertice esatto dei lobi principali a $f_1$ e $f_2$ con errore di scalloping inferiore allo $0.01\%$.
-\end{enumerate}
-
-\subsection{Risultati sperimentali: ampiezze armoniche (\texorpdfstring{$p_1, p_2$}{p1, p2}) e distorsione di secondo modo (\texorpdfstring{$p_2 / p_1$}{p2/p1})}
-\label{subsec:risultati_distorsione}
-
-In Fig.~\ref{fig:distorsione_armoniche_vac} è riportato l'andamento sperimentale delle ampiezze spettrali del primo modo ($p_1$ a $f_1 \approx \SI{417.8}{\kilo\hertz}$, cerchi blu) e del secondo modo ($p_2$ a $f_2 \approx \SI{835.6}{\kilo\hertz}$, quadrati rossi) in funzione della tensione di eccitazione $V_{\text{ac}}$, insieme alle rispettive curve di fit teorico lineare e quadratico.
-In Fig.~\ref{fig:distorsione_hd2_rapporto} è invece mostrato il rapporto percentuale di distorsione del secondo modo $\text{HD}_2 = p_2 / p_1$ in funzione di $V_{\text{ac}}$, mentre la Tabella~\ref{tab:risultati_distorsione} riassume i valori numerici estratti su tutte le 16 acquisizioni.
+\newpage
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.86\textwidth]{../Distorsione/distorsione_armoniche_vs_vac.png}
-\caption{Ampiezze delle componenti armoniche all'uscita del circuito di condizionamento in funzione dell'ampiezza di eccitazione $V_{\text{ac}}$ ($V_{\text{DC}} = \SI{5.0}{\volt}$): componente fondamentale del primo modo $p_1$ a $f_1 \approx \SI{417.8}{\kilo\hertz}$ (cerchi blu e fit lineare $p_1 = k_1 V_{\text{ac}}$) e componente di seconda armonica / secondo modo $p_2$ a $f_2 \approx \SI{835.6}{\kilo\hertz}$ (quadrati rossi e fit quadratico $p_2 = k_2 V_{\text{ac}}^2$).}
+\includegraphics[width=0.75\textwidth]{../Distorsione/distorsione_armoniche_vs_vac.png}
+\caption{Ampiezze delle componenti di $v_{\text{out}}(t)$ in funzione dell'ampiezza di eccitazione $V_{\text{ac}}$.}
 \label{fig:distorsione_armoniche_vac}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.86\textwidth]{../Distorsione/distorsione_hd2_rapporto.png}
-\caption{Rapporto di distorsione armonica di secondo modo $\text{HD}_2 = p_2 / p_1$ (espresso in percentuale) in funzione dell'ampiezza di eccitazione $V_{\text{ac}}$. I cerchi verdi rappresentano i dati sperimentali; la retta continua verde mostra la legge teorica lineare $\text{HD}_2 = (k_2/k_1)\,V_{\text{ac}}$ con pendenza $k_{\text{hd2}} = \SI{0.01911}{\%/\milli\volt_{pp}}$.}
+\includegraphics[width=0.75\textwidth]{../Distorsione/distorsione_hd2_rapporto.png}
+\caption{Rapporto di distorsione di secondo modo $p_2 / p_1$ (in percentuale) in funzione dell'ampiezza di eccitazione $V_{\text{ac}}$.}
 \label{fig:distorsione_hd2_rapporto}
 \end{figure}
 
-\begin{table}[htbp]
-\centering
-\small
-\setlength{\tabcolsep}{6.5pt}
-\caption{Risultati dell'analisi spettrale ad alta risoluzione (Finestra di Hann + Zero-Padding $64\times$) sulle 16 acquisizioni all'oscilloscopio (\texttt{scope\_174} -- \texttt{scope\_189}) al variare di $V_{\text{ac}}$.}
-\label{tab:risultati_distorsione}
-\vspace{0.2cm}
-\begin{tabular}{ccccccc}
-\toprule
-\textbf{File Scope} & $V_{\text{ac}}$ [\si{\milli\volt_{pp}}] & $f_1$ [\si{\kilo\hertz}] & $p_1$ (\textbf{$1^\circ$ modo}) [\si{\milli\volt}] & $f_2$ [\si{\kilo\hertz}] & $p_2$ (\textbf{$2^\circ$ modo}) [\si{\milli\volt}] & $\text{HD}_2 = p_2/p_1$ [\%] \\
-\midrule
-\texttt{scope\_175} & $20.0$  & $417.81$ & $1.50$  & $830.16^*$ & $0.013^*$ & $0.84\%$ \\
-\texttt{scope\_176} & $40.0$  & $417.78$ & $2.74$  & $836.03$   & $0.028$   & $1.02\%$ \\
-\texttt{scope\_177} & $60.0$  & $417.81$ & $3.93$  & $838.13$   & $0.068$   & $1.73\%$ \\
-\texttt{scope\_178} & $80.0$  & $417.81$ & $4.98$  & $835.94$   & $0.101$   & $2.03\%$ \\
-\texttt{scope\_174} & $100.0$ & $417.81$ & $5.99$  & $835.63$   & $0.146$   & $2.43\%$ \\
-\texttt{scope\_179} & $120.0$ & $417.81$ & $6.12$  & $835.94$   & $0.163$   & $2.67\%$ \\
-\texttt{scope\_180} & $140.0$ & $417.81$ & $6.87$  & $835.63$   & $0.226$   & $3.29\%$ \\
-\texttt{scope\_181} & $160.0$ & $417.78$ & $7.99$  & $835.40$   & $0.281$   & $3.51\%$ \\
-\texttt{scope\_182} & $180.0$ & $417.81$ & $8.66$  & $835.63$   & $0.330$   & $3.82\%$ \\
-\texttt{scope\_183} & $200.0$ & $417.81$ & $9.15$  & $835.94$   & $0.379$   & $4.15\%$ \\
-\texttt{scope\_184} & $300.0$ & $417.78$ & $16.42$ & $835.87$   & $0.959$   & $5.84\%$ \\
-\texttt{scope\_185} & $400.0$ & $417.81$ & $20.51$ & $836.25$   & $1.675$   & $8.17\%$ \\
-\texttt{scope\_186} & $500.0$ & $417.81$ & $22.87$ & $836.56$   & $2.268$   & $9.92\%$ \\
-\texttt{scope\_187} & $600.0$ & $417.81$ & $23.45$ & $836.56$   & $2.456$   & $10.47\%$ \\
-\texttt{scope\_188} & $700.0$ & $417.81$ & $24.90$ & $836.56$   & $2.776$   & $11.15\%$ \\
-\texttt{scope\_189} & $800.0$ & $417.81$ & $\mathbf{28.14}$ & $836.56$ & $\mathbf{3.457}$ & $\mathbf{12.28\%}$ \\
-\bottomrule
-\multicolumn{7}{l}{\footnotesize $^*$A $V_{\text{ac}} = \SI{20}{\milli\volt_{pp}}$ l'ampiezza della seconda armonica ($\approx \SI{13}{\micro\volt}$) è prossima al pavimento di rumore termico dell'oscilloscopio.}
-\end{tabular}
-\end{table}
+% =============================================================================
+% SEZIONE 12: VARIAZIONE DELLA FREQUENZA DI RISONANZA CON LA TENSIONE V_DC
+% =============================================================================
+\newpage
+\section{Variazione della frequenza di risonanza con la tensione di polarizzazione \texorpdfstring{$V_{\text{DC}}$}{VDC}}
+\label{sec:frequenza_vdc}
 
-\noindent Dall'esame congiunto di Fig.~\ref{fig:distorsione_armoniche_vac}, Fig.~\ref{fig:distorsione_hd2_rapporto} e della Tabella~\ref{tab:risultati_distorsione} emergono conclusioni fisiche di grande rilievo:
-\begin{enumerate}
-    \item \textbf{Verifica delle leggi teoriche di scala per $V_{\text{ac}} \le \SI{500}{\milli\volt_{pp}}$:}
-    \begin{itemize}
-        \item \textit{Primo modo ($p_1$, curva blu in Fig.~\ref{fig:distorsione_armoniche_vac}):} fino a $V_{\text{ac}} \approx \SI{400}{\milli\volt_{pp}}$, l'ampiezza della fondamentale segue fedelmente la retta di proporzionalità diretta:
-        \begin{equation}
-            p_1(V_{\text{ac}}) = k_1 \, V_{\text{ac}}, \qquad k_1 = \mathbf{\SI{0.05019}{\milli\volt/\milli\volt_{pp}}}
-        \end{equation}
-        raggiungendo $p_1 = \SI{20.51}{\milli\volt}$ per $V_{\text{ac}} = \SI{400}{\milli\volt_{pp}}$ (in pieno accordo con la previsione lineare di $\SI{20.08}{\milli\volt}$).
-        \item \textit{Secondo modo ($p_2$, curva rossa in Fig.~\ref{fig:distorsione_armoniche_vac}):} nell'intero intervallo da $\SI{60}{\milli\volt_{pp}}$ fino a $\SI{500}{\milli\volt_{pp}}$, i punti sperimentali di $p_2$ si adagiano con eccellente accuratezza sulla parabola quadratica passante per l'origine:
-        \begin{equation}
-            p_2(V_{\text{ac}}) = k_2 \, V_{\text{ac}}^2, \qquad k_2 = \mathbf{\SI{9.589e-6}{\milli\volt/\milli\volt_{pp}^2}}
-        \end{equation}
-        Ad esempio, raddoppiando la tensione di eccitazione da $\SI{200}{\milli\volt_{pp}}$ a $\SI{400}{\milli\volt_{pp}}$, l'ampiezza del secondo modo quadruplica da $\SI{0.379}{\milli\volt}$ a $\SI{1.675}{\milli\volt}$ (rapporto $\approx 4.4\times$), dimostrando in modo inequivocabile la natura quadratica ($\propto q_1^2$) del meccanismo di generazione a $f_2 = 2 f_1 \approx \SI{835.6}{\kilo\hertz}$.
-        \item \textit{Crescita lineare della distorsione armonica $\text{HD}_2 = p_2 / p_1$ (Fig.~\ref{fig:distorsione_hd2_rapporto}):} il rapporto tra la parabola quadratica $p_2$ e la retta lineare $p_1$ cresce linearmente con l'ampiezza di eccitazione secondo la pendenza teorica:
-        \begin{equation}
-            \text{HD}_2(V_{\text{ac}}) = k_{\text{hd2}} \, V_{\text{ac}}, \qquad k_{\text{hd2}} = \frac{k_2}{k_1} \times 100\% = \mathbf{\SI{0.01911}{\%/\milli\volt_{pp}}} \quad (\approx \SI{1.91}{\%} \text{ ogni } \SI{100}{\milli\volt_{pp}})
-        \end{equation}
-        passando da circa l'$1\%$ a $\SI{40}{\milli\volt_{pp}}$, al $4.15\%$ a $\SI{200}{\milli\volt_{pp}}$, fino al $9.92\%$ a $\SI{500}{\milli\volt_{pp}}$.
-    \end{itemize}
-    \item \textbf{Compressione ad alta eccitazione ($V_{\text{ac}} \in [\SI{600}{\milli\volt_{pp}}, \SI{800}{\milli\volt_{pp}}]$):}
-    Per tensioni superiori a $\SI{500}{\milli\volt_{pp}}$, si osserva in Fig.~\ref{fig:distorsione_armoniche_vac} che l'ampiezza della fondamentale $p_1$ inizia a piegare al di sotto della retta blu (attestandosi a $\SI{28.14}{\milli\volt}$ a $\SI{800}{\milli\volt_{pp}}$ rispetto ai $\SI{40.15}{\milli\volt}$ del modello lineare, con una compressione del $-29.9\%$), in perfetta coerenza con il fenomeno di auto-disaccordamento risonante dimostrato nella Sezione~\ref{sec:regime_non_lineare}.
-    Poiché l'eccitazione interna del secondo modo è governata dal termine quadratico $-k_4 q_1^2(t)$, la saturazione dell'ampiezza $q_1$ del primo modo frena conseguentemente anche la crescita di $p_2$ (che a $\SI{800}{\milli\volt_{pp}}$ raggiunge $\SI{3.46}{\milli\volt}$ invece dei $\SI{6.14}{\milli\volt}$ della parabola teorica), facendo sì che anche il rapporto $\text{HD}_2 = p_2 / p_1$ in Fig.~\ref{fig:distorsione_hd2_rapporto} mostri una lieve flessione sub-lineare ad alti livelli di pilotaggio, raggiungendo il valore massimo di $\mathbf{12.28\%}$ a $V_{\text{ac}} = \SI{800}{\milli\volt_{pp}}$.
-\end{enumerate}
+Nei capitoli precedenti abbiamo mantenuto fissa la tensione continua di polarizzazione della trave al valore $V_{\text{DC}} = \SI{5.0}{\volt}$. In questa sezione analizziamo sperimentalmente come varia la frequenza di risonanza del primo modo $f_1$ al variare della tensione di polarizzazione $V_{\text{DC}}$, verificando la relazione teorica introdotta nella sezione~\ref{sec:forze_elettrostatiche}.
+
+\vspace{0.3cm}
+\noindent Riprendiamo l'espressione dell'energia elettrostatica immagazzinata nel condensatore di drive $C_d(x)$ formato tra la trave mobile (a potenziale $V_{\text{DC}}$) e l'elettrodo di drive (pilotato da $v_{\text{in}}(t)$), vista nella sezione~\ref{sec:forze_elettrostatiche}:
+\begin{equation}
+    U_e = \frac{1}{2} C_d(x) V^2(t) = \frac{1}{2} C_d(x) \left( V_{\text{DC}} - v_{\text{in}}(t) \right)^2
+\end{equation}
+da cui la forza elettrostatica esercitata sulla trave è data dalla derivata rispetto allo spostamento $x$:
+\begin{equation}
+    \label{eq:forza_elettrostatica_richiamo_vdc}
+    F_e(x, t) = \frac{\partial U_e}{\partial x} = \frac{1}{2} \frac{\partial C_d(x)}{\partial x} \left( V_{\text{DC}} - v_{\text{in}}(t) \right)^2
+\end{equation}
+La dipendenza dal quadrato della tensione applicata nasce dal fatto che la carica elettrica accumulata sulle armature del condensatore è proporzionale alla tensione ($q = C_d(x) V$) e anche il campo elettrico nel gap è proporzionale a $V$: la forza elettrostatica attrattiva tra le armature (proporzionale al prodotto tra carica e campo elettrico) dipende quindi dal quadrato della differenza di potenziale.
+
+\vspace{0.3cm}
+\noindent Nelle misure di ringdown, come visto nella sezione~\ref{sec:ringdown}, per $t < 0$ il generatore mette in oscillazione la trave, mentre all'istante $t = 0$ il gate interrompe la forzante sinusoidale azzerando l'ingresso ($v_{\text{in}}(t) = 0$). Durante l'oscillazione libera ($t > 0$), ai capi del condensatore rimane applicata esclusivamente la tensione continua $V_{\text{DC}}$ e la forza elettrostatica~\eqref{eq:forza_elettrostatica_richiamo_vdc} si riduce a:
+\begin{equation}
+    F_e(x) = \frac{1}{2} \frac{\partial C_d(x)}{\partial x} V_{\text{DC}}^2
+\end{equation}
+In regime di piccolo segnale ($x(t) \ll g_0$), sviluppiamo la derivata della capacità al primo ordine attorno alla posizione di riposo $x = 0$:
+\begin{equation}
+    \frac{\partial C_d(x)}{\partial x} \approx \left. \frac{\partial C_d}{\partial x} \right|_{x=0} + \left. \frac{\partial^2 C_d}{\partial x^2} \right|_{x=0} x(t)
+\end{equation}
+Sostituendo questo sviluppo in $F_e(x)$, otteniamo:
+\begin{equation}
+    F_e(x) \approx \underbrace{\frac{1}{2} \left. \frac{\partial C_d}{\partial x} \right|_0 V_{\text{DC}}^2}_{F_{\text{DC}}} + \underbrace{\left( \frac{1}{2} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2 \right)}_{k_e(V_{\text{DC}})} x(t)
+\end{equation}
+Come visto nella sezione~\ref{sec:forze_elettrostatiche}, il termine costante $F_{\text{DC}}$ determina unicamente una lieve deflessione statica della posizione di equilibrio, mentre il termine $k_e(V_{\text{DC}}) x(t)$ è proporzionale allo spostamento $x(t)$. Inserendo $F_e(x)$ nell'equazione del moto~\eqref{eq:meccanica_1dof} con forzante nulla ($F_{\text{drive}}(t) = 0$ durante il ringdown) e portando $k_e(V_{\text{DC}}) x(t)$ al primo membro, ritroviamo l'eq.~\eqref{eq:moto_keff}:
+\begin{equation}
+    m_{\text{eff}} \ddot{x}(t) + b_{\text{eff}} \dot{x}(t) + \underbrace{\left( k_m - k_e(V_{\text{DC}}) \right)}_{k_{\text{eff}}(V_{\text{DC}})} x(t) = 0
+\end{equation}
+Fisicamente, mentre la forza elastica del silicio ($-k_m x$) è una forza di richiamo che si oppone allo spostamento riportando la trave verso la posizione di riposo, la forza elettrostatica è attrattiva e cresce man mano che la trave si avvicina all'elettrodo (poiché il gap diminuisce e $\left.\frac{\partial^2 C_d}{\partial x^2}\right|_0 > 0$). Di conseguenza, per uno spostamento $x > 0$ verso l'elettrodo, l'incremento di forza elettrostatica $+k_e x$ tira la trave nello stesso verso dello spostamento, contrastando il richiamo elastico del silicio e comportandosi come una molla negativa (\textit{electrostatic spring softening}). La rigidezza efficace complessiva della trave diminuisce quindi con il quadrato di $V_{\text{DC}}$:
+\begin{equation}
+    \label{eq:keff_vdc_cap12}
+    k_{\text{eff}}(V_{\text{DC}}) = k_m - k_e(V_{\text{DC}}) = k_m - \frac{1}{2} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2
+\end{equation}
+
+\vspace{0.3cm}
+\noindent Poiché in un oscillatore armonico la pulsazione di risonanza è legata alla rigidezza efficace dalla radice quadrata $\omega_1(V_{\text{DC}}) = \sqrt{\frac{k_{\text{eff}}(V_{\text{DC}})}{m_{\text{eff}}}}$, elevando al quadrato ambo i membri eliminiamo la radice e otteniamo che è il quadrato della pulsazione di risonanza $\omega_1^2(V_{\text{DC}})$ a essere direttamente proporzionale a $k_{\text{eff}}(V_{\text{DC}})$:
+\begin{equation}
+    \omega_1^2(V_{\text{DC}}) = \frac{k_{\text{eff}}(V_{\text{DC}})}{m_{\text{eff}}} = \frac{k_m}{m_{\text{eff}}} - \frac{k_e(V_{\text{DC}})}{m_{\text{eff}}} = \omega_{01}^2 - \frac{1}{2 m_{\text{eff}}} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2
+\end{equation}
+dove $\omega_{01} = \sqrt{\frac{k_m}{m_{\text{eff}}}} = 2\pi f_{01}$ è la pulsazione di risonanza puramente meccanica in assenza di polarizzazione ($V_{\text{DC}} = \SI{0}{\volt}$). Passando dalle pulsazioni alle frequenze cicliche ($\omega_1 = 2\pi f_1$ e $\omega_{01} = 2\pi f_{01}$) e dividendo entrambi i membri per $(2\pi)^2 = 4\pi^2$, arriviamo alla legge:
+\begin{equation}
+    \label{eq:legge_quadratica_f1_vdc}
+    f_1^2(V_{\text{DC}}) = f_{01}^2 - \gamma \, V_{\text{DC}}^2
+\end{equation}
+dove abbiamo indicato con $\gamma$ il coefficiente costante:
+\begin{equation}
+    \gamma = \frac{1}{8\pi^2 m_{\text{eff}}} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0
+\end{equation}
+L'eq.~\eqref{eq:legge_quadratica_f1_vdc} spiega perché conviene diagrammare il quadrato della frequenza $f_1^2$ in funzione del quadrato della tensione continua $V_{\text{DC}}^2$: mentre $f_1(V_{\text{DC}}) = \sqrt{f_{01}^2 - \gamma V_{\text{DC}}^2}$ segue un andamento non lineare sotto radice, esprimendo la relazione in termini delle grandezze al quadrato $f_1^2$ e $V_{\text{DC}}^2$ si ottiene l'equazione di una retta con intercetta $f_{01}^2$ e pendenza negativa $-\gamma$.
+
+\vspace{0.3cm}
+\noindent Confrontando l'eq.~\eqref{eq:legge_quadratica_f1_vdc} con l'eq.~\eqref{eq:softening} introdotta nella sezione~\ref{sec:forze_elettrostatiche} a partire dal modello a ordine ridotto di Frangi~\cite{frangi2023}:
+\begin{equation}
+    \omega_1^2(V_{\text{DC}}) = \omega_{01}^2 - \varepsilon_0 c_{1,DD}^{(1)} V_{\text{DC}}^2
+\end{equation}
+il valore teorico del coefficiente $\gamma$ predetto dal paper (dividendo per $4\pi^2$) vale:
+\begin{equation}
+    \label{eq:gamma_teorico_frangi}
+    \gamma_{\text{teor}} = \frac{\varepsilon_0 c_{1,DD}^{(1)}}{4\pi^2}
+\end{equation}
+Dalla tabella~2 di~\cite{frangi2023}, il coefficiente elettrostatico del primo modo vale $c_{1,DD}^{(1)} = \SI{21.11}{\micro\newton/(\volt^2 \cdot \pico\farad)}$; moltiplicando per la costante dielettrica del vuoto $\varepsilon_0 = \SI{8.854e-12}{\farad/\meter} = \SI{8.854e-6}{\pico\farad/\micro\meter}$ e convertendo in unità del Sistema Internazionale ($\SI{1}{\micro\second^{-2}} = \SI{e12}{\second^{-2}}$), si ottiene $\varepsilon_0 c_{1,DD}^{(1)} = \SI{1.869e8}{\radian^2/(\second^2 \cdot \volt^2)}$. Sostituendo questo valore nell'eq.~\eqref{eq:gamma_teorico_frangi}, la pendenza teorica risulta:
+\begin{equation}
+    \gamma_{\text{teor}} = \frac{\SI{1.869e8}{}}{4\pi^2} = \mathbf{\SI{4.735e6}{\hertz^2/\volt^2}}
+\end{equation}
+
+\vspace{0.3cm}
+\noindent Per verificare sperimentalmente l'eq.~\eqref{eq:legge_quadratica_f1_vdc}, abbiamo utilizzato lo stesso setup di misura del ringdown descritto nella sezione~\ref{sec:ringdown}, mantenendo il risonatore in regime di piccolo segnale ($V_{\text{ac}} = \SI{200}{\milli\volt_{pp}}$ e frequenza di eccitazione $f_{\text{in}} = \SI{417.85}{\kilo\hertz}$) e acquisendo la risposta libera della trave per 7 diversi valori della tensione continua $V_{\text{DC}}$, da $\SI{3.0}{\volt}$ a $\SI{6.0}{\volt}$ con passo di $\SI{0.5}{\volt}$ (corrispondenti a $V_{\text{DC}}^2$ compreso tra $\SI{9.0}{\volt^2}$ e $\SI{36.0}{\volt^2}$). Per ciascuna traccia, scartati i primi $\SI{20}{\micro\second}$ dopo lo spegnimento del gate per escludere il transitorio impulsivo di $C_p$, abbiamo estratto mediante uno script la frequenza di oscillazione libera $f_1$.
+
+\vspace{0.3cm}
+\noindent Passando da $V_{\text{DC}} = \SI{3.0}{\volt}$ a $V_{\text{DC}} = \SI{6.0}{\volt}$, la frequenza di risonanza misurata scende monotonamente da $\SI{417944.7}{\hertz}$ ($f_1^2 = \SI{17.4678e10}{\hertz^2}$) fino a $\SI{417781.8}{\hertz}$ ($f_1^2 = \SI{17.4542e10}{\hertz^2}$), con una riduzione complessiva di circa $\SI{163}{\hertz}$. In fig.~\ref{fig:f1_quadro_vdc_quadro} sono riportati i punti sperimentali di $f_1^2$ in funzione di $V_{\text{DC}}^2$, insieme alla retta del fit lineare (in rosso) e alla retta teorica predetta dal modello di Frangi~\cite{frangi2023} (tratteggiata).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.84\textwidth]{../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png}
+\caption{Variazione del quadrato della frequenza di risonanza $f_1^2$ in funzione del quadrato della tensione di polarizzazione $V_{\text{DC}}^2$: confronto tra i dati sperimentali (punti blu), il fit lineare sperimentale (retta continua rossa) e la pendenza teorica del modello di Frangi~\cite{frangi2023} (retta tratteggiata).}
+\label{fig:f1_quadro_vdc_quadro}
+\end{figure}
+
+\noindent Dal fit lineare dei dati sperimentali con l'eq.~\eqref{eq:legge_quadratica_f1_vdc} otteniamo:
+\begin{equation}
+    \gamma_{\text{sper}} = \mathbf{\SI{5.035e6}{\hertz^2/\volt^2}}, \qquad f_{01} = \mathbf{\SI{417.996}{\kilo\hertz}}, \qquad R^2 = 0.9988
+\end{equation}
+Il valore del coefficiente di determinazione $R^2 = 0.9988$ conferma che i punti sperimentali di $f_1^2$ si dispongono lungo una retta in funzione di $V_{\text{DC}}^2$, la cui intercetta a $V_{\text{DC}} = \SI{0}{\volt}$ fornisce una frequenza di risonanza meccanica a vuoto pari a $f_{01} \approx \SI{418.00}{\kilo\hertz}$. Infine, confrontando la pendenza sperimentale $\gamma_{\text{sper}} = \SI{5.035e6}{\hertz^2/\volt^2}$ con il valore teorico $\gamma_{\text{teor}} = \SI{4.735e6}{\hertz^2/\volt^2}$, si osserva una differenza del $6.3\%$, pienamente compatibile con le tolleranze costruttive di processo sul gap nominale $g_0 = \SI{1.8}{\micro\meter}$ tra la trave e gli elettrodi.
+
+\newpage
 
 \begin{thebibliography}{9}
 \bibitem{frangi2023}
