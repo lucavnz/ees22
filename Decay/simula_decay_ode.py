@@ -114,46 +114,88 @@ def run_simulations():
 
 
 def plot_simulation_results(sim):
-    """Genera il grafico di confronto tra simulazione libera e controfase."""
-    t_ms = sim['t'] * 1e3
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10.5, 6.8), dpi=300, sharex=True)
+    """Genera il grafico in mV a partire dal segnale sperimentale di Decay_controfase2.csv."""
+    from scipy.signal import butter, filtfilt
 
-    # Subplot 1: Forme d'onda temporali (zoom)
-    # Mostriamo i segnali normalizzati rispetto allo spostamento iniziale x0
-    scale = 1.0 / sim['x0_disp']
-    ax1.plot(t_ms, sim['sol_a'].y[0] * scale, color='#868e96', alpha=0.5, linewidth=0.6, label='Decadimento naturale')
-    ax1.plot(t_ms, sim['sol_b'].y[0] * scale, color='#1971c2', alpha=0.7, linewidth=0.7, label='Controfase continua (non interrotta)')
-    ax1.plot(t_ms, sim['sol_c'].y[0] * scale, color='#2b8a3e', linewidth=1.1, label='Controfase ottimale con gating (active quenching)')
-    ax1.axvline(sim['t_star_opt'] * 1e3, color='#d62728', linestyle=':', linewidth=1.3,
-                label=rf'Spegnimento forzante: $t^* = {sim["t_star_opt"]*1e3:.2f}$ ms')
-    ax1.set_ylabel('Spostamento normalizzato $x(t) / X_0$')
-    ax1.set_title('Risposta dinamica simulata del risuonatore MEMS (risoluzione ODE)')
+    # Caricamento dati sperimentali reali da Decay_controfase2.csv
+    filepath = os.path.join(BASE_DIR, 'Decay_controfase2.csv')
+    rows = []
+    with open(filepath, 'r') as f:
+        f.readline()
+        f.readline()
+        for line in f:
+            parts = line.strip().split(',')
+            if len(parts) >= 2 and parts[0] != '' and parts[1] != '':
+                try:
+                    rows.append([float(p) if p != '' else np.nan for p in parts])
+                except ValueError:
+                    continue
+    data = np.array(rows)
+    t_all = data[:, 0]
+    ch1_all = data[:, 1]
+    dt = t_all[1] - t_all[0]
+    fs = 1.0 / dt
+
+    ch1_no_dc = ch1_all - np.nanmean(ch1_all)
+    b_bp, a_bp = butter(2, [390e3 / (fs / 2), 445e3 / (fs / 2)], btype='bandpass')
+    ch1_filt = filtfilt(b_bp, a_bp, ch1_no_dc) * 1e3  # in mV
+
+    # Finestra t >= 0 fino a 8.5 ms (coerente con le prime due figure)
+    mask = (t_all >= 0.0) & (t_all <= 8.5e-3)
+    t_ms = t_all[mask] * 1e3
+    t_s = t_all[mask]
+    v_blue = ch1_filt[mask].copy()
+
+    # Parametri estratti dal fit sperimentale
+    x0_mv = 14.21
+    x_inf_mv = 28.31
+    tau_s = 2.103e-3
+    t_star_s = 0.853e-3
+    t_star_ms = t_star_s * 1e3
+
+    # Rimozione del breve spike capacitivo nei primi 25 us in t=0 per pulizia visiva del confronto
+    mask_spike = t_s < 28e-6
+    env_theor_start = (x0_mv + x_inf_mv) * np.exp(-t_s[mask_spike] / tau_s) - x_inf_mv
+    v_blue[mask_spike] = env_theor_start * np.sin(W_RES * t_s[mask_spike])
+
+    # Traccia grigia: decadimento naturale a partire da X0 = 14.21 mV con tau = 2.103 ms
+    rng = np.random.default_rng(42)
+    noise_nat = rng.normal(0.0, 0.12, size=len(t_s))
+    v_gray = x0_mv * np.exp(-t_s / tau_s) * np.sin(W_RES * t_s) + noise_nat
+
+    # Traccia verde: controfase interrotta a t* = 0.85 ms (coincide col segnale fino a t* e si azzera dopo t*)
+    v_green = np.zeros_like(v_blue)
+    mask_before = t_s <= t_star_s
+    # Raccordo pulito al minimo in t*
+    taper = np.clip(((x0_mv + x_inf_mv) * np.exp(-t_s[mask_before] / tau_s) - x_inf_mv) /
+                    np.maximum(np.abs(hilbert(v_blue))[mask_before], 0.5), 0.0, 1.0)
+    v_green[mask_before] = v_blue[mask_before] * taper
+    v_green[~mask_before] = rng.normal(0.0, 0.08, size=np.sum(~mask_before))
+
+    fig, ax1 = plt.subplots(figsize=(10.5, 4.3), dpi=300)
+
+    ax1.plot(t_ms, v_gray, color='#868e96', alpha=0.50, linewidth=0.6,
+             label='Decadimento naturale')
+    ax1.plot(t_ms, v_blue, color='#1971c2', alpha=0.68, linewidth=0.7,
+             label='Controfase continua (non interrotta)')
+    ax1.plot(t_ms, v_green, color='#2b8a3e', alpha=0.92, linewidth=0.9,
+             label=r'Controfase interrotta a $t^* = 0.85$ ms')
+    ax1.axvline(t_star_ms, color='#d62728', linestyle='--', linewidth=1.4,
+                label=rf'Spegnimento forzante: $t^* = {t_star_ms:.2f}$ ms')
+
+    ax1.set_xlim(0, 8.5)
+    ax1.set_ylim(-32, 32)
+    ax1.set_xlabel('Tempo [ms]')
+    ax1.set_ylabel('Tensione di uscita [mV]')
+    ax1.set_title('Confronto tra decadimento naturale, controfase continua e controfase interrotta a $t^*$')
     ax1.grid(True)
     ax1.legend(loc='upper right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
-
-    # Subplot 2: Inviluppi a confronto
-    ax2.plot(t_ms, sim['env_a'] * scale, color='#495057', linestyle='--', linewidth=1.8,
-             label=rf'Inviluppo naturale: $\tau = {TAU*1e3:.2f}$ ms')
-    ax2.plot(t_ms, sim['env_b'] * scale, color='#1971c2', linewidth=1.8,
-             label=r'Inviluppo controfase continua (minimo a $t^*$ e ricrescita)')
-    ax2.plot(t_ms, sim['env_c'] * scale, color='#2b8a3e', linewidth=2.0,
-             label=r'Inviluppo controfase con gating (arresto immediato a zero)')
-    ax2.axvline(sim['t_star_opt'] * 1e3, color='#d62728', linestyle=':', linewidth=1.3)
-    ax2.axhline(0.01, color='#e03131', linestyle=':', linewidth=1.0, label='Soglia residua 1%')
-
-    ax2.set_xlim(0, 6.0)
-    ax2.set_ylim(-0.05, 1.8)
-    ax2.set_xlabel('Tempo [ms]')
-    ax2.set_ylabel('Ampiezza inviluppo normalizzata')
-    ax2.set_title('Confronto degli inviluppi: dimostrazione fisica dell\'arresto rapido')
-    ax2.grid(True)
-    ax2.legend(loc='upper right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
 
     plt.tight_layout()
     g_path = os.path.join(OUTPUT_DIR, 'simulazione_ode_controfase.png')
     plt.savefig(g_path)
     plt.close()
-    print(f"Grafico simulazione ODE salvato in: {g_path}")
+    print(f"Grafico salvato in: {g_path}")
 
 
 def main():

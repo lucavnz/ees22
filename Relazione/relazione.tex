@@ -1513,6 +1513,241 @@ Per verificare sperimentalmente l'eq.~\eqref{eq:legge_quadratica_f1_vdc}, abbiam
 \end{equation}
 In confronto con il valore teorico di $\gamma_{\text{teor}} = \SI{4.735e6}{\hertz^2/\volt^2}$, osserviamo una differenza del $6.3\%$.
 
+% =============================================================================
+% SEZIONE 13: SMORZAMENTO ATTIVO DEL RINGDOWN IN CONTROFASE (DECAY)
+% =============================================================================
+\newpage
+
+\section{Riduzione del tempo di decadimento mediante eccitazione in controfase}
+\label{sec:decay_controfase}
+
+Nella sezione~\ref{sec:ringdown} abbiamo visto che, quando spegniamo la forzante in ingresso ($v_{\text{in}}(t) = 0$), la trave non si ferma istantaneamente ma continua ad oscillare liberamente. In questo capitolo presentiamo una tecnica per smorzare il ringdown, quindi per ridurre il tempo che impiega per il MEMS per smettere di oscillare, basata sull'applicazione di una tensione sinusoidale in controfase rispetto al moto del risonatore~\cite{wu2021}.
+
+\subsection{Decadimento spontaneo senza controfase}
+\label{subsec:risoluzione_omogenea_decay}
+
+Riportiamo l'equazione differenziale lineare del moto del primo modo flessionale della trave (a tensione di polarizzazione fissa $V_{\text{DC}} = \SI{5.0}{\volt}$), ricavata nella sezione~\ref{sec:forze_elettrostatiche} (eq.~\eqref{eq:moto_keff}):
+\begin{equation}
+    \label{eq:moto_base_decay}
+    m_{\text{eff}} \ddot{x}(t) + b_{\text{eff}} \dot{x}(t) + k_{\text{eff}} x(t) = F_{\text{drive}}(t) = \eta \, v_{\text{in}}(t)
+\end{equation}
+Dividendo per la massa efficace $m_{\text{eff}}$ e sapendo che la pulsazione di risonanza a $V_{\text{DC}} = \SI{5.0}{\volt}$ vale $\omega_1^2 = \frac{k_{\text{eff}}}{m_{\text{eff}}} = \frac{1}{L_m C_m}$ mentre il termine di smorzamento vale $\frac{b_{\text{eff}}}{m_{\text{eff}}} = \frac{R_m}{L_m} = \frac{\omega_1}{Q}$, l'equazione diventa:
+\begin{equation}
+    \label{eq:ode_canonica_decay}
+    \ddot{x}(t) + \frac{\omega_1}{Q} \dot{x}(t) + \omega_1^2 x(t) = \frac{\eta}{m_{\text{eff}}} v_{\text{in}}(t)
+\end{equation}
+
+\vspace{0.3cm}
+\noindent Studiamo per prima cosa la risposta libera (equazione omogenea associata), che ci dice come si comporta il MEMS quando il generatore d'ingresso è spento ($v_{\text{in}}(t) = 0$):
+\begin{equation}
+    \label{eq:ode_omogenea_decay}
+    \ddot{x}(t) + \frac{\omega_1}{Q} \dot{x}(t) + \omega_1^2 x(t) = 0
+\end{equation}
+Per risolvere questa equazione differenziale del secondo ordine, cerchiamo una soluzione esponenziale nella forma $x(t) = e^{\lambda t}$. Sostituendo questa espressione di $x(t)$ otteniamo che:
+\begin{equation}
+    \lambda^2 + \frac{\omega_1}{Q} \lambda + \omega_1^2 = 0
+\end{equation}
+Applicando la formula risolutiva delle equazioni di secondo grado, le due radici $\lambda_{1,2}$ sono:
+\begin{equation}
+    \lambda_{1,2} = -\frac{\omega_1}{2Q} \pm \sqrt{\left(\frac{\omega_1}{2Q}\right)^2 - \omega_1^2} = -\frac{\omega_1}{2Q} \pm \omega_1 \sqrt{\frac{1}{4Q^2} - 1}
+\end{equation}
+Nel nostro risonatore il fattore di merito è molto elevato ($Q \approx 2800 \gg 1$), per cui il termine $\frac{1}{4Q^2} \approx 3.2 \times 10^{-8}$ è del tutto trascurabile rispetto a $1$. Il discriminante è quindi negativo e le due radici dell'equazione caratteristica sono complesse coniugate:
+\begin{equation}
+    \lambda_{1,2} = -\frac{\omega_1}{2Q} \pm j\omega_d, \qquad \text{con} \quad \omega_d = \omega_1 \sqrt{1 - \frac{1}{4Q^2}} \approx \omega_1
+\end{equation}
+Indicando con $\tau = \frac{2Q}{\omega_1}$ la costante di tempo di decadimento (da cui $\frac{\omega_1}{2Q} = \frac{1}{\tau}$, come già visto nell'eq.~\eqref{eq:calcolo_Q_sperimentale}), le radici si scrivono come $\lambda_{1,2} = -\frac{1}{\tau} \pm j\omega_1$ e la soluzione dell'omogenea è:
+\begin{equation}
+    \label{eq:sol_omogenea_generale}
+    x_{\text{om}}(t) = e^{-t/\tau} \Big( C_1 \cos(\omega_1 t) + C_2 \sin(\omega_1 t) \Big)
+\end{equation}
+dove le costanti reali $C_1$ e $C_2$ dipendono dalle condizioni iniziali di posizione e velocità. Se prima del ringdown il MEMS è stato messo in oscillazione da un generatore $\propto \sin(\omega_1 t)$ alla frequenza di risonanza, quindi $f_{in}=f_1$, nel ramo RLC serie $L_m$ e $C_m$ si annullano e l'impedenza è puramente resistiva; quindi la corrente $i_m(t) = \eta \, \dot{x}(t)$ e la velocità $\dot{x}(t)$ sono in fase con il generatore e oscillano come $+\sin(\omega_1 t)$. Poiché lo spostamento $x(t)$ è l'integrale della velocità (ed è quindi in ritardo di $90^\circ$, cioè oscilla come $-\cos(\omega_1 t)$), abbiamo $C_1 = -X_0$ e $C_2 = 0$, e otteniamo l'equazione dello spostamento durante il ringdown~\cite{wu2021}:
+\begin{equation}
+    \label{eq:ringdown_libero_x}
+    x_{\text{lib}}(t) = -X_0 \, e^{-t/\tau} \cos(\omega_1 t)
+\end{equation}
+Dall'eq.~\eqref{eq:ringdown_libero_x} possiamo calcolare quanto tempo impiega il MEMS a spegnersi spontaneamente. Se imponiamo che l'ampiezza $X_0 e^{-t/\tau}$ scenda all'$1\%$ del valore iniziale $X_0$:
+\begin{equation}
+    t_{1\%} = \tau \ln(100) = 4.61 \, \tau
+\end{equation}
+Con una costante di tempo $\tau = \SI{2.10}{\milli\second}$, si ha $t_{1\%} = \SI{9.68}{\milli\second}$.
+
+\subsection{Teoria dell'eccitazione in controfase e modello matematico}
+\label{subsec:teoria_controfase_unificata}
+
+Concentriamoci ora su come ridurre il tempo di spegnimento applicando una forzante $v_{\text{in}}(t)$ alla frequenza di risonanza $f_1$ ma in controfase rispetto al moto della trave.
+
+\vspace{0.3cm}
+\noindent Ricaviamo la velocità $\dot{x}(t)$ durante il ringdown derivando l'eq.~\eqref{eq:ringdown_libero_x} rispetto al tempo:
+\begin{equation}
+    \label{eq:velocita_ringdown}
+    \dot{x}(t) = \frac{X_0}{\tau} e^{-t/\tau} \cos(\omega_1 t) + \omega_1 X_0 \, e^{-t/\tau} \sin(\omega_1 t) \approx \omega_1 X_0 \, e^{-t/\tau} \sin(\omega_1 t)
+\end{equation}
+La corrente nel ramo RLC serie vale quindi $i_m(t) = \eta \, \dot{x}(t) = \eta \omega_1 X_0 \, e^{-t/\tau} \sin(\omega_1 t)$ e la tensione d'uscita vale $v_{\text{out}}(t) = R_{\text{trans}} \, i_m(t) = R_{\text{trans}} \eta \omega_1 X_0 \, e^{-t/\tau} \sin(\omega_1 t)$, tutte in fase con $+\sin(\omega_1 t)$. Per frenare la trave dobbiamo esercitare una forza $F_{\text{drive}}(t) = \eta \, v_{\text{in}}(t)$ di segno opposto alla velocità $\dot{x}(t)$ (sfasata quindi di $180^\circ$, ovvero in controfase). Quindi, all'istante $t = 0$ in cui attiviamo la frenatura in controfase, applichiamo all'ingresso la tensione:
+\begin{equation}
+    \label{eq:vin_controfase_gradino}
+    v_{\text{in}}(t) = -V_{\text{AC}} \sin(\omega_1 t) \cdot u(t)
+\end{equation}
+dove abbiamo indicato con $u(t)$ la funzione gradino che vale:
+\begin{equation}
+    u(t) = \begin{cases} 0 & \text{per } t < 0 \quad \text{(generatore spento)} \\ 1 & \text{per } t \ge 0 \quad \text{(generatore in controfase attivo)} \end{cases}
+\end{equation}
+
+\vspace{0.3cm}
+\noindent Sostituendo l'ingresso~\eqref{eq:vin_controfase_gradino} nell'equazione differenziale~\eqref{eq:ode_canonica_decay}, otteniamo l'equazione valida per tutto l'asse dei tempi ($t < 0$ e $t \ge 0$):
+\begin{equation}
+    \label{eq:ode_completa_gradino}
+    \ddot{x}(t) + \frac{\omega_1}{Q} \dot{x}(t) + \omega_1^2 x(t) = -\frac{\eta V_{\text{AC}}}{m_{\text{eff}}} \sin(\omega_1 t) \cdot u(t)
+\end{equation}
+Risolviamo ora l'eq.~\eqref{eq:ode_completa_gradino} per $t \ge 0$, che è un'equazione differenziale non omogenea. La soluzione è data dalla somma dell'omogenea $x_{\text{om}}(t)$ (già trovata nell'eq.~\eqref{eq:sol_omogenea_generale}) e di una particolare $x_p(t)$~\cite{wu2021}:
+\begin{equation}
+    \label{eq:somma_om_part}
+    x(t) = x_{\text{om}}(t) + x_p(t)
+\end{equation}
+
+Vogliamo una soluzione particolare nella forma:
+\begin{equation}
+    x_p(t) = A \cos(\omega_1 t) + B \sin(\omega_1 t)
+\end{equation}
+Calcoliamo la derivata prima e la derivata seconda rispetto al tempo:
+\begin{align}
+    \dot{x}_p(t) &= -\omega_1 A \sin(\omega_1 t) + \omega_1 B \cos(\omega_1 t) \\[4pt]
+    \ddot{x}_p(t) &= -\omega_1^2 A \cos(\omega_1 t) - \omega_1^2 B \sin(\omega_1 t) = -\omega_1^2 x_p(t)
+\end{align}
+Sostituendo $x_p(t)$, $\dot{x}_p(t)$ e $\ddot{x}_p(t)$ nell'eq.~\eqref{eq:ode_completa_gradino}, otteniamo:
+\begin{equation}
+    \frac{\omega_1}{Q} \Big( -\omega_1 A \sin(\omega_1 t) + \omega_1 B \cos(\omega_1 t) \Big) = -\frac{\eta V_{\text{AC}}}{m_{\text{eff}}} \sin(\omega_1 t)
+\end{equation}
+Se uguagliamo i coefficienti di $\cos(\omega_1 t)$ e di $\sin(\omega_1 t)$, otteniamo il sistema:
+\begin{equation}
+    \begin{cases}
+        \dfrac{\omega_1^2}{Q} B = 0 \implies B = 0 \\[10pt]
+        -\dfrac{\omega_1^2}{Q} A = -\dfrac{\eta V_{\text{AC}}}{m_{\text{eff}}} \implies A = \dfrac{\eta V_{\text{AC}} Q}{m_{\text{eff}} \omega_1^2} = \dfrac{\eta V_{\text{AC}} Q}{k_{\text{eff}}}
+    \end{cases}
+\end{equation}
+Definiamo con $X_\infty > 0$ il modulo dell'ampiezza di oscillazione a cui il MEMS si stabilizzerebbe a regime ($t \to \infty$) sotto l'azione della forzante $V_{\text{AC}}$:
+\begin{equation}
+    \label{eq:def_X_inf}
+    X_\infty = \frac{\eta V_{\text{AC}} Q}{k_{\text{eff}}}
+\end{equation}
+Risulta $A = X_\infty$ e $B = 0$, quindi la soluzione particolare vale:
+\begin{equation}
+    \label{eq:sol_particolare_xp}
+    x_p(t) = +X_\infty \cos(\omega_1 t)
+\end{equation}
+Sostituendo la soluzione dell'omogenea~\eqref{eq:sol_omogenea_generale} e la soluzione particolare~\eqref{eq:sol_particolare_xp} nella~\eqref{eq:somma_om_part}, la soluzione completa per $t \ge 0$ è:
+\begin{equation}
+    \label{eq:sol_totale_c1c2}
+    x(t) = e^{-t/\tau}\Big( C_1 \cos(\omega_1 t) + C_2 \sin(\omega_1 t) \Big) + X_\infty \cos(\omega_1 t)
+\end{equation}
+Per determinare le costanti $C_1$ e $C_2$, imponiamo la continuità dello spostamento $x(t)$ e della velocità $\dot{x}(t)$ della trave a $t = 0$. Valutando le eq.~\eqref{eq:ringdown_libero_x} e~\eqref{eq:velocita_ringdown} in $t = 0^+$:
+\begin{equation}
+    x(0^-) = -X_0 \cos(0) = -X_0, \qquad \dot{x}(0^-) = \omega_1 X_0 \sin(0) = 0
+\end{equation}
+Valutando invece l'eq.~\eqref{eq:sol_totale_c1c2} in $t = 0^+$ e imponendo $x(0^+) = x(0^-) = -X_0$, otteniamo:
+\begin{equation}
+    x(0^+) = C_1 + X_\infty = -X_0 \implies C_1 = -\left(X_0 + X_\infty\right)
+\end{equation}
+mentre derivando l'eq.~\eqref{eq:sol_totale_c1c2} e imponendo $\dot{x}(0^+) = \dot{x}(0^-) = 0$, otteniamo $\dot{x}(0^+) = \omega_1 C_2 \cos(0) = 0 \implies C_2 = 0$. La risposta completa per $t \ge 0$ è quindi:
+\begin{equation}
+    \label{eq:sol_x_t_mag_0}
+    x(t) = -\Big[ \left(X_0 + X_\infty\right) e^{-t/\tau} - X_\infty \Big] \cos(\omega_1 t)
+\end{equation}
+Separiamo il contributo legato allo stato iniziale $X_0$ da quello legato alla forzante $X_\infty$:
+\begin{equation}
+    x(t) = \underbrace{-X_0 \, e^{-t/\tau} \cos(\omega_1 t)}_{\text{risposta libera (presente per ogni } t\text{)}} + \underbrace{X_\infty \left(1 - e^{-t/\tau}\right) \cos(\omega_1 t)}_{\text{risposta forzata (presente per } t \ge 0\text{)}}
+\end{equation}
+possiamo unificare i due intervalli $t < 0$ e $t \ge 0$ moltiplicando la parte della risposta forzata per il gradino $u(t)$: otteniamo un'unica equazione valida per tutto l'asse temporale:
+\begin{equation}
+    \label{eq:sol_unificata_x}
+    x(t) = -\Big[ X_0 \, e^{-t/\tau} - X_\infty \left(1 - e^{-t/\tau}\right) u(t) \Big] \cos(\omega_1 t)
+\end{equation}
+L'espressione completa della tensione d'uscita su tutto l'asse dei tempi è quindi:
+\begin{equation}
+    \label{eq:vout_unificata_completa}
+    v_{\text{out}}(t) = \underbrace{\Big[ X_0 \, e^{-t/\tau} - X_\infty \left(1 - e^{-t/\tau}\right) u(t) \Big]}_{A_{\text{exp}}(t)} \sin(\omega_1 t)
+\end{equation}
+dove $A_{\text{exp}}(t)$ è la funzione esponenziale che modula la portante sinusoidale.
+\newpage
+
+\noindent Vediamo ora come l'eq~\eqref{eq:vout_unificata_completa} spiega contemporaneamente tutte e tre le regioni temporali mostrate nei grafici sperimentali di fig.~\ref{fig:controfase_dinamica_completa} e fig.~\ref{fig:esponenziale_controfase}:
+\begin{enumerate}
+    \item \textbf{Prima fase ($t < 0$, regione gialla in fig.~\ref{fig:controfase_dinamica_completa}), ringdown senza controfase} \\
+    Per $t < 0$ il generatore in controfase è ancora spento. Nell'eq.~\eqref{eq:vout_unificata_completa} rimane:
+    \begin{equation}
+        A_{\text{exp}}(t) = X_0 \, e^{-t/\tau} > 0 \qquad (t < 0)
+    \end{equation}
+    Il segnale di uscita $v_{\text{out}}(t)$ ci mostra quindi il normale decadimento esponenziale libero con costante di tempo $\tau$, partendo da un'ampiezza più alta per $t < 0$ (dove $-t/\tau > 0$) e scendendo fino al valore $X_0$ a $t = 0$.
+
+    \item \textbf{Seconda fase ($0 \le t \le t^*$, regione azzurra in fig.~\ref{fig:controfase_dinamica_completa}), attiviamo la controfase e il mems frena fino a fermarsi} \\
+    All'istante $t = 0$ attiviamo la controfase ($u(t) = 1$). Otteniamo:
+    \begin{equation}
+        \label{eq:A_exp_t_pos}
+        A_{\text{exp}}(t) = \left(X_0 + X_\infty\right) e^{-t/\tau} - X_\infty \qquad (t \ge 0)
+    \end{equation}
+    L'esponenziale non sta più decadendo da $+X_0$ verso lo $0$, come accadeva per la ringdown senza controfase, ma sta scendendo da $+X_0$ verso $-X_\infty$, con una derivata iniziale pari a
+    \begin{equation}
+        \left.\frac{d A_{\text{exp}}}{dt}\right|_{t=0} = -\frac{X_0 + X_\infty}{\tau} = -\frac{X_0}{\tau}\left(1 + \frac{X_\infty}{X_0}\right)
+    \end{equation}
+    ovvero $\left(1 + \frac{X_\infty}{X_0}\right)$ volte più veloce della pendenza $-\frac{X_0}{\tau}$ del ringdown spontaneo. Calcoliamo l'istante $t = t^*$ in cui l'uscita interseca lo 0, ponendo $A_{\text{exp}}(t^*) = 0$. Otteniamo che:
+    \begin{equation}
+        \label{eq:t_star_formula}
+        t^* = \tau \ln\left(1 + \frac{X_0}{X_\infty}\right)
+    \end{equation}
+
+    \item \textbf{Terza fase ($t > t^*$, regione arancione in fig.~\ref{fig:controfase_dinamica_completa}), ricrescita fino a regime} \\
+    Se dopo l'istante $t = t^*$ il generatore in controfase non viene spento ma resta attivo ($u(t) = 1$), il sistema continua a seguire sempre l'eq~\eqref{eq:A_exp_t_pos}. Ma $A_{\text{exp}}(t)$ diventa negativo, quindi l'uscita:
+    \begin{equation}
+        v_{\text{out}}(t) = -|A_{\text{exp}}(t)| \sin(\omega_1 t) = |A_{\text{exp}}(t)| \sin(\omega_1 t + \pi)
+    \end{equation}
+    L'uscita ha un'inversione di fase di $180^\circ$ e riscresce esponenzialmente fino a raggiungere $X_\infty$.
+\end{enumerate}
+
+\newpage
+
+\subsection{Risultati sperimentali e verifica del modello}
+\label{subsec:risultati_sperimentali_decay}
+
+Per verificare sperimentalmente il modello ricavato, abbiamo polarizzato il MEMS a $V_{\text{DC}} = \SI{5.0}{\volt}$, abbiamo portato la trave in oscillazione alla frequenza di risonanza $f_1$, abbiamo interrotto l'eccitazione iniziale lasciando iniziare il ringdown spontaneo, e all'istante $t = 0$, abbiamo attivato l'alimentazione in controfase.
+
+\vspace{0.3cm}
+\noindent In fig.~\ref{fig:controfase_dinamica_completa} è mostrato nel il segnale $v_{\text{in}}(t)$ (nullo per $t < 0$ e attivo per $t \ge 0$), e nel pannello inferiore sono riportati il segnale di uscita del MEMS $v_{\text{out}}(t)$ (in grigio) e il suo inviluppo $|A_{\text{exp}}(t)|$ (in blu). In fig.~\ref{fig:esponenziale_controfase} lo stesso segnale di uscita $v_{\text{out}}(t)$ è sovrapposto a $A_{\text{exp}}(t) = (X_0 + X_\infty)e^{-t/\tau} - X_\infty$ (in rosso), mettendo in evidenza l'esponenziale che attraversa lo zero in $t^*$ e prosegue verso $-X_\infty$.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{../Decay/grafici/controfase_dinamica_completa.png}
+\caption{Dinamica temporale completa della prova in controfase: alimentazione $v_{\text{in}}(t)$ (in alto) e uscita $v_{\text{out}}(t)$ con inviluppo $|A_{\text{exp}}(t)|$ (in basso).}
+\label{fig:controfase_dinamica_completa}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{../Decay/grafici/esponenziale_controfase.png}
+\caption{Uscita $v_{\text{out}}(t)$ e $A_{\text{exp}}(t) = (X_0 + X_\infty)e^{-t/\tau} - X_\infty$ (in rosso).}
+\label{fig:esponenziale_controfase}
+\end{figure}
+
+\newpage
+
+\noindent Fittando l'inviluppo sperimentale con l'equazione esponenziale teorica, abbiamo ricavato:
+\begin{equation}
+    X_0 = \SI{14.21}{\milli\volt}, \qquad X_\infty = \SI{28.31}{\milli\volt}, \qquad \tau = \SI{2.103}{\milli\second}
+\end{equation}
+Se sostituiamo i valori ottenuti di $X_0$, $X_\infty$ e $\tau$ nell'eq.~\eqref{eq:t_star_formula}, possiamo calcolare il tempo di spegnimento teorico:
+\begin{equation}
+    t_{\text{teor}}^* = \tau \ln\left(1 + \frac{X_0}{X_\infty}\right) = \mathbf{\SI{0.855}{\milli\second}}
+\end{equation}
+Invece, il tempo di spegnimento misurato direttamente sulla traccia dell'oscilloscopio è $t_{\text{sper}}^* = \mathbf{\SI{0.853}{\milli\second}}$.
+
+\vspace{0.3cm}
+\noindent In fig.~\ref{fig:simulazione_ode_controfase} è riportato il confronto tra tre andamenti: in grigio il ringdown senza controfase, in blu l'andamento con controfase sempre attiva, e in verde l'andamento che si ottiene interrompendo la controfase all'istante di spegnimento $t^* = \SI{0.85}{\milli\second}$: il MEMS si ferma a zero senza ripartire~\cite{wu2021}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{../Decay/grafici/simulazione_ode_controfase.png}
+\caption{Confronto tra decadimento spontaneo, andamento con controfase sempre attiva (in blu) e andamento con interruzione della controfase a $t^* = \SI{0.85}{\milli\second}$ (in verde).}
+\label{fig:simulazione_ode_controfase}
+\end{figure}
+
 \newpage
 
 \begin{thebibliography}{9}
@@ -1520,6 +1755,16 @@ In confronto con il valore teorico di $\gamma_{\text{teor}} = \SI{4.735e6}{\hert
 G.~Gobat, V.~Zega, P.~Fedeli, L.~G.~Falorni, A.~Frangi, 
 \textit{Frequency combs in a MEMS resonator featuring 1:2 internal resonance}, 
 Nonlinear Dynamics, vol.~111, pp.~2991--3016, 2023.
+
+\bibitem{nastro2026}
+A.~Nastro, M.~Zini, P.~Belardinelli, F.~Clementi, P.~Russo, L.~Bastianelli, L.~Rosafalco, T.~Ma, A.~Frangi, M.~Ferrari,
+\textit{Experimental Characterization of a Nonlinear Electrostatic-Capacitive MEMS Resonator featuring 1:2 Internal Resonance},
+IEEE Sensors Letters, 2026.
+
+\bibitem{wu2021}
+Z.~Wu, W.~Liu, Z.~Tong, S.~Zhang, Y.~Gu, G.~Wu, A.~Tovstopyat, C.~Sun, L.~Lou,
+\textit{A Novel Transfer Function Based Ring-Down Suppression System for PMUTs},
+Sensors, vol.~21, no.~19, art.~6414, 2021.
 \end{thebibliography}
 
 \end{document}
