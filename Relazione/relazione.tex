@@ -11,7 +11,7 @@
 % --- MATEMATICA E FISICA ---
 \usepackage{amsmath, amssymb, amsfonts}
 \usepackage{siunitx}
-\usepackage{bm}
+\usepackage{bm} 
 
 % --- GRAFICA E CIRCUITI ---
 \usepackage{graphicx}
@@ -1290,16 +1290,12 @@ L'ampiezza iniziale del ringdown $A_0$ è quindi direttamente proporzionale all'
     \label{eq:legame_ampiezza_x_A}
     A_0 = R_{\text{trans}} \, \eta \, \omega_1 \, X_0 \iff X_0 = \frac{A_0}{R_{\text{trans}} \eta \omega_1}
 \end{equation}
-Dall'eq.~\eqref{eq:oscillatore_non_lineare}, la pulsazione di risonanza varia con il quadrato dello spostamento $X_0$ secondo la relazione:
-\begin{equation}
-    \omega_1'(X_0) = \omega_1 + \left( \frac{3\alpha_3}{8\omega_1} - \frac{5\alpha_2^2}{12\omega_1^3} \right) X_0^2
-\end{equation}
-Se passiamo alla frequenza $f_1' = \omega_1' / (2\pi)$ e sostituiamo $X_0$ con l'eq.~\eqref{eq:legame_ampiezza_x_A}, otteniamo che la frequenza di risonanza dipende dal quadrato dell'ampiezza di oscillazione:
+Sostituendo la l'eq.~\eqref{eq:legame_ampiezza_x_A} ($X_0 \propto A_0$) nella \eqref{eq:oscillatore_non_lineare}, otteniamo che:
 \begin{equation}
     \label{eq:backbone_legge}
     f_1'(A_0) = f_1 + \beta A_0^2
 \end{equation}
-dove $f_1$ è la frequenza di risonanza di piccolo segnale e $\beta$ è il coefficiente che racchiude i termini non lineari: quando l'ampiezza di oscillazione $A_0$ aumenta, la frequenza di risonanza della trave di grande segnale $f_1'(A_0)$ varia rispetto al valore di piccolo segnale $f_1$.
+dove $f_1$ è la frequenza di risonanza di piccolo segnale e $\beta$ è il coefficiente che racchiude l'effetto complessivo dei termini non lineari ($\alpha_2$ e $\alpha_3$) e del fattore di conversione elettromeccanica: quando l'ampiezza di oscillazione $A_0$ aumenta, la frequenza di risonanza della trave di grande segnale $f_1'(A_0)$ varia rispetto al valore di piccolo segnale $f_1$.
 \newpage
 
 
@@ -1420,14 +1416,14 @@ dove $a_1$ e $a_2$ sono i coefficienti di proporzionalità. Quindi se calcoliamo
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\textwidth]{../Distorsione/distorsione_armoniche_vs_vac.png}
+\includegraphics[width=0.70\textwidth]{../Distorsione/distorsione_armoniche_vs_vac.png}
 \caption{Ampiezze delle componenti di $v_{\text{out}}(t)$ in funzione dell'ampiezza di eccitazione $V_{\text{ac}}$.}
 \label{fig:distorsione_armoniche_vac}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\textwidth]{../Distorsione/distorsione_hd2_rapporto.png}
+\includegraphics[width=0.70\textwidth]{../Distorsione/distorsione_hd2_rapporto.png}
 \caption{Rapporto di distorsione di secondo modo $p_2 / p_1$ (in percentuale) in funzione dell'ampiezza di eccitazione $V_{\text{ac}}$.}
 \label{fig:distorsione_hd2_rapporto}
 \end{figure}
@@ -1436,25 +1432,20 @@ dove $a_1$ e $a_2$ sono i coefficienti di proporzionalità. Quindi se calcoliamo
 % SEZIONE 12: VARIAZIONE DELLA FREQUENZA DI RISONANZA CON LA TENSIONE V_DC
 % =============================================================================
 \newpage
+
+
 \section{Variazione della frequenza di risonanza con la tensione di polarizzazione \texorpdfstring{$V_{\text{DC}}$}{VDC}}
 \label{sec:frequenza_vdc}
 
-Nei capitoli precedenti abbiamo mantenuto fissa la tensione continua di polarizzazione della trave al valore $V_{\text{DC}} = \SI{5.0}{\volt}$. In questa sezione analizziamo sperimentalmente come varia la frequenza di risonanza del primo modo $f_1$ al variare della tensione di polarizzazione $V_{\text{DC}}$, verificando la relazione teorica introdotta nella sezione~\ref{sec:forze_elettrostatiche}.
+Nei capitoli precedenti abbiamo mantenuto fissa la tensione di polarizzazione della trave al valore $V_{\text{DC}} = \SI{5.0}{\volt}$. In questa sezione studiamo come varia la frequenza di risonanza del primo modo $f_1$ al variare di $V_{\text{DC}}$, verificando la relazione teorica che abbiamo introdotto nella sezione~\ref{sec:forze_elettrostatiche}.
 
 \vspace{0.3cm}
-\noindent Riprendiamo l'espressione dell'energia elettrostatica immagazzinata nel condensatore di drive $C_d(x)$ formato tra la trave mobile (a potenziale $V_{\text{DC}}$) e l'elettrodo di drive (pilotato da $v_{\text{in}}(t)$), vista nella sezione~\ref{sec:forze_elettrostatiche}:
-\begin{equation}
-    U_e = \frac{1}{2} C_d(x) V^2(t) = \frac{1}{2} C_d(x) \left( V_{\text{DC}} - v_{\text{in}}(t) \right)^2
-\end{equation}
-da cui la forza elettrostatica esercitata sulla trave è data dalla derivata rispetto allo spostamento $x$:
+\noindent Sappamo che la forza elettrostatica esercitata sulla trave dall'elettrodo di drive è:
 \begin{equation}
     \label{eq:forza_elettrostatica_richiamo_vdc}
-    F_e(x, t) = \frac{\partial U_e}{\partial x} = \frac{1}{2} \frac{\partial C_d(x)}{\partial x} \left( V_{\text{DC}} - v_{\text{in}}(t) \right)^2
+    F_e(x, t)= \frac{1}{2} \frac{\partial C_d(x)}{\partial x} \left( V_{\text{DC}} - v_{\text{in}}(t) \right)^2
 \end{equation}
-La dipendenza dal quadrato della tensione applicata nasce dal fatto che la carica elettrica accumulata sulle armature del condensatore è proporzionale alla tensione ($q = C_d(x) V$) e anche il campo elettrico nel gap è proporzionale a $V$: la forza elettrostatica attrattiva tra le armature (proporzionale al prodotto tra carica e campo elettrico) dipende quindi dal quadrato della differenza di potenziale.
-
-\vspace{0.3cm}
-\noindent Nelle misure di ringdown, come visto nella sezione~\ref{sec:ringdown}, per $t < 0$ il generatore mette in oscillazione la trave, mentre all'istante $t = 0$ il gate interrompe la forzante sinusoidale azzerando l'ingresso ($v_{\text{in}}(t) = 0$). Durante l'oscillazione libera ($t > 0$), ai capi del condensatore rimane applicata esclusivamente la tensione continua $V_{\text{DC}}$ e la forza elettrostatica~\eqref{eq:forza_elettrostatica_richiamo_vdc} si riduce a:
+ Nelle misure del ringdown, come visto nella sezione~\ref{sec:ringdown}, per $t < 0$ il generatore mette in oscillazione la trave, mentre all'istante $t = 0$ si interrompe la forzante ($v_{\text{in}}(t) = 0$). Durante il ringdown ($t > 0$), la tensione ai capi del condensatore formato da trave ed elettrodo di drive rimane è solo $V_{\text{DC}}$, e la forza elettrostatica~\eqref{eq:forza_elettrostatica_richiamo_vdc} si riduce a:
 \begin{equation}
     F_e(x) = \frac{1}{2} \frac{\partial C_d(x)}{\partial x} V_{\text{DC}}^2
 \end{equation}
@@ -1462,69 +1453,65 @@ In regime di piccolo segnale ($x(t) \ll g_0$), sviluppiamo la derivata della cap
 \begin{equation}
     \frac{\partial C_d(x)}{\partial x} \approx \left. \frac{\partial C_d}{\partial x} \right|_{x=0} + \left. \frac{\partial^2 C_d}{\partial x^2} \right|_{x=0} x(t)
 \end{equation}
-Sostituendo questo sviluppo in $F_e(x)$, otteniamo:
+Sostituendo questo sviluppo in $F_e(x)$ otteniamo:
 \begin{equation}
-    F_e(x) \approx \underbrace{\frac{1}{2} \left. \frac{\partial C_d}{\partial x} \right|_0 V_{\text{DC}}^2}_{F_{\text{DC}}} + \underbrace{\left( \frac{1}{2} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2 \right)}_{k_e(V_{\text{DC}})} x(t)
+    F_e(x) = \underbrace{\frac{1}{2} \left. \frac{\partial C_d}{\partial x} \right|_0 V_{\text{DC}}^2}_{F_{\text{DC}}} + \underbrace{\left( \frac{1}{2} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2 \right)}_{k_e(V_{\text{DC}})} x(t)
 \end{equation}
-Come visto nella sezione~\ref{sec:forze_elettrostatiche}, il termine costante $F_{\text{DC}}$ determina unicamente una lieve deflessione statica della posizione di equilibrio, mentre il termine $k_e(V_{\text{DC}}) x(t)$ è proporzionale allo spostamento $x(t)$. Inserendo $F_e(x)$ nell'equazione del moto~\eqref{eq:meccanica_1dof} con forzante nulla ($F_{\text{drive}}(t) = 0$ durante il ringdown) e portando $k_e(V_{\text{DC}}) x(t)$ al primo membro, ritroviamo l'eq.~\eqref{eq:moto_keff}:
+Come visto nella sezione~\ref{sec:forze_elettrostatiche}, il termine $F_{\text{DC}}$ causa una deflessione statica, mentre il termine $k_e(V_{\text{DC}}) x(t)$ è proporzionale allo spostamento $x(t)$. Inserendo $F_e(x)$ nell'equazione del moto~\eqref{eq:meccanica_1dof} con forzante nulla,  ritroviamo l'eq.~\eqref{eq:moto_keff}:
 \begin{equation}
     m_{\text{eff}} \ddot{x}(t) + b_{\text{eff}} \dot{x}(t) + \underbrace{\left( k_m - k_e(V_{\text{DC}}) \right)}_{k_{\text{eff}}(V_{\text{DC}})} x(t) = 0
 \end{equation}
-Fisicamente, mentre la forza elastica del silicio ($-k_m x$) è una forza di richiamo che si oppone allo spostamento riportando la trave verso la posizione di riposo, la forza elettrostatica è attrattiva e cresce man mano che la trave si avvicina all'elettrodo (poiché il gap diminuisce e $\left.\frac{\partial^2 C_d}{\partial x^2}\right|_0 > 0$). Di conseguenza, per uno spostamento $x > 0$ verso l'elettrodo, l'incremento di forza elettrostatica $+k_e x$ tira la trave nello stesso verso dello spostamento, contrastando il richiamo elastico del silicio e comportandosi come una molla negativa (\textit{electrostatic spring softening}). La rigidezza efficace complessiva della trave diminuisce quindi con il quadrato di $V_{\text{DC}}$:
+Quindi la rigidezza efficace complessiva della trave diminuisce con il quadrato di $V_{\text{DC}}$:
 \begin{equation}
     \label{eq:keff_vdc_cap12}
     k_{\text{eff}}(V_{\text{DC}}) = k_m - k_e(V_{\text{DC}}) = k_m - \frac{1}{2} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2
 \end{equation}
 
 \vspace{0.3cm}
-\noindent Poiché in un oscillatore armonico la pulsazione di risonanza è legata alla rigidezza efficace dalla radice quadrata $\omega_1(V_{\text{DC}}) = \sqrt{\frac{k_{\text{eff}}(V_{\text{DC}})}{m_{\text{eff}}}}$, elevando al quadrato ambo i membri eliminiamo la radice e otteniamo che è il quadrato della pulsazione di risonanza $\omega_1^2(V_{\text{DC}})$ a essere direttamente proporzionale a $k_{\text{eff}}(V_{\text{DC}})$:
+\noindent 
+Possiamo ricavare ora la pulsasione di risonanza tenendo conto dell'effetto di $V_{\text{DC}}$:
 \begin{equation}
-    \omega_1^2(V_{\text{DC}}) = \frac{k_{\text{eff}}(V_{\text{DC}})}{m_{\text{eff}}} = \frac{k_m}{m_{\text{eff}}} - \frac{k_e(V_{\text{DC}})}{m_{\text{eff}}} = \omega_{01}^2 - \frac{1}{2 m_{\text{eff}}} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2
+    \omega_1^2(V_{\text{DC}}) = \frac{k_{\text{eff}}(V_{\text{DC}})}{m_{\text{eff}}} = \omega_{01}^2 - \frac{1}{2 m_{\text{eff}}} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0 V_{\text{DC}}^2
 \end{equation}
-dove $\omega_{01} = \sqrt{\frac{k_m}{m_{\text{eff}}}} = 2\pi f_{01}$ è la pulsazione di risonanza puramente meccanica in assenza di polarizzazione ($V_{\text{DC}} = \SI{0}{\volt}$). Passando dalle pulsazioni alle frequenze cicliche ($\omega_1 = 2\pi f_1$ e $\omega_{01} = 2\pi f_{01}$) e dividendo entrambi i membri per $(2\pi)^2 = 4\pi^2$, arriviamo alla legge:
+dove $\omega_{01} = \sqrt{\frac{k_m}{m_{\text{eff}}}} = 2\pi f_{01}$ è la pulsazione di risonanza puramente meccanica con $V_{\text{DC}} = \SI{0}{\volt}$. Passando alle frequenze, otteniamo:
 \begin{equation}
     \label{eq:legge_quadratica_f1_vdc}
     f_1^2(V_{\text{DC}}) = f_{01}^2 - \gamma \, V_{\text{DC}}^2
 \end{equation}
-dove abbiamo indicato con $\gamma$ il coefficiente costante:
+dove abbiamo indicato con $\gamma$ il coefficiente:
 \begin{equation}
     \gamma = \frac{1}{8\pi^2 m_{\text{eff}}} \left. \frac{\partial^2 C_d}{\partial x^2} \right|_0
 \end{equation}
-L'eq.~\eqref{eq:legge_quadratica_f1_vdc} spiega perché conviene diagrammare il quadrato della frequenza $f_1^2$ in funzione del quadrato della tensione continua $V_{\text{DC}}^2$: mentre $f_1(V_{\text{DC}}) = \sqrt{f_{01}^2 - \gamma V_{\text{DC}}^2}$ segue un andamento non lineare sotto radice, esprimendo la relazione in termini delle grandezze al quadrato $f_1^2$ e $V_{\text{DC}}^2$ si ottiene l'equazione di una retta con intercetta $f_{01}^2$ e pendenza negativa $-\gamma$.
-
-\vspace{0.3cm}
-\noindent Confrontando l'eq.~\eqref{eq:legge_quadratica_f1_vdc} con l'eq.~\eqref{eq:softening} introdotta nella sezione~\ref{sec:forze_elettrostatiche} a partire dal modello a ordine ridotto di Frangi~\cite{frangi2023}:
+Confrontando l'eq.~\eqref{eq:legge_quadratica_f1_vdc} con l'equazione del paper~\cite{frangi2023}:
 \begin{equation}
     \omega_1^2(V_{\text{DC}}) = \omega_{01}^2 - \varepsilon_0 c_{1,DD}^{(1)} V_{\text{DC}}^2
 \end{equation}
-il valore teorico del coefficiente $\gamma$ predetto dal paper (dividendo per $4\pi^2$) vale:
+il coefficiente $\gamma$ che abbiamo introdotto secondo il paper vale:
 \begin{equation}
     \label{eq:gamma_teorico_frangi}
     \gamma_{\text{teor}} = \frac{\varepsilon_0 c_{1,DD}^{(1)}}{4\pi^2}
 \end{equation}
-Dalla tabella~2 di~\cite{frangi2023}, il coefficiente elettrostatico del primo modo vale $c_{1,DD}^{(1)} = \SI{21.11}{\micro\newton/(\volt^2 \cdot \pico\farad)}$; moltiplicando per la costante dielettrica del vuoto $\varepsilon_0 = \SI{8.854e-12}{\farad/\meter} = \SI{8.854e-6}{\pico\farad/\micro\meter}$ e convertendo in unità del Sistema Internazionale ($\SI{1}{\micro\second^{-2}} = \SI{e12}{\second^{-2}}$), si ottiene $\varepsilon_0 c_{1,DD}^{(1)} = \SI{1.869e8}{\radian^2/(\second^2 \cdot \volt^2)}$. Sostituendo questo valore nell'eq.~\eqref{eq:gamma_teorico_frangi}, la pendenza teorica risulta:
+Dalla tabella~2 di~\cite{frangi2023}, $c_{1,DD}^{(1)} = \SI{21.11}{\micro\newton/(\volt^2 \cdot \pico\farad)}$; $\varepsilon_0 = \SI{8.854e-12}{\farad/\meter} = \SI{8.854e-6}{\pico\farad/\micro\meter}$; quindi $\varepsilon_0 c_{1,DD}^{(1)} = \SI{1.869e8}{\radian^2/(\second^2 \cdot \volt^2)}$. Sostituendo questo valore nell'eq.~\eqref{eq:gamma_teorico_frangi}:
 \begin{equation}
     \gamma_{\text{teor}} = \frac{\SI{1.869e8}{}}{4\pi^2} = \mathbf{\SI{4.735e6}{\hertz^2/\volt^2}}
 \end{equation}
+Per verificare sperimentalmente l'eq.~\eqref{eq:legge_quadratica_f1_vdc}, abbiamo utilizzato lo stesso setup di misura del ringdown descritto nella sezione~\ref{sec:ringdown}. Abbiamo mantenuto il MEMS in regime di piccolo segnale ($V_{\text{ac}} = \SI{100}{\milli\volt_{pp}}$ e frequenza di eccitazione $f_{\text{in}} = \SI{417.85}{\kilo\hertz}$) e abbiamo acquisito dall'oscilloscopio la risposta libera della trave per diversi valori di $V_{\text{DC}}$. Per ciascuna traccia, abbiamo estratto mediante uno script la frequenza di oscillazione libera $f_1$.
 
-\vspace{0.3cm}
-\noindent Per verificare sperimentalmente l'eq.~\eqref{eq:legge_quadratica_f1_vdc}, abbiamo utilizzato lo stesso setup di misura del ringdown descritto nella sezione~\ref{sec:ringdown}, mantenendo il risonatore in regime di piccolo segnale ($V_{\text{ac}} = \SI{200}{\milli\volt_{pp}}$ e frequenza di eccitazione $f_{\text{in}} = \SI{417.85}{\kilo\hertz}$) e acquisendo la risposta libera della trave per 7 diversi valori della tensione continua $V_{\text{DC}}$, da $\SI{3.0}{\volt}$ a $\SI{6.0}{\volt}$ con passo di $\SI{0.5}{\volt}$ (corrispondenti a $V_{\text{DC}}^2$ compreso tra $\SI{9.0}{\volt^2}$ e $\SI{36.0}{\volt^2}$). Per ciascuna traccia, scartati i primi $\SI{20}{\micro\second}$ dopo lo spegnimento del gate per escludere il transitorio impulsivo di $C_p$, abbiamo estratto mediante uno script la frequenza di oscillazione libera $f_1$.
-
-\vspace{0.3cm}
-\noindent Passando da $V_{\text{DC}} = \SI{3.0}{\volt}$ a $V_{\text{DC}} = \SI{6.0}{\volt}$, la frequenza di risonanza misurata scende monotonamente da $\SI{417944.7}{\hertz}$ ($f_1^2 = \SI{17.4678e10}{\hertz^2}$) fino a $\SI{417781.8}{\hertz}$ ($f_1^2 = \SI{17.4542e10}{\hertz^2}$), con una riduzione complessiva di circa $\SI{163}{\hertz}$. In fig.~\ref{fig:f1_quadro_vdc_quadro} sono riportati i punti sperimentali di $f_1^2$ in funzione di $V_{\text{DC}}^2$, insieme alla retta del fit lineare (in rosso) e alla retta teorica predetta dal modello di Frangi~\cite{frangi2023} (tratteggiata).
+\newpage
+\noindent Passando da $V_{\text{DC}} = \SI{3.0}{\volt}$ a $V_{\text{DC}} = \SI{6.0}{\volt}$, la frequenza di risonanza misurata scende da $\SI{417944}{\hertz}$ fino a $\SI{417781}{\hertz}$, con una riduzione complessiva di circa $\SI{163}{\hertz}$. In fig.~\ref{fig:f1_quadro_vdc_quadro} sono riportati i punti sperimentali di $f_1^2$ in funzione di $V_{\text{DC}}^2$, insieme alla retta del fit lineare (in rosso) e alla retta teorica dal modello di Frangi~\cite{frangi2023}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.84\textwidth]{../Frequenza_Vdc/grafici/f1_quadro_vs_vdc_quadro.png}
-\caption{Variazione del quadrato della frequenza di risonanza $f_1^2$ in funzione del quadrato della tensione di polarizzazione $V_{\text{DC}}^2$: confronto tra i dati sperimentali (punti blu), il fit lineare sperimentale (retta continua rossa) e la pendenza teorica del modello di Frangi~\cite{frangi2023} (retta tratteggiata).}
+\caption{Variazione del quadrato della frequenza di risonanza $f_1^2$ in funzione del quadrato della tensione di polarizzazione $V_{\text{DC}}^2$.}
 \label{fig:f1_quadro_vdc_quadro}
 \end{figure}
 
 \noindent Dal fit lineare dei dati sperimentali con l'eq.~\eqref{eq:legge_quadratica_f1_vdc} otteniamo:
 \begin{equation}
-    \gamma_{\text{sper}} = \mathbf{\SI{5.035e6}{\hertz^2/\volt^2}}, \qquad f_{01} = \mathbf{\SI{417.996}{\kilo\hertz}}, \qquad R^2 = 0.9988
+    \gamma_{\text{sper}} = \mathbf{\SI{5.035e6}{\hertz^2/\volt^2}}
 \end{equation}
-Il valore del coefficiente di determinazione $R^2 = 0.9988$ conferma che i punti sperimentali di $f_1^2$ si dispongono lungo una retta in funzione di $V_{\text{DC}}^2$, la cui intercetta a $V_{\text{DC}} = \SI{0}{\volt}$ fornisce una frequenza di risonanza meccanica a vuoto pari a $f_{01} \approx \SI{418.00}{\kilo\hertz}$. Infine, confrontando la pendenza sperimentale $\gamma_{\text{sper}} = \SI{5.035e6}{\hertz^2/\volt^2}$ con il valore teorico $\gamma_{\text{teor}} = \SI{4.735e6}{\hertz^2/\volt^2}$, si osserva una differenza del $6.3\%$, pienamente compatibile con le tolleranze costruttive di processo sul gap nominale $g_0 = \SI{1.8}{\micro\meter}$ tra la trave e gli elettrodi.
+In confronto con il valore teorico di $\gamma_{\text{teor}} = \SI{4.735e6}{\hertz^2/\volt^2}$, osserviamo una differenza del $6.3\%$.
 
 \newpage
 

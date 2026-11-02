@@ -337,7 +337,7 @@ def run_analysis():
 
     # Fit sperimentale
     ax1.plot(v2_dense, f2_pred_dense / 1e10, '-', color='#d62828', linewidth=2.0,
-             label=rf'Fit lineare sperimentale ($\gamma = {alpha_exp/1e6:.3f}\times 10^6\ \mathrm{{Hz^2/V^2}}$, $R^2 = {r_squared:.4f}$)', zorder=3)
+             label=rf'Fit lineare sperimentale ($\gamma = {alpha_exp/1e6:.3f}\times 10^6\ \mathrm{{Hz^2/V^2}}$)', zorder=3)
 
     # Modello teorico
     ax1.plot(v2_dense, f2_th_dense / 1e10, '--', color='#2b2d42', linewidth=1.7, alpha=0.85,
