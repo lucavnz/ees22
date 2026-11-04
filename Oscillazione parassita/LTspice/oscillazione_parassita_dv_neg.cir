@@ -1,0 +1,49 @@
+* Simulazione LTspice - Transitorio elettrico parassita allo spegnimento del gate (V_DC = 0 V)
+.lib "/Users/matteoluca/Downloads/es2m progetto/Oscillazione parassita/LTspice/OPA656.LIB"
+.lib "/Users/matteoluca/Downloads/es2m progetto/Oscillazione parassita/LTspice/TL082.LIB"
+.lib "/Users/matteoluca/Downloads/es2m progetto/Oscillazione parassita/LTspice/opamps_mems.lib"
+.options plotwinsize=0 reltol=1e-5 srcstepmethod=1 noopiter gminsteps=0
+
+VCC vcc 0 12
+VEE vee 0 -12
+VCC5 vcc5 0 5
+VEE5 vee5 0 -5
+
+.param f0 = 417830.0
+.param toff = 35.0u
+.param Vac = 0.098890
+.param phi = -2.78519642
+.param Vdc_in = -0.003850
+
+Bvin vin 0 V = v_burst(time)
+
+* Ramo parassita del MEMS spento (V_DC = 0 V)
+Cp vin v_minus 0.892p
+Rp vin v_minus 11.2Meg
+
+* Circuito di compensazione hardware attiva (U1 e U2: modello ufficiale TI TL082.LIB)
+Cphi vin n_cphi 100.0p
+Rin_phi n_cphi u1_inv 2899.05
+Rf_phi u1_inv v_u1 24450.00
+XU1 0 u1_inv vcc vee v_u1 TL082
+
+RA1 v_u1 v_a 9884.400
+RA2 v_a 0 115.600
+XU2 v_a v_u2 vcc vee v_u2 TL082
+
+Cc v_u2 v_minus 10.0p
+Rc v_u2 v_minus 1.0Meg
+
+* Stadio TIA (U3: modello ufficiale TI OPA656.LIB, alimentato a +-5 V)
+Cin_ext v_minus 0 7.6p
+Rf v_minus v_tia 500.0k
+Cf v_minus v_tia 0.138p
+XU3 0 v_minus vcc5 vee5 v_tia OPA656
+
+* Secondo stadio invertente G = -10 (U4: AD817)
+R1 v_tia ad_inv 100.0
+R2 ad_inv v_out 1000.0
+XU4 0 ad_inv vcc vee v_out AD817
+
+.tran 0 42u 20u 2n
+.end

@@ -1,0 +1,9 @@
+* Funzione sorgente burst (Agilent 33220A) e wrapper AD817 su UniversalOpAmp2 nativo LTspice
+.lib UniversalOpAmp2.lib
+
+.func v_burst(t) {if(t < 1u, 0, Vdc_in + if(t < toff, Vac*sin(2*pi*f0*(t - toff) + phi), Vac*sin(phi)))}
+
+* AD817: High-Speed Bipolar Op-Amp (GBW = 50 MHz, Slew = 350 V/us, Avol = 3.5 V/mV)
+.subckt AD817 inp inn vcc vee out
+XU_AD inp inn vcc vee out level2 Avol=3.5k GBW=50Meg Slew=350Meg Ilimit=50m rail=1.5 Vos=-2.05m Phimargin=60
+.ends AD817
