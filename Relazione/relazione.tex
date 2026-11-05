@@ -586,14 +586,14 @@ Il circuito di condizionamento si articola in questi due stadi:
 In questa sezione presentiamo le misure sperimentali condotte sul MEMS per determinare la frequenza di risonanza $f_1$, il tempo caratteristico di smorzamento $\tau$ e il fattore di merito $Q$ del primo modo flessionale, analizzando la risposta libera a seguito dell'interruzione brusca di una forzante:
 \begin{itemize}
     \item La tensione di polarizzazione della trave è stata fissata a $V_{\text{DC}} = \SI{5.0}{\volt}$.
-    \item Abbiamo applicato un segnale sinusoide $v_{\text{in}}(t) = V_{\text{AC}} \sin(2\pi f_{\text{in}} t)$, con ampiezza $V_{\text{AC}} = \SI{100}{\milli\volt}$, sull'elettrodo di drive. Come vedremo, è un valore di tensione sufficientemente basso da non innescare le non linearità. L'eccitazione sinusoidale $v_{\text{in}}(t)$ è controllata da un segnale di sincronizzazione logico (Gate). Finché il gate è alto, il segnale sinusoidale agisce sul mems. Al fronte di discesa del gate (istante $t = \text{0}$ nella scala dei tempi nelle misure che presenteremo), la forzante $v_{\text{in}}(t)$ viene interrotta bruscamente azzerando l'ingresso.
+    \item Abbiamo applicato un segnale sinusoidale $v_{\text{in}}(t) = V_{\text{AC}} \sin(2\pi f_{\text{in}} t)$, con ampiezza $V_{\text{AC}} = \SI{100}{\milli\volt}$, sull'elettrodo di drive. Come vedremo, è un valore di tensione sufficientemente basso da non innescare le non linearità. L'eccitazione sinusoidale $v_{\text{in}}(t)$ è erogata in modalità burst, controllata da un segnale di sincronizzazione logico (Gate): finché il gate è alto, il segnale sinusoidale agisce sul MEMS; al fronte di discesa del gate (istante $t = 0$ nella scala dei tempi delle misure che presenteremo), l'oscillazione della forzante $v_{\text{in}}(t)$ viene interrotta bruscamente.
     \item Tramite l'oscilloscopio, abbiamo estrapolato la traccia del ringdown. L'esperimento è stato ripetuto per 25 diverse frequenze di ingresso $f_{\text{in}}$, distribuite in una finestra compresa tra $\SI{417.26}{\kilo\hertz}$ e $\SI{418.40}{\kilo\hertz}$, addensando i punti con un passo fino a $\SI{10}{\hertz}$ in corrispondenza del picco di risonanza.
 \end{itemize}
 
 \noindent A partire dall'istante di spegnimento dell'eccitazione, la trave non riceve più alcuna spinta forzante dall'esterno e si ritrova in regime di oscillazione libera smorzata. L'energia meccanica accumulata viene gradualmente dissipata per attrito viscoso.
 \vspace{0.3cm}
 
-\noindent All'istante di commutazione del gate, la tensione d'ingresso $v_{\text{in}}(t)$ passa bruscamente a zero. A causa della presenza della capacità parassita $C_p$ che collega direttamente l'elettrodo di drive a quello di sense (Fig.~\ref{fig:frontend_schema}), questa repentina variazione di tensione genera una corrente impulsiva, che si esaurisce in $\SI{2.4}{\micro\second}$; per evitare che contamini la stima dei parametri, abbiamo scartato i primi $\SI{20}{\micro\second}$ successivi al fronte del gate. 
+\noindent Sul generatore è possibile impostare la fase di arresto del burst $\phi$, ossia il punto del ciclo sinusoidale in cui viene interrotta $v_{\text{in}}(t)$ al fronte di discesa del gate. Poiché in queste prime misure non è ancora presente la compensazione della capacità parassita $C_p$ (Fig.~\ref{fig:frontend_schema}), prima dello stacco sull'uscita $v_{\text{out}}(t)$ è presente un'ampia sinusoide parassita ($\approx \SI{1.2}{\volt}$); osservando la traccia all'oscilloscopio, abbiamo impostato $\phi \approx 103^\circ$ in modo da interrompere il gate mentre $v_{\text{out}}(t)$ attraversa $\SI{0}{\volt}$, così da ridurre il disturbo iniziale ed evitare di partire con il canale dell'oscilloscopio saturato. Allo spegnimento del gate rimane comunque un breve transitorio elettrico dovuto a $C_p$ che si esaurisce in circa $\SI{2.4}{\micro\second}$ (analizzato nel dettaglio nella sezione~\ref{sec:variazione_fase_gate}); per evitare che contamini la stima dei parametri, abbiamo scartato i primi $\SI{20}{\micro\second}$ successivi al fronte del gate. 
 
 \vspace{0.3cm}
 \noindent Abbiamo realizzato un algoritmo che individua i picchi locali della sinusoide smorzata. Questi picchi seguono la legge del decadimento esponenziale:
@@ -1820,14 +1820,13 @@ Per isolare sperimentalmente il solo transitorio elettrico prodotto dallo spegni
 \caption{Transitorio elettrico parassita misurato con il MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$, $V_{\text{AC}} = \SI{100}{\milli\volt}$, $f_{\text{in}} = \SI{417.83}{\kilo\hertz}$) e con compensazione hardware attiva: spegnimento del gate con $\frac{dv_{\text{in}}}{dt} > 0$ (a sinistra) e con $\frac{dv_{\text{in}}}{dt} < 0$ (a destra).}
 \label{fig:transitorio_elettrico_vdc0}
 \end{figure}
-\noindent Prima dello spegnimento, il ramo di compensazione hardware cancella quasi completamente la corrente di $C_p$, lasciando su $v_{\text{out}}(t)$ un residuo di $\approx \SI{31}{\milli\volt_{pp}}$. Quando spegniamo il gate ($t = 0$): se $\left.\frac{dv_{\text{in}}}{dt}\right|_{t=0} > 0$ (a sinistra, l'uscita presenta un primo picco che è negativo, di $\mathbf{-\SI{607}{\milli\volt}}$; quando $\left.\frac{dv_{\text{in}}}{dt}\right|_{t=0} < 0$ (a destra), c'è un primo picco positivo di $\mathbf{+\SI{804}{\milli\volt}}$.
+\noindent Prima dello spegnimento, il ramo di compensazione hardware cancella quasi completamente la corrente di $C_p$, lasciando su $v_{\text{out}}(t)$ un residuo di $\approx \SI{31}{\milli\volt_{pp}}$. Quando spegniamo il gate ($t = 0$): se $\left.\frac{dv_{\text{in}}}{dt}\right|_{t=0} > 0$ (a sinistra), l'uscita presenta un primo picco che è negativo, di $\mathbf{-\SI{607}{\milli\volt}}$; quando $\left.\frac{dv_{\text{in}}}{dt}\right|_{t=0} < 0$ (a destra), c'è un primo picco positivo di $\mathbf{+\SI{804}{\milli\volt}}$.
 
 \vspace{0.3cm}
 \noindent La distanza temporale tra due picchi ($\Delta T \approx \SI{1.65}{\micro\second}$) ci permette di estrapolare la frequenza dell'oscillazione parassita, di $\approx \mathbf{\SI{600}{\kilo\hertz}}$. L'oscillazione scende sotto il $10\%$ del valore del picco in circa $\SI{2.2}{\micro\second}$, confermando che scartare i primi $t_{\text{cut}} = \SI{20}{\micro\second}$ nelle misure del ringdown (sezione~\ref{sec:ringdown}) è sufficiente per evitare che l'oscillazione parassita falsifichi le misure.
+\vspace{0.3cm}
 
-\subsubsection*{Modello circuitale del secondo ordine}
-
-Nel circuito ideale di fig.~\ref{fig:frontend_schema} (opamp ideali), un gradino di corrente non potrebbe mai generare un'oscillazione smorzata a $\SI{600}{\kilo\hertz}$. Per spiegare la comparsa di una coppia di poli complessi coniugati e lo smorzamento, abbiamo simulato il circuito di fig.~\ref{fig:modello_circuitale_parassita}, in cui:
+\noindent Nel circuito ideale di fig.~\ref{fig:frontend_schema} (opamp ideali), un gradino di corrente non potrebbe mai generare un'oscillazione smorzata a $\SI{600}{\kilo\hertz}$. Per spiegare la comparsa di una coppia di poli complessi coniugati e lo smorzamento, abbiamo simulato il circuito di fig.~\ref{fig:modello_circuitale_parassita}, in cui:
 \begin{itemize}
     \item il ramo di compensazione è schematizzato con un invertitore ideale, seguito dalla capacità di compensazione $C_c$, lasciando uno sbilanciamento $\Delta C = C_p - C_c$.
     \item sul nodo invertente $V^-$ del TIA (OPA656) è presente una capacità verso massa $C_{\text{in}}$.
@@ -1906,7 +1905,9 @@ Se confrontiamo il denominatore dell'eq.~\eqref{eq:fdt_secondo_ordine_tia} (dove
     \omega_n = \sqrt{\frac{\omega_t}{R_f C_{\text{nodo}}}}, \qquad
     \zeta = \frac{1}{2} \left( R_f C_f + \frac{1}{\omega_t} \right) \sqrt{\frac{\omega_t}{R_f C_{\text{nodo}}}}
 \end{equation}
-In fig.~\ref{fig:sovrapposizione_modello_semplificato} è mostrato il confronto tra la misura sperimentale dell'oscillazione parassita e la simulazione del circuito appena presentato, con $R_f = \SI{500}{\kilo\ohm}$, $C_{\text{in}} = \SI{188}{\pico\farad}$, $C_f = \SI{0.25}{\pico\farad}$, $\omega_t = \SI{1.445e9}{\radian/\second}$.
+\newpage
+
+\noindent In fig.~\ref{fig:sovrapposizione_modello_semplificato} è mostrato il confronto tra la misura sperimentale dell'oscillazione parassita e la simulazione del circuito appena presentato, con $R_f = \SI{500}{\kilo\ohm}$, $C_{\text{in}} = \SI{188}{\pico\farad}$, $C_f = \SI{0.25}{\pico\farad}$, $\omega_t = \SI{1.445e9}{\radian/\second}$.
 
 \begin{figure}[htbp]
 \centering
@@ -1916,13 +1917,15 @@ In fig.~\ref{fig:sovrapposizione_modello_semplificato} è mostrato il confronto 
 \end{figure}
 
 
-Come si vede dalla fig.~\ref{fig:sovrapposizione_modello_semplificato}, la frequenza e il tempo di decadimento dell'oscillazione sono comparabili tra le due tracce, anche se non sono perfettamente sovrapponibili. Per questo motivo, abbiamo eseguito anche una simulazione su LTSPICE, con i modelli SPICE degli operazionali. Abbiamo simulato il circuito mostrato in fig.~\ref{fig:circuito_ltspice_schema}.
+\noindent Come si vede dalla fig.~\ref{fig:sovrapposizione_modello_semplificato}, la frequenza e il tempo di decadimento dell'oscillazione sono comparabili tra le due tracce, anche se non sono perfettamente sovrapponibili. Per questo motivo, abbiamo eseguito anche una simulazione su LTSPICE, con i modelli SPICE degli operazionali. Abbiamo simulato il circuito mostrato in fig.~\ref{fig:circuito_ltspice_schema}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.99\textwidth]{../Oscillazione parassita/Grafici/circuito_ltspice_schema.png}
 \caption{Schematico completo implementato in LTSPICE.}
 \label{fig:circuito_ltspice_schema}
 \end{figure}
+
+\newpage
 
 \noindent In fig.~\ref{fig:simulazione_ltspice_confronto} è riportato il confronto  tra le tracce acquisite in laboratorio e quelle simulate in spice.
  
@@ -1933,11 +1936,9 @@ Come si vede dalla fig.~\ref{fig:sovrapposizione_modello_semplificato}, la frequ
 \label{fig:simulazione_ltspice_confronto}
 \end{figure}
 
-\newpage
-
 \subsubsection*{Dipendenza di \texorpdfstring{$V_{pp}$}{Vpp} dalla fase \texorpdfstring{$\phi$}{phi} e confronto tra \texorpdfstring{$\phi = \pm 90^\circ$}{+-90 deg} e \texorpdfstring{$\phi \approx 103^\circ$}{103 deg}}
 
-Per capire come varia l'entità del disturbo parassita allo spegimento del gate, abbiamo mantenuto il MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$) con la compensazione hardware attiva e abbiamo eseguito uno sweep della fase $\phi$ da $-180^\circ$ a $+180^\circ$, misurando per ciascuna acquisizione il massimo $V_{\max}$, il minimo $V_{\min}$ e l'escursione picco picco $V_{pp} = V_{\max} - V_{\min}$ del transitorio. I risultati sono mostrati in fig.~\ref{fig:sweep_fase_vpp}.
+Per capire come varia l'entità del disturbo parassita allo spegnimento del gate, abbiamo mantenuto il MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$) con la compensazione hardware attiva e abbiamo eseguito uno sweep della fase $\phi$ da $-180^\circ$ a $+180^\circ$, misurando per ciascuna acquisizione il massimo $V_{\max}$, il minimo $V_{\min}$ e l'escursione picco picco $V_{pp} = V_{\max} - V_{\min}$ del transitorio. I risultati sono mostrati in fig.~\ref{fig:sweep_fase_vpp}.
 
 \begin{figure}[htbp]
 \centering
@@ -1945,13 +1946,12 @@ Per capire come varia l'entità del disturbo parassita allo spegimento del gate,
 \caption{A sinistra abbiamo le definizioni di $V_{\max}$, $V_{\min}$ e $V_{pp} = V_{\max} - V_{\min}$ sulla traccia sperimentale allo spegnimento del gate ($t = 0$). A destra abbiamo l'andamento di $V_{pp}$ al variare della fase $\phi \in [-180^\circ, +180^\circ]$ con compensazione hardware attiva.}
 \label{fig:sweep_fase_vpp}
 \end{figure}
-\noindent In corrispondenza dei passaggi per lo zero di $v_{\text{in}}(t)$, la pendenza $|\frac{dv_{\text{in}}}{dt}|_{t=0}$ è massima, quindi a $\phi = 0^\circ$ e $\phi = +180^\circ$ abbiamo il massimo di  $V_{pp}$. Sui vertici della sinusoide la derivata si annulla, quindi a $\phi = \pm 90^\circ$ abbiamo il minimo di $V_{pp}$.
+\noindent In corrispondenza dei passaggi per lo zero di $v_{\text{in}}(t)$, la pendenza è massima, quindi a $\phi = 0^\circ$ e $\phi = \pm 180^\circ$ abbiamo il massimo di $V_{pp}$ ($\approx \SI{1538}{\milli\volt}$). Sui vertici della sinusoide la derivata si annulla, quindi a $\phi = \pm 90^\circ$ abbiamo il minimo di $V_{pp}$.
 
 \vspace{0.3cm}
-\noindent Senza compensazione hardware, prima dello spegimento del gate, la capacità parassita $C_p$ non è compensata e produce sull'uscita $v_{\text{out}}(t)$ un'onda sinusoidale di ampiezza $\approx \SI{1.2}{\volt}$. Se gli operazionali fossero ideali, l'anticipo di $+90^\circ$ introdotto dalla capacità farebbe passare $v_{\text{out}}(t)$ per lo zero esattamente a $\phi = \pm 90^\circ$; nella realtà, tuttavia, il TIA (OPA656) e l'amplificatore invertente (AD817) introducono a $\SI{418}{\kilo\hertz}$ un ritardo complessivo di circa $13^\circ$ (come osservato nei diagrammi di Bode della sezione~\ref{sec:risposta_in_frequenza}. Di conseguenza, fermando il generatore a $\phi = +90^\circ$, l'onda da $\SI{1.2}{\volt}$ in uscita non ha ancora raggiunto lo zero ($v_{\text{out}}(0) \approx +\SI{300}{\milli\volt}\text{--}\SI{400}{\milli\volt}$) e genera un transistorio parassita quando spegniamo il gate. Per minimizzare il transitorio senza compensazione occorre compensare il ritardo degli operazionali, posticipando lo stacco fino a $\phi \approx 103^\circ$ in modo da intercettare l'effettivo passaggio per $\SI{0}{\volt}$ dell'uscita $v_{\text{out}}(t)$.
+\noindent Confrontiamo infine questo risultato con il caso \textbf{senza compensazione hardware} (come nelle prime misure di ringdown della sezione~\ref{sec:ringdown}), in cui per $t < 0$ la capacità $C_p$ produce in uscita un'onda sinusoidale di ampiezza $\approx \SI{1.2}{\volt}$. In assenza di compensazione, il transitorio elettrico per $t > 0$ dipende da due contributi: da $\left.\frac{dv_{\text{in}}}{dt}\right|_{t=0}$ (che si annulla a $\phi = \pm 90^\circ$), ma anche proprio dal valore a cui si trova l'uscita $v_{\text{out}}(0)$ all'istante di stacco, cioè della carica accumulata che deve scaricarsi generando un transitorio. Se gli operazionali fossero ideali (ritardo nullo), avremmo $v_{\text{out}}(t) = R_{\text{trans}} C_p \frac{dv_{\text{in}}}{dt}$ e a $\phi = +90^\circ$ si annullerebbero entrambi contemporaneamente. Nella realtà, il TIA (OPA656) e l'AD817 introducono a $\SI{418}{\kilo\hertz}$ un ritardo di circa $13^\circ$, per cui nessuna fase $\phi$ può azzerare entrambi nello stesso istante. Impostando $\phi \approx 103^\circ$ come fatto in laboratorio nella sezione~\ref{sec:ringdown}, spegniamo il gate quando $v_{\text{out}}(0) = \SI{0}{\volt}$. In questo punto la derivata $\left.\frac{dv_{\text{in}}}{dt}\right|_{t=0}$ non è più esattamente nulla ($\cos 103^\circ \approx -0.22$), quindi resta comunque un piccolo transitorio residuo, ma essendosi annullato $v_{\text{out}}(0)$, ci si trova molto vicini al minimo effettivo del disturbo senza compensazione (anche simulando il circuito non compensato in LTSPICE, $V_{pp}$ scende da $\SI{1200}{\milli\volt}$ a $0^\circ$, a $\SI{350}{\milli\volt}$ a $90^\circ$, fino al minimo di $ \SI{150}{\milli\volt}$ proprio attorno a $103^\circ\text{--}106^\circ$).
 
-\vspace{0.3cm}
-\noindent Con compensazione attiva, a $t = 0$ l'onda parassita da $\SI{1.2}{\volt}$ in uscita non c'è più, perchè è stata cancellata dalla rete di compensazione. Quindi, per minimizzare l'ampiezza dell'oscillazione parassita occorre solo azzerare la derivata di $v_{in}(t)$, ed è per questo che il minimo del disturbo cade a $\mathbf{\phi = \pm 90^\circ}$.
+\noindent Con compensazione hardware attiva, invece, prima di $t = 0$ l'onda parassita da $\SI{1.2}{\volt}$ in uscita è già cancellata ($v_{\text{out}}(0) \approx \SI{0}{\volt}$ per qualunque $\phi$): il contributo dovuto a $v_{\text{out}}(0) \neq 0$ sparisce e per minimizzare l'oscillazione parassita resta solo da annullare la derivata di $v_{\text{in}}(t)$, motivo per cui il minimo cade a $\mathbf{\phi = \pm 90^\circ}$.
 
 
 \newpage
