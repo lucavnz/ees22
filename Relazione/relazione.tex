@@ -1787,23 +1787,15 @@ Inoltre a partire dall'istante in cui c'è il fronte di discesa del gate, il gen
 \end{figure}
 \newpage
 
-\noindent Dalle eq.~\eqref{eq:vin_zero_meno}--\eqref{eq:dvin_dt_zero_meno} capiamo subito perché staccare il gate con $\phi = 0^\circ$ oppure con $\phi = \pm 90^\circ$ non è la stessa cosa dal punto di vista del transitorio elettrico sulla capacità parassita $C_p$.
-\vspace{0.3cm}
-    \noindent Se la sinusoide viene interrotta mentre attraversa lo zero ($v_{\text{in}}(0) = \SI{0}{\volt}$ e $V_{\text{post}} = \SI{0}{\volt}$), la sua pendenza è massima:
-    \begin{equation}
-        \left|\frac{dv_{\text{in}}}{dt}\right|_{t=0} = \omega_{\text{in}} V_{\text{AC}}
-    \end{equation}
-    La corrente parassita $i_p(t) = C_p \frac{dv_{\text{in}}(t)}{dt}$ che ne deriva è:
-    \begin{equation}
-        \label{eq:salto_corrente_cp}
-        \Delta i_p(\phi) = i_p(0^+) - i_p(0^-) = -C_p \left.\frac{dv_{\text{in}}}{dt}\right|_{t=0^-} = -\omega_{\text{in}} C_p V_{\text{AC}} \cos(\phi)
-    \end{equation}
-    A $\phi = 0^\circ$ (o $\pm 180^\circ$) abbiamo quindi la più ampia oscillazione elettrica parassita allo spegnimento del gate.
-\vspace{0.3cm}
-    \noindent Se la sinusoide viene interrotta sul massimo o sul minimo ($v_{\text{in}}(0) = \pm V_{\text{AC}}$), dove la derivata è nulla, dall'eq.~\eqref{eq:salto_corrente_cp} risulta $\Delta i_p(\pm 90^\circ) = 0$: non c'è un gradino parassita di corrente in ingresso al TIA.
+\noindent Dalle eq.~\eqref{eq:vin_zero_meno}--\eqref{eq:dvin_dt_zero_meno} capiamo subito perché staccare il gate con $\phi = 0^\circ$ oppure con $\phi = \pm 90^\circ$ non è la stessa cosa dal punto di vista del transitorio elettrico sulla capacità parassita $C_p$. All'istante di spegnimento del gate, la tensione d'ingresso si blocca al valore costante $V_{\text{post}}$ e la sua derivata si annulla. Questo porta ad un gradino della corrente parassita attraverso $C_p$:
+\begin{equation}
+    \label{eq:salto_corrente_cp}
+    \Delta i_p(\phi) = i_p(0^+) - i_p(0^-) = -C_p \left.\frac{dv_{\text{in}}}{dt}\right|_{t=0^-} = -\omega_{\text{in}} C_p V_{\text{AC}} \cos(\phi)
+\end{equation}
+Ci aspettiamo quindi di avere un massimo a $\phi = 0^\circ$ oppure $\phi = \pm 180^\circ$ e un minimo a $\phi = \pm 90^\circ$.
 
-    \vspace{0.3cm}
-    \noindent Tutto questo vale anche con il ramo di compensazione attiva: dato che ovviamente non è possibile compensare perfettamente la capacità parassita $C_p$, rimarrà un $\Delta C_p$ che causa comunque un'oscillazione parassita al fronte di discesa del gate.
+\vspace{0.3cm}
+\noindent Tutto questo vale anche con il ramo di compensazione attiva: dato che ovviamente non è possibile compensare perfettamente la capacità parassita $C_p$, rimarrà un disadattamento residuo $\Delta C_p = C_p - C_{\text{comp}}$ che causa comunque un'oscillazione parassita al fronte di discesa del gate.
 \newpage
 
 \subsection{Analisi e modellazione dell'oscillazione elettrica parassita allo spegnimento del gate}
@@ -1943,15 +1935,16 @@ Per capire come varia l'entità del disturbo parassita allo spegnimento del gate
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\textwidth]{../Oscillazione parassita/Grafici/sweep_fase_con_scope.png}
-\caption{A sinistra abbiamo le definizioni di $V_{\max}$, $V_{\min}$ e $V_{pp} = V_{\max} - V_{\min}$ sulla traccia sperimentale allo spegnimento del gate ($t = 0$). A destra abbiamo l'andamento di $V_{pp}$ al variare della fase $\phi \in [-180^\circ, +180^\circ]$ con compensazione hardware attiva.}
+\caption{A sinistra abbiamo le definizioni di $V_{\max}$, $V_{\min}$ e $V_{pp} = V_{\max} - V_{\min}$ sulla traccia sperimentale allo spegnimento del gate ($t = 0$). A destra abbiamo l'andamento di $V_{pp}$ al variare della fase $\phi$ con compensazione hardware attiva.}
 \label{fig:sweep_fase_vpp}
 \end{figure}
-\noindent In corrispondenza dei passaggi per lo zero di $v_{\text{in}}(t)$, la pendenza è massima, quindi a $\phi = 0^\circ$ e $\phi = \pm 180^\circ$ abbiamo il massimo di $V_{pp}$ ($\approx \SI{1538}{\milli\volt}$). Sui vertici della sinusoide la derivata si annulla, quindi a $\phi = \pm 90^\circ$ abbiamo il minimo di $V_{pp}$.
+\noindent In corrispondenza dei passaggi per lo zero di $v_{\text{in}}(t)$, la pendenza è massima, quindi a $\phi = 0^\circ$ e $\phi = \pm 180^\circ$ abbiamo il massimo di $V_{pp}$. Sui vertici della sinusoide la derivata si annulla, quindi a $\phi = \pm 90^\circ$ abbiamo il minimo di $V_{pp}$.
 
 \vspace{0.3cm}
-\noindent Confrontiamo infine questo risultato con il caso \textbf{senza compensazione hardware} (come nelle prime misure di ringdown della sezione~\ref{sec:ringdown}), in cui per $t < 0$ la capacità $C_p$ produce in uscita un'onda sinusoidale di ampiezza $\approx \SI{1.2}{\volt}$. In assenza di compensazione, il transitorio elettrico per $t > 0$ dipende da due contributi: da $\left.\frac{dv_{\text{in}}}{dt}\right|_{t=0}$ (che si annulla a $\phi = \pm 90^\circ$), ma anche proprio dal valore a cui si trova l'uscita $v_{\text{out}}(0)$ all'istante di stacco, cioè della carica accumulata che deve scaricarsi generando un transitorio. Se gli operazionali fossero ideali (ritardo nullo), avremmo $v_{\text{out}}(t) = R_{\text{trans}} C_p \frac{dv_{\text{in}}}{dt}$ e a $\phi = +90^\circ$ si annullerebbero entrambi contemporaneamente. Nella realtà, il TIA (OPA656) e l'AD817 introducono a $\SI{418}{\kilo\hertz}$ un ritardo di circa $13^\circ$, per cui nessuna fase $\phi$ può azzerare entrambi nello stesso istante. Impostando $\phi \approx 103^\circ$ come fatto in laboratorio nella sezione~\ref{sec:ringdown}, spegniamo il gate quando $v_{\text{out}}(0) = \SI{0}{\volt}$. In questo punto la derivata $\left.\frac{dv_{\text{in}}}{dt}\right|_{t=0}$ non è più esattamente nulla ($\cos 103^\circ \approx -0.22$), quindi resta comunque un piccolo transitorio residuo, ma essendosi annullato $v_{\text{out}}(0)$, ci si trova molto vicini al minimo effettivo del disturbo senza compensazione (anche simulando il circuito non compensato in LTSPICE, $V_{pp}$ scende da $\SI{1200}{\milli\volt}$ a $0^\circ$, a $\SI{350}{\milli\volt}$ a $90^\circ$, fino al minimo di $ \SI{150}{\milli\volt}$ proprio attorno a $103^\circ\text{--}106^\circ$).
+\noindent Quando abbiamo preso le misure nei capitoli precedenti (come nelle prime misure del ringdown della sezione~\ref{sec:ringdown}), avevamo impostato una fase di $\phi = 103^\circ$. Il motivo è che la capacità $C_p$ produce in uscita un'onda sinusoidale di ampiezza $\approx \SI{1.2}{\volt}$, e in assenza di compensazione, il transitorio elettrico dipende da due contributi: da $\left.\frac{dv_{\text{in}}}{dt}\right|_{t=0}$ (che si annulla a $\phi = \pm 90^\circ$), ma anche proprio dal valore a cui si trova l'uscita $v_{\text{out}}(0)$ all'istante di stacco, cioè della carica accumulata che deve scaricarsi generando un transitorio. Se gli operazionali fossero ideali (ritardo nullo), avremmo $v_{\text{out}}(t) = R_{\text{trans}} C_p \frac{dv_{\text{in}}}{dt}$ e a $\phi = +90^\circ$ si annullerebbero entrambi contemporaneamente. Nella realtà, il TIA (OPA656) e l'AD817 introducono a $\SI{418}{\kilo\hertz}$ un ritardo di circa $13^\circ$, per cui nessuna fase $\phi$ può azzerare entrambi. Impostando $\phi \approx 103^\circ$ come fatto in laboratorio nella sezione~\ref{sec:ringdown}, spegniamo il gate quando $v_{\text{out}}(0) = \SI{0}{\volt}$. In questo punto la derivata $\left.\frac{dv_{\text{in}}}{dt}\right|_{t=0}$ non è più esattamente nulla, quindi resta comunque un piccolo transitorio residuo, ma essendosi annullato $v_{\text{out}}(0)$, ci si trova molto vicini al minimo effettivo del disturbo senza compensazione (anche simulando il circuito non compensato in LTSPICE, $V_{pp}$ scende da $\SI{1200}{\milli\volt}$ a $0^\circ$, a $\SI{350}{\milli\volt}$ a $90^\circ$, fino al minimo di $ \SI{150}{\milli\volt}$ proprio attorno a $103^\circ\text{--}106^\circ$).
 
-\noindent Con compensazione hardware attiva, invece, prima di $t = 0$ l'onda parassita da $\SI{1.2}{\volt}$ in uscita è già cancellata ($v_{\text{out}}(0) \approx \SI{0}{\volt}$ per qualunque $\phi$): il contributo dovuto a $v_{\text{out}}(0) \neq 0$ sparisce e per minimizzare l'oscillazione parassita resta solo da annullare la derivata di $v_{\text{in}}(t)$, motivo per cui il minimo cade a $\mathbf{\phi = \pm 90^\circ}$.
+\vspace{0.3cm}
+\noindent Con compensazione hardware attiva, invece, l'onda parassita da $\SI{1.2}{\volt}$ in uscita è già cancellata ($v_{\text{out}}(0) \approx \SI{0}{\volt}$ per qualunque $\phi$): il contributo dovuto a $v_{\text{out}}(0) \neq 0$ sparisce e per minimizzare l'oscillazione parassita resta solo da annullare la derivata di $v_{\text{in}}(t)$.
 
 
 \newpage
@@ -1959,57 +1952,28 @@ Per capire come varia l'entità del disturbo parassita allo spegnimento del gate
 \subsection{Previsione teorica sull'ampiezza iniziale del ringdown \texorpdfstring{$A_0$}{A0}}
 \label{subsec:teoria_A0_indipendente_fase}
 
-Come abbiamo appena visto dall'eq.~\eqref{eq:vpost_def} e dalla fig.~\ref{fig:stacco_gate_fase_vin}, quando si spegne il generatore a $\phi = \pm 90^\circ$ (con compensazione hardware attiva) oppure a $\phi \approx 103^\circ$ (senza compensazione) per ridurre al minimo il disturbo elettrico parassita, la tensione d'ingresso $v_{\text{in}}(t)$ non si ferma a $\SI{0}{\volt}$, ma \textbf{resta congelata a circa $\pm\SI{100}{\milli\volt}$ continui} sull'elettrodo di drive per tutta la durata del ringdown. Chiediamoci quindi se variare la fase di stacco $\phi$ o lasciare questa tensione continua residua $V_{\text{post}}(\phi)$ modifichi o meno l'ampiezza iniziale $A_0$ del ringdown meccanico del MEMS.
+Come abbiamo visto dall'eq.~\eqref{eq:vpost_def} e dalla fig.~\ref{fig:stacco_gate_fase_vin}, al momento dello stacco del gate la sinusoide d'ingresso viene interrotta in un punto diverso del ciclo a seconda di $\phi$ e si congela al valore continuo $V_{\text{post}}(\phi)$ per tutta la durata del ringdown. Verifichiamo quindi se variare la fase di stacco $\phi$ (e il relativo livello $V_{\text{post}}(\phi)$) modifichi o meno l'ampiezza iniziale $A_0$ del ringdown del MEMS.
 
 \vspace{0.3cm}
-\noindent Per $t < 0$ la trave si trova in regime sinusoidale permanente alla pulsazione $\omega_{\text{in}}$. L'ampiezza di oscillazione dello spostamento $X_0$ a regime dipende unicamente dall'ampiezza della forzante $V_{\text{AC}}$ e dalla frequenza $f_{\text{in}}$ secondo la curva di risonanza lorenziana~\eqref{eq:lorentziana_ampiezza}, mentre la fase $\phi$ del generatore si limita a traslare temporalmente la sinusoide. Indicando con $\theta_x$ lo sfasamento tra lo spostamento $x(t)$ e la forzante $v_{\text{in}}(t)$, per $t < 0$ abbiamo:
+\noindent Prima dello stacco del gate ($t < 0$), la trave oscilla in regime sinusoidale alla pulsazione di risonanza $\omega_1$ con ampiezza $X_0$:
 \begin{align}
-    x(t) &= X_0 \sin(\omega_{\text{in}} t + \phi + \theta_x) \\[4pt]
-    \dot{x}(t) &= \omega_{\text{in}} X_0 \cos(\omega_{\text{in}} t + \phi + \theta_x)
+    x(t) &= X_0 \sin(\omega_1 t + \phi) \\[4pt]
+    \dot{x}(t) &= \omega_1 X_0 \cos(\omega_1 t + \phi)
 \end{align}
-All'istante di spegnimento del gate ($t = 0$), le condizioni iniziali meccaniche di posizione e velocità con cui inizia il ringdown dipendono da $\phi$:
+A partire dall'istante di spegnimento ($t \ge 0$), lo spostamento durante il ringdown si smorza esponenzialmente con costante di tempo $\tau$:
 \begin{equation}
-    \label{eq:cond_iniziali_phi}
-    x(0^-) = X_0 \sin(\phi + \theta_x), \qquad \dot{x}(0^-) = \omega_{\text{in}} X_0 \cos(\phi + \theta_x)
+    x(t) = X_0 \, e^{-t/\tau} \sin(\omega_1 t + \phi)
 \end{equation}
-Calcoliamo l'energia meccanica totale $E_{\text{tot}}(0)$ posseduta dalla trave all'istante di stacco $t = 0$, data dalla somma dell'energia cinetica e dell'energia potenziale elastica (nel circuito equivalente RLC serie corrisponde all'energia totale $\frac{1}{2}L_m i_m^2 + \frac{1}{2}C_m v_{Cm}^2$ immagazzinata nell'induttanza $L_m$ e nella capacità $C_m$). Essendo $f_{\text{in}} \approx f_1$ (e quindi $m_{\text{eff}}\omega_{\text{in}}^2 \approx m_{\text{eff}}\omega_1^2 = k_{\text{eff}}$), sostituendo le eq.~\eqref{eq:cond_iniziali_phi} otteniamo:
-\begin{align}
-    \label{eq:energia_totale_indipendente_phi}
-    E_{\text{tot}}(0) &= \frac{1}{2} m_{\text{eff}} \dot{x}^2(0^-) + \frac{1}{2} k_{\text{eff}} x^2(0^-) \nonumber \\[4pt]
-    &= \frac{1}{2} k_{\text{eff}} X_0^2 \Big[ \cos^2(\phi + \theta_x) + \sin^2(\phi + \theta_x) \Big] = \frac{1}{2} k_{\text{eff}} X_0^2
-\end{align}
-Dall'identità trigonometrica $\cos^2(\phi + \theta_x) + \sin^2(\phi + \theta_x) = 1$ vediamo che la fase $\phi$ si elide: variare $\phi$ cambia la ripartizione istantanea a $t = 0$ tra energia cinetica ed energia potenziale elastica (ovvero tra corrente in $L_m$ e tensione su $C_m$), ma \textbf{l'energia meccanica totale immagazzinata nella trave all'inizio del ringdown è indipendente da $\phi$}. Poiché il fattore di merito è molto elevato ($Q \approx 3000 \gg 1$), in un quarto di ciclo ($T_1/4 \approx \SI{0.6}{\micro\second}$) l'energia dissipata per attrito viscoso è una frazione pari a $\frac{\pi}{2Q} \approx 0.05\%$, del tutto trascurabile.
-
-\vspace{0.3cm}
-\noindent Di conseguenza, per $t \ge 0$ lo spostamento libero segue l'oscillazione smorzata:
-\begin{equation}
-    x(t) = X_0 \, e^{-t/\tau} \sin(\omega_1 t + \phi + \theta_x)
-\end{equation}
-e la tensione all'uscita della catena di condizionamento ($v_{\text{out}}(t) = R_{\text{trans}} i_m(t) = R_{\text{trans}} \eta \dot{x}(t)$) vale:
+Sappiamo che la tensione in uscita dal circuito di condizionamento ($v_{\text{out}}(t) = R_{\text{trans}} i_m(t) = R_{\text{trans}} \eta \dot{x}(t)$) è:
 \begin{equation}
     \label{eq:vout_ringdown_phi}
-    v_{\text{out}}(t) = \underbrace{R_{\text{trans}} \eta \omega_1 X_0}_{A_0} \, e^{-t/\tau} \cos(\omega_1 t + \phi + \theta_x)
+    v_{\text{out}}(t) = \underbrace{R_{\text{trans}} \eta \omega_1 X_0}_{A_0} \, e^{-t/\tau} \cos(\omega_1 t + \phi)
 \end{equation}
-Anche il piccolo livello continuo $V_{\text{post}}(\phi) = V_{\text{AC}}\sin(\phi) \in [\SI{-0.1}{\volt}, \SI{+0.1}{\volt}]$ che rimane sull'elettrodo di drive per $t \ge 0$ non altera l'ampiezza $A_0$: infatti la corrente motrice $i_m(t)$ viene letta sull'elettrodo di sense (mantenuto a massa virtuale $\SI{0}{\volt}$ dal TIA), dove la differenza di potenziale rispetto alla trave è fissata unicamente da $V_{\text{DC}} = \SI{5.0}{\volt}$, e lo spostamento elettrostatico sulla frequenza $f_1$ durante il ringdown calcolato con l'eq.~\eqref{eq:legge_quadratica_f1_vdc} è inferiore a $\pm\SI{0.6}{\hertz}$. Ci aspettiamo quindi che l'ampiezza iniziale del ringdown $A_0$ sia costante e indipendente dalla fase $\phi$.
-
-\newpage
-
-\subsection{Risultati sperimentali, analisi della deriva termica e invarianza di \texorpdfstring{$A_0$}{A0}}
-\label{subsec:risultati_sperimentali_fase}
-
-Per verificare sperimentalmente questo risultato, abbiamo mantenuto il MEMS a $V_{\text{DC}} = \SI{5.0}{\volt}$ con ampiezza di eccitazione $V_{\text{AC}} \approx \SI{100}{\milli\volt}$ ($\SI{200}{\milli\volt_{pp}}$) e frequenza del generatore fissa a $f_{\text{in}} = \SI{417.90}{\kilo\hertz}$ ($\SI{417896}{\hertz}$). Tramite uno script automatico abbiamo effettuato uno sweep completo della fase $\phi$ da $-360^\circ$ a $+360^\circ$ con passo di $5^\circ$, acquisendo in sequenza $145$ tracce di ringdown (ciascuna mediata su $512$ acquisizioni). Per ogni traccia abbiamo scartato i primi $\SI{20}{\micro\second}$ dopo il fronte del gate e abbiamo eseguito il fit esponenziale dei picchi con l'eq.~\eqref{eq:legge_decadimento} per estrarre l'ampiezza iniziale $A_0$.
+Si vede subito che $A_0 = R_{\text{trans}} \eta \omega_1 X_0$ non dipende da $\phi$. Anche il livello continuo $V_{\text{post}}(\phi) = V_{\text{AC}}\sin(\phi) $ che resta sull'elettrodo di drive non altera $A_0$: infatti la corrente $i_m(t)$ viene letta sull'elettrodo di sense, non su quello di drive. Ci aspettiamo quindi che l'ampiezza iniziale del ringdown $A_0$ sia costante e indipendente dalla fase $\phi$.
 
 \vspace{0.3cm}
-\noindent In fig.~\ref{fig:ringdown_4fasi} sono riportate le tracce sperimentali del ringdown e le relative curve di fit esponenziale per le quattro fasi cardinali $\phi = -90^\circ, 0^\circ, +90^\circ$ e $+180^\circ$.
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.96\textwidth]{../variazione fase/grafici/ringdown_fit_4fasi.png}
-\caption{Decadimento temporale dell'oscillazione libera e fit dell'ampiezza iniziale $A_0$ per quattro fasi di spegnimento del gate ($\phi = -90^\circ, 0^\circ, +90^\circ, +180^\circ$).}
-\label{fig:ringdown_4fasi}
-\end{figure}
-
-\newpage
+\noindent Per verificare sperimentalmente questo risultato, abbiamo mantenuto il MEMS a $V_{\text{DC}} = \SI{5.0}{\volt}$ con eccitazione $V_{\text{AC}} = \SI{200}{\milli\volt_{pp}}$ e frequenza in ingresso $f_{\text{in}} = \SI{417.90}{\kilo\hertz}$. Abbiamo effettuato uno sweep della fase $\phi$ da $-360^\circ$ a $+360^\circ$ e abbiamo acquisito le tracce del ringdown per ciascun valore di $\phi$. Da queste, abbiamo estratto i valori di $A_0$.
 
 \noindent Osservando i valori grezzi di $A_0$ estratti lungo le $145$ misure (pannello inferiore di fig.~\ref{fig:deriva_termica_f1_A0}, punti blu), notiamo subito due aspetti fondamentali:
 \begin{enumerate}
@@ -2051,7 +2015,7 @@ otteniamo la curva tratteggiata rossa riportata nel pannello inferiore di fig.~\
 \begin{equation}
     A_{0,\text{medio}} = \mathbf{\SI{22.25}{\milli\volt}}, \qquad \sigma_{A_0} = \SI{0.19}{\milli\volt} \quad (0.86\%)
 \end{equation}
-Questo risultato conferma la previsione teorica dell'eq.~\eqref{eq:energia_totale_indipendente_phi}: l'ampiezza iniziale $A_0$ del ringdown meccanico non dipende dalla fase $\phi$ con cui viene interrotto il burst. È quindi possibile scegliere liberamente la fase di spegnimento del generatore che minimizza il disturbo elettrico iniziale ($\phi = \pm 90^\circ$ con compensazione hardware attiva, oppure $\phi \approx 103^\circ$ senza compensazione) senza alterare in alcun modo la misura dell'ampiezza del ringdown del MEMS.
+Questo risultato conferma la previsione teorica dell'eq.~\eqref{eq:vout_ringdown_phi}: l'ampiezza iniziale $A_0$ del ringdown meccanico non dipende dalla fase $\phi$ con cui viene interrotto il burst. È quindi possibile scegliere liberamente la fase di spegnimento del generatore che minimizza il disturbo elettrico iniziale ($\phi = \pm 90^\circ$ con compensazione hardware attiva, oppure $\phi \approx 103^\circ$ senza compensazione) senza alterare in alcun modo la misura dell'ampiezza del ringdown del MEMS.
 
 \newpage
 
