@@ -28,5 +28,5 @@
 \contentsline {subsection}{\numberline {13.2}Teoria dell'eccitazione in controfase e modello matematico}{41}{subsection.13.2}%
 \contentsline {subsection}{\numberline {13.3}Risultati sperimentali e verifica del modello}{44}{subsection.13.3}%
 \contentsline {section}{\numberline {14}Variazione della fase di spegnimento del gate, transitorio elettrico parassita e impatto sull'ampiezza iniziale del ringdown}{46}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Analisi e modellazione dell'oscillazione elettrica parassita allo spegnimento del gate}{48}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}Previsione teorica sull'ampiezza iniziale del ringdown $A_0$}{53}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.1}Analisi dell'oscillazione elettrica parassita allo spegnimento del gate}{48}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Ampiezza iniziale del ringdown $A_0$}{53}{subsection.14.2}%

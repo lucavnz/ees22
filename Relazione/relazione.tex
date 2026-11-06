@@ -1795,10 +1795,10 @@ Inoltre a partire dall'istante in cui c'è il fronte di discesa del gate, il gen
 Ci aspettiamo quindi di avere un massimo a $\phi = 0^\circ$ oppure $\phi = \pm 180^\circ$ e un minimo a $\phi = \pm 90^\circ$.
 
 \vspace{0.3cm}
-\noindent Tutto questo vale anche con il ramo di compensazione attiva: dato che ovviamente non è possibile compensare perfettamente la capacità parassita $C_p$, rimarrà un disadattamento residuo $\Delta C_p = C_p - C_{\text{comp}}$ che causa comunque un'oscillazione parassita al fronte di discesa del gate.
-\newpage
+\noindent Tutto questo vale anche con il ramo di compensazione attiva: dato che ovviamente non è possibile compensare perfettamente la capacità parassita $C_p$, rimarrà un $\Delta C_p = C_p - C_{\text{comp}}$ che causa comunque un'oscillazione parassita al fronte di discesa del gate.
 
-\subsection{Analisi e modellazione dell'oscillazione elettrica parassita allo spegnimento del gate}
+\newpage
+\subsection{Analisi dell'oscillazione elettrica parassita allo spegnimento del gate}
 \label{subsec:oscillazione_parassita_gate}
 
 Per isolare sperimentalmente il solo transitorio elettrico prodotto dallo spegnimento del gate, abbiamo posto a zero la tensione di polarizzazione del MEMS ($V_{\text{DC}} = \SI{0}{\volt}$), mantenendo attivo il circuito di compensazione hardware della sezione~\ref{sec:compensazione_hardware} e applicando la sinusoide in ingresso con ampiezza $V_{\text{AC}} = \SI{100}{\milli\volt}$ e frequenza $f_{\text{in}} = \SI{417.83}{\kilo\hertz}$.
@@ -1927,9 +1927,6 @@ Se confrontiamo il denominatore dell'eq.~\eqref{eq:fdt_secondo_ordine_tia} (dove
 \caption{Confronto tra le tracce sperimentali e la simulazione circuitale in LTSPICE.}
 \label{fig:simulazione_ltspice_confronto}
 \end{figure}
-
-\subsubsection*{Dipendenza di \texorpdfstring{$V_{pp}$}{Vpp} dalla fase \texorpdfstring{$\phi$}{phi} e confronto tra \texorpdfstring{$\phi = \pm 90^\circ$}{+-90 deg} e \texorpdfstring{$\phi \approx 103^\circ$}{103 deg}}
-
 Per capire come varia l'entità del disturbo parassita allo spegnimento del gate, abbiamo mantenuto il MEMS spento ($V_{\text{DC}} = \SI{0}{\volt}$) con la compensazione hardware attiva e abbiamo eseguito uno sweep della fase $\phi$ da $-180^\circ$ a $+180^\circ$, misurando per ciascuna acquisizione il massimo $V_{\max}$, il minimo $V_{\min}$ e l'escursione picco picco $V_{pp} = V_{\max} - V_{\min}$ del transitorio. I risultati sono mostrati in fig.~\ref{fig:sweep_fase_vpp}.
 
 \begin{figure}[htbp]
@@ -1949,7 +1946,7 @@ Per capire come varia l'entità del disturbo parassita allo spegnimento del gate
 
 \newpage
 
-\subsection{Previsione teorica sull'ampiezza iniziale del ringdown \texorpdfstring{$A_0$}{A0}}
+\subsection{Ampiezza iniziale del ringdown \texorpdfstring{$A_0$}{A0}}
 \label{subsec:teoria_A0_indipendente_fase}
 
 Come abbiamo visto dall'eq.~\eqref{eq:vpost_def} e dalla fig.~\ref{fig:stacco_gate_fase_vin}, al momento dello stacco del gate la sinusoide d'ingresso viene interrotta in un punto diverso del ciclo a seconda di $\phi$ e si congela al valore continuo $V_{\text{post}}(\phi)$ per tutta la durata del ringdown. Verifichiamo quindi se variare la fase di stacco $\phi$ (e il relativo livello $V_{\text{post}}(\phi)$) modifichi o meno l'ampiezza iniziale $A_0$ del ringdown del MEMS.
@@ -1975,7 +1972,7 @@ Si vede subito che $A_0 = R_{\text{trans}} \eta \omega_1 X_0$ non dipende da $\p
 
 \noindent Per verificare sperimentalmente questo risultato, abbiamo mantenuto il MEMS a $V_{\text{DC}} = \SI{5.0}{\volt}$ con eccitazione $V_{\text{AC}} = \SI{200}{\milli\volt_{pp}}$ e frequenza in ingresso $f_{\text{in}} = \SI{417.90}{\kilo\hertz}$. Abbiamo effettuato uno sweep della fase $\phi$ da $-360^\circ$ a $+360^\circ$ e abbiamo acquisito le tracce del ringdown per ciascun valore di $\phi$. Da queste, abbiamo estratto i valori di $A_0$.
 
-\noindent Osservando i valori grezzi di $A_0$ estratti lungo le $145$ misure (pannello inferiore di fig.~\ref{fig:deriva_termica_f1_A0}, punti blu), notiamo subito due aspetti fondamentali:
+\noindent Se osserviamo il grafico inferiore di fig.~\ref{fig:deriva_termica_f1_A0} (i punti blu) notiamo subito che non è presente alcuna oscillazione periodica, non c'è un legame con $\sin(\phi)$ o a $\cos(\phi)$. Invece, c'è una crescita da $\SI{20.03}{\milli\volt}$ a $\SI{25.86}{\milli\volt}$. Se questa variazione dipendesse dalla fase $\phi$, a $-360^\circ$, $0^\circ$ e $+360^\circ$ dovremmo misurare lo stesso identico valore di $A_0$. 
 \begin{enumerate}
     \item Non è presente alcuna oscillazione periodica con periodo di $360^\circ$ o di $180^\circ$: i dati sperimentali non mostrano alcuna modulazione legata a $\sin(\phi)$ o a $\cos(\phi)$.
     \item È invece presente una crescita lenta e monotona lungo la sequenza di acquisizione: partendo da $\phi = -360^\circ$ (prima misura), l'ampiezza vale $A_0(-360^\circ) = \SI{20.03}{\milli\volt}$, sale a $A_0(0^\circ) = \SI{22.19}{\milli\volt}$ a metà scansione, e raggiunge $A_0(+360^\circ) = \SI{25.86}{\milli\volt}$ all'ultima misura ($\phi = +360^\circ$).
