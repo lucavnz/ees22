@@ -383,44 +383,27 @@ def main():
     # =========================================================
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(9.2, 8.2), dpi=300, sharex=True)
 
-    # Pannello superiore: frequenza di risonanza f1 misurata durante il ringdown
+    # Pannello superiore: frequenza di oscillazione f1 misurata durante il ringdown
     ax1.plot(phases, f1_hz / 1e3, 'o', color='#2b8a3e', markersize=4.5, alpha=0.8,
-             label=r'Frequenza libera del ring-down $f_1$ misurata')
-    ax1.plot(phases, f1_smooth / 1e3, '--', color='#d62728', linewidth=2.0,
-             label=r'Profilo della deriva termica di $f_1$ ($+33.7$ Hz da $-360^\circ$ a $+360^\circ$)')
+             label=r'Frequenza di oscillazione del ringdown $f_1$')
 
     ax1.ticklabel_format(useOffset=False, style='plain')
-    ax1.set_ylabel(r'Frequenza naturale $f_1$ [kHz]')
-    ax1.set_title(r'Deriva termica di $f_1$ durante le 145 acquisizioni sequenziali e conseguente variazione di $A_0$', pad=9)
+    ax1.set_ylabel(r'Frequenza di oscillazione $f_1$ [kHz]')
+    ax1.set_title(r'Frequenza di oscillazione $f_1$ e $A_0$ vs $\phi$', pad=9)
     ax1.grid(True)
     ax1.legend(loc='lower right', frameon=True, facecolor='white', framealpha=0.93, edgecolor='#ced4da')
 
-    # Pannello inferiore: A0 grezza misurata vs predizione dalla curva di risonanza lorenziana
+    # Pannello inferiore: A0 misurata vs predizione dalla curva di risonanza lorentziana
     ax2.plot(phases, a0_mv, 'o', color='#1971c2', markersize=4.8, alpha=0.85,
-             label=r'Ampiezza iniziale $A_0$ misurata (dati grezzi)')
+             label=r'Ampiezza iniziale $A_0$ misurata')
     ax2.plot(phases, a0_thermal_pred, '--', color='#d62728', linewidth=2.2,
-             label=r'Ampiezza predetta dalla lorenziana per la sola deriva di $f_1$')
-
-    # Evidenziazione dei tre punti fisicamente equivalenti: -360 deg, 0 deg, +360 deg
-    eq_indices = [0, idx_zero, len(phases) - 1]
-    ax2.plot(phases[eq_indices], a0_mv[eq_indices], 's', color='#e67700', markersize=8.5, zorder=5,
-             label=r'Fasi fisicamente identiche ($\phi = -360^\circ, 0^\circ, +360^\circ$)')
-
-    for idx_pt in eq_indices:
-        ph_pt = phases[idx_pt]
-        val_pt = a0_mv[idx_pt]
-        offset_y = 1.25 if ph_pt < 300 else -1.65
-        ax2.annotate(f"{val_pt:.2f} mV",
-                     xy=(ph_pt, val_pt),
-                     xytext=(ph_pt, val_pt + offset_y),
-                     ha='center', fontsize=9.0, color='#b45309',
-                     bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='#e67700', alpha=0.9))
+             label=r'Ampiezza predetta dalla lorentziana per deriva di $f_1$')
 
     ax2.set_xlim(-375, 375)
     ax2.set_xticks(np.arange(-360, 361, 90))
     ax2.set_ylim(18.0, 28.0)
-    ax2.set_xlabel(r'Fase impostata sul generatore $\phi$ [gradi] (scansione sequenziale da $-360^\circ$ a $+360^\circ$)')
-    ax2.set_ylabel(r'Ampiezza iniziale del ring-down $A_0$ [mV]')
+    ax2.set_xlabel(r'Fase impostata sul generatore $\phi$ [gradi]')
+    ax2.set_ylabel(r'Ampiezza iniziale del ringdown $A_0$ [mV]')
     ax2.grid(True)
     ax2.legend(loc='upper left', frameon=True, facecolor='white', framealpha=0.93, edgecolor='#ced4da')
 
@@ -431,12 +414,12 @@ def main():
     print(f"Salvato Grafico 3: {g3_path}")
 
     # =========================================================
-    # GRAFICO 4: Ampiezza A0 vs Fase (compensata dalla deriva termica)
+    # GRAFICO 4: Ampiezza A0 vs Fase (compensata dalla deriva)
     # (Stile identico a ampiezza_vs_frequenza.png e tau_vs_frequenza.png)
     # =========================================================
     fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
     ax.plot(phases, a0_comp_mv, 'o', color='#1971c2', markersize=5.5, alpha=0.85,
-            label=r'Ampiezza iniziale $A_0$ (compensata dalla deriva termica)')
+            label=r'Ampiezza iniziale $A_0$ (compensata dalla deriva)')
     ax.axhline(a0_comp_mean, color='#d62728', linestyle='--', linewidth=2.0,
                label=rf'Valore medio: $A_0 = {a0_comp_mean:.2f}$ mV ($\sigma = {a0_comp_std:.2f}$ mV)')
 
@@ -444,8 +427,8 @@ def main():
     ax.set_xticks(np.arange(-360, 361, 90))
     ax.set_ylim(a0_comp_mean - 3.5, a0_comp_mean + 3.5)
     ax.set_xlabel(r'Fase di spegnimento del burst $\phi$ [gradi]')
-    ax.set_ylabel(r'Ampiezza iniziale del ring-down $A_0$ [mV]')
-    ax.set_title(r"Indipendenza dell'ampiezza iniziale $A_0$ dalla fase di spegnimento $\phi$", pad=9)
+    ax.set_ylabel(r'Ampiezza iniziale del ringdown $A_0$ [mV]')
+    ax.set_title(r"Ampiezza iniziale del ringdown $A_0$ al variare della fase di spegnimento $\phi$", pad=9)
     ax.grid(True)
     ax.legend(loc='lower right', frameon=True, facecolor='white', framealpha=0.93, edgecolor='#ced4da')
 

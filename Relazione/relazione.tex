@@ -1966,53 +1966,70 @@ Sappiamo che la tensione in uscita dal circuito di condizionamento ($v_{\text{ou
     \label{eq:vout_ringdown_phi}
     v_{\text{out}}(t) = \underbrace{R_{\text{trans}} \eta \omega_1 X_0}_{A_0} \, e^{-t/\tau} \cos(\omega_1 t + \phi)
 \end{equation}
-Si vede subito che $A_0 = R_{\text{trans}} \eta \omega_1 X_0$ non dipende da $\phi$. Anche il livello continuo $V_{\text{post}}(\phi) = V_{\text{AC}}\sin(\phi) $ che resta sull'elettrodo di drive non altera $A_0$: infatti la corrente $i_m(t)$ viene letta sull'elettrodo di sense, non su quello di drive. Ci aspettiamo quindi che l'ampiezza iniziale del ringdown $A_0$ sia costante e indipendente dalla fase $\phi$.
+\noindent Se ipotizzassimo che la pulsazione $\omega_1 = 2\pi f_1$ durante il ringdown fosse costante e che il livello continuo $V_{\text{post}}(\phi)$ sull'elettrodo di drive non avesse alcun effetto (dato che la corrente $i_m(t)$ viene letta sull'elettrodo di sense e non su quello di drive), dall'eq.~\eqref{eq:vout_ringdown_phi} l'ampiezza $A_0 = R_{\text{trans}} \eta \omega_1 X_0$ risulterebbe del tutto indipendente da $\phi$.
 
 \vspace{0.3cm}
-
-\noindent Per verificare sperimentalmente questo risultato, abbiamo mantenuto il MEMS a $V_{\text{DC}} = \SI{5.0}{\volt}$ con eccitazione $V_{\text{AC}} = \SI{200}{\milli\volt_{pp}}$ e frequenza in ingresso $f_{\text{in}} = \SI{417.90}{\kilo\hertz}$. Abbiamo effettuato uno sweep della fase $\phi$ da $-360^\circ$ a $+360^\circ$ e abbiamo acquisito le tracce del ringdown per ciascun valore di $\phi$. Da queste, abbiamo estratto i valori di $A_0$.
-
-\noindent Se osserviamo il grafico inferiore di fig.~\ref{fig:deriva_termica_f1_A0} (i punti blu) notiamo subito che non è presente alcuna oscillazione periodica, non c'è un legame con $\sin(\phi)$ o a $\cos(\phi)$. Invece, c'è una crescita da $\SI{20.03}{\milli\volt}$ a $\SI{25.86}{\milli\volt}$. Se questa variazione dipendesse dalla fase $\phi$, a $-360^\circ$, $0^\circ$ e $+360^\circ$ dovremmo misurare lo stesso identico valore di $A_0$. 
-\begin{enumerate}
-    \item Non è presente alcuna oscillazione periodica con periodo di $360^\circ$ o di $180^\circ$: i dati sperimentali non mostrano alcuna modulazione legata a $\sin(\phi)$ o a $\cos(\phi)$.
-    \item È invece presente una crescita lenta e monotona lungo la sequenza di acquisizione: partendo da $\phi = -360^\circ$ (prima misura), l'ampiezza vale $A_0(-360^\circ) = \SI{20.03}{\milli\volt}$, sale a $A_0(0^\circ) = \SI{22.19}{\milli\volt}$ a metà scansione, e raggiunge $A_0(+360^\circ) = \SI{25.86}{\milli\volt}$ all'ultima misura ($\phi = +360^\circ$).
-\end{enumerate}
-Poiché una rotazione di fase di $\pm 360^\circ$ riporta la sinusoide esattamente su se stessa, \textbf{le tre fasi $\phi = -360^\circ$, $\phi = 0^\circ$ e $\phi = +360^\circ$ rappresentano la stessa identica condizione fisica} (in tutti e tre i casi la sinusoide viene interrotta sul passaggio per lo zero con pendenza positiva). Se la variazione osservata da $\SI{20.03}{\milli\volt}$ a $\SI{25.86}{\milli\volt}$ dipendesse dalla fase $\phi$, a $-360^\circ$, $0^\circ$ e $+360^\circ$ dovremmo misurare lo stesso identico valore di $A_0$. Il fatto che questi tre punti abbiano ampiezze diverse dimostra che l'aumento di $A_0$ non è causato dalla fase $\phi$, ma dal tempo trascorso tra la prima e l'ultima misura della scansione.
+\noindent In realtà, mentre il MEMS è polarizzato alla tensione fissa $V_{\text{DC}}$, sull'elettrodo di drive durante tutto il ringdown ($t \ge 0$) non abbiamo $\SI{0}{\volt}$, ma resta congelato il livello continuo $v_{\text{in}}(t \ge 0) = V_{\text{post}}(\phi) = V_{\text{AC}}\sin(\phi)$. Come abbiamo visto nella sezione~\ref{sec:frequenza_vdc} dall'eq.~\eqref{eq:forza_elettrostatica_richiamo_vdc}, la forza elettrostatica esercitata dall'elettrodo di drive sulla trave dipende dal quadrato della differenza di potenziale $\left(V_{\text{DC}} - v_{\text{in}}(t)\right)^2$. Sostituendo quindi $V_{\text{DC}} - V_{\text{post}}(\phi)$ al posto di $V_{\text{DC}}$ nella legge della frequenza di risonanza~\eqref{eq:legge_quadratica_f1_vdc}, otteniamo che la frequenza di oscillazione $f_1$ durante il ringdown dipende da $\phi$:
+\begin{equation}
+    \label{eq:f1_quadro_vpost_phi}
+    f_1^2(\phi) = f_{01}^2 - \gamma \Big( V_{\text{DC}} - V_{\text{post}}(\phi) \Big)^2 = f_{01}^2 - \gamma \Big( V_{\text{DC}} - V_{\text{AC}}\sin(\phi) \Big)^2
+\end{equation}
+Sviluppando il quadrato e trascurando il termine quadratico in $V_{\text{AC}}^2$ (poiché $V_{\text{AC}} = \SI{100}{\milli\volt} \ll V_{\text{DC}} = \SI{5.0}{\volt}$):
+\begin{equation}
+    \label{eq:f1_sin_phi_sviluppo}
+    f_1^2(\phi) \approx \underbrace{f_{01}^2 - \gamma V_{\text{DC}}^2}_{f_{1,0}^2} + 2 \gamma V_{\text{DC}} V_{\text{AC}} \sin(\phi) \implies f_1(\phi) \approx f_{1,0} + \Delta f_1 \sin(\phi)
+\end{equation}
+Il livello continuo $V_{\text{post}}(\phi) = V_{\text{AC}}\sin(\phi)$ presente sull'elettrodo di drive introduce quindi nella frequenza del ringdown $f_1(\phi)$ (e di conseguenza nella pulsazione $\omega_1(\phi) = 2\pi f_1(\phi)$ e nell'ampiezza $A_0$) una piccola oscillazione sinusoidale con periodo $360^\circ$ legata a $\sin(\phi)$:
+\begin{itemize}
+    \item quando $\sin(\phi) > 0$ (massimo a $\phi = +90^\circ$ e $-270^\circ$, dove $V_{\text{post}} = +V_{\text{AC}}$), la differenza $V_{\text{DC}} - V_{\text{post}}(\phi)$ tra il MEMS e l'elettrodo di drive diminuisce e la frequenza $f_1(\phi)$ sale leggermente;
+    \item quando $\sin(\phi) < 0$ (minimo a $\phi = -90^\circ$ e $+270^\circ$, dove $V_{\text{post}} = -V_{\text{AC}}$), la differenza $V_{\text{DC}} - V_{\text{post}}(\phi)$ aumenta e la frequenza $f_1(\phi)$ scende leggermente.
+\end{itemize}
 
 \vspace{0.3cm}
-\noindent Per verificarlo quantitativamente, abbiamo estratto da ciascuna delle $145$ tracce la frequenza di oscillazione libera $f_1$ del MEMS durante il ringdown (pannello superiore di fig.~\ref{fig:deriva_termica_f1_A0}). Poiché ogni punto richiede $512$ medie all'oscilloscopio, l'intera scansione di $145$ passi dura circa $15\text{--}20$ minuti; durante questo intervallo di tempo, la frequenza propria del risonatore ha subito una lieve \textbf{deriva termica} complessiva di $+\SI{33.7}{\hertz}$, salendo da $f_1 = \SI{417789.1}{\hertz}$ (al passo 1, $\phi = -360^\circ$) fino a $f_1 = \SI{417822.8}{\hertz}$ (al passo 145, $\phi = +360^\circ$).
+\noindent Per verificare sperimentalmente quanto vale questo effetto su $f_1$ e su $A_0$, abbiamo mantenuto il MEMS a $V_{\text{DC}} = \SI{5.0}{\volt}$ con eccitazione $V_{\text{AC}} = \SI{200}{\milli\volt_{pp}}$ ($\SI{100}{\milli\volt}$ di ampiezza) e frequenza in ingresso $f_{\text{in}} = \SI{417.90}{\kilo\hertz}$. Abbiamo effettuato uno sweep della fase $\phi$ da $-360^\circ$ a $+360^\circ$ e abbiamo acquisito le tracce del ringdown per ciascun valore di $\phi$, estraendo i valori di $A_0$ e di $f_1$.
 
 \vspace{0.2cm}
-\noindent Ricordando che la frequenza del generatore era mantenuta fissa a $f_{\text{in}} = \SI{417896.0}{\hertz}$ (quindi sul fianco destro della campana di risonanza lorenziana~\eqref{eq:lorentziana_ampiezza}, che ha una larghezza di banda molto stretta $\Delta f \approx \SI{116}{\hertz}$), lo spostamento verso l'alto di $f_1$ di $+\SI{33.7}{\hertz}$ avvicina progressivamente il picco di risonanza del MEMS alla frequenza di eccitazione $f_{\text{in}}$, riducendo lo scostamento in frequenza $|f_{\text{in}} - f_1|$ da $\SI{106.9}{\hertz}$ a $\SI{73.2}{\hertz}$. Sostituendo la frequenza misurata $f_1$ all'interno dell'equazione della curva lorenziana~\eqref{eq:lorentziana_ampiezza}:
+\noindent Se osserviamo il grafico inferiore di fig.~\ref{fig:deriva_termica_f1_A0} (i punti blu), notiamo che sui dati grezzi qualsiasi piccola variazione periodica legata a $\sin(\phi)$ è inizialmente mascherata da una crescita molto più grande, da $\SI{20.03}{\milli\volt}$ a $\SI{25.86}{\milli\volt}$. Se questa rampa dipendesse dalla fase $\phi$, a $-360^\circ$, $0^\circ$ e $+360^\circ$ dovremmo misurare lo stesso identico valore di $A_0$. Il fatto che questi 3 punti abbiano ampiezze diverse significa che l'aumento da $\SI{20.03}{\milli\volt}$ a $\SI{25.86}{\milli\volt}$ non è causato dalla fase $\phi$, ma dal tempo trascorso tra la prima e l'ultima misura: come si vede dal grafico superiore di fig.~\ref{fig:deriva_termica_f1_A0}, durante la scansione la frequenza $f_1$ ha subito una deriva complessiva di $+\SI{33}{\hertz}$.
+
+\vspace{0.2cm}
+\noindent Ricordando che la frequenza del generatore era mantenuta fissa a $f_{\text{in}} = \SI{417896}{\hertz}$, lo spostamento verso l'alto di $f_1$ di $+\SI{33}{\hertz}$ avvicina il picco di risonanza del MEMS alla frequenza di eccitazione $f_{\text{in}}$, riducendo $|f_{\text{in}} - f_1|$. Se sostituiamo la frequenza $f_1$ misurata dalle tracce del ringdown all'interno dell'equazione della curva lorenziana~\eqref{eq:lorentziana_ampiezza}:
 \begin{equation}
     \label{eq:A0_da_deriva_f1}
     A_{0,\text{teor}}(f_1) = \frac{A_{\max}}{\sqrt{1 + \left( \dfrac{2(f_{\text{in}} - f_1)}{\Delta f} \right)^2}}
 \end{equation}
-otteniamo la curva tratteggiata rossa riportata nel pannello inferiore di fig.~\ref{fig:deriva_termica_f1_A0}, che riproduce fedelmente l'intero andamento sperimentale di $A_0$ da $-360^\circ$ a $+360^\circ$.
+otteniamo la curva tratteggiata rossa riportata nel grafico inferiore di fig.~\ref{fig:deriva_termica_f1_A0}, che riproduce l'andamento crescente di $A_0$.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.92\textwidth]{../variazione fase/grafici/deriva_termica_f1_e_A0.png}
-\caption{In alto: deriva termica della frequenza naturale $f_1$ ($+\SI{33.7}{\hertz}$) misurata durante il ringdown lungo le 145 acquisizioni sequenziali. In basso: confronto tra l'ampiezza iniziale $A_0$ misurata (in blu) e l'ampiezza predetta dall'eq.~\eqref{eq:A0_da_deriva_f1} per effetto della sola deriva di $f_1$ (tratteggiata rossa); i quadrati arancioni evidenziano le tre fasi fisicamente equivalenti $\phi = -360^\circ, 0^\circ, +360^\circ$.}
+\caption{In alto: frequenza di oscillazione $f_1$ misurata durante il ringdown. In basso: confronto tra l'ampiezza iniziale $A_0$ misurata (in blu) e l'ampiezza teorica predetta dall'eq.~\eqref{eq:A0_da_deriva_f1} per effetto della deriva di $f_1$ (tratteggiata rossa).}
 \label{fig:deriva_termica_f1_A0}
 \end{figure}
 
 \newpage
 
-\noindent Compensando infine ciascun punto sperimentale per il fattore lorenziano~\eqref{eq:A0_da_deriva_f1} associato alla deriva termica (riportando tutte le misure alla frequenza di riferimento misurata a $\phi = 0^\circ$), otteniamo il grafico di fig.~\ref{fig:ampiezza_A0_vs_fase}.
+\noindent Per eliminare l'effetto della deriva di $+\SI{33}{\hertz}$, riportiamo tutte le misure di $A_0$ alla frequenza di riferimento misurata a $\phi = 0^\circ$, dove $f_1(0^\circ) = \SI{417.803}{\kilo\hertz}$ e l'ampiezza calcolata con la lorenziana~\eqref{eq:A0_da_deriva_f1} vale $A_{0,\text{teor}}\big(f_1(0^\circ)\big) = \SI{22.25}{\milli\volt}$. Per ciascun punto sperimentale, l'eq.~\eqref{eq:A0_da_deriva_f1} ci dice di quanto è variata l'ampiezza teorica $A_{0,\text{teor}}\big(f_1(\phi)\big)$ rispetto a $A_{0,\text{teor}}\big(f_1(0^\circ)\big)$ a causa dello spostamento di $f_1$; dividendo quindi ogni misura $A_0(\phi)$ per il corrispondente valore della lorenziana $A_{0,\text{teor}}\big(f_1(\phi)\big)$ e moltiplicando per il valore di riferimento a $\phi = 0^\circ$:
+\begin{equation}
+    \label{eq:A0_compensata_formula}
+    A_{0,\text{comp}}(\phi) = A_0(\phi) \cdot \frac{A_{0,\text{teor}}\big(f_1(0^\circ)\big)}{A_{0,\text{teor}}\big(f_1(\phi)\big)}
+\end{equation}
+togliamo la rampa legata alla deriva nel tempo e otteniamo il grafico di fig.~\ref{fig:ampiezza_A0_vs_fase}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.84\textwidth]{../variazione fase/grafici/ampiezza_A0_vs_fase.png}
-\caption{Ampiezza iniziale del ringdown $A_0$ in funzione della fase di spegnimento del gate $\phi \in [-360^\circ, +360^\circ]$ dopo la compensazione della deriva termica.}
+\caption{Ampiezza iniziale del ringdown $A_0$ in funzione della fase di spegnimento del gate $\phi \in [-360^\circ, +360^\circ]$ dopo la compensazione della deriva di $f_1$.}
 \label{fig:ampiezza_A0_vs_fase}
 \end{figure}
 
-\noindent L'ampiezza iniziale del ringdown $A_0$ risulta piatta su tutti i $720^\circ$ di escursione della fase, attestandosi attorno al valore medio:
+\noindent Una volta rimossa la deriva, nel grafico di fig.~\ref{fig:ampiezza_A0_vs_fase} diventa visibile proprio la piccola oscillazione sinusoidale con periodo $360^\circ$ ($\approx \pm \SI{0.2}{\milli\volt}$) legata a $V_{\text{post}}(\phi) = V_{\text{AC}}\sin(\phi)$ sull'elettrodo di drive che abbiamo ricavato nell'eq.~\eqref{eq:f1_sin_phi_sviluppo}. Infatti, poiché la frequenza del ringdown $f_1(\phi)$ oscilla di circa $\pm \SI{1.2}{\hertz}\sin(\phi)$ (salendo per $V_{\text{post}} > 0$ attorno a $\phi = -270^\circ, +90^\circ$ e scendendo per $V_{\text{post}} < 0$ attorno a $\phi = -90^\circ, +270^\circ$), il termine $A_{0,\text{teor}}\big(f_1(\phi)\big)$ al denominatore dell'eq.~\eqref{eq:A0_compensata_formula} segue un andamento $\propto +\sin(\phi)$: di conseguenza, dividendo per $A_{0,\text{teor}}\big(f_1(\phi)\big)$, l'ampiezza compensata $A_{0,\text{comp}}(\phi)$ mostra una modulazione proporzionale a $-\sin(\phi)$, con minimi attorno a $-270^\circ$ e $+90^\circ$ e massimi attorno a $-90^\circ$ e $+270^\circ$.
+
+\vspace{0.2cm}
+\noindent Quantitativamente, questa oscillazione legata a $\phi$ è comunque molto piccola rispetto al valore medio:
 \begin{equation}
     A_{0,\text{medio}} = \mathbf{\SI{22.25}{\milli\volt}}, \qquad \sigma_{A_0} = \SI{0.19}{\milli\volt} \quad (0.86\%)
 \end{equation}
-Questo risultato conferma la previsione teorica dell'eq.~\eqref{eq:vout_ringdown_phi}: l'ampiezza iniziale $A_0$ del ringdown meccanico non dipende dalla fase $\phi$ con cui viene interrotto il burst. È quindi possibile scegliere liberamente la fase di spegnimento del generatore che minimizza il disturbo elettrico iniziale ($\phi = \pm 90^\circ$ con compensazione hardware attiva, oppure $\phi \approx 103^\circ$ senza compensazione) senza alterare in alcun modo la misura dell'ampiezza del ringdown del MEMS.
+Pur esistendo questa debole dipendenza sinusoidale da $\phi$ dovuta a $V_{\text{post}}(\phi)$ sull'elettrodo di drive, la variazione che introduce su $A_0$ è inferiore all'$1\%$: è quindi possibile scegliere la fase di spegnimento del generatore che minimizza il disturbo elettrico iniziale ($\phi = \pm 90^\circ$ con compensazione hardware attiva, oppure $\phi \approx 103^\circ$ senza compensazione) senza alterare in modo significativo la misura dell'ampiezza del ringdown del MEMS.
 
 \newpage
 
