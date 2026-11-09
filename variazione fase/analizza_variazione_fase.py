@@ -196,10 +196,10 @@ def main():
     f1_smooth = savgol_filter(f1_hz, window_length=15, polyorder=2)
     a0_thermal_pred = lorentz_from_f1(f1_smooth, a_max_fit, bw_fit)
 
-    # Compensazione della deriva termica riportando tutti i punti alla frequenza di riferimento a phi = 0 deg
+    # Compensazione della deriva riportando tutti i punti alla frequenza di riferimento a phi = 0 deg
     idx_zero = np.argmin(np.abs(phases - 0.0))
     a0_ref_zero = a0_thermal_pred[idx_zero]
-    a0_comp_mv = a0_mv * (a0_ref_zero / a0_thermal_pred)
+    a0_comp_mv = a0_mv - (a0_thermal_pred - a0_ref_zero)
 
     a0_comp_mean = np.mean(a0_comp_mv)
     a0_comp_std = np.std(a0_comp_mv)
@@ -420,8 +420,6 @@ def main():
     fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
     ax.plot(phases, a0_comp_mv, 'o', color='#1971c2', markersize=5.5, alpha=0.85,
             label=r'Ampiezza iniziale $A_0$ (compensata dalla deriva)')
-    ax.axhline(a0_comp_mean, color='#d62728', linestyle='--', linewidth=2.0,
-               label=rf'Valore medio: $A_0 = {a0_comp_mean:.2f}$ mV ($\sigma = {a0_comp_std:.2f}$ mV)')
 
     ax.set_xlim(-375, 375)
     ax.set_xticks(np.arange(-360, 361, 90))
