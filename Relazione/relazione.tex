@@ -163,9 +163,8 @@ A differenza di una trave dritta, questa forma curva introduce un'asimmetria nel
 \newpage
 
 
-\section{Equazione del moto}
 
-Quando la trave vibra, ogni suo punto di coordinata $y \in [0, L]$ si sposta lungo la direzione $x$ al variare del tempo $t$: la deformazione dell'intera struttura è quindi descritta da una funzione di due variabili, $u(y, t)$.
+\noindent Quando la trave vibra, ogni suo punto di coordinata $y \in [0, L]$ si sposta lungo la direzione $x$ al variare del tempo $t$: la deformazione dell'intera struttura è quindi descritta da una funzione di due variabili, $u(y, t)$.
 
 La trave ha infiniti modi di vibrazione, ciascuno caratterizzato da una propria frequenza di risonanza e da una specifica forma geometrica:
 \begin{itemize}
@@ -279,7 +278,9 @@ dove la variabile $q_1(t)$ coincide con lo spostamento $x(t)$ e $\mathcal{M}\fra
 % =============================================================================
 % SEZIONE 4: FORZE ELETTROSTATICHE E SPRING SOFTENING
 % =============================================================================
-\section{Forze elettrostatiche}
+\newpage
+
+\subsection{Attuazione elettrostatica}
 \label{sec:forze_elettrostatiche}
 
 Consideriamo la capacità di drive $C_d(x)$ formata tra l'elettrodo di drive e la trave mobile. L'energia elettrostatica immagazzinata nel condensatore è:
@@ -354,8 +355,10 @@ dove la differenza di potenziale $V(t)$ applicata tra la trave (a potenziale $V_
 % =============================================================================
 % SEZIONE 5: CORRENTE DI SENSE E TRASFORMATORE ELETTROMECCANICO
 % =============================================================================
-\section{Segnale di corrente dal MEMS}
-\label{sec:corrente_motrice}
+\newpage
+
+\subsection{Modello elettrico equivalente RLC}
+\label{sec:modello_rlc}
 
 La carica immagazzinata sull'elettrodo di sense è data da:
 \begin{equation}
@@ -375,10 +378,9 @@ L'espressione della corrente di rilevamento si scrive come:
     i_m(t) = \eta \, \dot{x}(t)
 \end{equation}
 La corrente erogata dal MEMS è quindi direttamente proporzionale alla velocità meccanica della trave.
+\vspace{0.3cm}
 
-\section{Modello elettrico equivalente RLC}
-\label{sec:modello_rlc}
-Il legame tra il dominio elettrico e quello meccanico può essere studiato rappresentando il dispositivo come un doppio trasformatore ideale (Fig.~\ref{fig:trasformatore}):
+\noindent Il legame tra il dominio elettrico e quello meccanico può essere studiato rappresentando il dispositivo come un doppio trasformatore ideale (Fig.~\ref{fig:trasformatore}):
 \begin{enumerate}
     \item Un trasformatore ideale con rapporto $1 : \eta$ converte la tensione $v_{\text{in}}(t)$ nella forzante:
     \begin{equation}
@@ -449,7 +451,7 @@ Dividendo entrambi i membri per il fattore di accoppiamento $\eta$, otteniamo:
     \underbrace{\left(\frac{m_{\text{eff}}}{\eta^2}\right)}_{L_m} \frac{di_m(t)}{dt} + \underbrace{\left(\frac{b_{\text{eff}}}{\eta^2}\right)}_{R_m} i_m(t) + \underbrace{\left(\frac{k_{\text{eff}}}{\eta^2}\right)}_{\frac{1}{C_m}} \int i_m(t) \, dt = v_{\text{in}}(t)
 \end{equation}
 
-\noindent I tre parametri $L_m$, $R_m$ e $C_m$ costituiscono il modello elettrico equivalente RLC della trave. Confrontando l'equazione~\eqref{eq:rlc_fondamentale} con i risultati del paper di Frangi~\cite{frangi2023}, possiamo ricavare i valori dei parametri elettrici equivalenti RLC:
+\noindent I tre parametri $L_m$, $R_m$ e $C_m$ formano il modello elettrico equivalente RLC della trave. Confrontando l'equazione~\eqref{eq:rlc_fondamentale} con i risultati del paper di Frangi~\cite{frangi2023}, possiamo ricavare i valori dei parametri elettrici equivalenti RLC:
 
 \begin{equation}
     L_m = \frac{1}{2\left(\varepsilon_0 c_{0,DA}^{(1)} V_{\text{DC}}\right)^2}, \qquad
@@ -459,9 +461,9 @@ Dividendo entrambi i membri per il fattore di accoppiamento $\eta$, otteniamo:
 dove:
 \begin{itemize}
     \item $\varepsilon_0 = \SI{8.854e-12}{\farad/\meter}$ è la costante dielettrica del vuoto;
-    \item $c_{0,DA}^{(1)}$ è un coefficiente elettrostatico di trasduzione (estratto dalla tab.~2 del paper, con $\varepsilon_0 c_{0,DA}^{(1)} = \SI{8.129e-4}{\newton/\volt^2}$).
+    \item $c_{0,DA}^{(1)}$ è un coefficiente elettrostatico di trasduzione (estratto dalla tab.~2 del paper~\cite{frangi2023}, con $\varepsilon_0 c_{0,DA}^{(1)} = \SI{8.129e-4}{\newton/\volt^2}$).
     \item $V_{\text{DC}}$ è la tensione continua di polarizzazione applicata al corpo della trave mobile.
-    \item $\omega_{01}$ è la pulsazione naturale del primo modo flessionale a $V_{\text{DC}} = 0\text{ V}$.
+    \item $\omega_{01}$ è la pulsazione naturale del primo modo a $V_{\text{DC}} = 0\text{ V}$.
     \item $Q_1 \approx 2800$ è il fattore di merito del primo modo.
     \item $\omega_1(V_{\text{DC}}) = \sqrt{c_{1,\beta}^{(1)} - \varepsilon_0 c_{1,DD}^{(1)} V_{\text{DC}}^2}$ è la pulsazione di risonanza.
 \end{itemize}
@@ -471,7 +473,7 @@ Per $V_{\text{DC}} = \SI{5.0}{\volt}$, otteniamo le seguenti stime:
     \item Resistenza motrice: $R_m = \mathbf{\SI{28.29}{\mega\ohm}}$;
     \item Capacità motrice: $C_m = \mathbf{\SI{4.83}{\atto\farad}}$;
 \end{itemize}
-\subsection{Capacità parassita in parallelo}
+\subsubsection{Capacità parassita}
 Nel dispositivo reale sono presenti accoppiamenti capacitivi parassiti. I risultati raccolti durante la sperimentazione in laboratorio ci hanno indirizzato a modellare una capacità parassita $C_p$ in parallelo al ramo serie RLC, come mostrato in Fig.~\ref{fig:mems_circuito}. Come si vedrà a breve, il nodo da cui viene estratta la corrente $i_{\text{tot}}(t)$ sarà mantenuto a $0\text{ V}$ dalla massa virtuale di un amplificatore a transimpedenza (TIA).
 
 \begin{figure}[htbp]
@@ -493,7 +495,7 @@ Nel dispositivo reale sono presenti accoppiamenti capacitivi parassiti. I risult
     % Morsetto di uscita (corrente erogata verso massa virtuale)
     \draw (6.5, 1.5) to[short, *-o, i=$i_{\text{tot}}(t)$] (8.0, 1.5);
 \end{circuitikz}
-\caption{Circuito equivalente del MEMS: ramo motrice serie $R_m$-$L_m$-$C_m$ in parallelo alla capacità parassita $C_p$ (con porta di uscita chiusa su massa virtuale).}
+\caption{Circuito equivalente del MEMS: ramo serie $R_m$-$L_m$-$C_m$ in parallelo alla capacità parassita $C_p$ (con porta di uscita chiusa su massa virtuale).}
 \label{fig:mems_circuito}
 \end{figure}
 
@@ -559,10 +561,10 @@ La corrente complessiva $i_{\text{tot}}(t) = i_m(t) + i_{Cp}(t)$ prodotta dal ME
     % Uscita finale
     \draw (opamp2.out) to[short, -o] ++(0.8, 0) node[right] {$v_{\text{out}}(t)$};
 \end{circuitikz}
-\caption{Schema circuitale del setup di laboratorio: circuito equivalente RLC del MEMS con in parallelo la capacità parassita, e il circuito di condizionamento in uscita.}
+\caption{Schema circuitale completo: circuito equivalente RLC del MEMS con in parallelo la capacità parassita, e il circuito di condizionamento in uscita.}
 \label{fig:frontend_schema}
 \end{figure}
-\noindent Il circuito di condizionamento si articola in questi due stadi:
+\noindent Il circuito di condizionamento è formato da due stadi:
 
 \begin{enumerate}
     \item 
@@ -590,10 +592,10 @@ La corrente complessiva $i_{\text{tot}}(t) = i_m(t) + i_{Cp}(t)$ prodotta dal ME
 \section{Caratterizzazione sperimentale della risposta libera (ringdown)}
 \label{sec:ringdown}
 
-In questa sezione presentiamo le misure sperimentali condotte sul MEMS per determinare la frequenza di risonanza $f_1$, la costante di tempo di smorzamento $\tau$ e il fattore di merito $Q$ del primo modo flessionale, analizzando la risposta libera a seguito dell'interruzione di una forzante. Ecco gli step che abbiamo fatto:
+In questa sezione presentiamo le misure sperimentali condotte sul MEMS per determinare la frequenza di risonanza $f_1$, la costante di tempo di smorzamento $\tau$ e il fattore di merito $Q$ del primo modo, analizzando la risposta libera a seguito dell'interruzione di una forzante. Ecco gli step che abbiamo fatto:
 \begin{itemize}
     \item La tensione di polarizzazione della trave è stata fissata a $V_{\text{DC}} = \SI{5.0}{\volt}$.
-    \item Abbiamo applicato un segnale sinusoidale $v_{\text{in}}(t) = V_{\text{AC}} \sin(2\pi f_{\text{in}} t)$, con ampiezza $V_{\text{AC}} = \SI{100}{\milli\volt}$, sull'elettrodo di drive. L'eccitazione $v_{\text{in}}(t)$ è applicata in modalità burst, controllata da un segnale di sincronizzazione logico (Gate): finché il gate è alto, il segnale sinusoidale è applicato sull'elettrodo di drive; al fronte di discesa del gate (istante $t = 0$ nella scala dei tempi delle misure che presenteremo), $v_{\text{in}}(t)$ viene interrotta e portata a $\SI{0}{\volt}$.
+    \item Abbiamo applicato un segnale sinusoidale $v_{\text{in}}(t) = V_{\text{AC}} \sin(2\pi f_{\text{in}} t)$, con ampiezza $V_{\text{AC}} = \SI{100}{\milli\volt}$, sull'elettrodo di drive, in modalità burst,controllata da un segnale di sincronizzazione logico (Gate): finché il gate è alto, il segnale sinusoidale è applicato sull'elettrodo di drive; al fronte di discesa del gate (istante $t = 0$ nella scala dei tempi delle misure che presenteremo), $v_{\text{in}}(t)$ viene interrotta e portata a $\SI{0}{\volt}$.
     \item Tramite l'oscilloscopio, abbiamo estrapolato la traccia del ringdown. L'esperimento è stato ripetuto per 25 diverse frequenze di ingresso $f_{\text{in}}$, distribuite in una finestra compresa tra $\SI{417.26}{\kilo\hertz}$ e $\SI{418.40}{\kilo\hertz}$.
 \end{itemize}
 
@@ -626,9 +628,9 @@ dove $A_0$ è l'ampiezza di picco estrapolata all'istante di spegnimento $t=0$, 
 \label{subsec:risposta_ampiezza}
 
 
-In fig.~\ref{fig:ampiezza_vs_frequenza} è riportato il grafico dell'ampiezza iniziale $A_0$ estratta all'istante di spegnimento del gate ($t=0$) in funzione della frequenza forzante $f_{\text{in}}$. Poiché per $t < 0$ la trave si trova in regime sinusoidale forzato, ci aspettiamo che l'energia meccanica accumulata (e quindi l'ampiezza di vibrazione $A_0$ al rilascio) sia massima quando la frequenza di eccitazione è vicina alla la frequenza di risonanza del primo modo flessionale alla tensione continua applicata $V_{\text{DC}} = \SI{5.0}{\volt}$, ovvero $f_{\text{in}} = f_1$.
+In fig.~\ref{fig:ampiezza_vs_frequenza} è riportato il grafico dell'ampiezza iniziale $A_0$ estratta all'istante di spegnimento del gate ($t=0$) in funzione della frequenza forzante $f_{\text{in}}$. Poiché per $t < 0$ la trave si trova in regime sinusoidale forzato, ci aspettiamo che l'energia meccanica accumulata (e quindi l'ampiezza $A_0$) sia massima quando la frequenza di eccitazione è vicina alla frequenza di risonanza del primo modo, ovvero $f_{\text{in}} = f_1$.
 
-\noindent La linea tratteggiata rossa rappresenta il fit lorenziano ottenuto per regressione ai minimi quadrati:
+\noindent La linea tratteggiata rossa di fig.~\ref{fig:ampiezza_vs_frequenza} rappresenta il fit lorenziano ottenuto per regressione ai minimi quadrati:
 
 \begin{equation}
     \label{eq:lorentziana_ampiezza}
@@ -636,7 +638,7 @@ In fig.~\ref{fig:ampiezza_vs_frequenza} è riportato il grafico dell'ampiezza in
 \end{equation}
 dove:
 \begin{itemize}
-    \item $A_{\max}$ è l'ampiezza di picco in tensione alla risonanza;
+    \item $A_{\max}$ è l'ampiezza di picco alla risonanza;
     \item $f_1$ è la frequenza di risonanza del primo modo flessionale a $V_{\text{DC}} = \SI{5.0}{\volt}$;
     \item $\Delta f$ è la larghezza di banda a metà potenza ($\SI{-3}{\decibel}$ in ampiezza, per $A_0 = A_{\max}/\sqrt{2}$).
 \end{itemize}
@@ -653,7 +655,7 @@ Il punto sperimentale più vicino al picco si trova a $f_{\text{in}} = \SI{417.8
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{../Ampiezza_Frequenza/grafici/ampiezza_vs_frequenza.png}
-\caption{Ampiezza iniziale di oscillazione $A_0$ al momento dello spegnimento dell'eccitazione in funzione della frequenza forzante $f_{\text{in}}$, a $V_{\text{DC}} = \SI{5.0}{\volt}$.}
+\caption{Ampiezza iniziale di oscillazione $A_0$ al momento dello spegnimento dell'eccitazione in funzione della frequenza della forzante $f_{\text{in}}$, a $V_{\text{DC}} = \SI{5.0}{\volt}$.}
 \label{fig:ampiezza_vs_frequenza}
 \end{figure}
 
@@ -662,30 +664,34 @@ Il punto sperimentale più vicino al picco si trova a $f_{\text{in}} = \SI{417.8
 \subsection{Frequenza di oscillazione libera durante il ring-down (\texorpdfstring{$f_1$}{f1} vs \texorpdfstring{$f_{\text{in}}$}{fin})}
 \label{subsec:frequenza_ringdown}
 
-In fig.~\ref{fig:frequenza_vs_fin} è riportato il grafico della frequenza di oscillazione $f_1$ durante il ringdown rispetto alla frequenza $f_{\text{in}}$ di eccitazione. I punti arancio sono stati attenuti tramite FFT, mentre quelli blu tramite fit lineare della fase istantanea $\phi(t) = 2\pi f_1 t + \phi_0$, il cui valor medio, rappresentato tramite la linea tratteggiata rossa, è di $f_1 = \SI{417859}{\hertz}$
+In fig.~\ref{fig:frequenza_vs_fin} è riportato il grafico della frequenza di oscillazione $f_1$ durante il ringdown rispetto alla frequenza $f_{\text{in}}$ di eccitazione. I punti arancio sono stati ottenuti tramite FFT, mentre quelli blu tramite fit lineare della fase istantanea $\phi(t) = 2\pi f_1 t + \phi_0$, il cui valor medio, rappresentato tramite la linea tratteggiata rossa, è di $f_1 = \SI{417859}{\hertz}$
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{../Ampiezza_Frequenza/grafici/ringdown_fit_dettaglio.png}
-\caption{Frequenza di oscillazione libera $f_1$ misurata durante il ringdown rispetto alla frequenza di eccitazione in ingresso $f_{\text{in}}$.}
+\caption{Frequenza di oscillazione $f_1$ misurata durante il ringdown rispetto alla frequenza di eccitazione in ingresso $f_{\text{in}}$.}
 \label{fig:frequenza_vs_fin}
 \end{figure}
 
+\noindent Come si vede dai punti blu, la frequenza  presenta una variabilità di $\SI{12}{\hertz}$; lo script infatti ci da un massimo di $\SI{417856}{\hertz}$ e un minimo di $\SI{417843}{\hertz}$. Questo è dovuto a due fattori:
+\begin{itemize}
+    \item La frequenza di risonanza dipende dall'ampiezza iniziale $A_0$ del ringdown. Vedremo nel dettaglio questo fenomeno nella sezione~\ref{sec:regime_non_lineare}.
+    \item C'è una deriva della frequenza di risonanza nel tempo che ci abbiamo messo per acquisire le misure: in laboratorio abbiamo infatti registrato prima i punti da $\SI{417.83}{\kilo\hertz}$ scendendo fino a $\SI{417.26}{\kilo\hertz}$, e in un secondo momento abbiamo ripreso dal centro ($\SI{417.84}{\kilo\hertz}$) salendo fino a $\SI{418.40}{\kilo\hertz}$.
+\end{itemize}
+
+\newpage
 
 \subsection{Costante di tempo di decadimento \texorpdfstring{$\tau$}{tau} e stima del fattore di merito \texorpdfstring{$Q$}{Q}}
 \label{subsec:tau_q}
 La costante di tempo di decadimento $\tau$ descrive la velocità con cui l'energia meccanica immagazzinata viene dissipata nell'ambiente.
 In fig.~\ref{fig:tau_vs_frequenza} sono riportati i valori di $\tau$, estratti dal fit esponenziale dei picchi, al variare della frequenza forzante $f_{\text{in}}$. Il valor medio sperimentale risulta essere $\tau_{\text{medio}} = \SI{2.32}{\milli\second}$.
 
-\noindent Conoscendo la pulsazione naturale di risonanza $\omega_1 = 2\pi f_1$ e la costante di tempo $\tau$, è possibile calcolare il fattore di merito meccanico $Q$ del primo modo flessionale:
+\noindent Da $\tau$, possiamo calcolare il fattore di merito meccanico $Q$ del primo modo flessionale:
 \begin{equation}
     \label{eq:calcolo_Q_sperimentale}
-    Q = \frac{\omega_1 \tau}{2} = \pi f_1 \tau
+    Q = \pi f_1 \tau
 \end{equation}
-Sostituendo i valori medi sperimentali misurati ($f_1 =\SI{417850}{\hertz}$ e $\tau = \SI{2.32}{\milli\second}$), si ottiene $Q = 3045$. Questo valore sperimentale è in accordo con la stima teorica di riferimento riportata da Frangi ~\cite{frangi2023} ($Q_1 \approx 2800$), con una discrepanza inferiore al $9\%$.
-
-\newpage
-
+Sostituendo i valori medi sperimentali misurati ($f_1 =\SI{417850}{\hertz}$ e $\tau = \SI{2.32}{\milli\second}$), si ottiene $Q = 3045$. Questo valore è in accordo con la stima teorica di riferimento riportata da Frangi~\cite{frangi2023} ($Q_1 \approx 2800$), con una discrepanza inferiore al $9\%$.
 
 \begin{figure}[htbp]
 \centering
