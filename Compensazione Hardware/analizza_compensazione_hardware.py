@@ -465,21 +465,12 @@ if has_uncomp:
     
     # Modulo
     ax1.plot(data_uncomp['f_khz'][m_unc], data_uncomp['gain_db'][m_unc], 'o', color='#868e96',
-             alpha=0.45, markersize=2.6, label='Non compensato (misura reale, dominata da Cp)')
+             alpha=0.45, markersize=2.6, label='Non compensato')
     ax1.plot(data_2['f_khz'], data_2['gain_db'], 'o', color='#2b8a3e',
-             alpha=0.45, markersize=2.8, label=r'Compensazione hardware attiva')
-    ax1.plot(fit_res_2['f_dense_khz'], fit_res_2['g_dense_db'], color='#2b8a3e', linewidth=2.0, label='Fit risonanza motrice')
-    
-    # Freccia verticale di abbattimento feedthrough
-    delta_feed_db = data_uncomp['gain_db'][0] - fit_res_2['C_feed_db']
-    ax1.annotate('', xy=(417.55, 21.0), xytext=(417.55, -15.0),
-                 arrowprops=dict(arrowstyle='<->', color='#2b8a3e', lw=2.0))
-    ax1.text(417.57, 3.0,
-             f'Abbattimento feedthrough:\n-{delta_feed_db:.1f} dB ({data_uncomp["gain_lin"][0]/fit_res_2["C_feed"]:.0f}×)',
-             fontsize=10, bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='#2b8a3e', alpha=0.95))
+             alpha=0.45, markersize=2.8, label='Compensazione hardware attiva')
     
     ax1.set_ylabel('Guadagno [dB]')
-    ax1.set_title('Efficacia della compensazione hardware: risposta grezza vs compensata', pad=9)
+    ax1.set_title('Confronto fra risposta in frequenza compensata e non compensata', pad=9)
     ax1.grid(True)
     ax1.legend(loc='lower right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
     ax1.ticklabel_format(useOffset=False, style='plain')
@@ -487,9 +478,9 @@ if has_uncomp:
     
     # Fase
     ax2.plot(data_uncomp['f_khz'][m_unc], data_uncomp['phase_wrap'][m_unc], 'o', color='#868e96',
-             alpha=0.45, markersize=2.6, label='Non compensato (fase bloccata a +68° da Cp)')
+             alpha=0.45, markersize=2.6, label='Non compensato')
     ax2.plot(data_2['f_khz'], data_2['phase_clean'], 'o', color='#7048e8',
-             alpha=0.45, markersize=2.8, label='Compensato hardware (transizione motrice di 180°)')
+             alpha=0.45, markersize=2.8, label='Compensazione hardware attiva')
     ax2.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
     ax2.set_ylabel('Fase [°]')
     ax2.grid(True)
@@ -528,6 +519,7 @@ if has_uncomp:
     
     T_comp_soft = T_raw - (C_re_sw + 1j * C_im_sw)
     gain_comp_soft_lin = np.abs(T_comp_soft)
+    gain_comp_soft_db = 20.0 * np.log10(gain_comp_soft_lin)
     
     # Centro del picco della misura compensata hardware (Set 2) e software
     f0_hw_pk = fit_res_2['f_dense'][np.argmax(np.abs(fit_res_2['T_dense']))]
@@ -541,11 +533,12 @@ if has_uncomp:
     f_sw_dense_hz = np.linspace(f_sw_hz[0], f_sw_hz[-1], 1000)
     x_sw_dense = 2.0 * Q_sw_fit * (f_sw_dense_hz - f0_sw_fit) / f0_sw_fit
     g_sw_dense_lin = A_mot_sw / np.sqrt(1.0 + x_sw_dense**2)
+    g_sw_dense_db = 20.0 * np.log10(g_sw_dense_lin)
     f_sw_dense_shifted_khz = (f_sw_dense_hz + delta_f_hz) / 1e3
     
     # Usiamo tutti i punti del modulo di Set 2 nell'intervallo comune (stesso delta di frequenza)
     f_hw_all_khz = data_2['f_all_khz']
-    g_hw_all_lin = data_2['gain_all_lin']
+    g_hw_all_db  = data_2['gain_all_db']
     
     f_win_min = max(f_sw_shifted_khz[0], f_hw_all_khz[0])
     f_win_max = min(f_sw_shifted_khz[-1], 418.100)
@@ -558,24 +551,26 @@ if has_uncomp:
     C_re_hw, C_im_hw, A_mot_hw, f0_hw_fit, Q_hw_fit, phi_m_hw = fit_res_2['popt']
     x_hw_dense = 2.0 * Q_hw_fit * (f_hw_dense_hz - f0_hw_fit) / f0_hw_fit
     T_hw_dense = (C_re_hw + 1j * C_im_hw) + (A_mot_hw * np.exp(1j * phi_m_hw)) / (1.0 + 1j * x_hw_dense)
+    g_hw_dense_db = 20.0 * np.log10(np.abs(T_hw_dense))
     
-    ax.plot(f_sw_shifted_khz[m_sw_win], gain_comp_soft_lin[m_sw_win], 'o', color='#7048e8',
+    ax.plot(f_sw_shifted_khz[m_sw_win], gain_comp_soft_db[m_sw_win], 'o', color='#7048e8',
             alpha=0.42, markersize=2.8,
             label=rf'Compensazione software (traslata di $+{delta_f_hz:.0f}$ Hz)')
-    ax.plot(f_sw_dense_shifted_khz, g_sw_dense_lin, '--', color='#7048e8',
-            linewidth=1.9, label='Fit risonanza software')
-    ax.plot(f_hw_all_khz[m_hw_win], g_hw_all_lin[m_hw_win], 'o', color='#2b8a3e',
-            alpha=0.50, markersize=2.8, label=r'Compensazione hardware reale')
-    ax.plot(f_hw_dense_hz / 1e3, np.abs(T_hw_dense), color='#2b8a3e',
-            linewidth=2.0, label='Fit risonanza hardware')
+    ax.plot(f_sw_dense_shifted_khz, g_sw_dense_db, '--', color='#7048e8',
+            linewidth=1.9, label='Fit software')
+    ax.plot(f_hw_all_khz[m_hw_win], g_hw_all_db[m_hw_win], 'o', color='#2b8a3e',
+            alpha=0.50, markersize=2.8, label='Compensazione hardware')
+    ax.plot(f_hw_dense_hz / 1e3, g_hw_dense_db, color='#2b8a3e',
+            linewidth=2.0, label='Fit hardware')
     
     ax.set_xlabel(r'Frequenza $f_{in}$ [kHz]')
-    ax.set_ylabel(r'Guadagno lineare $|V_{out} / V_{in}|$')
-    ax.set_title('Confronto tra compensazione hardware fisica e compensazione software', pad=9)
+    ax.set_ylabel('Guadagno [dB]')
+    ax.set_title('Risposta in frequenza: confronto tra compensazione hardware e software', pad=9)
     ax.grid(True)
     ax.legend(loc='upper right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')
     ax.ticklabel_format(useOffset=False, style='plain')
     ax.set_xlim(f_win_min, f_win_max)
+    ax.set_ylim(-22.2, -4.5)
     
     plt.tight_layout()
     p_hw_sw = os.path.join(OUT_DIR, 'confronto_hardware_vs_software.png')

@@ -207,36 +207,23 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.4, 5.8), dpi=300)
 ax1.axhline(0, color='#adb5bd', lw=1.0, zorder=1)
 ax1.axvline(0, color='#adb5bd', lw=1.0, zorder=1)
 
-# Vettore di feedthrough parassita C_feed dall'origine
 C_re_u = np.real(fit_u['C_feed'])
 C_im_u = np.imag(fit_u['C_feed'])
-ax1.annotate('', xy=(C_re_u, C_im_u), xytext=(0, 0),
-             arrowprops=dict(arrowstyle='->', color='#e03131', lw=2.0, ls='--'), zorder=3)
-ax1.text(2.4, 5.3,
-         rf'Contributo parassita $T_p$' + '\n' + rf'$|T_p| = {np.abs(fit_u["C_feed"]):.2f}$ ($C_p = 0.89$ pF)' + '\n' + r'$\angle T_p = +68.6^\circ$',
-         color='#c92a2a', fontsize=9.2,
-         bbox=dict(boxstyle='round,pad=0.35', facecolor='white', edgecolor='#ffa8a8', alpha=0.94))
 
-# Cerchio non compensato (lontano dall'origine)
+# Punti non compensati (lontano dall'origine)
 ax1.plot(np.real(T_u_meas), np.imag(T_u_meas), 'o', color='#868e96', alpha=0.45, markersize=2.5,
          label='Punti sperimentali non compensati')
-ax1.plot(np.real(fit_u['T_circle']), np.imag(fit_u['T_circle']), '-', color='#343a40', lw=1.8)
 
-# Cerchio compensato HW (vicino all'origine)
+# Punti compensati HW (vicino all'origine)
 ax1.plot(np.real(data_2['T_meas']), np.imag(data_2['T_meas']), 'o', color='#1971c2', alpha=0.45, markersize=2.5,
          label='Punti sperimentali compensati hardware')
-ax1.plot(np.real(fit_2['T_circle']), np.imag(fit_2['T_circle']), '-', color='#1864ab', lw=1.8)
 
 ax1.plot(0, 0, 'k+', markersize=8, markeredgewidth=1.5)
-ax1.annotate(r'Cerchio motrice' + '\n' + r'traslato da $C_p \,/\!/\, R_p$',
-             xy=(C_re_u + 0.05, C_im_u - 0.05), xytext=(-2.8, 9.2),
-             arrowprops=dict(arrowstyle='->', color='#495057', lw=1.2),
-             fontsize=9.0, bbox=dict(boxstyle='round,pad=0.3', facecolor='#f8f9fa', edgecolor='#ced4da'))
+ax1.text(0.3, 10.2, r'Cerchio motrice' + '\n' + r'traslato da $C_p \,/\!/\, R_p$',
+         fontsize=9.0, bbox=dict(boxstyle='round,pad=0.3', facecolor='#f8f9fa', edgecolor='#ced4da'))
 
-ax1.annotate('Cerchio riportato\nsull\'origine (0, 0)\ncon compensazione',
-             xy=(0.35, -0.15), xytext=(2.4, 1.4),
-             arrowprops=dict(arrowstyle='->', color='#1864ab', lw=1.2),
-             fontsize=9.0, bbox=dict(boxstyle='round,pad=0.3', facecolor='#e7f5ff', edgecolor='#74c0fc'))
+ax1.text(0.85, 0.35, 'Cerchio riportato\nsull\'origine (0, 0)\ncon compensazione',
+         fontsize=9.0, bbox=dict(boxstyle='round,pad=0.3', facecolor='#e7f5ff', edgecolor='#74c0fc'))
 
 ax1.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax1.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
@@ -263,10 +250,7 @@ ax2.plot(np.real(data_2['T_meas']), np.imag(data_2['T_meas']), 'o', color='#1971
 ax2.plot(np.real(fit_2['T_circle']), np.imag(fit_2['T_circle']), '-', color='#1864ab', lw=2.2,
          label='Cerchio comp. hardware')
 
-# Evidenziazione risonanza f0 (x = 0 -> T = C_feed + B_mot)
 T_res_2 = fit_2['C_feed'] + fit_2['B_mot']
-ax2.plot(np.real(T_res_2), np.imag(T_res_2), 'D', color='#e8590c', markersize=6.5, zorder=5,
-         label=rf'Risonanza $f_1 = {fit_2["f0"]/1e3:.2f}$ kHz')
 ax2.plot(0, 0, 'k+', markersize=9, markeredgewidth=1.8)
 
 ax2.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
@@ -314,13 +298,6 @@ ax1.plot(np.real(T_min_u), np.imag(T_min_u), 'v', color='#e03131', markersize=7.
          label=r'Min $|T|$ (antirisonanza, $21.19$ dB)')
 ax1.plot(np.real(T_f0_u), np.imag(T_f0_u), 'D', color='#e8590c', markersize=6.5, zorder=6,
          label=r'Risonanza meccanica $f_1$')
-
-# Direzione radiale dall'origine (0,0) passante per il centro del cerchio (unisce Min |T| e Max |T|)
-u_rad = fit_u['C_center'] / np.abs(fit_u['C_center'])
-p_start = fit_u['C_center'] - 0.36 * u_rad
-p_end   = fit_u['C_center'] + 0.36 * u_rad
-ax1.plot([np.real(p_start), np.real(p_end)], [np.imag(p_start), np.imag(p_end)],
-         ':', color='#495057', lw=1.5, label='Asse radiale da $(0,0)$ (congiunge min e max)')
 
 ax1.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax1.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
@@ -396,8 +373,6 @@ for f_mark, offset_xy in [(417.60, (-0.18, 0.14)),
                 xytext=offset_xy,
                 arrowprops=dict(arrowstyle='->', color='#c92a2a', lw=1.1),
                 fontsize=9.0, bbox=dict(boxstyle='round,pad=0.25', facecolor='white', edgecolor='#ffa8a8', alpha=0.94))
-
-ax.plot(0, 0, 'k+', markersize=10, markeredgewidth=2.0, label='Origine $(0, 0)$')
 
 ax.set_xlabel(r'Parte reale $\mathrm{Re}\{T(j\omega)\}$')
 ax.set_ylabel(r'Parte immaginaria $\mathrm{Im}\{T(j\omega)\}$')
