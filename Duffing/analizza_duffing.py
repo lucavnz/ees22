@@ -211,7 +211,7 @@ def main():
              label='Dati', zorder=3)
     
     ax1.set_title('Ampiezza ringdown vs tensione di eccitazione', pad=12)
-    ax1.set_xlabel(r'Ampiezza eccitazione $V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
+    ax1.set_xlabel(r'Ampiezza eccitazione $V_{\mathrm{ACpp}}$ [mV]')
     ax1.set_ylabel(r'Ampiezza iniziale ringdown $A_0$ [mV]')
     ax1.set_xlim(0, 2100)
     ax1.set_ylim(0, 300)
@@ -338,7 +338,7 @@ def main():
                     alpha=0.65, edgecolors='none', zorder=3)
         # Linea di fit liscia continua
         ax2.plot(t_dense * 1e3, f_th, color=col, linewidth=2.2, zorder=4,
-                 label=f"$V_{{\\mathrm{{ac}}}} = {vin}\\ \\mathrm{{mV}}_{{\\mathrm{{pp}}}}$")
+                 label=f"$V_{{\\mathrm{{ACpp}}}} = {vin}\\ \\mathrm{{mV}}$")
                      
     ax2.set_title(r"Frequenza di risonanza $f_1'$ nel tempo", pad=12)
     ax2.set_xlabel('Tempo dal taglio del gate [ms]')

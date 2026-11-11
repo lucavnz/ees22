@@ -428,16 +428,18 @@ def parse_ltspice_raw(raw_path):
 
 def run_ltspice_case(cir_path, phi_deg):
     """Scrive la netlist .cir, lancia LTspice -b e restituisce i vettori simulati."""
-    netlist = build_spice_netlist(phi_deg=phi_deg)
-    with open(cir_path, "w") as f:
-        f.write(netlist)
-    subprocess.run(
-        [LTSPICE_BIN, "-b", cir_path],
-        check=True,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    raw = parse_ltspice_raw(cir_path.replace(".cir", ".raw"))
+    raw_path = cir_path.replace(".cir", ".raw")
+    if os.path.exists(LTSPICE_BIN):
+        netlist = build_spice_netlist(phi_deg=phi_deg)
+        with open(cir_path, "w") as f:
+            f.write(netlist)
+        subprocess.run(
+            [LTSPICE_BIN, "-b", cir_path],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    raw = parse_ltspice_raw(raw_path)
     # .tran 0 42u 20u 2n salva il tempo a partire da Tstart = 20 us -> toff (35 us) cade a 15 us nel .raw
     t_us = (raw["time"] - (PARAMS["toff_us"] - 20.0) * 1e-6) * 1e6 + PARAMS["t_freeze_us"]
     return {
@@ -615,7 +617,8 @@ def main():
     asc_path = os.path.join(LTSPICE_DIR, "oscillazione_parassita.asc")
     build_ltspice_asc(asc_path)
     schema_png = os.path.join(OUT_DIR, "circuito_ltspice_schema.png")
-    render_asc_to_png(asc_path, schema_png)
+    if os.path.exists("/Applications/LTspice.app/Contents/Resources/lib.zip"):
+        render_asc_to_png(asc_path, schema_png)
     print(f"[OK] Schematico LTspice salvato in: {asc_path}")
     print(f"[OK] Immagine schematico LTspice generata in: {schema_png}")
 
@@ -649,16 +652,17 @@ def main():
         print(f"  Errore RMS su [-1.5, +4.0] us: {rms:.2f} mV")
 
     # 4. Verifica in LTspice dei valori estremi di V_pp(phi) a phi = 0 deg e phi = +-90 deg
-    tmp_cir = os.path.join(LTSPICE_DIR, "_tmp_sweep.cir")
-    for ph_test in [-90.0, 0.0, 90.0, 180.0]:
-        s_ph = run_ltspice_case(tmp_cir, phi_deg=ph_test)
-        mp = (s_ph["t_us"] >= 0.0) & (s_ph["t_us"] <= 4.0)
-        vpp = s_ph["vout_mv"][mp].max() - s_ph["vout_mv"][mp].min()
-        print(f"  LTspice V_pp(phi = {ph_test:+6.1f} deg) = {vpp:.1f} mV")
-    for ext in [".cir", ".raw", ".op.raw", ".log"]:
-        p_rm = tmp_cir.replace(".cir", ext)
-        if os.path.exists(p_rm):
-            os.remove(p_rm)
+    if os.path.exists(LTSPICE_BIN):
+        tmp_cir = os.path.join(LTSPICE_DIR, "_tmp_sweep.cir")
+        for ph_test in [-90.0, 0.0, 90.0, 180.0]:
+            s_ph = run_ltspice_case(tmp_cir, phi_deg=ph_test)
+            mp = (s_ph["t_us"] >= 0.0) & (s_ph["t_us"] <= 4.0)
+            vpp = s_ph["vout_mv"][mp].max() - s_ph["vout_mv"][mp].min()
+            print(f"  LTspice V_pp(phi = {ph_test:+6.1f} deg) = {vpp:.1f} mV")
+        for ext in [".cir", ".raw", ".op.raw", ".log"]:
+            p_rm = tmp_cir.replace(".cir", ext)
+            if os.path.exists(p_rm):
+                os.remove(p_rm)
 
     # 5. Generazione grafico editoriale (300 DPI) coerente con lo stile della relazione
     plt.rcParams.update({
@@ -681,7 +685,7 @@ def main():
 
     # Pannello sinistro: dv_in/dt > 0 (scope_173)
     ax1.plot(d173[:, 0] * 1e6, d173[:, 1] * 1e3, color="#495057", alpha=0.58, linewidth=2.3,
-             label="Misura reale (oscilloscopio)")
+             label="Misura sperimentale")
     ax1.plot(sim_pos["t_us"], sim_pos["vout_mv"], color="#c92a2a", linewidth=2.0,
              label="Simulazione LTspice")
     ax1.axvline(0.0, color="black", linestyle="--", linewidth=1.2, alpha=0.75, label="Gate OFF")
@@ -696,7 +700,7 @@ def main():
 
     # Pannello destro: dv_in/dt < 0 (scope_172)
     ax2.plot(d172[:, 0] * 1e6, d172[:, 1] * 1e3, color="#495057", alpha=0.58, linewidth=2.3,
-             label="Misura reale (oscilloscopio)")
+             label="Misura sperimentale")
     ax2.plot(sim_neg["t_us"], sim_neg["vout_mv"], color="#1971c2", linewidth=2.0,
              label="Simulazione LTspice")
     ax2.axvline(0.0, color="black", linestyle="--", linewidth=1.2, alpha=0.75, label="Gate OFF")

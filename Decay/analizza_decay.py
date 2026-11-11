@@ -520,7 +520,7 @@ def generate_all_plots(res_nat, res_cp1, res_cp2):
 
     # Segnale del risuonatore ad alta frequenza
     ax.plot(t_full_ms, ch1_full_mv, color='#1971c2', alpha=0.65, linewidth=0.7,
-            label='Segnale risuonatore $v_{out}(t)$')
+            label='$v_{out}(t)$')
 
     # Esponenziale continuo con segno da t = 0 in poi (risposta fisica alla forzante)
     t_exp_pos = np.linspace(0.0, 8.58e-3, 800)
@@ -531,8 +531,7 @@ def generate_all_plots(res_nat, res_cp1, res_cp2):
     # Tratteggio di estrapolazione per t < 0
     t_exp_neg = np.linspace(-1.42e-3, 0.0, 200)
     v_exp_neg = (x0_mv + x_inf_mv) * np.exp(-t_exp_neg / tau_fit_s) - x_inf_mv
-    ax.plot(t_exp_neg * 1e3, v_exp_neg, ':', color='#d62728', linewidth=1.5, alpha=0.75,
-            label='Estrapolazione matematica per $t < 0$')
+    ax.plot(t_exp_neg * 1e3, v_exp_neg, ':', color='#d62728', linewidth=1.5, alpha=0.75)
 
     # Linee di riferimento
     ax.axhline(0, color='#495057', linestyle=':', linewidth=1.0)
@@ -543,7 +542,7 @@ def generate_all_plots(res_nat, res_cp1, res_cp2):
     ax.set_xlim(-1.42, 8.58)
     ax.set_ylim(-36, 52)
     ax.set_xlabel('Tempo [ms]')
-    ax.set_ylabel('Tensione di uscita [mV]')
+    ax.set_ylabel('Tensione uscita [mV]')
     ax.set_title('Inviluppo esponenziale')
     ax.grid(True)
     ax.legend(loc='upper right', frameon=True, facecolor='white', framealpha=0.92, edgecolor='#ced4da')

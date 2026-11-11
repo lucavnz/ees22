@@ -309,9 +309,7 @@ def main():
     # Versione a singolo pannello (solo V_post vs fase phi) per la relazione
     fig_vp, ax_vp = plt.subplots(figsize=(8.8, 5.2), dpi=300)
     ax_vp.plot(phases, v_post_mv, 'o', color='#1971c2', markersize=4.8, alpha=0.85,
-               label=r'Livello $V_{\mathrm{post}}$ misurato per $t \geq 0$ (CH3)')
-    ax_vp.plot(phi_dense, v_ac_fit * np.sin(np.deg2rad(phi_dense)), '--', color='#d62728', linewidth=2.0,
-               label=r'Legge teorica $V_{\mathrm{AC}} \sin(\phi)$')
+               label=r'Livello $V_{\mathrm{post}}$ misurato per $t \geq 0$')
     ax_vp.axhline(0.0, color='black', linestyle=':', linewidth=0.8, alpha=0.5)
     ax_vp.set_xlim(-375, 375)
     ax_vp.set_xticks(np.arange(-360, 361, 90))
@@ -415,11 +413,20 @@ def main():
 
     # =========================================================
     # GRAFICO 4: Ampiezza A0 vs Fase (compensata dalla deriva)
-    # (Stile identico a ampiezza_vs_frequenza.png e tau_vs_frequenza.png)
     # =========================================================
+    def sin_model_360(ph_deg, a_mean, b_sin, c_cos):
+        rad = np.deg2rad(ph_deg)
+        return a_mean + b_sin * np.sin(rad) + c_cos * np.cos(rad)
+
+    popt_a0_sin, _ = curve_fit(sin_model_360, phases, a0_comp_mv, p0=[a0_comp_mean, -0.2, 0.0])
+    phi_fit_dense = np.linspace(-360.0, 360.0, 500)
+    a0_sin_fit_curve = sin_model_360(phi_fit_dense, *popt_a0_sin)
+
     fig, ax = plt.subplots(figsize=(8.8, 5.5), dpi=300)
     ax.plot(phases, a0_comp_mv, 'o', color='#1971c2', markersize=5.5, alpha=0.85,
             label=r'Ampiezza iniziale $A_0$ (compensata dalla deriva)')
+    ax.plot(phi_fit_dense, a0_sin_fit_curve, '-', color='#d62728', linewidth=2.2,
+            label=r'Fit sinusoidale')
 
     ax.set_xlim(-375, 375)
     ax.set_xticks(np.arange(-360, 361, 90))

@@ -239,7 +239,7 @@ def main():
              color='#c0392b', label=r'Dati $p_2$ (Secondo modo / $f_2 = 835.6$ kHz)')
 
     ax1.set_title(r'Ampiezze $p_1$ e $p_2$ vs tensione di eccitazione', pad=12)
-    ax1.set_xlabel(r'Ampiezza eccitazione $V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
+    ax1.set_xlabel(r'Ampiezza eccitazione $V_{\mathrm{ACpp}}$ [mV]')
     ax1.set_ylabel(r'Ampiezza componente in frequenza [mV]')
     ax1.set_xlim(0, 1700)
     ax1.set_ylim(0, 32)
@@ -267,8 +267,8 @@ def main():
              color='#2ca02c', markeredgecolor='#1a631c', markeredgewidth=0.8,
              label=r'Dati $p_2 / p_1$')
 
-    ax2.set_title(r'Distorsione secondo modo ($p_2 / p_1$) vs ampiezza $V_{\mathrm{ac}}$', pad=12)
-    ax2.set_xlabel(r'Ampiezza eccitazione $V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
+    ax2.set_title(r'Distorsione secondo modo ($p_2 / p_1$) vs ampiezza $V_{\mathrm{ACpp}}$', pad=12)
+    ax2.set_xlabel(r'Ampiezza eccitazione $V_{\mathrm{ACpp}}$ [mV]')
     ax2.set_ylabel(r'Distorsione secondo modo $p_2 / p_1$ [%]')
     ax2.set_xlim(0, 1700)
     ax2.set_ylim(0, 15)
@@ -293,7 +293,7 @@ def main():
     ax3a.plot(vac_arr, p2_rig_arr, marker='s', color='#c0392b', label=r'$p_2$ (Rigorosa: Hann + ZP)')
     ax3a.plot(vac_arr, p2_mat_arr, marker='+', linestyle=':', color='#c0392b', alpha=0.7, label=r'$p_2$ (MATLAB compagno)')
     ax3a.set_title('Confronto ampiezze spettrali $p_1$ e $p_2$', pad=10)
-    ax3a.set_xlabel(r'$V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
+    ax3a.set_xlabel(r'$V_{\mathrm{ACpp}}$ [mV]')
     ax3a.set_ylabel('Ampiezza [mV]')
     ax3a.set_xlim(0, 1700)
     ax3a.grid(True, linestyle=':', alpha=0.55, color='#c0c0c0')
@@ -303,7 +303,7 @@ def main():
     ax3b.plot(vac_arr, hd2_rig_arr, marker='o', color='#2ca02c', linewidth=2.0, label='Analisi rigorosa')
     ax3b.plot(vac_arr, hd2_mat_arr, marker='x', linestyle='--', color='#d95f02', linewidth=1.7, label='MATLAB compagno (sottostimata)')
     ax3b.set_title('Confronto distorsione 2° modo ($p_2 / p_1$)', pad=10)
-    ax3b.set_xlabel(r'$V_{\mathrm{ac}}$ [$\mathrm{mV}_{\mathrm{pp}}$]')
+    ax3b.set_xlabel(r'$V_{\mathrm{ACpp}}$ [mV]')
     ax3b.set_ylabel(r'Distorsione secondo modo $p_2 / p_1$ [%]')
     ax3b.set_xlim(0, 1700)
     ax3b.set_ylim(0, 15)
